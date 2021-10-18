@@ -7,7 +7,8 @@
     "web": "expo start --web",
     "eject": "expo eject",
     "storybook": "start-storybook -p 7007",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "cy:open": "cypress open"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "~1.15.0",
@@ -28,6 +29,7 @@
     "@storybook/react-native": "^5.3.25",
     "@storybook/react-native-server": "^5.3.23",
     "babel-loader": "^8.2.2",
+    "cypress": "^8.6.0",
     "eslint": "7.2.0",
     "eslint-config-airbnb": "18.2.1",
     "eslint-config-prettier": "^8.3.0",
