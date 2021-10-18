@@ -8,7 +8,11 @@
     "eject": "expo eject",
     "storybook": "start-storybook -p 7007",
     "build-storybook": "build-storybook",
-    "cy:open": "cypress open"
+    "cy:open": "cypress open",
+    "cy:run":"cypress run",
+    "dev":"start-test web 19006 cy:open",
+    "dev:ci":"start-test web 19006 cy:run"
+
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "~1.15.0",
@@ -38,7 +42,8 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "7.21.5",
     "eslint-plugin-react-hooks": "1.7.0",
-    "prettier": "^2.4.1"
+    "prettier": "^2.4.1",
+    "start-server-and-test": "^1.14.0"
   },
   "private": true,
   "husky": {
