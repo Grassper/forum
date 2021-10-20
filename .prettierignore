@@ -1,0 +1,7 @@
+node_modules/
+coverage/
+metro.config.js
+babel.config.js
+commitlint.config.js
+.eslintrc
+.prettierrc
