@@ -6,21 +6,24 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "eject": "expo eject",
-    "storybook": "start-storybook -p 7007",
-    "build-storybook": "build-storybook",
     "cy:open": "cypress open",
-    "cy:run":"cypress run",
-    "dev":"start-test web 19006 cy:open",
-    "dev:ci":"start-test web 19006 cy:run"
-
+    "cy:run": "cypress run",
+    "dev": "start-test web 19006 cy:open",
+    "dev:ci": "start-test web 19006 cy:run",
+    "storybook": "start-storybook -p 7007 -h 0.0.0.0",
+    "build-storybook": "build-storybook"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "~1.15.0",
     "expo": "~42.0.1",
+    "expo-app-loading": "^1.1.2",
+    "expo-font": "~9.2.1",
     "expo-status-bar": "~1.0.4",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-42.0.0.tar.gz",
+    "react-native-config": "^1.4.4",
+    "react-native-server": "0.0.1-beta",
     "react-native-web": "~0.13.12"
   },
   "devDependencies": {
