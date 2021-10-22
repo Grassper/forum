@@ -3,6 +3,8 @@ import { StyleSheet, Text, View } from "react-native";
 import * as Font from "expo-font";
 import AppLoading from "expo-app-loading";
 
+import { Button } from "@/root/src/components/shared/Buttons";
+
 const fetchFonts = () => {
   return Font.loadAsync({
     "Montserrat-Bold": require("./assets/fonts/Montserrat-Bold.ttf"),
@@ -26,7 +28,7 @@ const App = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Hi from react native!</Text>
+      <Button />
     </View>
   );
 };

@@ -1,7 +1,7 @@
 import React from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-const Button = ({ text, type, onPress, image }) => {
+export const Button = ({ text, type, onPress, image }) => {
   return (
     <View style={styles.button}>
       <TouchableOpacity style={styles.buttonSquare} onPress={onPress}>
@@ -31,8 +31,6 @@ const Button = ({ text, type, onPress, image }) => {
     </View>
   );
 };
-
-export default Button;
 
 const styles = StyleSheet.create({
   button: {
