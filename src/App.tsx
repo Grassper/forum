@@ -1,15 +1,13 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 import * as Font from "expo-font";
 import AppLoading from "expo-app-loading";
 
-import { Button } from "@/root/src/components/shared/Buttons";
-
 const fetchFonts = () => {
   return Font.loadAsync({
-    "Montserrat-Bold": require("./assets/fonts/Montserrat-Bold.ttf"),
-    "Montserrat-italic": require("./assets/fonts/Montserrat-Italic.ttf"),
-    "Montserrat-regular": require("./assets/fonts/Montserrat-Regular.ttf"),
+    "Montserrat-Bold": require("../assets/fonts/Montserrat-Bold.ttf"),
+    "Montserrat-italic": require("../assets/fonts/Montserrat-Italic.ttf"),
+    "Montserrat-regular": require("../assets/fonts/Montserrat-Regular.ttf"),
   });
 };
 
@@ -28,7 +26,7 @@ const App = () => {
 
   return (
     <View style={styles.container}>
-      <Button />
+      <Text>Hi from react native</Text>
     </View>
   );
 };
