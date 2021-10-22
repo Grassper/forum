@@ -1,6 +1,5 @@
 import React from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import style from "../../storybook/stories/CenterView/style";
 
 const Button = ({ text, type, onPress, image }) => {
   return (
