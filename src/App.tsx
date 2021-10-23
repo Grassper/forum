@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import Amplify from "aws-amplify";
 import config from "./aws-exports";
-
+// @ts-ignore
+import { withAuthenticator } from "aws-amplify-react-native";
 import { StyleSheet, View, Text } from "react-native";
 import * as Font from "expo-font";
 import AppLoading from "expo-app-loading";
@@ -48,4 +49,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default App;
+export default withAuthenticator(App);

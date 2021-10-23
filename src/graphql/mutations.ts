@@ -16,26 +16,6 @@ export const createUser = /* GraphQL */ `
       _lastChangedAt
       createdAt
       updatedAt
-      UserMetrics {
-        id
-        postLikes
-        postLoves
-        postSupport
-        postDislike
-        profileViews
-        badges
-        coins
-        user
-        commentUpvotes
-        commentDownvotes
-        activeDays
-        lastActiveDay
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
     }
   }
 `;
@@ -53,26 +33,6 @@ export const updateUser = /* GraphQL */ `
       _lastChangedAt
       createdAt
       updatedAt
-      UserMetrics {
-        id
-        postLikes
-        postLoves
-        postSupport
-        postDislike
-        profileViews
-        badges
-        coins
-        user
-        commentUpvotes
-        commentDownvotes
-        activeDays
-        lastActiveDay
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
     }
   }
 `;
@@ -90,26 +50,6 @@ export const deleteUser = /* GraphQL */ `
       _lastChangedAt
       createdAt
       updatedAt
-      UserMetrics {
-        id
-        postLikes
-        postLoves
-        postSupport
-        postDislike
-        profileViews
-        badges
-        coins
-        user
-        commentUpvotes
-        commentDownvotes
-        activeDays
-        lastActiveDay
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
     }
   }
 `;
@@ -127,7 +67,6 @@ export const createUserMetrics = /* GraphQL */ `
       profileViews
       badges
       coins
-      user
       commentUpvotes
       commentDownvotes
       activeDays
@@ -137,6 +76,16 @@ export const createUserMetrics = /* GraphQL */ `
       _lastChangedAt
       createdAt
       updatedAt
+      User {
+        id
+        username
+        email
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
     }
   }
 `;
@@ -154,7 +103,6 @@ export const updateUserMetrics = /* GraphQL */ `
       profileViews
       badges
       coins
-      user
       commentUpvotes
       commentDownvotes
       activeDays
@@ -164,6 +112,16 @@ export const updateUserMetrics = /* GraphQL */ `
       _lastChangedAt
       createdAt
       updatedAt
+      User {
+        id
+        username
+        email
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
     }
   }
 `;
@@ -181,7 +139,6 @@ export const deleteUserMetrics = /* GraphQL */ `
       profileViews
       badges
       coins
-      user
       commentUpvotes
       commentDownvotes
       activeDays
@@ -191,6 +148,16 @@ export const deleteUserMetrics = /* GraphQL */ `
       _lastChangedAt
       createdAt
       updatedAt
+      User {
+        id
+        username
+        email
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
     }
   }
 `;

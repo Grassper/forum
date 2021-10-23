@@ -7,7 +7,6 @@ export type CreateUserInput = {
   username: string;
   email: string;
   _version?: number | null;
-  userUserMetricsId?: string | null;
 };
 
 export type ModelUserConditionInput = {
@@ -67,29 +66,6 @@ export type User = {
   _lastChangedAt: number;
   createdAt: string;
   updatedAt: string;
-  UserMetrics?: UserMetrics | null;
-};
-
-export type UserMetrics = {
-  __typename: "UserMetrics";
-  id: string;
-  postLikes: number;
-  postLoves: number;
-  postSupport: number;
-  postDislike: number;
-  profileViews: number;
-  badges?: Array<string | null> | null;
-  coins: number;
-  user: string;
-  commentUpvotes: number;
-  commentDownvotes: number;
-  activeDays: number;
-  lastActiveDay: string;
-  _version: number;
-  _deleted?: boolean | null;
-  _lastChangedAt: number;
-  createdAt: string;
-  updatedAt: string;
 };
 
 export type UpdateUserInput = {
@@ -97,7 +73,6 @@ export type UpdateUserInput = {
   username?: string | null;
   email?: string | null;
   _version?: number | null;
-  userUserMetricsId?: string | null;
 };
 
 export type DeleteUserInput = {
@@ -114,12 +89,12 @@ export type CreateUserMetricsInput = {
   profileViews: number;
   badges?: Array<string | null> | null;
   coins: number;
-  user: string;
   commentUpvotes: number;
   commentDownvotes: number;
   activeDays: number;
   lastActiveDay: string;
   _version?: number | null;
+  userMetricsUserId?: string | null;
 };
 
 export type ModelUserMetricsConditionInput = {
@@ -130,7 +105,6 @@ export type ModelUserMetricsConditionInput = {
   profileViews?: ModelIntInput | null;
   badges?: ModelStringInput | null;
   coins?: ModelIntInput | null;
-  user?: ModelIDInput | null;
   commentUpvotes?: ModelIntInput | null;
   commentDownvotes?: ModelIntInput | null;
   activeDays?: ModelIntInput | null;
@@ -152,20 +126,26 @@ export type ModelIntInput = {
   attributeType?: ModelAttributeTypes | null;
 };
 
-export type ModelIDInput = {
-  ne?: string | null;
-  eq?: string | null;
-  le?: string | null;
-  lt?: string | null;
-  ge?: string | null;
-  gt?: string | null;
-  contains?: string | null;
-  notContains?: string | null;
-  between?: Array<string | null> | null;
-  beginsWith?: string | null;
-  attributeExists?: boolean | null;
-  attributeType?: ModelAttributeTypes | null;
-  size?: ModelSizeInput | null;
+export type UserMetrics = {
+  __typename: "UserMetrics";
+  id: string;
+  postLikes: number;
+  postLoves: number;
+  postSupport: number;
+  postDislike: number;
+  profileViews: number;
+  badges?: Array<string | null> | null;
+  coins: number;
+  commentUpvotes: number;
+  commentDownvotes: number;
+  activeDays: number;
+  lastActiveDay: string;
+  _version: number;
+  _deleted?: boolean | null;
+  _lastChangedAt: number;
+  createdAt: string;
+  updatedAt: string;
+  User?: User | null;
 };
 
 export type UpdateUserMetricsInput = {
@@ -177,12 +157,12 @@ export type UpdateUserMetricsInput = {
   profileViews?: number | null;
   badges?: Array<string | null> | null;
   coins?: number | null;
-  user?: string | null;
   commentUpvotes?: number | null;
   commentDownvotes?: number | null;
   activeDays?: number | null;
   lastActiveDay?: string | null;
   _version?: number | null;
+  userMetricsUserId?: string | null;
 };
 
 export type DeleteUserMetricsInput = {
@@ -197,6 +177,22 @@ export type ModelUserFilterInput = {
   and?: Array<ModelUserFilterInput | null> | null;
   or?: Array<ModelUserFilterInput | null> | null;
   not?: ModelUserFilterInput | null;
+};
+
+export type ModelIDInput = {
+  ne?: string | null;
+  eq?: string | null;
+  le?: string | null;
+  lt?: string | null;
+  ge?: string | null;
+  gt?: string | null;
+  contains?: string | null;
+  notContains?: string | null;
+  between?: Array<string | null> | null;
+  beginsWith?: string | null;
+  attributeExists?: boolean | null;
+  attributeType?: ModelAttributeTypes | null;
+  size?: ModelSizeInput | null;
 };
 
 export type ModelUserConnection = {
@@ -215,7 +211,6 @@ export type ModelUserMetricsFilterInput = {
   profileViews?: ModelIntInput | null;
   badges?: ModelStringInput | null;
   coins?: ModelIntInput | null;
-  user?: ModelIDInput | null;
   commentUpvotes?: ModelIntInput | null;
   commentDownvotes?: ModelIntInput | null;
   activeDays?: ModelIntInput | null;
@@ -248,27 +243,6 @@ export type CreateUserMutation = {
     _lastChangedAt: number;
     createdAt: string;
     updatedAt: string;
-    UserMetrics?: {
-      __typename: "UserMetrics";
-      id: string;
-      postLikes: number;
-      postLoves: number;
-      postSupport: number;
-      postDislike: number;
-      profileViews: number;
-      badges?: Array<string | null> | null;
-      coins: number;
-      user: string;
-      commentUpvotes: number;
-      commentDownvotes: number;
-      activeDays: number;
-      lastActiveDay: string;
-      _version: number;
-      _deleted?: boolean | null;
-      _lastChangedAt: number;
-      createdAt: string;
-      updatedAt: string;
-    } | null;
   } | null;
 };
 
@@ -288,27 +262,6 @@ export type UpdateUserMutation = {
     _lastChangedAt: number;
     createdAt: string;
     updatedAt: string;
-    UserMetrics?: {
-      __typename: "UserMetrics";
-      id: string;
-      postLikes: number;
-      postLoves: number;
-      postSupport: number;
-      postDislike: number;
-      profileViews: number;
-      badges?: Array<string | null> | null;
-      coins: number;
-      user: string;
-      commentUpvotes: number;
-      commentDownvotes: number;
-      activeDays: number;
-      lastActiveDay: string;
-      _version: number;
-      _deleted?: boolean | null;
-      _lastChangedAt: number;
-      createdAt: string;
-      updatedAt: string;
-    } | null;
   } | null;
 };
 
@@ -328,27 +281,6 @@ export type DeleteUserMutation = {
     _lastChangedAt: number;
     createdAt: string;
     updatedAt: string;
-    UserMetrics?: {
-      __typename: "UserMetrics";
-      id: string;
-      postLikes: number;
-      postLoves: number;
-      postSupport: number;
-      postDislike: number;
-      profileViews: number;
-      badges?: Array<string | null> | null;
-      coins: number;
-      user: string;
-      commentUpvotes: number;
-      commentDownvotes: number;
-      activeDays: number;
-      lastActiveDay: string;
-      _version: number;
-      _deleted?: boolean | null;
-      _lastChangedAt: number;
-      createdAt: string;
-      updatedAt: string;
-    } | null;
   } | null;
 };
 
@@ -368,7 +300,6 @@ export type CreateUserMetricsMutation = {
     profileViews: number;
     badges?: Array<string | null> | null;
     coins: number;
-    user: string;
     commentUpvotes: number;
     commentDownvotes: number;
     activeDays: number;
@@ -378,6 +309,17 @@ export type CreateUserMetricsMutation = {
     _lastChangedAt: number;
     createdAt: string;
     updatedAt: string;
+    User?: {
+      __typename: "User";
+      id: string;
+      username: string;
+      email: string;
+      _version: number;
+      _deleted?: boolean | null;
+      _lastChangedAt: number;
+      createdAt: string;
+      updatedAt: string;
+    } | null;
   } | null;
 };
 
@@ -397,7 +339,6 @@ export type UpdateUserMetricsMutation = {
     profileViews: number;
     badges?: Array<string | null> | null;
     coins: number;
-    user: string;
     commentUpvotes: number;
     commentDownvotes: number;
     activeDays: number;
@@ -407,6 +348,17 @@ export type UpdateUserMetricsMutation = {
     _lastChangedAt: number;
     createdAt: string;
     updatedAt: string;
+    User?: {
+      __typename: "User";
+      id: string;
+      username: string;
+      email: string;
+      _version: number;
+      _deleted?: boolean | null;
+      _lastChangedAt: number;
+      createdAt: string;
+      updatedAt: string;
+    } | null;
   } | null;
 };
 
@@ -426,7 +378,6 @@ export type DeleteUserMetricsMutation = {
     profileViews: number;
     badges?: Array<string | null> | null;
     coins: number;
-    user: string;
     commentUpvotes: number;
     commentDownvotes: number;
     activeDays: number;
@@ -436,6 +387,17 @@ export type DeleteUserMetricsMutation = {
     _lastChangedAt: number;
     createdAt: string;
     updatedAt: string;
+    User?: {
+      __typename: "User";
+      id: string;
+      username: string;
+      email: string;
+      _version: number;
+      _deleted?: boolean | null;
+      _lastChangedAt: number;
+      createdAt: string;
+      updatedAt: string;
+    } | null;
   } | null;
 };
 
@@ -454,27 +416,6 @@ export type GetUserQuery = {
     _lastChangedAt: number;
     createdAt: string;
     updatedAt: string;
-    UserMetrics?: {
-      __typename: "UserMetrics";
-      id: string;
-      postLikes: number;
-      postLoves: number;
-      postSupport: number;
-      postDislike: number;
-      profileViews: number;
-      badges?: Array<string | null> | null;
-      coins: number;
-      user: string;
-      commentUpvotes: number;
-      commentDownvotes: number;
-      activeDays: number;
-      lastActiveDay: string;
-      _version: number;
-      _deleted?: boolean | null;
-      _lastChangedAt: number;
-      createdAt: string;
-      updatedAt: string;
-    } | null;
   } | null;
 };
 
@@ -497,27 +438,6 @@ export type ListUsersQuery = {
       _lastChangedAt: number;
       createdAt: string;
       updatedAt: string;
-      UserMetrics?: {
-        __typename: "UserMetrics";
-        id: string;
-        postLikes: number;
-        postLoves: number;
-        postSupport: number;
-        postDislike: number;
-        profileViews: number;
-        badges?: Array<string | null> | null;
-        coins: number;
-        user: string;
-        commentUpvotes: number;
-        commentDownvotes: number;
-        activeDays: number;
-        lastActiveDay: string;
-        _version: number;
-        _deleted?: boolean | null;
-        _lastChangedAt: number;
-        createdAt: string;
-        updatedAt: string;
-      } | null;
     } | null> | null;
     nextToken?: string | null;
     startedAt?: number | null;
@@ -544,27 +464,6 @@ export type SyncUsersQuery = {
       _lastChangedAt: number;
       createdAt: string;
       updatedAt: string;
-      UserMetrics?: {
-        __typename: "UserMetrics";
-        id: string;
-        postLikes: number;
-        postLoves: number;
-        postSupport: number;
-        postDislike: number;
-        profileViews: number;
-        badges?: Array<string | null> | null;
-        coins: number;
-        user: string;
-        commentUpvotes: number;
-        commentDownvotes: number;
-        activeDays: number;
-        lastActiveDay: string;
-        _version: number;
-        _deleted?: boolean | null;
-        _lastChangedAt: number;
-        createdAt: string;
-        updatedAt: string;
-      } | null;
     } | null> | null;
     nextToken?: string | null;
     startedAt?: number | null;
@@ -586,7 +485,6 @@ export type GetUserMetricsQuery = {
     profileViews: number;
     badges?: Array<string | null> | null;
     coins: number;
-    user: string;
     commentUpvotes: number;
     commentDownvotes: number;
     activeDays: number;
@@ -596,6 +494,17 @@ export type GetUserMetricsQuery = {
     _lastChangedAt: number;
     createdAt: string;
     updatedAt: string;
+    User?: {
+      __typename: "User";
+      id: string;
+      username: string;
+      email: string;
+      _version: number;
+      _deleted?: boolean | null;
+      _lastChangedAt: number;
+      createdAt: string;
+      updatedAt: string;
+    } | null;
   } | null;
 };
 
@@ -618,7 +527,6 @@ export type ListUserMetricssQuery = {
       profileViews: number;
       badges?: Array<string | null> | null;
       coins: number;
-      user: string;
       commentUpvotes: number;
       commentDownvotes: number;
       activeDays: number;
@@ -628,6 +536,17 @@ export type ListUserMetricssQuery = {
       _lastChangedAt: number;
       createdAt: string;
       updatedAt: string;
+      User?: {
+        __typename: "User";
+        id: string;
+        username: string;
+        email: string;
+        _version: number;
+        _deleted?: boolean | null;
+        _lastChangedAt: number;
+        createdAt: string;
+        updatedAt: string;
+      } | null;
     } | null> | null;
     nextToken?: string | null;
     startedAt?: number | null;
@@ -654,7 +573,6 @@ export type SyncUserMetricsQuery = {
       profileViews: number;
       badges?: Array<string | null> | null;
       coins: number;
-      user: string;
       commentUpvotes: number;
       commentDownvotes: number;
       activeDays: number;
@@ -664,6 +582,17 @@ export type SyncUserMetricsQuery = {
       _lastChangedAt: number;
       createdAt: string;
       updatedAt: string;
+      User?: {
+        __typename: "User";
+        id: string;
+        username: string;
+        email: string;
+        _version: number;
+        _deleted?: boolean | null;
+        _lastChangedAt: number;
+        createdAt: string;
+        updatedAt: string;
+      } | null;
     } | null> | null;
     nextToken?: string | null;
     startedAt?: number | null;
@@ -681,27 +610,6 @@ export type OnCreateUserSubscription = {
     _lastChangedAt: number;
     createdAt: string;
     updatedAt: string;
-    UserMetrics?: {
-      __typename: "UserMetrics";
-      id: string;
-      postLikes: number;
-      postLoves: number;
-      postSupport: number;
-      postDislike: number;
-      profileViews: number;
-      badges?: Array<string | null> | null;
-      coins: number;
-      user: string;
-      commentUpvotes: number;
-      commentDownvotes: number;
-      activeDays: number;
-      lastActiveDay: string;
-      _version: number;
-      _deleted?: boolean | null;
-      _lastChangedAt: number;
-      createdAt: string;
-      updatedAt: string;
-    } | null;
   } | null;
 };
 
@@ -716,27 +624,6 @@ export type OnUpdateUserSubscription = {
     _lastChangedAt: number;
     createdAt: string;
     updatedAt: string;
-    UserMetrics?: {
-      __typename: "UserMetrics";
-      id: string;
-      postLikes: number;
-      postLoves: number;
-      postSupport: number;
-      postDislike: number;
-      profileViews: number;
-      badges?: Array<string | null> | null;
-      coins: number;
-      user: string;
-      commentUpvotes: number;
-      commentDownvotes: number;
-      activeDays: number;
-      lastActiveDay: string;
-      _version: number;
-      _deleted?: boolean | null;
-      _lastChangedAt: number;
-      createdAt: string;
-      updatedAt: string;
-    } | null;
   } | null;
 };
 
@@ -751,27 +638,6 @@ export type OnDeleteUserSubscription = {
     _lastChangedAt: number;
     createdAt: string;
     updatedAt: string;
-    UserMetrics?: {
-      __typename: "UserMetrics";
-      id: string;
-      postLikes: number;
-      postLoves: number;
-      postSupport: number;
-      postDislike: number;
-      profileViews: number;
-      badges?: Array<string | null> | null;
-      coins: number;
-      user: string;
-      commentUpvotes: number;
-      commentDownvotes: number;
-      activeDays: number;
-      lastActiveDay: string;
-      _version: number;
-      _deleted?: boolean | null;
-      _lastChangedAt: number;
-      createdAt: string;
-      updatedAt: string;
-    } | null;
   } | null;
 };
 
@@ -786,7 +652,6 @@ export type OnCreateUserMetricsSubscription = {
     profileViews: number;
     badges?: Array<string | null> | null;
     coins: number;
-    user: string;
     commentUpvotes: number;
     commentDownvotes: number;
     activeDays: number;
@@ -796,6 +661,17 @@ export type OnCreateUserMetricsSubscription = {
     _lastChangedAt: number;
     createdAt: string;
     updatedAt: string;
+    User?: {
+      __typename: "User";
+      id: string;
+      username: string;
+      email: string;
+      _version: number;
+      _deleted?: boolean | null;
+      _lastChangedAt: number;
+      createdAt: string;
+      updatedAt: string;
+    } | null;
   } | null;
 };
 
@@ -810,7 +686,6 @@ export type OnUpdateUserMetricsSubscription = {
     profileViews: number;
     badges?: Array<string | null> | null;
     coins: number;
-    user: string;
     commentUpvotes: number;
     commentDownvotes: number;
     activeDays: number;
@@ -820,6 +695,17 @@ export type OnUpdateUserMetricsSubscription = {
     _lastChangedAt: number;
     createdAt: string;
     updatedAt: string;
+    User?: {
+      __typename: "User";
+      id: string;
+      username: string;
+      email: string;
+      _version: number;
+      _deleted?: boolean | null;
+      _lastChangedAt: number;
+      createdAt: string;
+      updatedAt: string;
+    } | null;
   } | null;
 };
 
@@ -834,7 +720,6 @@ export type OnDeleteUserMetricsSubscription = {
     profileViews: number;
     badges?: Array<string | null> | null;
     coins: number;
-    user: string;
     commentUpvotes: number;
     commentDownvotes: number;
     activeDays: number;
@@ -844,5 +729,16 @@ export type OnDeleteUserMetricsSubscription = {
     _lastChangedAt: number;
     createdAt: string;
     updatedAt: string;
+    User?: {
+      __typename: "User";
+      id: string;
+      username: string;
+      email: string;
+      _version: number;
+      _deleted?: boolean | null;
+      _lastChangedAt: number;
+      createdAt: string;
+      updatedAt: string;
+    } | null;
   } | null;
 };

@@ -13,26 +13,6 @@ export const getUser = /* GraphQL */ `
       _lastChangedAt
       createdAt
       updatedAt
-      UserMetrics {
-        id
-        postLikes
-        postLoves
-        postSupport
-        postDislike
-        profileViews
-        badges
-        coins
-        user
-        commentUpvotes
-        commentDownvotes
-        activeDays
-        lastActiveDay
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
     }
   }
 `;
@@ -52,26 +32,6 @@ export const listUsers = /* GraphQL */ `
         _lastChangedAt
         createdAt
         updatedAt
-        UserMetrics {
-          id
-          postLikes
-          postLoves
-          postSupport
-          postDislike
-          profileViews
-          badges
-          coins
-          user
-          commentUpvotes
-          commentDownvotes
-          activeDays
-          lastActiveDay
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
       }
       nextToken
       startedAt
@@ -100,26 +60,6 @@ export const syncUsers = /* GraphQL */ `
         _lastChangedAt
         createdAt
         updatedAt
-        UserMetrics {
-          id
-          postLikes
-          postLoves
-          postSupport
-          postDislike
-          profileViews
-          badges
-          coins
-          user
-          commentUpvotes
-          commentDownvotes
-          activeDays
-          lastActiveDay
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
       }
       nextToken
       startedAt
@@ -137,7 +77,6 @@ export const getUserMetrics = /* GraphQL */ `
       profileViews
       badges
       coins
-      user
       commentUpvotes
       commentDownvotes
       activeDays
@@ -147,6 +86,16 @@ export const getUserMetrics = /* GraphQL */ `
       _lastChangedAt
       createdAt
       updatedAt
+      User {
+        id
+        username
+        email
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
     }
   }
 `;
@@ -166,7 +115,6 @@ export const listUserMetricss = /* GraphQL */ `
         profileViews
         badges
         coins
-        user
         commentUpvotes
         commentDownvotes
         activeDays
@@ -176,6 +124,16 @@ export const listUserMetricss = /* GraphQL */ `
         _lastChangedAt
         createdAt
         updatedAt
+        User {
+          id
+          username
+          email
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
       }
       nextToken
       startedAt
@@ -204,7 +162,6 @@ export const syncUserMetrics = /* GraphQL */ `
         profileViews
         badges
         coins
-        user
         commentUpvotes
         commentDownvotes
         activeDays
@@ -214,6 +171,16 @@ export const syncUserMetrics = /* GraphQL */ `
         _lastChangedAt
         createdAt
         updatedAt
+        User {
+          id
+          username
+          email
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
       }
       nextToken
       startedAt

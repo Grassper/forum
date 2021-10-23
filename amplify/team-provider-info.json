@@ -10,6 +10,11 @@
       "StackName": "amplify-eforum-dev-151817",
       "StackId": "arn:aws:cloudformation:us-east-2:969426747124:stack/amplify-eforum-dev-151817/5d2a4a30-33e6-11ec-83f3-024531c38f04",
       "AmplifyAppId": "d2onibrqn832c4"
+    },
+    "categories": {
+      "auth": {
+        "eforum2060bb55": {}
+      }
     }
   }
 }
