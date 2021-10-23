@@ -26,34 +26,38 @@ const App = () => {
 
   useEffect(() => {
     const checkCurrentUserInDb = async () => {
-      // get authenticated user from cognito
-      const currentUser = await Auth.currentAuthenticatedUser({
-        bypassCache: true,
-      });
+      try {
+        // get authenticated user from cognito
+        const currentUser = await Auth.currentAuthenticatedUser({
+          bypassCache: true,
+        });
 
-      if (currentUser) {
-        // check user exist in db
-        const userData = await API.graphql(
-          graphqlOperation(getUser, { id: currentUser.attributes.sub })
-        );
+        if (currentUser) {
+          // check user exist in db
+          const userData = await API.graphql(
+            graphqlOperation(getUser, { id: currentUser.attributes.sub })
+          );
 
-        if (userData.data.getUser) {
-          console.log("user already registered in database");
-          return;
+          if (userData.data.getUser) {
+            console.log("user already registered in database");
+            return;
+          }
+
+          // if user is not registered. register user to db
+          const newUser = {
+            id: currentUser.attributes.sub,
+            username: currentUser.username,
+            email: currentUser.attributes.email,
+          };
+
+          await API.graphql(
+            graphqlOperation(createUser, {
+              input: newUser,
+            })
+          );
         }
-
-        // if user is not registered. register user to db
-        const newUser = {
-          id: currentUser.attributes.sub,
-          username: currentUser.username,
-          email: currentUser.attributes.email,
-        };
-
-        await API.graphql(
-          graphqlOperation(createUser, {
-            input: newUser,
-          })
-        );
+      } catch (err) {
+        console.log("error while registering user in app.tsx", err);
       }
     };
     checkCurrentUserInDb();
