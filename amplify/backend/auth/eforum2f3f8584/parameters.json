@@ -1,8 +1,8 @@
 {
-  "identityPoolName": "eforum2060bb55_identitypool_2060bb55",
+  "identityPoolName": "eforum2f3f8584_identitypool_2f3f8584",
   "allowUnauthenticatedIdentities": false,
-  "resourceNameTruncated": "eforum2060bb55",
-  "userPoolName": "eforum2060bb55_userpool_2060bb55",
+  "resourceNameTruncated": "eforum2f3f8584",
+  "userPoolName": "eforum2f3f8584_userpool_2f3f8584",
   "autoVerifiedAttributes": ["email"],
   "mfaConfiguration": "OFF",
   "mfaTypes": ["SMS Text Message"],
@@ -19,10 +19,10 @@
   "userpoolClientRefreshTokenValidity": 30,
   "userpoolClientWriteAttributes": ["email"],
   "userpoolClientReadAttributes": ["email"],
-  "userpoolClientLambdaRole": "eforum2060bb55_userpoolclient_lambda_role",
+  "userpoolClientLambdaRole": "eforum2f3f8584_userpoolclient_lambda_role",
   "userpoolClientSetAttributes": false,
-  "sharedId": "2060bb55",
-  "resourceName": "eforum2060bb55",
+  "sharedId": "2f3f8584",
+  "resourceName": "eforum2f3f8584",
   "authSelections": "identityPoolAndUserPool",
   "authRoleArn": {
     "Fn::GetAtt": ["AuthRole", "Arn"]
@@ -31,7 +31,6 @@
     "Fn::GetAtt": ["UnauthRole", "Arn"]
   },
   "useDefault": "default",
-  "usernameAttributes": ["email"],
   "userPoolGroupList": [],
   "serviceName": "Cognito",
   "usernameCaseSensitive": false,

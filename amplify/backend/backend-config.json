@@ -22,13 +22,13 @@
     }
   },
   "auth": {
-    "eforum2060bb55": {
+    "eforum2f3f8584": {
       "service": "Cognito",
       "providerPlugin": "awscloudformation",
       "dependsOn": [],
       "customAuth": false,
       "frontendAuthConfig": {
-        "loginMechanisms": ["EMAIL"],
+        "loginMechanisms": ["PREFERRED_USERNAME"],
         "signupAttributes": ["EMAIL"],
         "passwordProtectionSettings": {
           "passwordPolicyMinLength": 8,
