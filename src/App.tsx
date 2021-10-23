@@ -11,7 +11,7 @@ import AppLoading from "expo-app-loading";
 import { getUser } from "./graphql/queries";
 import { createUser } from "./graphql/mutations";
 
-Amplify.configure(config);
+Amplify.configure({ ...config, Analytics: { disabled: true } });
 
 const fetchFonts = () => {
   return Font.loadAsync({
