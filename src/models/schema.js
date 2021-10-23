@@ -24,19 +24,6 @@ export const schema = {
           isRequired: true,
           attributes: [],
         },
-        UserMetrics: {
-          name: "UserMetrics",
-          isArray: false,
-          type: {
-            model: "UserMetrics",
-          },
-          isRequired: false,
-          attributes: [],
-          association: {
-            connectionType: "BELONGS_TO",
-            targetName: "userUserMetricsId",
-          },
-        },
         createdAt: {
           name: "createdAt",
           isArray: false,
@@ -134,13 +121,6 @@ export const schema = {
           isRequired: true,
           attributes: [],
         },
-        user: {
-          name: "user",
-          isArray: false,
-          type: "ID",
-          isRequired: true,
-          attributes: [],
-        },
         commentUpvotes: {
           name: "commentUpvotes",
           isArray: false,
@@ -168,6 +148,19 @@ export const schema = {
           type: "AWSDate",
           isRequired: true,
           attributes: [],
+        },
+        User: {
+          name: "User",
+          isArray: false,
+          type: {
+            model: "User",
+          },
+          isRequired: false,
+          attributes: [],
+          association: {
+            connectionType: "BELONGS_TO",
+            targetName: "userMetricsUserId",
+          },
         },
         createdAt: {
           name: "createdAt",
@@ -209,5 +202,5 @@ export const schema = {
   },
   enums: {},
   nonModels: {},
-  version: "085dbf4fb410d78e0aa30cb3e20053f4",
+  version: "5e018cb80b1c8e16dbf9bd59887dd0f6",
 };

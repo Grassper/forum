@@ -16,7 +16,6 @@ export declare class User {
   readonly id: string;
   readonly username: string;
   readonly email: string;
-  readonly UserMetrics?: UserMetrics;
   readonly createdAt?: string;
   readonly updatedAt?: string;
   constructor(init: ModelInit<User, UserMetaData>);
@@ -37,11 +36,11 @@ export declare class UserMetrics {
   readonly profileViews: number;
   readonly badges?: (string | null)[];
   readonly coins: number;
-  readonly user: string;
   readonly commentUpvotes: number;
   readonly commentDownvotes: number;
   readonly activeDays: number;
   readonly lastActiveDay: string;
+  readonly User?: User;
   readonly createdAt?: string;
   readonly updatedAt?: string;
   constructor(init: ModelInit<UserMetrics, UserMetricsMetaData>);

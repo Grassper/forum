@@ -5,6 +5,7 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
+    "expo_install": "expo install",
     "eject": "expo eject",
     "prepare": "husky install",
     "test": "jest",
@@ -22,7 +23,7 @@
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.15.9",
-    "@react-native-community/netinfo": "^6.0.4",
+    "@react-native-community/netinfo": "6.0.0",
     "aws-amplify": "^4.3.3",
     "aws-amplify-react-native": "^5.0.4",
     "expo": "~42.0.1",
