@@ -1,11 +1,15 @@
-import React, { useState } from "react";
-import Amplify from "aws-amplify";
+import React, { useState, useEffect } from "react";
+import Amplify, { Auth, API, graphqlOperation } from "aws-amplify";
+// @ts-ignore
 import config from "./aws-exports";
 // @ts-ignore
 import { withAuthenticator } from "aws-amplify-react-native";
 import { StyleSheet, View, Text } from "react-native";
 import * as Font from "expo-font";
 import AppLoading from "expo-app-loading";
+
+import { getUser } from "./graphql/queries";
+import { createUser } from "./graphql/mutations";
 
 Amplify.configure(config);
 
@@ -19,6 +23,41 @@ const fetchFonts = () => {
 
 const App = () => {
   const [fontLoaded, setFontLoaded] = useState(false);
+
+  useEffect(() => {
+    const checkCurrentUserInDb = async () => {
+      // get authenticated user from cognito
+      const currentUser = await Auth.currentAuthenticatedUser({
+        bypassCache: true,
+      });
+
+      if (currentUser) {
+        // check user exist in db
+        const userData = await API.graphql(
+          graphqlOperation(getUser, { id: currentUser.attributes.sub })
+        );
+
+        if (userData.data.getUser) {
+          console.log("user already registered in database");
+          return;
+        }
+
+        // if user is not registered. register user to db
+        const newUser = {
+          id: currentUser.attributes.sub,
+          username: currentUser.username,
+          email: currentUser.attributes.email,
+        };
+
+        await API.graphql(
+          graphqlOperation(createUser, {
+            input: newUser,
+          })
+        );
+      }
+    };
+    checkCurrentUserInDb();
+  }, []);
 
   if (!fontLoaded) {
     return (
