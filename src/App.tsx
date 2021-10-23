@@ -1,7 +1,12 @@
 import React, { useState } from "react";
+import Amplify from "aws-amplify";
+import config from "./aws-exports";
+
 import { StyleSheet, View, Text } from "react-native";
 import * as Font from "expo-font";
 import AppLoading from "expo-app-loading";
+
+Amplify.configure(config);
 
 const fetchFonts = () => {
   return Font.loadAsync({
