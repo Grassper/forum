@@ -14,8 +14,8 @@ type UserMetricsMetaData = {
 
 export declare class User {
   readonly id: string;
-  readonly username?: string;
-  readonly email?: string;
+  readonly username: string;
+  readonly email: string;
   readonly UserMetrics?: UserMetrics;
   readonly createdAt?: string;
   readonly updatedAt?: string;
@@ -30,14 +30,18 @@ export declare class User {
 
 export declare class UserMetrics {
   readonly id: string;
-  readonly commentUpvotes?: number;
-  readonly commentDownvotes?: number;
-  readonly activeDays?: number;
-  readonly lastActiveDay?: string;
-  readonly profileViews?: number;
+  readonly postLikes: number;
+  readonly postLoves: number;
+  readonly postSupport: number;
+  readonly postDislike: number;
+  readonly profileViews: number;
   readonly badges?: (string | null)[];
-  readonly coins?: number;
-  readonly user?: string;
+  readonly coins: number;
+  readonly user: string;
+  readonly commentUpvotes: number;
+  readonly commentDownvotes: number;
+  readonly activeDays: number;
+  readonly lastActiveDay: string;
   readonly createdAt?: string;
   readonly updatedAt?: string;
   constructor(init: ModelInit<UserMetrics, UserMetricsMetaData>);
