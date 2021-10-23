@@ -6,3 +6,4 @@ jest.config.js
 commitlint.config.js
 .eslintrc
 .prettierrc
+src\models

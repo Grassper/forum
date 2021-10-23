@@ -1,0 +1,18 @@
+type User @model @auth(rules: [{ allow: public }]) {
+  id: ID!
+  username: String
+  email: String
+  UserMetrics: UserMetrics @connection
+}
+
+type UserMetrics @model @auth(rules: [{ allow: public }]) {
+  id: ID!
+  commentUpvotes: Int
+  commentDownvotes: Int
+  activeDays: Int
+  lastActiveDay: AWSDate
+  profileViews: Int
+  badges: [String]
+  coins: Int
+  user: ID
+}
