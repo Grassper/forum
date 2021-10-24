@@ -6,12 +6,14 @@ export type CreateUserInput = {
   id?: string | null;
   username: string;
   email: string;
+  coins: number;
   _version?: number | null;
 };
 
 export type ModelUserConditionInput = {
   username?: ModelStringInput | null;
   email?: ModelStringInput | null;
+  coins?: ModelIntInput | null;
   and?: Array<ModelUserConditionInput | null> | null;
   or?: Array<ModelUserConditionInput | null> | null;
   not?: ModelUserConditionInput | null;
@@ -56,64 +58,6 @@ export type ModelSizeInput = {
   between?: Array<number | null> | null;
 };
 
-export type User = {
-  __typename: "User";
-  id: string;
-  username: string;
-  email: string;
-  _version: number;
-  _deleted?: boolean | null;
-  _lastChangedAt: number;
-  createdAt: string;
-  updatedAt: string;
-};
-
-export type UpdateUserInput = {
-  id: string;
-  username?: string | null;
-  email?: string | null;
-  _version?: number | null;
-};
-
-export type DeleteUserInput = {
-  id: string;
-  _version?: number | null;
-};
-
-export type CreateUserMetricsInput = {
-  id?: string | null;
-  postLikes: number;
-  postLoves: number;
-  postSupport: number;
-  postDislike: number;
-  profileViews: number;
-  badges?: Array<string | null> | null;
-  coins: number;
-  commentUpvotes: number;
-  commentDownvotes: number;
-  activeDays: number;
-  lastActiveDay: string;
-  _version?: number | null;
-  userMetricsUserId?: string | null;
-};
-
-export type ModelUserMetricsConditionInput = {
-  postLikes?: ModelIntInput | null;
-  postLoves?: ModelIntInput | null;
-  postSupport?: ModelIntInput | null;
-  postDislike?: ModelIntInput | null;
-  profileViews?: ModelIntInput | null;
-  badges?: ModelStringInput | null;
-  coins?: ModelIntInput | null;
-  commentUpvotes?: ModelIntInput | null;
-  commentDownvotes?: ModelIntInput | null;
-  activeDays?: ModelIntInput | null;
-  lastActiveDay?: ModelStringInput | null;
-  and?: Array<ModelUserMetricsConditionInput | null> | null;
-  or?: Array<ModelUserMetricsConditionInput | null> | null;
-  not?: ModelUserMetricsConditionInput | null;
-};
-
 export type ModelIntInput = {
   ne?: number | null;
   eq?: number | null;
@@ -126,16 +70,41 @@ export type ModelIntInput = {
   attributeType?: ModelAttributeTypes | null;
 };
 
+export type User = {
+  __typename: "User";
+  id: string;
+  username: string;
+  email: string;
+  coins: number;
+  _version: number;
+  _deleted?: boolean | null;
+  _lastChangedAt: number;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type UpdateUserInput = {
+  id: string;
+  username?: string | null;
+  email?: string | null;
+  coins?: number | null;
+  _version?: number | null;
+};
+
+export type DeleteUserInput = {
+  id: string;
+  _version?: number | null;
+};
+
 export type UserMetrics = {
   __typename: "UserMetrics";
   id: string;
   postLikes: number;
   postLoves: number;
-  postSupport: number;
-  postDislike: number;
+  postSupports: number;
+  postDislikes: number;
   profileViews: number;
   badges?: Array<string | null> | null;
-  coins: number;
   commentUpvotes: number;
   commentDownvotes: number;
   activeDays: number;
@@ -148,15 +117,46 @@ export type UserMetrics = {
   User?: User | null;
 };
 
+export type CreateUserMetricsInput = {
+  id?: string | null;
+  postLikes: number;
+  postLoves: number;
+  postSupports: number;
+  postDislikes: number;
+  profileViews: number;
+  badges?: Array<string | null> | null;
+  commentUpvotes: number;
+  commentDownvotes: number;
+  activeDays: number;
+  lastActiveDay: string;
+  _version?: number | null;
+  userMetricsUserId?: string | null;
+};
+
+export type ModelUserMetricsConditionInput = {
+  postLikes?: ModelIntInput | null;
+  postLoves?: ModelIntInput | null;
+  postSupports?: ModelIntInput | null;
+  postDislikes?: ModelIntInput | null;
+  profileViews?: ModelIntInput | null;
+  badges?: ModelStringInput | null;
+  commentUpvotes?: ModelIntInput | null;
+  commentDownvotes?: ModelIntInput | null;
+  activeDays?: ModelIntInput | null;
+  lastActiveDay?: ModelStringInput | null;
+  and?: Array<ModelUserMetricsConditionInput | null> | null;
+  or?: Array<ModelUserMetricsConditionInput | null> | null;
+  not?: ModelUserMetricsConditionInput | null;
+};
+
 export type UpdateUserMetricsInput = {
   id: string;
   postLikes?: number | null;
   postLoves?: number | null;
-  postSupport?: number | null;
-  postDislike?: number | null;
+  postSupports?: number | null;
+  postDislikes?: number | null;
   profileViews?: number | null;
   badges?: Array<string | null> | null;
-  coins?: number | null;
   commentUpvotes?: number | null;
   commentDownvotes?: number | null;
   activeDays?: number | null;
@@ -174,6 +174,7 @@ export type ModelUserFilterInput = {
   id?: ModelIDInput | null;
   username?: ModelStringInput | null;
   email?: ModelStringInput | null;
+  coins?: ModelIntInput | null;
   and?: Array<ModelUserFilterInput | null> | null;
   or?: Array<ModelUserFilterInput | null> | null;
   not?: ModelUserFilterInput | null;
@@ -206,11 +207,10 @@ export type ModelUserMetricsFilterInput = {
   id?: ModelIDInput | null;
   postLikes?: ModelIntInput | null;
   postLoves?: ModelIntInput | null;
-  postSupport?: ModelIntInput | null;
-  postDislike?: ModelIntInput | null;
+  postSupports?: ModelIntInput | null;
+  postDislikes?: ModelIntInput | null;
   profileViews?: ModelIntInput | null;
   badges?: ModelStringInput | null;
-  coins?: ModelIntInput | null;
   commentUpvotes?: ModelIntInput | null;
   commentDownvotes?: ModelIntInput | null;
   activeDays?: ModelIntInput | null;
@@ -238,6 +238,7 @@ export type CreateUserMutation = {
     id: string;
     username: string;
     email: string;
+    coins: number;
     _version: number;
     _deleted?: boolean | null;
     _lastChangedAt: number;
@@ -257,6 +258,7 @@ export type UpdateUserMutation = {
     id: string;
     username: string;
     email: string;
+    coins: number;
     _version: number;
     _deleted?: boolean | null;
     _lastChangedAt: number;
@@ -276,6 +278,7 @@ export type DeleteUserMutation = {
     id: string;
     username: string;
     email: string;
+    coins: number;
     _version: number;
     _deleted?: boolean | null;
     _lastChangedAt: number;
@@ -284,22 +287,20 @@ export type DeleteUserMutation = {
   } | null;
 };
 
-export type CreateUserMetricsMutationVariables = {
-  input: CreateUserMetricsInput;
-  condition?: ModelUserMetricsConditionInput | null;
+export type IncrementLikePostUserMetricsMutationVariables = {
+  id: string;
 };
 
-export type CreateUserMetricsMutation = {
-  createUserMetrics?: {
+export type IncrementLikePostUserMetricsMutation = {
+  incrementLikePostUserMetrics?: {
     __typename: "UserMetrics";
     id: string;
     postLikes: number;
     postLoves: number;
-    postSupport: number;
-    postDislike: number;
+    postSupports: number;
+    postDislikes: number;
     profileViews: number;
     badges?: Array<string | null> | null;
-    coins: number;
     commentUpvotes: number;
     commentDownvotes: number;
     activeDays: number;
@@ -314,6 +315,464 @@ export type CreateUserMetricsMutation = {
       id: string;
       username: string;
       email: string;
+      coins: number;
+      _version: number;
+      _deleted?: boolean | null;
+      _lastChangedAt: number;
+      createdAt: string;
+      updatedAt: string;
+    } | null;
+  } | null;
+};
+
+export type DecrementLikePostUserMetricsMutationVariables = {
+  id: string;
+};
+
+export type DecrementLikePostUserMetricsMutation = {
+  decrementLikePostUserMetrics?: {
+    __typename: "UserMetrics";
+    id: string;
+    postLikes: number;
+    postLoves: number;
+    postSupports: number;
+    postDislikes: number;
+    profileViews: number;
+    badges?: Array<string | null> | null;
+    commentUpvotes: number;
+    commentDownvotes: number;
+    activeDays: number;
+    lastActiveDay: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+    createdAt: string;
+    updatedAt: string;
+    User?: {
+      __typename: "User";
+      id: string;
+      username: string;
+      email: string;
+      coins: number;
+      _version: number;
+      _deleted?: boolean | null;
+      _lastChangedAt: number;
+      createdAt: string;
+      updatedAt: string;
+    } | null;
+  } | null;
+};
+
+export type IncrementLovePostUserMetricsMutationVariables = {
+  id: string;
+};
+
+export type IncrementLovePostUserMetricsMutation = {
+  incrementLovePostUserMetrics?: {
+    __typename: "UserMetrics";
+    id: string;
+    postLikes: number;
+    postLoves: number;
+    postSupports: number;
+    postDislikes: number;
+    profileViews: number;
+    badges?: Array<string | null> | null;
+    commentUpvotes: number;
+    commentDownvotes: number;
+    activeDays: number;
+    lastActiveDay: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+    createdAt: string;
+    updatedAt: string;
+    User?: {
+      __typename: "User";
+      id: string;
+      username: string;
+      email: string;
+      coins: number;
+      _version: number;
+      _deleted?: boolean | null;
+      _lastChangedAt: number;
+      createdAt: string;
+      updatedAt: string;
+    } | null;
+  } | null;
+};
+
+export type DecrementLovePostUserMetricsMutationVariables = {
+  id: string;
+};
+
+export type DecrementLovePostUserMetricsMutation = {
+  decrementLovePostUserMetrics?: {
+    __typename: "UserMetrics";
+    id: string;
+    postLikes: number;
+    postLoves: number;
+    postSupports: number;
+    postDislikes: number;
+    profileViews: number;
+    badges?: Array<string | null> | null;
+    commentUpvotes: number;
+    commentDownvotes: number;
+    activeDays: number;
+    lastActiveDay: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+    createdAt: string;
+    updatedAt: string;
+    User?: {
+      __typename: "User";
+      id: string;
+      username: string;
+      email: string;
+      coins: number;
+      _version: number;
+      _deleted?: boolean | null;
+      _lastChangedAt: number;
+      createdAt: string;
+      updatedAt: string;
+    } | null;
+  } | null;
+};
+
+export type IncrementSupportPostUserMetricsMutationVariables = {
+  id: string;
+};
+
+export type IncrementSupportPostUserMetricsMutation = {
+  incrementSupportPostUserMetrics?: {
+    __typename: "UserMetrics";
+    id: string;
+    postLikes: number;
+    postLoves: number;
+    postSupports: number;
+    postDislikes: number;
+    profileViews: number;
+    badges?: Array<string | null> | null;
+    commentUpvotes: number;
+    commentDownvotes: number;
+    activeDays: number;
+    lastActiveDay: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+    createdAt: string;
+    updatedAt: string;
+    User?: {
+      __typename: "User";
+      id: string;
+      username: string;
+      email: string;
+      coins: number;
+      _version: number;
+      _deleted?: boolean | null;
+      _lastChangedAt: number;
+      createdAt: string;
+      updatedAt: string;
+    } | null;
+  } | null;
+};
+
+export type DecrementSupportPostUserMetricsMutationVariables = {
+  id: string;
+};
+
+export type DecrementSupportPostUserMetricsMutation = {
+  decrementSupportPostUserMetrics?: {
+    __typename: "UserMetrics";
+    id: string;
+    postLikes: number;
+    postLoves: number;
+    postSupports: number;
+    postDislikes: number;
+    profileViews: number;
+    badges?: Array<string | null> | null;
+    commentUpvotes: number;
+    commentDownvotes: number;
+    activeDays: number;
+    lastActiveDay: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+    createdAt: string;
+    updatedAt: string;
+    User?: {
+      __typename: "User";
+      id: string;
+      username: string;
+      email: string;
+      coins: number;
+      _version: number;
+      _deleted?: boolean | null;
+      _lastChangedAt: number;
+      createdAt: string;
+      updatedAt: string;
+    } | null;
+  } | null;
+};
+
+export type IncrementProfileViewUserMetricsMutationVariables = {
+  id: string;
+};
+
+export type IncrementProfileViewUserMetricsMutation = {
+  incrementProfileViewUserMetrics?: {
+    __typename: "UserMetrics";
+    id: string;
+    postLikes: number;
+    postLoves: number;
+    postSupports: number;
+    postDislikes: number;
+    profileViews: number;
+    badges?: Array<string | null> | null;
+    commentUpvotes: number;
+    commentDownvotes: number;
+    activeDays: number;
+    lastActiveDay: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+    createdAt: string;
+    updatedAt: string;
+    User?: {
+      __typename: "User";
+      id: string;
+      username: string;
+      email: string;
+      coins: number;
+      _version: number;
+      _deleted?: boolean | null;
+      _lastChangedAt: number;
+      createdAt: string;
+      updatedAt: string;
+    } | null;
+  } | null;
+};
+
+export type DecrementProfileViewUserMetricsMutationVariables = {
+  id: string;
+};
+
+export type DecrementProfileViewUserMetricsMutation = {
+  decrementProfileViewUserMetrics?: {
+    __typename: "UserMetrics";
+    id: string;
+    postLikes: number;
+    postLoves: number;
+    postSupports: number;
+    postDislikes: number;
+    profileViews: number;
+    badges?: Array<string | null> | null;
+    commentUpvotes: number;
+    commentDownvotes: number;
+    activeDays: number;
+    lastActiveDay: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+    createdAt: string;
+    updatedAt: string;
+    User?: {
+      __typename: "User";
+      id: string;
+      username: string;
+      email: string;
+      coins: number;
+      _version: number;
+      _deleted?: boolean | null;
+      _lastChangedAt: number;
+      createdAt: string;
+      updatedAt: string;
+    } | null;
+  } | null;
+};
+
+export type IncrementCommentUpvoteUserMetricsMutationVariables = {
+  id: string;
+};
+
+export type IncrementCommentUpvoteUserMetricsMutation = {
+  incrementCommentUpvoteUserMetrics?: {
+    __typename: "UserMetrics";
+    id: string;
+    postLikes: number;
+    postLoves: number;
+    postSupports: number;
+    postDislikes: number;
+    profileViews: number;
+    badges?: Array<string | null> | null;
+    commentUpvotes: number;
+    commentDownvotes: number;
+    activeDays: number;
+    lastActiveDay: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+    createdAt: string;
+    updatedAt: string;
+    User?: {
+      __typename: "User";
+      id: string;
+      username: string;
+      email: string;
+      coins: number;
+      _version: number;
+      _deleted?: boolean | null;
+      _lastChangedAt: number;
+      createdAt: string;
+      updatedAt: string;
+    } | null;
+  } | null;
+};
+
+export type DecrementCommentUpvoteUserMetricsMutationVariables = {
+  id: string;
+};
+
+export type DecrementCommentUpvoteUserMetricsMutation = {
+  decrementCommentUpvoteUserMetrics?: {
+    __typename: "UserMetrics";
+    id: string;
+    postLikes: number;
+    postLoves: number;
+    postSupports: number;
+    postDislikes: number;
+    profileViews: number;
+    badges?: Array<string | null> | null;
+    commentUpvotes: number;
+    commentDownvotes: number;
+    activeDays: number;
+    lastActiveDay: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+    createdAt: string;
+    updatedAt: string;
+    User?: {
+      __typename: "User";
+      id: string;
+      username: string;
+      email: string;
+      coins: number;
+      _version: number;
+      _deleted?: boolean | null;
+      _lastChangedAt: number;
+      createdAt: string;
+      updatedAt: string;
+    } | null;
+  } | null;
+};
+
+export type IncrementCommentDownvoteUserMetricsMutationVariables = {
+  id: string;
+};
+
+export type IncrementCommentDownvoteUserMetricsMutation = {
+  incrementCommentDownvoteUserMetrics?: {
+    __typename: "UserMetrics";
+    id: string;
+    postLikes: number;
+    postLoves: number;
+    postSupports: number;
+    postDislikes: number;
+    profileViews: number;
+    badges?: Array<string | null> | null;
+    commentUpvotes: number;
+    commentDownvotes: number;
+    activeDays: number;
+    lastActiveDay: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+    createdAt: string;
+    updatedAt: string;
+    User?: {
+      __typename: "User";
+      id: string;
+      username: string;
+      email: string;
+      coins: number;
+      _version: number;
+      _deleted?: boolean | null;
+      _lastChangedAt: number;
+      createdAt: string;
+      updatedAt: string;
+    } | null;
+  } | null;
+};
+
+export type DecrementCommentDownvoteUserMetricsMutationVariables = {
+  id: string;
+};
+
+export type DecrementCommentDownvoteUserMetricsMutation = {
+  decrementCommentDownvoteUserMetrics?: {
+    __typename: "UserMetrics";
+    id: string;
+    postLikes: number;
+    postLoves: number;
+    postSupports: number;
+    postDislikes: number;
+    profileViews: number;
+    badges?: Array<string | null> | null;
+    commentUpvotes: number;
+    commentDownvotes: number;
+    activeDays: number;
+    lastActiveDay: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+    createdAt: string;
+    updatedAt: string;
+    User?: {
+      __typename: "User";
+      id: string;
+      username: string;
+      email: string;
+      coins: number;
+      _version: number;
+      _deleted?: boolean | null;
+      _lastChangedAt: number;
+      createdAt: string;
+      updatedAt: string;
+    } | null;
+  } | null;
+};
+
+export type CreateUserMetricsMutationVariables = {
+  input: CreateUserMetricsInput;
+  condition?: ModelUserMetricsConditionInput | null;
+};
+
+export type CreateUserMetricsMutation = {
+  createUserMetrics?: {
+    __typename: "UserMetrics";
+    id: string;
+    postLikes: number;
+    postLoves: number;
+    postSupports: number;
+    postDislikes: number;
+    profileViews: number;
+    badges?: Array<string | null> | null;
+    commentUpvotes: number;
+    commentDownvotes: number;
+    activeDays: number;
+    lastActiveDay: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+    createdAt: string;
+    updatedAt: string;
+    User?: {
+      __typename: "User";
+      id: string;
+      username: string;
+      email: string;
+      coins: number;
       _version: number;
       _deleted?: boolean | null;
       _lastChangedAt: number;
@@ -334,11 +793,10 @@ export type UpdateUserMetricsMutation = {
     id: string;
     postLikes: number;
     postLoves: number;
-    postSupport: number;
-    postDislike: number;
+    postSupports: number;
+    postDislikes: number;
     profileViews: number;
     badges?: Array<string | null> | null;
-    coins: number;
     commentUpvotes: number;
     commentDownvotes: number;
     activeDays: number;
@@ -353,6 +811,7 @@ export type UpdateUserMetricsMutation = {
       id: string;
       username: string;
       email: string;
+      coins: number;
       _version: number;
       _deleted?: boolean | null;
       _lastChangedAt: number;
@@ -373,11 +832,10 @@ export type DeleteUserMetricsMutation = {
     id: string;
     postLikes: number;
     postLoves: number;
-    postSupport: number;
-    postDislike: number;
+    postSupports: number;
+    postDislikes: number;
     profileViews: number;
     badges?: Array<string | null> | null;
-    coins: number;
     commentUpvotes: number;
     commentDownvotes: number;
     activeDays: number;
@@ -392,6 +850,7 @@ export type DeleteUserMetricsMutation = {
       id: string;
       username: string;
       email: string;
+      coins: number;
       _version: number;
       _deleted?: boolean | null;
       _lastChangedAt: number;
@@ -411,6 +870,7 @@ export type GetUserQuery = {
     id: string;
     username: string;
     email: string;
+    coins: number;
     _version: number;
     _deleted?: boolean | null;
     _lastChangedAt: number;
@@ -433,6 +893,7 @@ export type ListUsersQuery = {
       id: string;
       username: string;
       email: string;
+      coins: number;
       _version: number;
       _deleted?: boolean | null;
       _lastChangedAt: number;
@@ -459,6 +920,7 @@ export type SyncUsersQuery = {
       id: string;
       username: string;
       email: string;
+      coins: number;
       _version: number;
       _deleted?: boolean | null;
       _lastChangedAt: number;
@@ -480,11 +942,10 @@ export type GetUserMetricsQuery = {
     id: string;
     postLikes: number;
     postLoves: number;
-    postSupport: number;
-    postDislike: number;
+    postSupports: number;
+    postDislikes: number;
     profileViews: number;
     badges?: Array<string | null> | null;
-    coins: number;
     commentUpvotes: number;
     commentDownvotes: number;
     activeDays: number;
@@ -499,6 +960,7 @@ export type GetUserMetricsQuery = {
       id: string;
       username: string;
       email: string;
+      coins: number;
       _version: number;
       _deleted?: boolean | null;
       _lastChangedAt: number;
@@ -522,11 +984,10 @@ export type ListUserMetricssQuery = {
       id: string;
       postLikes: number;
       postLoves: number;
-      postSupport: number;
-      postDislike: number;
+      postSupports: number;
+      postDislikes: number;
       profileViews: number;
       badges?: Array<string | null> | null;
-      coins: number;
       commentUpvotes: number;
       commentDownvotes: number;
       activeDays: number;
@@ -541,6 +1002,7 @@ export type ListUserMetricssQuery = {
         id: string;
         username: string;
         email: string;
+        coins: number;
         _version: number;
         _deleted?: boolean | null;
         _lastChangedAt: number;
@@ -568,11 +1030,10 @@ export type SyncUserMetricsQuery = {
       id: string;
       postLikes: number;
       postLoves: number;
-      postSupport: number;
-      postDislike: number;
+      postSupports: number;
+      postDislikes: number;
       profileViews: number;
       badges?: Array<string | null> | null;
-      coins: number;
       commentUpvotes: number;
       commentDownvotes: number;
       activeDays: number;
@@ -587,6 +1048,7 @@ export type SyncUserMetricsQuery = {
         id: string;
         username: string;
         email: string;
+        coins: number;
         _version: number;
         _deleted?: boolean | null;
         _lastChangedAt: number;
@@ -605,6 +1067,7 @@ export type OnCreateUserSubscription = {
     id: string;
     username: string;
     email: string;
+    coins: number;
     _version: number;
     _deleted?: boolean | null;
     _lastChangedAt: number;
@@ -619,6 +1082,7 @@ export type OnUpdateUserSubscription = {
     id: string;
     username: string;
     email: string;
+    coins: number;
     _version: number;
     _deleted?: boolean | null;
     _lastChangedAt: number;
@@ -633,6 +1097,7 @@ export type OnDeleteUserSubscription = {
     id: string;
     username: string;
     email: string;
+    coins: number;
     _version: number;
     _deleted?: boolean | null;
     _lastChangedAt: number;
@@ -647,11 +1112,10 @@ export type OnCreateUserMetricsSubscription = {
     id: string;
     postLikes: number;
     postLoves: number;
-    postSupport: number;
-    postDislike: number;
+    postSupports: number;
+    postDislikes: number;
     profileViews: number;
     badges?: Array<string | null> | null;
-    coins: number;
     commentUpvotes: number;
     commentDownvotes: number;
     activeDays: number;
@@ -666,6 +1130,7 @@ export type OnCreateUserMetricsSubscription = {
       id: string;
       username: string;
       email: string;
+      coins: number;
       _version: number;
       _deleted?: boolean | null;
       _lastChangedAt: number;
@@ -681,11 +1146,10 @@ export type OnUpdateUserMetricsSubscription = {
     id: string;
     postLikes: number;
     postLoves: number;
-    postSupport: number;
-    postDislike: number;
+    postSupports: number;
+    postDislikes: number;
     profileViews: number;
     badges?: Array<string | null> | null;
-    coins: number;
     commentUpvotes: number;
     commentDownvotes: number;
     activeDays: number;
@@ -700,6 +1164,7 @@ export type OnUpdateUserMetricsSubscription = {
       id: string;
       username: string;
       email: string;
+      coins: number;
       _version: number;
       _deleted?: boolean | null;
       _lastChangedAt: number;
@@ -715,11 +1180,10 @@ export type OnDeleteUserMetricsSubscription = {
     id: string;
     postLikes: number;
     postLoves: number;
-    postSupport: number;
-    postDislike: number;
+    postSupports: number;
+    postDislikes: number;
     profileViews: number;
     badges?: Array<string | null> | null;
-    coins: number;
     commentUpvotes: number;
     commentDownvotes: number;
     activeDays: number;
@@ -734,6 +1198,7 @@ export type OnDeleteUserMetricsSubscription = {
       id: string;
       username: string;
       email: string;
+      coins: number;
       _version: number;
       _deleted?: boolean | null;
       _lastChangedAt: number;

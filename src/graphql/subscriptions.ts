@@ -8,6 +8,7 @@ export const onCreateUser = /* GraphQL */ `
       id
       username
       email
+      coins
       _version
       _deleted
       _lastChangedAt
@@ -22,6 +23,7 @@ export const onUpdateUser = /* GraphQL */ `
       id
       username
       email
+      coins
       _version
       _deleted
       _lastChangedAt
@@ -36,6 +38,7 @@ export const onDeleteUser = /* GraphQL */ `
       id
       username
       email
+      coins
       _version
       _deleted
       _lastChangedAt
@@ -50,11 +53,10 @@ export const onCreateUserMetrics = /* GraphQL */ `
       id
       postLikes
       postLoves
-      postSupport
-      postDislike
+      postSupports
+      postDislikes
       profileViews
       badges
-      coins
       commentUpvotes
       commentDownvotes
       activeDays
@@ -68,6 +70,7 @@ export const onCreateUserMetrics = /* GraphQL */ `
         id
         username
         email
+        coins
         _version
         _deleted
         _lastChangedAt
@@ -83,11 +86,10 @@ export const onUpdateUserMetrics = /* GraphQL */ `
       id
       postLikes
       postLoves
-      postSupport
-      postDislike
+      postSupports
+      postDislikes
       profileViews
       badges
-      coins
       commentUpvotes
       commentDownvotes
       activeDays
@@ -101,6 +103,7 @@ export const onUpdateUserMetrics = /* GraphQL */ `
         id
         username
         email
+        coins
         _version
         _deleted
         _lastChangedAt
@@ -116,11 +119,10 @@ export const onDeleteUserMetrics = /* GraphQL */ `
       id
       postLikes
       postLoves
-      postSupport
-      postDislike
+      postSupports
+      postDislikes
       profileViews
       badges
-      coins
       commentUpvotes
       commentDownvotes
       activeDays
@@ -134,6 +136,7 @@ export const onDeleteUserMetrics = /* GraphQL */ `
         id
         username
         email
+        coins
         _version
         _deleted
         _lastChangedAt

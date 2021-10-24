@@ -11,6 +11,7 @@ export const createUser = /* GraphQL */ `
       id
       username
       email
+      coins
       _version
       _deleted
       _lastChangedAt
@@ -28,6 +29,7 @@ export const updateUser = /* GraphQL */ `
       id
       username
       email
+      coins
       _version
       _deleted
       _lastChangedAt
@@ -45,6 +47,7 @@ export const deleteUser = /* GraphQL */ `
       id
       username
       email
+      coins
       _version
       _deleted
       _lastChangedAt
@@ -53,20 +56,16 @@ export const deleteUser = /* GraphQL */ `
     }
   }
 `;
-export const createUserMetrics = /* GraphQL */ `
-  mutation CreateUserMetrics(
-    $input: CreateUserMetricsInput!
-    $condition: ModelUserMetricsConditionInput
-  ) {
-    createUserMetrics(input: $input, condition: $condition) {
+export const incrementLikePostUserMetrics = /* GraphQL */ `
+  mutation IncrementLikePostUserMetrics($id: ID!) {
+    incrementLikePostUserMetrics(id: $id) {
       id
       postLikes
       postLoves
-      postSupport
-      postDislike
+      postSupports
+      postDislikes
       profileViews
       badges
-      coins
       commentUpvotes
       commentDownvotes
       activeDays
@@ -80,6 +79,406 @@ export const createUserMetrics = /* GraphQL */ `
         id
         username
         email
+        coins
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+export const decrementLikePostUserMetrics = /* GraphQL */ `
+  mutation DecrementLikePostUserMetrics($id: ID!) {
+    decrementLikePostUserMetrics(id: $id) {
+      id
+      postLikes
+      postLoves
+      postSupports
+      postDislikes
+      profileViews
+      badges
+      commentUpvotes
+      commentDownvotes
+      activeDays
+      lastActiveDay
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      User {
+        id
+        username
+        email
+        coins
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+export const incrementLovePostUserMetrics = /* GraphQL */ `
+  mutation IncrementLovePostUserMetrics($id: ID!) {
+    incrementLovePostUserMetrics(id: $id) {
+      id
+      postLikes
+      postLoves
+      postSupports
+      postDislikes
+      profileViews
+      badges
+      commentUpvotes
+      commentDownvotes
+      activeDays
+      lastActiveDay
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      User {
+        id
+        username
+        email
+        coins
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+export const decrementLovePostUserMetrics = /* GraphQL */ `
+  mutation DecrementLovePostUserMetrics($id: ID!) {
+    decrementLovePostUserMetrics(id: $id) {
+      id
+      postLikes
+      postLoves
+      postSupports
+      postDislikes
+      profileViews
+      badges
+      commentUpvotes
+      commentDownvotes
+      activeDays
+      lastActiveDay
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      User {
+        id
+        username
+        email
+        coins
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+export const incrementSupportPostUserMetrics = /* GraphQL */ `
+  mutation IncrementSupportPostUserMetrics($id: ID!) {
+    incrementSupportPostUserMetrics(id: $id) {
+      id
+      postLikes
+      postLoves
+      postSupports
+      postDislikes
+      profileViews
+      badges
+      commentUpvotes
+      commentDownvotes
+      activeDays
+      lastActiveDay
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      User {
+        id
+        username
+        email
+        coins
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+export const decrementSupportPostUserMetrics = /* GraphQL */ `
+  mutation DecrementSupportPostUserMetrics($id: ID!) {
+    decrementSupportPostUserMetrics(id: $id) {
+      id
+      postLikes
+      postLoves
+      postSupports
+      postDislikes
+      profileViews
+      badges
+      commentUpvotes
+      commentDownvotes
+      activeDays
+      lastActiveDay
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      User {
+        id
+        username
+        email
+        coins
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+export const incrementProfileViewUserMetrics = /* GraphQL */ `
+  mutation IncrementProfileViewUserMetrics($id: ID!) {
+    incrementProfileViewUserMetrics(id: $id) {
+      id
+      postLikes
+      postLoves
+      postSupports
+      postDislikes
+      profileViews
+      badges
+      commentUpvotes
+      commentDownvotes
+      activeDays
+      lastActiveDay
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      User {
+        id
+        username
+        email
+        coins
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+export const decrementProfileViewUserMetrics = /* GraphQL */ `
+  mutation DecrementProfileViewUserMetrics($id: ID!) {
+    decrementProfileViewUserMetrics(id: $id) {
+      id
+      postLikes
+      postLoves
+      postSupports
+      postDislikes
+      profileViews
+      badges
+      commentUpvotes
+      commentDownvotes
+      activeDays
+      lastActiveDay
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      User {
+        id
+        username
+        email
+        coins
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+export const incrementCommentUpvoteUserMetrics = /* GraphQL */ `
+  mutation IncrementCommentUpvoteUserMetrics($id: ID!) {
+    incrementCommentUpvoteUserMetrics(id: $id) {
+      id
+      postLikes
+      postLoves
+      postSupports
+      postDislikes
+      profileViews
+      badges
+      commentUpvotes
+      commentDownvotes
+      activeDays
+      lastActiveDay
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      User {
+        id
+        username
+        email
+        coins
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+export const decrementCommentUpvoteUserMetrics = /* GraphQL */ `
+  mutation DecrementCommentUpvoteUserMetrics($id: ID!) {
+    decrementCommentUpvoteUserMetrics(id: $id) {
+      id
+      postLikes
+      postLoves
+      postSupports
+      postDislikes
+      profileViews
+      badges
+      commentUpvotes
+      commentDownvotes
+      activeDays
+      lastActiveDay
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      User {
+        id
+        username
+        email
+        coins
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+export const incrementCommentDownvoteUserMetrics = /* GraphQL */ `
+  mutation IncrementCommentDownvoteUserMetrics($id: ID!) {
+    incrementCommentDownvoteUserMetrics(id: $id) {
+      id
+      postLikes
+      postLoves
+      postSupports
+      postDislikes
+      profileViews
+      badges
+      commentUpvotes
+      commentDownvotes
+      activeDays
+      lastActiveDay
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      User {
+        id
+        username
+        email
+        coins
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+export const decrementCommentDownvoteUserMetrics = /* GraphQL */ `
+  mutation DecrementCommentDownvoteUserMetrics($id: ID!) {
+    decrementCommentDownvoteUserMetrics(id: $id) {
+      id
+      postLikes
+      postLoves
+      postSupports
+      postDislikes
+      profileViews
+      badges
+      commentUpvotes
+      commentDownvotes
+      activeDays
+      lastActiveDay
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      User {
+        id
+        username
+        email
+        coins
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+export const createUserMetrics = /* GraphQL */ `
+  mutation CreateUserMetrics(
+    $input: CreateUserMetricsInput!
+    $condition: ModelUserMetricsConditionInput
+  ) {
+    createUserMetrics(input: $input, condition: $condition) {
+      id
+      postLikes
+      postLoves
+      postSupports
+      postDislikes
+      profileViews
+      badges
+      commentUpvotes
+      commentDownvotes
+      activeDays
+      lastActiveDay
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      User {
+        id
+        username
+        email
+        coins
         _version
         _deleted
         _lastChangedAt
@@ -98,11 +497,10 @@ export const updateUserMetrics = /* GraphQL */ `
       id
       postLikes
       postLoves
-      postSupport
-      postDislike
+      postSupports
+      postDislikes
       profileViews
       badges
-      coins
       commentUpvotes
       commentDownvotes
       activeDays
@@ -116,6 +514,7 @@ export const updateUserMetrics = /* GraphQL */ `
         id
         username
         email
+        coins
         _version
         _deleted
         _lastChangedAt
@@ -134,11 +533,10 @@ export const deleteUserMetrics = /* GraphQL */ `
       id
       postLikes
       postLoves
-      postSupport
-      postDislike
+      postSupports
+      postDislikes
       profileViews
       badges
-      coins
       commentUpvotes
       commentDownvotes
       activeDays
@@ -152,6 +550,7 @@ export const deleteUserMetrics = /* GraphQL */ `
         id
         username
         email
+        coins
         _version
         _deleted
         _lastChangedAt

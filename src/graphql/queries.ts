@@ -8,6 +8,7 @@ export const getUser = /* GraphQL */ `
       id
       username
       email
+      coins
       _version
       _deleted
       _lastChangedAt
@@ -27,6 +28,7 @@ export const listUsers = /* GraphQL */ `
         id
         username
         email
+        coins
         _version
         _deleted
         _lastChangedAt
@@ -55,6 +57,7 @@ export const syncUsers = /* GraphQL */ `
         id
         username
         email
+        coins
         _version
         _deleted
         _lastChangedAt
@@ -72,11 +75,10 @@ export const getUserMetrics = /* GraphQL */ `
       id
       postLikes
       postLoves
-      postSupport
-      postDislike
+      postSupports
+      postDislikes
       profileViews
       badges
-      coins
       commentUpvotes
       commentDownvotes
       activeDays
@@ -90,6 +92,7 @@ export const getUserMetrics = /* GraphQL */ `
         id
         username
         email
+        coins
         _version
         _deleted
         _lastChangedAt
@@ -110,11 +113,10 @@ export const listUserMetricss = /* GraphQL */ `
         id
         postLikes
         postLoves
-        postSupport
-        postDislike
+        postSupports
+        postDislikes
         profileViews
         badges
-        coins
         commentUpvotes
         commentDownvotes
         activeDays
@@ -128,6 +130,7 @@ export const listUserMetricss = /* GraphQL */ `
           id
           username
           email
+          coins
           _version
           _deleted
           _lastChangedAt
@@ -157,11 +160,10 @@ export const syncUserMetrics = /* GraphQL */ `
         id
         postLikes
         postLoves
-        postSupport
-        postDislike
+        postSupports
+        postDislikes
         profileViews
         badges
-        coins
         commentUpvotes
         commentDownvotes
         activeDays
@@ -175,6 +177,7 @@ export const syncUserMetrics = /* GraphQL */ `
           id
           username
           email
+          coins
           _version
           _deleted
           _lastChangedAt
