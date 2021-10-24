@@ -7,3 +7,5 @@ commitlint.config.js
 .eslintrc
 .prettierrc
 src\models
+
+src/models

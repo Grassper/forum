@@ -1,5 +1,8 @@
 {
   "AppSyncApiName": "eforum",
   "DynamoDBBillingMode": "PAY_PER_REQUEST",
-  "DynamoDBEnableServerSideEncryption": false
+  "DynamoDBEnableServerSideEncryption": false,
+  "AuthCognitoUserPoolId": {
+    "Fn::GetAtt": ["autheforum2f3f8584", "Outputs.UserPoolId"]
+  }
 }

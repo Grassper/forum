@@ -24,6 +24,13 @@ export const schema = {
           isRequired: true,
           attributes: [],
         },
+        coins: {
+          name: "coins",
+          isArray: false,
+          type: "Int",
+          isRequired: true,
+          attributes: [],
+        },
         createdAt: {
           name: "createdAt",
           isArray: false,
@@ -85,15 +92,15 @@ export const schema = {
           isRequired: true,
           attributes: [],
         },
-        postSupport: {
-          name: "postSupport",
+        postSupports: {
+          name: "postSupports",
           isArray: false,
           type: "Int",
           isRequired: true,
           attributes: [],
         },
-        postDislike: {
-          name: "postDislike",
+        postDislikes: {
+          name: "postDislikes",
           isArray: false,
           type: "Int",
           isRequired: true,
@@ -113,13 +120,6 @@ export const schema = {
           isRequired: false,
           attributes: [],
           isArrayNullable: true,
-        },
-        coins: {
-          name: "coins",
-          isArray: false,
-          type: "Int",
-          isRequired: true,
-          attributes: [],
         },
         commentUpvotes: {
           name: "commentUpvotes",
@@ -202,5 +202,5 @@ export const schema = {
   },
   enums: {},
   nonModels: {},
-  version: "5e018cb80b1c8e16dbf9bd59887dd0f6",
+  version: "ab73cc52813b9210ed7956723a860f60",
 };
