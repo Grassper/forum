@@ -2,6 +2,56 @@
 /* eslint-disable */
 //  This file was automatically generated and should not be edited.
 
+export type CreateFollowRelationshipInput = {
+  id?: string | null;
+  _version?: number | null;
+  followRelationshipFolloweeId?: string | null;
+  followRelationshipFollowerId?: string | null;
+};
+
+export type ModelFollowRelationshipConditionInput = {
+  and?: Array<ModelFollowRelationshipConditionInput | null> | null;
+  or?: Array<ModelFollowRelationshipConditionInput | null> | null;
+  not?: ModelFollowRelationshipConditionInput | null;
+};
+
+export type FollowRelationship = {
+  __typename: "FollowRelationship";
+  id: string;
+  _version: number;
+  _deleted?: boolean | null;
+  _lastChangedAt: number;
+  createdAt: string;
+  updatedAt: string;
+  followee?: User | null;
+  follower?: User | null;
+};
+
+export type User = {
+  __typename: "User";
+  id: string;
+  username: string;
+  email: string;
+  coins: number;
+  _version: number;
+  _deleted?: boolean | null;
+  _lastChangedAt: number;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type UpdateFollowRelationshipInput = {
+  id: string;
+  _version?: number | null;
+  followRelationshipFolloweeId?: string | null;
+  followRelationshipFollowerId?: string | null;
+};
+
+export type DeleteFollowRelationshipInput = {
+  id: string;
+  _version?: number | null;
+};
+
 export type CreateUserInput = {
   id?: string | null;
   username: string;
@@ -70,19 +120,6 @@ export type ModelIntInput = {
   attributeType?: ModelAttributeTypes | null;
 };
 
-export type User = {
-  __typename: "User";
-  id: string;
-  username: string;
-  email: string;
-  coins: number;
-  _version: number;
-  _deleted?: boolean | null;
-  _lastChangedAt: number;
-  createdAt: string;
-  updatedAt: string;
-};
-
 export type UpdateUserInput = {
   id: string;
   username?: string | null;
@@ -94,27 +131,6 @@ export type UpdateUserInput = {
 export type DeleteUserInput = {
   id: string;
   _version?: number | null;
-};
-
-export type UserMetrics = {
-  __typename: "UserMetrics";
-  id: string;
-  postLikes: number;
-  postLoves: number;
-  postSupports: number;
-  postDislikes: number;
-  profileViews: number;
-  badges?: Array<string | null> | null;
-  commentUpvotes: number;
-  commentDownvotes: number;
-  activeDays: number;
-  lastActiveDay: string;
-  _version: number;
-  _deleted?: boolean | null;
-  _lastChangedAt: number;
-  createdAt: string;
-  updatedAt: string;
-  User?: User | null;
 };
 
 export type CreateUserMetricsInput = {
@@ -149,6 +165,27 @@ export type ModelUserMetricsConditionInput = {
   not?: ModelUserMetricsConditionInput | null;
 };
 
+export type UserMetrics = {
+  __typename: "UserMetrics";
+  id: string;
+  postLikes: number;
+  postLoves: number;
+  postSupports: number;
+  postDislikes: number;
+  profileViews: number;
+  badges?: Array<string | null> | null;
+  commentUpvotes: number;
+  commentDownvotes: number;
+  activeDays: number;
+  lastActiveDay: string;
+  _version: number;
+  _deleted?: boolean | null;
+  _lastChangedAt: number;
+  createdAt: string;
+  updatedAt: string;
+  User?: User | null;
+};
+
 export type UpdateUserMetricsInput = {
   id: string;
   postLikes?: number | null;
@@ -170,14 +207,11 @@ export type DeleteUserMetricsInput = {
   _version?: number | null;
 };
 
-export type ModelUserFilterInput = {
+export type ModelFollowRelationshipFilterInput = {
   id?: ModelIDInput | null;
-  username?: ModelStringInput | null;
-  email?: ModelStringInput | null;
-  coins?: ModelIntInput | null;
-  and?: Array<ModelUserFilterInput | null> | null;
-  or?: Array<ModelUserFilterInput | null> | null;
-  not?: ModelUserFilterInput | null;
+  and?: Array<ModelFollowRelationshipFilterInput | null> | null;
+  or?: Array<ModelFollowRelationshipFilterInput | null> | null;
+  not?: ModelFollowRelationshipFilterInput | null;
 };
 
 export type ModelIDInput = {
@@ -194,6 +228,23 @@ export type ModelIDInput = {
   attributeExists?: boolean | null;
   attributeType?: ModelAttributeTypes | null;
   size?: ModelSizeInput | null;
+};
+
+export type ModelFollowRelationshipConnection = {
+  __typename: "ModelFollowRelationshipConnection";
+  items?: Array<FollowRelationship | null> | null;
+  nextToken?: string | null;
+  startedAt?: number | null;
+};
+
+export type ModelUserFilterInput = {
+  id?: ModelIDInput | null;
+  username?: ModelStringInput | null;
+  email?: ModelStringInput | null;
+  coins?: ModelIntInput | null;
+  and?: Array<ModelUserFilterInput | null> | null;
+  or?: Array<ModelUserFilterInput | null> | null;
+  not?: ModelUserFilterInput | null;
 };
 
 export type ModelUserConnection = {
@@ -225,6 +276,129 @@ export type ModelUserMetricsConnection = {
   items?: Array<UserMetrics | null> | null;
   nextToken?: string | null;
   startedAt?: number | null;
+};
+
+export type CreateFollowRelationshipMutationVariables = {
+  input: CreateFollowRelationshipInput;
+  condition?: ModelFollowRelationshipConditionInput | null;
+};
+
+export type CreateFollowRelationshipMutation = {
+  createFollowRelationship?: {
+    __typename: "FollowRelationship";
+    id: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+    createdAt: string;
+    updatedAt: string;
+    followee?: {
+      __typename: "User";
+      id: string;
+      username: string;
+      email: string;
+      coins: number;
+      _version: number;
+      _deleted?: boolean | null;
+      _lastChangedAt: number;
+      createdAt: string;
+      updatedAt: string;
+    } | null;
+    follower?: {
+      __typename: "User";
+      id: string;
+      username: string;
+      email: string;
+      coins: number;
+      _version: number;
+      _deleted?: boolean | null;
+      _lastChangedAt: number;
+      createdAt: string;
+      updatedAt: string;
+    } | null;
+  } | null;
+};
+
+export type UpdateFollowRelationshipMutationVariables = {
+  input: UpdateFollowRelationshipInput;
+  condition?: ModelFollowRelationshipConditionInput | null;
+};
+
+export type UpdateFollowRelationshipMutation = {
+  updateFollowRelationship?: {
+    __typename: "FollowRelationship";
+    id: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+    createdAt: string;
+    updatedAt: string;
+    followee?: {
+      __typename: "User";
+      id: string;
+      username: string;
+      email: string;
+      coins: number;
+      _version: number;
+      _deleted?: boolean | null;
+      _lastChangedAt: number;
+      createdAt: string;
+      updatedAt: string;
+    } | null;
+    follower?: {
+      __typename: "User";
+      id: string;
+      username: string;
+      email: string;
+      coins: number;
+      _version: number;
+      _deleted?: boolean | null;
+      _lastChangedAt: number;
+      createdAt: string;
+      updatedAt: string;
+    } | null;
+  } | null;
+};
+
+export type DeleteFollowRelationshipMutationVariables = {
+  input: DeleteFollowRelationshipInput;
+  condition?: ModelFollowRelationshipConditionInput | null;
+};
+
+export type DeleteFollowRelationshipMutation = {
+  deleteFollowRelationship?: {
+    __typename: "FollowRelationship";
+    id: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+    createdAt: string;
+    updatedAt: string;
+    followee?: {
+      __typename: "User";
+      id: string;
+      username: string;
+      email: string;
+      coins: number;
+      _version: number;
+      _deleted?: boolean | null;
+      _lastChangedAt: number;
+      createdAt: string;
+      updatedAt: string;
+    } | null;
+    follower?: {
+      __typename: "User";
+      id: string;
+      username: string;
+      email: string;
+      coins: number;
+      _version: number;
+      _deleted?: boolean | null;
+      _lastChangedAt: number;
+      createdAt: string;
+      updatedAt: string;
+    } | null;
+  } | null;
 };
 
 export type CreateUserMutationVariables = {
@@ -284,462 +458,6 @@ export type DeleteUserMutation = {
     _lastChangedAt: number;
     createdAt: string;
     updatedAt: string;
-  } | null;
-};
-
-export type IncrementLikePostUserMetricsMutationVariables = {
-  id: string;
-};
-
-export type IncrementLikePostUserMetricsMutation = {
-  incrementLikePostUserMetrics?: {
-    __typename: "UserMetrics";
-    id: string;
-    postLikes: number;
-    postLoves: number;
-    postSupports: number;
-    postDislikes: number;
-    profileViews: number;
-    badges?: Array<string | null> | null;
-    commentUpvotes: number;
-    commentDownvotes: number;
-    activeDays: number;
-    lastActiveDay: string;
-    _version: number;
-    _deleted?: boolean | null;
-    _lastChangedAt: number;
-    createdAt: string;
-    updatedAt: string;
-    User?: {
-      __typename: "User";
-      id: string;
-      username: string;
-      email: string;
-      coins: number;
-      _version: number;
-      _deleted?: boolean | null;
-      _lastChangedAt: number;
-      createdAt: string;
-      updatedAt: string;
-    } | null;
-  } | null;
-};
-
-export type DecrementLikePostUserMetricsMutationVariables = {
-  id: string;
-};
-
-export type DecrementLikePostUserMetricsMutation = {
-  decrementLikePostUserMetrics?: {
-    __typename: "UserMetrics";
-    id: string;
-    postLikes: number;
-    postLoves: number;
-    postSupports: number;
-    postDislikes: number;
-    profileViews: number;
-    badges?: Array<string | null> | null;
-    commentUpvotes: number;
-    commentDownvotes: number;
-    activeDays: number;
-    lastActiveDay: string;
-    _version: number;
-    _deleted?: boolean | null;
-    _lastChangedAt: number;
-    createdAt: string;
-    updatedAt: string;
-    User?: {
-      __typename: "User";
-      id: string;
-      username: string;
-      email: string;
-      coins: number;
-      _version: number;
-      _deleted?: boolean | null;
-      _lastChangedAt: number;
-      createdAt: string;
-      updatedAt: string;
-    } | null;
-  } | null;
-};
-
-export type IncrementLovePostUserMetricsMutationVariables = {
-  id: string;
-};
-
-export type IncrementLovePostUserMetricsMutation = {
-  incrementLovePostUserMetrics?: {
-    __typename: "UserMetrics";
-    id: string;
-    postLikes: number;
-    postLoves: number;
-    postSupports: number;
-    postDislikes: number;
-    profileViews: number;
-    badges?: Array<string | null> | null;
-    commentUpvotes: number;
-    commentDownvotes: number;
-    activeDays: number;
-    lastActiveDay: string;
-    _version: number;
-    _deleted?: boolean | null;
-    _lastChangedAt: number;
-    createdAt: string;
-    updatedAt: string;
-    User?: {
-      __typename: "User";
-      id: string;
-      username: string;
-      email: string;
-      coins: number;
-      _version: number;
-      _deleted?: boolean | null;
-      _lastChangedAt: number;
-      createdAt: string;
-      updatedAt: string;
-    } | null;
-  } | null;
-};
-
-export type DecrementLovePostUserMetricsMutationVariables = {
-  id: string;
-};
-
-export type DecrementLovePostUserMetricsMutation = {
-  decrementLovePostUserMetrics?: {
-    __typename: "UserMetrics";
-    id: string;
-    postLikes: number;
-    postLoves: number;
-    postSupports: number;
-    postDislikes: number;
-    profileViews: number;
-    badges?: Array<string | null> | null;
-    commentUpvotes: number;
-    commentDownvotes: number;
-    activeDays: number;
-    lastActiveDay: string;
-    _version: number;
-    _deleted?: boolean | null;
-    _lastChangedAt: number;
-    createdAt: string;
-    updatedAt: string;
-    User?: {
-      __typename: "User";
-      id: string;
-      username: string;
-      email: string;
-      coins: number;
-      _version: number;
-      _deleted?: boolean | null;
-      _lastChangedAt: number;
-      createdAt: string;
-      updatedAt: string;
-    } | null;
-  } | null;
-};
-
-export type IncrementSupportPostUserMetricsMutationVariables = {
-  id: string;
-};
-
-export type IncrementSupportPostUserMetricsMutation = {
-  incrementSupportPostUserMetrics?: {
-    __typename: "UserMetrics";
-    id: string;
-    postLikes: number;
-    postLoves: number;
-    postSupports: number;
-    postDislikes: number;
-    profileViews: number;
-    badges?: Array<string | null> | null;
-    commentUpvotes: number;
-    commentDownvotes: number;
-    activeDays: number;
-    lastActiveDay: string;
-    _version: number;
-    _deleted?: boolean | null;
-    _lastChangedAt: number;
-    createdAt: string;
-    updatedAt: string;
-    User?: {
-      __typename: "User";
-      id: string;
-      username: string;
-      email: string;
-      coins: number;
-      _version: number;
-      _deleted?: boolean | null;
-      _lastChangedAt: number;
-      createdAt: string;
-      updatedAt: string;
-    } | null;
-  } | null;
-};
-
-export type DecrementSupportPostUserMetricsMutationVariables = {
-  id: string;
-};
-
-export type DecrementSupportPostUserMetricsMutation = {
-  decrementSupportPostUserMetrics?: {
-    __typename: "UserMetrics";
-    id: string;
-    postLikes: number;
-    postLoves: number;
-    postSupports: number;
-    postDislikes: number;
-    profileViews: number;
-    badges?: Array<string | null> | null;
-    commentUpvotes: number;
-    commentDownvotes: number;
-    activeDays: number;
-    lastActiveDay: string;
-    _version: number;
-    _deleted?: boolean | null;
-    _lastChangedAt: number;
-    createdAt: string;
-    updatedAt: string;
-    User?: {
-      __typename: "User";
-      id: string;
-      username: string;
-      email: string;
-      coins: number;
-      _version: number;
-      _deleted?: boolean | null;
-      _lastChangedAt: number;
-      createdAt: string;
-      updatedAt: string;
-    } | null;
-  } | null;
-};
-
-export type IncrementProfileViewUserMetricsMutationVariables = {
-  id: string;
-};
-
-export type IncrementProfileViewUserMetricsMutation = {
-  incrementProfileViewUserMetrics?: {
-    __typename: "UserMetrics";
-    id: string;
-    postLikes: number;
-    postLoves: number;
-    postSupports: number;
-    postDislikes: number;
-    profileViews: number;
-    badges?: Array<string | null> | null;
-    commentUpvotes: number;
-    commentDownvotes: number;
-    activeDays: number;
-    lastActiveDay: string;
-    _version: number;
-    _deleted?: boolean | null;
-    _lastChangedAt: number;
-    createdAt: string;
-    updatedAt: string;
-    User?: {
-      __typename: "User";
-      id: string;
-      username: string;
-      email: string;
-      coins: number;
-      _version: number;
-      _deleted?: boolean | null;
-      _lastChangedAt: number;
-      createdAt: string;
-      updatedAt: string;
-    } | null;
-  } | null;
-};
-
-export type DecrementProfileViewUserMetricsMutationVariables = {
-  id: string;
-};
-
-export type DecrementProfileViewUserMetricsMutation = {
-  decrementProfileViewUserMetrics?: {
-    __typename: "UserMetrics";
-    id: string;
-    postLikes: number;
-    postLoves: number;
-    postSupports: number;
-    postDislikes: number;
-    profileViews: number;
-    badges?: Array<string | null> | null;
-    commentUpvotes: number;
-    commentDownvotes: number;
-    activeDays: number;
-    lastActiveDay: string;
-    _version: number;
-    _deleted?: boolean | null;
-    _lastChangedAt: number;
-    createdAt: string;
-    updatedAt: string;
-    User?: {
-      __typename: "User";
-      id: string;
-      username: string;
-      email: string;
-      coins: number;
-      _version: number;
-      _deleted?: boolean | null;
-      _lastChangedAt: number;
-      createdAt: string;
-      updatedAt: string;
-    } | null;
-  } | null;
-};
-
-export type IncrementCommentUpvoteUserMetricsMutationVariables = {
-  id: string;
-};
-
-export type IncrementCommentUpvoteUserMetricsMutation = {
-  incrementCommentUpvoteUserMetrics?: {
-    __typename: "UserMetrics";
-    id: string;
-    postLikes: number;
-    postLoves: number;
-    postSupports: number;
-    postDislikes: number;
-    profileViews: number;
-    badges?: Array<string | null> | null;
-    commentUpvotes: number;
-    commentDownvotes: number;
-    activeDays: number;
-    lastActiveDay: string;
-    _version: number;
-    _deleted?: boolean | null;
-    _lastChangedAt: number;
-    createdAt: string;
-    updatedAt: string;
-    User?: {
-      __typename: "User";
-      id: string;
-      username: string;
-      email: string;
-      coins: number;
-      _version: number;
-      _deleted?: boolean | null;
-      _lastChangedAt: number;
-      createdAt: string;
-      updatedAt: string;
-    } | null;
-  } | null;
-};
-
-export type DecrementCommentUpvoteUserMetricsMutationVariables = {
-  id: string;
-};
-
-export type DecrementCommentUpvoteUserMetricsMutation = {
-  decrementCommentUpvoteUserMetrics?: {
-    __typename: "UserMetrics";
-    id: string;
-    postLikes: number;
-    postLoves: number;
-    postSupports: number;
-    postDislikes: number;
-    profileViews: number;
-    badges?: Array<string | null> | null;
-    commentUpvotes: number;
-    commentDownvotes: number;
-    activeDays: number;
-    lastActiveDay: string;
-    _version: number;
-    _deleted?: boolean | null;
-    _lastChangedAt: number;
-    createdAt: string;
-    updatedAt: string;
-    User?: {
-      __typename: "User";
-      id: string;
-      username: string;
-      email: string;
-      coins: number;
-      _version: number;
-      _deleted?: boolean | null;
-      _lastChangedAt: number;
-      createdAt: string;
-      updatedAt: string;
-    } | null;
-  } | null;
-};
-
-export type IncrementCommentDownvoteUserMetricsMutationVariables = {
-  id: string;
-};
-
-export type IncrementCommentDownvoteUserMetricsMutation = {
-  incrementCommentDownvoteUserMetrics?: {
-    __typename: "UserMetrics";
-    id: string;
-    postLikes: number;
-    postLoves: number;
-    postSupports: number;
-    postDislikes: number;
-    profileViews: number;
-    badges?: Array<string | null> | null;
-    commentUpvotes: number;
-    commentDownvotes: number;
-    activeDays: number;
-    lastActiveDay: string;
-    _version: number;
-    _deleted?: boolean | null;
-    _lastChangedAt: number;
-    createdAt: string;
-    updatedAt: string;
-    User?: {
-      __typename: "User";
-      id: string;
-      username: string;
-      email: string;
-      coins: number;
-      _version: number;
-      _deleted?: boolean | null;
-      _lastChangedAt: number;
-      createdAt: string;
-      updatedAt: string;
-    } | null;
-  } | null;
-};
-
-export type DecrementCommentDownvoteUserMetricsMutationVariables = {
-  id: string;
-};
-
-export type DecrementCommentDownvoteUserMetricsMutation = {
-  decrementCommentDownvoteUserMetrics?: {
-    __typename: "UserMetrics";
-    id: string;
-    postLikes: number;
-    postLoves: number;
-    postSupports: number;
-    postDislikes: number;
-    profileViews: number;
-    badges?: Array<string | null> | null;
-    commentUpvotes: number;
-    commentDownvotes: number;
-    activeDays: number;
-    lastActiveDay: string;
-    _version: number;
-    _deleted?: boolean | null;
-    _lastChangedAt: number;
-    createdAt: string;
-    updatedAt: string;
-    User?: {
-      __typename: "User";
-      id: string;
-      username: string;
-      email: string;
-      coins: number;
-      _version: number;
-      _deleted?: boolean | null;
-      _lastChangedAt: number;
-      createdAt: string;
-      updatedAt: string;
-    } | null;
   } | null;
 };
 
@@ -857,6 +575,141 @@ export type DeleteUserMetricsMutation = {
       createdAt: string;
       updatedAt: string;
     } | null;
+  } | null;
+};
+
+export type GetFollowRelationshipQueryVariables = {
+  id: string;
+};
+
+export type GetFollowRelationshipQuery = {
+  getFollowRelationship?: {
+    __typename: "FollowRelationship";
+    id: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+    createdAt: string;
+    updatedAt: string;
+    followee?: {
+      __typename: "User";
+      id: string;
+      username: string;
+      email: string;
+      coins: number;
+      _version: number;
+      _deleted?: boolean | null;
+      _lastChangedAt: number;
+      createdAt: string;
+      updatedAt: string;
+    } | null;
+    follower?: {
+      __typename: "User";
+      id: string;
+      username: string;
+      email: string;
+      coins: number;
+      _version: number;
+      _deleted?: boolean | null;
+      _lastChangedAt: number;
+      createdAt: string;
+      updatedAt: string;
+    } | null;
+  } | null;
+};
+
+export type ListFollowRelationshipsQueryVariables = {
+  filter?: ModelFollowRelationshipFilterInput | null;
+  limit?: number | null;
+  nextToken?: string | null;
+};
+
+export type ListFollowRelationshipsQuery = {
+  listFollowRelationships?: {
+    __typename: "ModelFollowRelationshipConnection";
+    items?: Array<{
+      __typename: "FollowRelationship";
+      id: string;
+      _version: number;
+      _deleted?: boolean | null;
+      _lastChangedAt: number;
+      createdAt: string;
+      updatedAt: string;
+      followee?: {
+        __typename: "User";
+        id: string;
+        username: string;
+        email: string;
+        coins: number;
+        _version: number;
+        _deleted?: boolean | null;
+        _lastChangedAt: number;
+        createdAt: string;
+        updatedAt: string;
+      } | null;
+      follower?: {
+        __typename: "User";
+        id: string;
+        username: string;
+        email: string;
+        coins: number;
+        _version: number;
+        _deleted?: boolean | null;
+        _lastChangedAt: number;
+        createdAt: string;
+        updatedAt: string;
+      } | null;
+    } | null> | null;
+    nextToken?: string | null;
+    startedAt?: number | null;
+  } | null;
+};
+
+export type SyncFollowRelationshipsQueryVariables = {
+  filter?: ModelFollowRelationshipFilterInput | null;
+  limit?: number | null;
+  nextToken?: string | null;
+  lastSync?: number | null;
+};
+
+export type SyncFollowRelationshipsQuery = {
+  syncFollowRelationships?: {
+    __typename: "ModelFollowRelationshipConnection";
+    items?: Array<{
+      __typename: "FollowRelationship";
+      id: string;
+      _version: number;
+      _deleted?: boolean | null;
+      _lastChangedAt: number;
+      createdAt: string;
+      updatedAt: string;
+      followee?: {
+        __typename: "User";
+        id: string;
+        username: string;
+        email: string;
+        coins: number;
+        _version: number;
+        _deleted?: boolean | null;
+        _lastChangedAt: number;
+        createdAt: string;
+        updatedAt: string;
+      } | null;
+      follower?: {
+        __typename: "User";
+        id: string;
+        username: string;
+        email: string;
+        coins: number;
+        _version: number;
+        _deleted?: boolean | null;
+        _lastChangedAt: number;
+        createdAt: string;
+        updatedAt: string;
+      } | null;
+    } | null> | null;
+    nextToken?: string | null;
+    startedAt?: number | null;
   } | null;
 };
 
@@ -1058,6 +911,114 @@ export type SyncUserMetricsQuery = {
     } | null> | null;
     nextToken?: string | null;
     startedAt?: number | null;
+  } | null;
+};
+
+export type OnCreateFollowRelationshipSubscription = {
+  onCreateFollowRelationship?: {
+    __typename: "FollowRelationship";
+    id: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+    createdAt: string;
+    updatedAt: string;
+    followee?: {
+      __typename: "User";
+      id: string;
+      username: string;
+      email: string;
+      coins: number;
+      _version: number;
+      _deleted?: boolean | null;
+      _lastChangedAt: number;
+      createdAt: string;
+      updatedAt: string;
+    } | null;
+    follower?: {
+      __typename: "User";
+      id: string;
+      username: string;
+      email: string;
+      coins: number;
+      _version: number;
+      _deleted?: boolean | null;
+      _lastChangedAt: number;
+      createdAt: string;
+      updatedAt: string;
+    } | null;
+  } | null;
+};
+
+export type OnUpdateFollowRelationshipSubscription = {
+  onUpdateFollowRelationship?: {
+    __typename: "FollowRelationship";
+    id: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+    createdAt: string;
+    updatedAt: string;
+    followee?: {
+      __typename: "User";
+      id: string;
+      username: string;
+      email: string;
+      coins: number;
+      _version: number;
+      _deleted?: boolean | null;
+      _lastChangedAt: number;
+      createdAt: string;
+      updatedAt: string;
+    } | null;
+    follower?: {
+      __typename: "User";
+      id: string;
+      username: string;
+      email: string;
+      coins: number;
+      _version: number;
+      _deleted?: boolean | null;
+      _lastChangedAt: number;
+      createdAt: string;
+      updatedAt: string;
+    } | null;
+  } | null;
+};
+
+export type OnDeleteFollowRelationshipSubscription = {
+  onDeleteFollowRelationship?: {
+    __typename: "FollowRelationship";
+    id: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+    createdAt: string;
+    updatedAt: string;
+    followee?: {
+      __typename: "User";
+      id: string;
+      username: string;
+      email: string;
+      coins: number;
+      _version: number;
+      _deleted?: boolean | null;
+      _lastChangedAt: number;
+      createdAt: string;
+      updatedAt: string;
+    } | null;
+    follower?: {
+      __typename: "User";
+      id: string;
+      username: string;
+      email: string;
+      coins: number;
+      _version: number;
+      _deleted?: boolean | null;
+      _lastChangedAt: number;
+      createdAt: string;
+      updatedAt: string;
+    } | null;
   } | null;
 };
 

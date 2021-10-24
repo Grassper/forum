@@ -1,5 +1,78 @@
 export const schema = {
   models: {
+    FollowRelationship: {
+      name: "FollowRelationship",
+      fields: {
+        id: {
+          name: "id",
+          isArray: false,
+          type: "ID",
+          isRequired: true,
+          attributes: [],
+        },
+        followee: {
+          name: "followee",
+          isArray: false,
+          type: {
+            model: "User",
+          },
+          isRequired: false,
+          attributes: [],
+          association: {
+            connectionType: "BELONGS_TO",
+            targetName: "followRelationshipFolloweeId",
+          },
+        },
+        follower: {
+          name: "follower",
+          isArray: false,
+          type: {
+            model: "User",
+          },
+          isRequired: false,
+          attributes: [],
+          association: {
+            connectionType: "BELONGS_TO",
+            targetName: "followRelationshipFollowerId",
+          },
+        },
+        createdAt: {
+          name: "createdAt",
+          isArray: false,
+          type: "AWSDateTime",
+          isRequired: false,
+          attributes: [],
+          isReadOnly: true,
+        },
+        updatedAt: {
+          name: "updatedAt",
+          isArray: false,
+          type: "AWSDateTime",
+          isRequired: false,
+          attributes: [],
+          isReadOnly: true,
+        },
+      },
+      syncable: true,
+      pluralName: "FollowRelationships",
+      attributes: [
+        {
+          type: "model",
+          properties: {},
+        },
+        {
+          type: "auth",
+          properties: {
+            rules: [
+              {
+                allow: "public",
+                operations: ["create", "update", "delete", "read"],
+              },
+            ],
+          },
+        },
+      ],
+    },
     User: {
       name: "User",
       fields: {
@@ -202,5 +275,5 @@ export const schema = {
   },
   enums: {},
   nonModels: {},
-  version: "ab73cc52813b9210ed7956723a860f60",
+  version: "61607bc22244bef79d3c52e7a7eba8b1",
 };

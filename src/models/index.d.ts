@@ -4,6 +4,10 @@ import {
   PersistentModelConstructor,
 } from "@aws-amplify/datastore";
 
+type FollowRelationshipMetaData = {
+  readOnlyFields: "createdAt" | "updatedAt";
+};
+
 type UserMetaData = {
   readOnlyFields: "createdAt" | "updatedAt";
 };
@@ -11,6 +15,21 @@ type UserMetaData = {
 type UserMetricsMetaData = {
   readOnlyFields: "createdAt" | "updatedAt";
 };
+
+export declare class FollowRelationship {
+  readonly id: string;
+  readonly followee?: User;
+  readonly follower?: User;
+  readonly createdAt?: string;
+  readonly updatedAt?: string;
+  constructor(init: ModelInit<FollowRelationship, FollowRelationshipMetaData>);
+  static copyOf(
+    source: FollowRelationship,
+    mutator: (
+      draft: MutableModel<FollowRelationship, FollowRelationshipMetaData>
+    ) => MutableModel<FollowRelationship, FollowRelationshipMetaData> | void
+  ): FollowRelationship;
+}
 
 export declare class User {
   readonly id: string;

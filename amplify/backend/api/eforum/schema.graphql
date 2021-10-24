@@ -1,3 +1,11 @@
+type FollowRelationship @model @auth(rules: [{ allow: public }]) {
+  id: ID!
+  followeeId: String!
+  followerId: String!
+  followee: User @connection
+  follower: User @connection
+}
+
 type User @model @auth(rules: [{ allow: public }]) {
   id: ID!
   username: String!
