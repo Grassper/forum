@@ -3,12 +3,12 @@
     "operation" : "UpdateItem",
     "key" : {
     ## If object "id" should come from GraphQL arguments, change to $util.dynamodb.toDynamoDBJson($ctx.args.id)
-        "id" : $util.dynamodb.toDynamoDBJson($context.arguments.id)
+        "id" : $util.dynamodb.toDynamoDBJson($ctx.args.id)
     },
     "update" : {
         "expression" : "ADD postLikes :plusOne",
         "expressionValues" : {
-            ":plusOne" : { "N" : 1 }
+            ":plusOne" : { "N" : "1" }
         }
     }
 }
