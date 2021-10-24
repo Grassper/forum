@@ -1,3 +1,8 @@
+type Query {
+  # Add all the custom queries here
+  incrementLikePostUserMetrics(id: ID!): UserMetrics
+}
+
 type FollowRelationship @model @auth(rules: [{ allow: public }]) {
   id: ID!
   followeeId: String!
