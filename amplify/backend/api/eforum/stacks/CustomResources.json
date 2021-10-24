@@ -33,7 +33,7 @@
         "ApiId": {
           "Ref": "AppSyncApiId"
         },
-        "DataSourceName": "UserMetrics",
+        "DataSourceName": "UserMetricsTable",
         "TypeName": "Query",
         "FieldName": "incrementLikePostUserMetrics",
         "RequestMappingTemplateS3Location": {
