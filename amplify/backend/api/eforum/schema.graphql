@@ -1,4 +1,4 @@
-type Query {
+type Mutation {
   # Add all the custom queries here
   incrementLikePostUserMetrics(id: ID!): UserMetrics
 }
