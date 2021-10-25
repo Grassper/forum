@@ -29,6 +29,8 @@ type User @model {
     @connection(keyName: "byFollowerId", fields: ["id"])
   communities: [UserCommunityRelationShip]
     @connection(keyName: "byUser", fields: ["id"])
+  moderatingCommunities: [ModeratorCommunityRelationShip]
+    @connection(keyName: "byModerator", fields: ["id"])
 }
 
 type UserMetrics @model {
@@ -81,6 +83,8 @@ type Community @model {
   creator: User! @connection(fields: ["creatorId"])
   members: [UserCommunityRelationShip]
     @connection(keyName: "byCommunity", fields: ["id"])
+  moderators: [ModeratorCommunityRelationShip]
+    @connection(keyName: "byCommunity", fields: ["id"])
 }
 
 type UserCommunityRelationShip
@@ -91,5 +95,16 @@ type UserCommunityRelationShip
   userId: ID!
   communityId: ID!
   user: User! @connection(fields: ["userId"])
+  community: Community! @connection(fields: ["communityId"])
+}
+
+type ModeratorCommunityRelationShip
+  @model(queries: null)
+  @key(name: "byModerator", fields: ["moderatorId"])
+  @key(name: "byCommunity", fields: ["communityId"]) {
+  id: ID!
+  moderatorId: ID!
+  communityId: ID!
+  user: User! @connection(fields: ["moderatorId"])
   community: Community! @connection(fields: ["communityId"])
 }
