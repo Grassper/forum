@@ -18,10 +18,22 @@ type Mutation {
   decrementActiveDayUserMetrics(id: ID!): UserMetrics
 }
 
-type FollowRelationship @model @auth(rules: [{ allow: public }]) {
+type FollowRelationship
+  @model
+  @auth(rules: [{ allow: public }])
+  @key(
+    name: "followeesByFollowerId"
+    fields: ["followerId"]
+    queryField: "followeesByFollowerId"
+  )
+  @key(
+    name: "followersByFolloweeId"
+    fields: ["followeeId"]
+    queryField: "followersByFolloweeId"
+  ) {
   id: ID!
-  followeeId: String!
-  followerId: String!
+  followeeId: ID!
+  followerId: ID!
   followee: User @connection
   follower: User @connection
 }
@@ -31,6 +43,10 @@ type User @model @auth(rules: [{ allow: public }]) {
   username: String!
   email: String!
   coins: Int!
+  followers: [FollowRelationship]
+    @connection(keyName: "followersByFolloweeId", fields: ["id"])
+  followees: [FollowRelationship]
+    @connection(keyName: "followeesByFollowerId", fields: ["id"])
 }
 
 type UserMetrics @model @auth(rules: [{ allow: public }]) {
