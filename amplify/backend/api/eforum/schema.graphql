@@ -18,38 +18,20 @@ type Mutation {
   decrementActiveDayUserMetrics(id: ID!): UserMetrics
 }
 
-type FollowRelationship
-  @model
-  @auth(rules: [{ allow: public }])
-  @key(
-    name: "followeesByFollowerId"
-    fields: ["followerId"]
-    queryField: "followeesByFollowerId"
-  )
-  @key(
-    name: "followersByFolloweeId"
-    fields: ["followeeId"]
-    queryField: "followersByFolloweeId"
-  ) {
-  id: ID!
-  followeeId: ID!
-  followerId: ID!
-  followee: User @connection
-  follower: User @connection
-}
-
-type User @model @auth(rules: [{ allow: public }]) {
+type User @model {
   id: ID!
   username: String!
   email: String!
   coins: Int!
   followers: [FollowRelationship]
-    @connection(keyName: "followersByFolloweeId", fields: ["id"])
+    @connection(keyName: "byFolloweeId", fields: ["id"])
   followees: [FollowRelationship]
-    @connection(keyName: "followeesByFollowerId", fields: ["id"])
+    @connection(keyName: "byFollowerId", fields: ["id"])
+  communities: [UserCommunityRelationShip]
+    @connection(keyName: "byUser", fields: ["id"])
 }
 
-type UserMetrics @model @auth(rules: [{ allow: public }]) {
+type UserMetrics @model {
   id: ID!
   postLikes: Int!
   postLoves: Int!
@@ -62,4 +44,52 @@ type UserMetrics @model @auth(rules: [{ allow: public }]) {
   activeDays: Int!
   lastActiveDay: AWSDate!
   User: User @connection
+}
+
+type FollowRelationship
+  @model
+  @key(
+    name: "byFollowerId"
+    fields: ["followerId"]
+    queryField: "followeesByFollowerId"
+  )
+  @key(
+    name: "byFolloweeId"
+    fields: ["followeeId"]
+    queryField: "followersByFolloweeId"
+  ) {
+  id: ID!
+  followeeId: ID!
+  followerId: ID!
+  followee: User! @connection(fields: ["followeeId"])
+  follower: User! @connection(fields: ["followerId"])
+}
+
+enum CommunityType {
+  PUBLIC
+  PRIVATE
+}
+
+type Community @model {
+  id: ID!
+  name: String!
+  description: String!
+  bannerImageUrl: String!
+  profileImageUrl: String!
+  type: CommunityType!
+  creatorId: ID!
+  creator: User! @connection(fields: ["creatorId"])
+  members: [UserCommunityRelationShip]
+    @connection(keyName: "byCommunity", fields: ["id"])
+}
+
+type UserCommunityRelationShip
+  @model(queries: null)
+  @key(name: "byUser", fields: ["userId"])
+  @key(name: "byCommunity", fields: ["communityId"]) {
+  id: ID!
+  userId: ID!
+  communityId: ID!
+  user: User! @connection(fields: ["userId"])
+  community: Community! @connection(fields: ["communityId"])
 }
