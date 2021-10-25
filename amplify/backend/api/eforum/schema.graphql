@@ -6,12 +6,16 @@ type Mutation {
   decrementLovePostUserMetrics(id: ID!): UserMetrics
   incrementSupportPostUserMetrics(id: ID!): UserMetrics
   decrementSupportPostUserMetrics(id: ID!): UserMetrics
+  incrementDislikePostUserMetrics(id: ID!): UserMetrics
+  decrementDislikePostUserMetrics(id: ID!): UserMetrics
   incrementProfileViewUserMetrics(id: ID!): UserMetrics
   decrementProfileViewUserMetrics(id: ID!): UserMetrics
   incrementCommentUpvoteUserMetrics(id: ID!): UserMetrics
   decrementCommentUpvoteUserMetrics(id: ID!): UserMetrics
   incrementCommentDownvoteUserMetrics(id: ID!): UserMetrics
   decrementCommentDownvoteUserMetrics(id: ID!): UserMetrics
+  incrementActiveDayUserMetrics(id: ID!): UserMetrics
+  decrementActiveDayUserMetrics(id: ID!): UserMetrics
 }
 
 type FollowRelationship @model @auth(rules: [{ allow: public }]) {
