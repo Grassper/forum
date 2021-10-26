@@ -142,3 +142,22 @@ type Post
   author: User! @connection(fields: ["authorId"])
   community: Community! @connection(fields: ["communityId"])
 }
+
+enum PostMetricType {
+  LIKE
+  LOVE
+  SUPPORT
+  DISLIKE
+}
+
+type UserPostMetricsRelationShip
+  @model
+  @key(name: "byPost", fields: ["postId"])
+  @key(name: "byUser", fields: ["userId"]) {
+  id: ID!
+  postId: ID!
+  type: PostMetricType!
+  userId: ID!
+  post: Post @connection(fields: ["postId"])
+  user: User! @connection(fields: ["userId"])
+}
