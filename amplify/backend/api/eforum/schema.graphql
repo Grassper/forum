@@ -133,8 +133,12 @@ type Post
   content: String!
   mediaUrl: AWSURL
   poll: [Poll]
+  likes: Int
+  loves: Int
+  supports: Int
+  disLikes: Int
   authorId: ID!
-  author: User! @connection(fields: ["authorId"])
   communityId: ID!
+  author: User! @connection(fields: ["authorId"])
   community: Community! @connection(fields: ["communityId"])
 }
