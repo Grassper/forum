@@ -1,5 +1,4 @@
 type Mutation {
-  # Add all the custom queries here
   incrementLikePostUserMetrics(id: ID!): UserMetrics
   decrementLikePostUserMetrics(id: ID!): UserMetrics
   incrementLovePostUserMetrics(id: ID!): UserMetrics
@@ -31,6 +30,7 @@ type User @model {
     @connection(keyName: "byUser", fields: ["id"])
   moderatingCommunities: [ModeratorCommunityRelationShip]
     @connection(keyName: "byModerator", fields: ["id"])
+  posts: [Post] @connection(keyName: "byAuthor", fields: ["id"])
 }
 
 type UserMetrics @model {
@@ -76,11 +76,12 @@ type Community @model {
   id: ID!
   name: String!
   description: String!
-  bannerImageUrl: String!
-  profileImageUrl: String!
+  bannerImageUrl: AWSURL!
+  profileImageUrl: AWSURL!
   type: CommunityType!
   creatorId: ID!
   creator: User! @connection(fields: ["creatorId"])
+  posts: [Post] @connection(keyName: "byCommunity", fields: ["id"])
   members: [UserCommunityRelationShip]
     @connection(keyName: "byCommunity", fields: ["id"])
   moderators: [ModeratorCommunityRelationShip]
@@ -106,5 +107,34 @@ type ModeratorCommunityRelationShip
   moderatorId: ID!
   communityId: ID!
   user: User! @connection(fields: ["moderatorId"])
+  community: Community! @connection(fields: ["communityId"])
+}
+
+enum PostType {
+  TEXT
+  AUDIO
+  VIDEO
+  IMAGE
+  POLL
+}
+
+type Poll {
+  id: ID!
+  content: String!
+  votes: Int!
+}
+
+type Post
+  @model
+  @key(name: "byAuthor", fields: ["authorId"])
+  @key(name: "byCommunity", fields: ["communityId"]) {
+  id: ID!
+  type: PostType!
+  content: String!
+  mediaUrl: AWSURL
+  poll: [Poll]
+  authorId: ID!
+  author: User! @connection(fields: ["authorId"])
+  communityId: ID!
   community: Community! @connection(fields: ["communityId"])
 }
