@@ -31,7 +31,10 @@ type User @model {
   moderatingCommunities: [ModeratorCommunityRelationShip]
     @connection(keyName: "byModerator", fields: ["id"])
   posts: [Post] @connection(keyName: "byAuthor", fields: ["id"])
+  comments: [Comment] @connection(keyName: "byAuthor", fields: ["id"])
   userPostMetric: [UserPostMetricsRelationShip]
+    @connection(keyName: "byUser", fields: ["id"])
+  userCommentMetric: [UserCommentMetricsRelationShip]
     @connection(keyName: "byUser", fields: ["id"])
 }
 
@@ -170,15 +173,46 @@ type Comment
   postId: ID!
   communityId: ID!
   authorId: ID!
+  upvote: Int!
+  downvote: Int!
   post: Post @connection(fields: ["postId"])
   author: User! @connection(fields: ["authorId"])
   community: Community! @connection(fields: ["communityId"])
+  userCommentMetric: [UserCommentMetricsRelationShip]
+    @connection(keyName: "byComment", fields: ["id"])
 }
 
-type ParentChildCommentRelationship @model {
+type ParentChildCommentRelationship
+  @model
+  @key(
+    name: "byParentComment"
+    fields: ["parentCommentId"]
+    queryField: "getChildCommentsByParentCommentId"
+  )
+  @key(
+    name: "byChildComment"
+    fields: ["childCommentId"]
+    queryField: "getParentCommentByChildCommentId"
+  ) {
   id: ID!
   parentCommentId: ID!
   childCommentId: ID!
   parentComment: Comment! @connection(fields: ["parentCommentId"])
   childComment: Comment! @connection(fields: ["childCommentId"])
+}
+
+type UserCommentMetricsRelationShip
+  @model
+  @key(name: "byUser", fields: ["userId", "type"])
+  @key(name: "byComment", fields: ["commentId", "type"]) {
+  id: ID!
+  type: String!
+  userId: ID!
+  postId: ID!
+  commentId: ID!
+  communityId: ID!
+  post: Post @connection(fields: ["postId"])
+  user: User! @connection(fields: ["userId"])
+  comment: Comment! @connection(fields: ["commentId"])
+  community: Community! @connection(fields: ["communityId"])
 }
