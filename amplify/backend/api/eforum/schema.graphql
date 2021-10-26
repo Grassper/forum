@@ -143,6 +143,7 @@ type Post
   communityId: ID!
   author: User! @connection(fields: ["authorId"])
   community: Community! @connection(fields: ["communityId"])
+  comments: [Comment] @connection(keyName: "byPost", fields: ["id"])
   userPostMetric: [UserPostMetricsRelationShip]
     @connection(keyName: "byPost", fields: ["id"])
 }
@@ -157,4 +158,27 @@ type UserPostMetricsRelationShip
   userId: ID!
   post: Post @connection(fields: ["postId"])
   user: User! @connection(fields: ["userId"])
+}
+
+type Comment
+  @model
+  @key(name: "byPost", fields: ["postId"])
+  @key(name: "byAuthor", fields: ["authorId"])
+  @key(name: "byCommunity", fields: ["communityId"]) {
+  id: ID!
+  content: String!
+  postId: ID!
+  communityId: ID!
+  authorId: ID!
+  post: Post @connection(fields: ["postId"])
+  author: User! @connection(fields: ["authorId"])
+  community: Community! @connection(fields: ["communityId"])
+}
+
+type ParentChildCommentRelationship @model {
+  id: ID!
+  parentCommentId: ID!
+  childCommentId: ID!
+  parentComment: Comment! @connection(fields: ["parentCommentId"])
+  childComment: Comment! @connection(fields: ["childCommentId"])
 }
