@@ -15,6 +15,12 @@
       "auth": {
         "eforum2060bb55": {},
         "eforum2f3f8584": {}
+      },
+      "function": {
+        "createPostAndTimeline": {
+          "deploymentBucketName": "amplify-eforum-dev-151817-deployment",
+          "s3Key": "amplify-builds/createPostAndTimeline-4767424c49515a447466-build.zip"
+        }
       }
     }
   }

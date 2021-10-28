@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "api": {
+      "eforum": ["Query", "Mutation", "Subscription"]
+    }
+  },
+  "lambdaLayers": []
+}
