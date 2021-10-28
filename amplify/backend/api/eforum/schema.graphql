@@ -251,3 +251,11 @@ type Message
   user: User! @connection(fields: ["userId"])
   chatRoom: ChatRoom! @connection(fields: ["chatRoomId"])
 }
+
+type Timeline @model {
+  id: ID!
+  userId: ID!
+  postId: ID!
+  user: User! @connection(fields: ["userId"])
+  post: Post @connection(fields: ["postId"])
+}
