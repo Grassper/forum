@@ -96,7 +96,7 @@ type Community @model {
 }
 
 type UserCommunityRelationShip
-  @model(queries: null)
+  @model
   @key(name: "byUser", fields: ["userId"])
   @key(name: "byCommunity", fields: ["communityId"]) {
   id: ID!
@@ -123,6 +123,12 @@ enum PostType {
   VIDEO
   IMAGE
   POLL
+}
+
+input PollInput {
+  id: ID!
+  content: String!
+  votes: Int!
 }
 
 type Poll {
