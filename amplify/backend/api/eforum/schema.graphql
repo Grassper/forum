@@ -36,6 +36,8 @@ type User @model {
     @connection(keyName: "byUser", fields: ["id"])
   userCommentMetric: [UserCommentMetricsRelationShip]
     @connection(keyName: "byUser", fields: ["id"])
+  chatRooms: [UserChatRoomRelationship]
+    @connection(keyName: "byUser", fields: ["id"])
 }
 
 type UserMetrics @model {
@@ -215,4 +217,37 @@ type UserCommentMetricsRelationShip
   user: User! @connection(fields: ["userId"])
   comment: Comment! @connection(fields: ["commentId"])
   community: Community! @connection(fields: ["communityId"])
+}
+
+type UserChatRoomRelationship
+  @model
+  @key(name: "byChatRoom", fields: ["chatRoomId", "userId"])
+  @key(name: "byUser", fields: ["userId", "chatRoomId"]) {
+  id: ID!
+  userId: ID!
+  chatRoomId: ID!
+  user: User! @connection(fields: ["userId"])
+  chatRoom: ChatRoom! @connection(fields: ["chatRoomId"])
+}
+
+type ChatRoom @model {
+  id: ID!
+  users: [UserChatRoomRelationship]
+    @connection(keyName: "byChatRoom", fields: ["id"])
+  messages: [Message] @connection(keyName: "byChatRoom", fields: ["id"])
+}
+
+type Message
+  @model
+  @key(
+    name: "byChatRoom"
+    fields: ["chatRoomId"]
+    queryField: "messagesByChatRoom"
+  ) {
+  id: ID!
+  content: String!
+  userId: ID!
+  chatRoomId: ID!
+  user: User! @connection(fields: ["userId"])
+  chatRoom: ChatRoom! @connection(fields: ["chatRoomId"])
 }
