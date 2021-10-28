@@ -160,7 +160,9 @@ type UserPostMetricsRelationShip
   id: ID!
   postId: ID!
   type: String!
+  communityId: ID!
   userId: ID!
+  community: Community! @connection(fields: ["communityId"])
   post: Post @connection(fields: ["postId"])
   user: User! @connection(fields: ["userId"])
 }
