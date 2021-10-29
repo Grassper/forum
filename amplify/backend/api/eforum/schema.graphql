@@ -365,6 +365,7 @@ type Timeline
     rules: [
       { allow: owner, provider: userPools, operations: [read, create, update] }
       { allow: private, provider: userPools, operations: [read] }
+      { allow: private, provider: iam, operations: [create] }
     ]
   ) {
   id: ID!

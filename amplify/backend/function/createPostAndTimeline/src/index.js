@@ -19,6 +19,8 @@ exports.handler = async (event, _, callback) => {
 
   // check communityId exist in db
 
+  // sorting using timestamp
+
   let postInput;
   let postStats = {
     likes: 0,
@@ -77,10 +79,29 @@ exports.handler = async (event, _, callback) => {
   }
 
   try {
-    const { data } = await makeAppSyncRequest(postInput, createPost);
-    const post = data.createPost;
+    const postResponse = await makeAppSyncRequest(
+      { input: postInput },
+      createPost
+    );
+    const post = postResponse.data.createPost;
 
     // list members for communityId
+
+    const listMembersResponse = await makeAppSyncRequest(
+      { communityId: post.communityId, limit: 100000 },
+      listMembersOfCommunity
+    );
+
+    const members =
+      listMembersResponse.data.listUserCommunityRelationShips.items;
+
+    // creating timeline for users
+
+    await Promise.all(
+      members.map((entry) =>
+        createTimelineForAUser({ userId: entry.userId, postId: post.id })
+      )
+    );
 
     return post;
   } catch (err) {
@@ -88,14 +109,14 @@ exports.handler = async (event, _, callback) => {
   }
 };
 
-const makeAppSyncRequest = async (input, query) => {
+const makeAppSyncRequest = async (variables, query) => {
   const req = new AWS.HttpRequest(appsyncUrl, region);
   req.method = "POST";
   req.headers.host = endpoint;
   req.headers["Content-Type"] = "application/json";
   req.body = JSON.stringify({
-    query: query,
-    variables: { input },
+    query,
+    variables,
   });
 
   const signer = new AWS.Signers.V4(req, "appsync", true);
@@ -111,6 +132,14 @@ const makeAppSyncRequest = async (input, query) => {
   return data;
 };
 
+const createTimelineForAUser = async ({ userId, postId }) => {
+  const createTimelineResponse = await makeAppSyncRequest(
+    { input: { userId, postId } },
+    createTimeline
+  );
+  return createTimelineResponse;
+};
+
 const createPost = `
   mutation CreatePost(
     $input: CreatePostInput!
@@ -119,6 +148,19 @@ const createPost = `
     createPost(input: $input, condition: $condition) {
       id
       communityId
+    }
+  }
+`;
+
+const listMembersOfCommunity = `
+  query listMembersByCommunity($communityId: ID, $limit: Int) {
+    listUserCommunityRelationShips(
+      filter: {communityId: {eq: $communityId}}
+      limit: $limit
+    ) {
+      items {
+        userId
+      }
     }
   }
 `;
@@ -132,39 +174,6 @@ const createTimeline = `
       id
       userId
       postId
-      user {
-        id
-        username
-        email
-        coins
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      post {
-        id
-        type
-        content
-        mediaUrl
-        likes
-        loves
-        supports
-        disLikes
-        authorId
-        communityId
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
     }
   }
 `;
