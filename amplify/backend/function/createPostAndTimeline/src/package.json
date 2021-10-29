@@ -5,7 +5,19 @@
   "main": "index.js",
   "license": "Apache-2.0",
   "dependencies": {
+    "@iwatakeshi/aws-lambda-appsync": "^0.0.7",
+    "apollo-cache-inmemory": "^1.6.6",
+    "apollo-client": "^2.6.10",
+    "apollo-link": "^1.2.14",
+    "apollo-link-http": "^1.5.17",
     "aws-appsync": "^4.1.4",
-    "graphql-tag": "^2.12.5"
+    "aws-sdk": "^2.1017.0",
+    "axios": "^0.24.0",
+    "es6-promise": "^4.2.8",
+    "graphql": "^16.0.0",
+    "graphql-tag": "^2.12.5",
+    "https": "^1.0.0",
+    "isomorphic-fetch": "^3.0.0",
+    "url": "^0.11.0"
   }
 }
