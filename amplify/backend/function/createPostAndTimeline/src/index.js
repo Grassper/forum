@@ -13,9 +13,12 @@ const urlParse = require("url").URL;
 const appsyncUrl = process.env.API_EFORUM_GRAPHQLAPIENDPOINTOUTPUT;
 const region = process.env.REGION;
 const endpoint = new urlParse(appsyncUrl).hostname.toString();
-const apiKey = process.env.API_EFORUM_GRAPHQLAPIKEYOUTPUT;
 
 exports.handler = async (event, _, callback) => {
+  // check user making request id and passed ids are equal and it exist in db
+
+  // check communityId exist in db
+
   let postInput;
   let postStats = {
     likes: 0,
@@ -74,38 +77,38 @@ exports.handler = async (event, _, callback) => {
   }
 
   try {
-    const req = new AWS.HttpRequest(appsyncUrl, region);
-    req.method = "POST";
-    req.headers.host = endpoint;
-    req.headers["Content-Type"] = "application/json";
-    req.body = JSON.stringify({
-      query: createPost,
-      variables: { input: postInput },
-    });
+    const { data } = await makeAppSyncRequest(postInput, createPost);
+    const post = data.createPost;
 
-    const signer = new AWS.Signers.V4(req, "appsync", true);
-    signer.addAuthorization(AWS.config.credentials, AWS.util.date.getDate());
+    // list members for communityId
 
-    const graphqlData = await axios({
-      method: "POST",
-      url: appsyncUrl,
-      data: req.body,
-      headers: req.headers,
-    });
-
-    const body = {
-      message: "successfully created post!",
-    };
-    return {
-      statusCode: 200,
-      body: JSON.stringify(body),
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-      },
-    };
+    return post;
   } catch (err) {
     console.log("error creating post: ", err);
   }
+};
+
+const makeAppSyncRequest = async (input, query) => {
+  const req = new AWS.HttpRequest(appsyncUrl, region);
+  req.method = "POST";
+  req.headers.host = endpoint;
+  req.headers["Content-Type"] = "application/json";
+  req.body = JSON.stringify({
+    query: query,
+    variables: { input },
+  });
+
+  const signer = new AWS.Signers.V4(req, "appsync", true);
+  signer.addAuthorization(AWS.config.credentials, AWS.util.date.getDate());
+
+  const { data } = await axios({
+    method: "POST",
+    url: appsyncUrl,
+    data: req.body,
+    headers: req.headers,
+  });
+
+  return data;
 };
 
 const createPost = `
@@ -115,58 +118,7 @@ const createPost = `
   ) {
     createPost(input: $input, condition: $condition) {
       id
-      type
-      content
-      mediaUrl
-      poll {
-        id
-        content
-        votes
-      }
-      likes
-      loves
-      supports
-      disLikes
-      authorId
       communityId
-      author {
-        id
-        username
-        email
-        coins
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      community {
-        id
-        name
-        description
-        bannerImageUrl
-        profileImageUrl
-        type
-        creatorId
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      comments {
-        nextToken
-        startedAt
-      }
-      userPostMetric {
-        nextToken
-        startedAt
-      }
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
     }
   }
 `;
