@@ -19,7 +19,7 @@
       "function": {
         "createPostAndTimeline": {
           "deploymentBucketName": "amplify-eforum-dev-151817-deployment",
-          "s3Key": "amplify-builds/createPostAndTimeline-4767424c49515a447466-build.zip"
+          "s3Key": "amplify-builds/createPostAndTimeline-77766f78735050494646-build.zip"
         }
       }
     }
