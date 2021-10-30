@@ -35,6 +35,7 @@ exports.handler = async (event, _, callback) => {
       content: event.arguments.content,
       authorId: event.arguments.authorId,
       communityId: event.arguments.communityId,
+      tags: event.arguments.tags,
       ...postStats,
     };
   } else if (
@@ -54,6 +55,7 @@ exports.handler = async (event, _, callback) => {
       mediaUrl: event.arguments.mediaUrl,
       authorId: event.arguments.authorId,
       communityId: event.arguments.communityId,
+      tags: event.arguments.tags,
       ...postStats,
     };
   } else if (event.arguments.type === "POLL") {
@@ -69,6 +71,7 @@ exports.handler = async (event, _, callback) => {
       poll: event.arguments.poll,
       authorId: event.arguments.authorId,
       communityId: event.arguments.communityId,
+      tags: event.arguments.tags,
       ...postStats,
     };
   } else {
