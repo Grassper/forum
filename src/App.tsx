@@ -1,7 +1,13 @@
+import "react-native-gesture-handler";
+
 import AppLoading from "expo-app-loading";
 import * as Font from "expo-font";
 import React, { useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { enableScreens } from "react-native-screens";
+
+import { GlobalStackNavigator } from "@/root/src/components/navigations/StackNavigator";
+
+enableScreens();
 
 const fetchFonts = (): Promise<void> => {
   return Font.loadAsync({
@@ -31,23 +37,7 @@ const App: React.FC = () => {
     );
   }
 
-  return (
-    <View style={styles.container}>
-      <Text>Hi from react native</Text>
-    </View>
-  );
+  return <GlobalStackNavigator />;
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  text: {
-    fontSize: 16,
-    color: "#000000",
-  },
-});
 
 export default App;
