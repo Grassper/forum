@@ -5,3 +5,8 @@ babel.config.js
 commitlint.config.js
 .eslintrc
 .prettierrc
+
+src/graphql
+src/models
+src/aws-exports.js
+src/API.ts

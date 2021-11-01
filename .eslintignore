@@ -1,3 +1,4 @@
+
 node_modules/
 coverage/
 metro.config.js
@@ -6,6 +7,8 @@ jest.config.js
 commitlint.config.js
 .eslintrc
 .prettierrc
-src\models
 
+src/graphql
 src/models
+src/aws-exports.js
+src/API.ts
