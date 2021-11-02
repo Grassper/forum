@@ -174,7 +174,7 @@ const styles = StyleSheet.create({
   },
   post: {
     color: colors.black,
-    fontFamily: "mm",
+    fontFamily: "mr",
     fontSize: 15,
     lineHeight: 22,
     marginBottom: 5,
