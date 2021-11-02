@@ -1,7 +1,7 @@
 import React from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-import { colors } from "@/root/src/contants";
+import { colors } from "@/root/src/constants";
 
 interface Props_ {}
 
@@ -40,12 +40,14 @@ const styles = StyleSheet.create({
   count: {
     fontFamily: "mb",
     fontSize: 16,
+    lineHeight: 24,
     marginBottom: 5,
   },
   countText: {
     color: colors.green,
-    fontFamily: "mr",
+    fontFamily: "mm",
     fontSize: 12,
+    lineHeight: 18,
   },
   image: { borderRadius: 50, height: 60, width: 60 },
   imageContainer: {
@@ -65,6 +67,7 @@ const styles = StyleSheet.create({
   statsContainer: {
     flexDirection: "row",
     justifyContent: "center",
+    marginBottom: 10,
     width: "100%",
   },
   statsItem: {

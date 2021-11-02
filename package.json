@@ -22,6 +22,7 @@
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.15.9",
     "@react-native-community/netinfo": "6.0.0",
+    "@react-navigation/material-top-tabs": "^6.0.6",
     "@react-navigation/native": "^6.0.6",
     "@react-navigation/native-stack": "^6.2.5",
     "aws-amplify": "^4.3.3",
@@ -35,9 +36,11 @@
     "react-native": "https://github.com/expo/react-native/archive/sdk-42.0.0.tar.gz",
     "react-native-config": "^1.4.4",
     "react-native-gesture-handler": "^1.10.3",
+    "react-native-pager-view": "5.0.12",
     "react-native-safe-area-context": "3.2.0",
     "react-native-screens": "~3.4.0",
     "react-native-server": "0.0.1-beta",
+    "react-native-tab-view": "^3.1.1",
     "react-native-web": "~0.13.12"
   },
   "devDependencies": {
