@@ -45,9 +45,9 @@ const styles = StyleSheet.create({
   },
   countText: {
     color: colors.green,
-    fontFamily: "mm",
-    fontSize: 12,
-    lineHeight: 18,
+    fontFamily: "mr",
+    fontSize: 14,
+    lineHeight: 21,
   },
   image: { borderRadius: 50, height: 60, width: 60 },
   imageContainer: {
@@ -63,11 +63,11 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     marginTop: 20,
   },
-  profileName: { fontFamily: "rr", fontSize: 20, marginBottom: 10 },
+  profileName: { fontFamily: "rr", fontSize: 22, marginBottom: 10 },
   statsContainer: {
     flexDirection: "row",
     justifyContent: "center",
-    marginBottom: 10,
+    marginBottom: 15,
     width: "100%",
   },
   statsItem: {
