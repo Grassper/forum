@@ -45,8 +45,9 @@ const styles = StyleSheet.create({
   },
   countText: {
     color: colors.green,
-    fontFamily: "mr",
+    fontFamily: "mm",
     fontSize: 14,
+    letterSpacing: 0.1,
     lineHeight: 21,
   },
   image: { borderRadius: 50, height: 60, width: 60 },

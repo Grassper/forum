@@ -37,7 +37,7 @@ export const Profile: React.FC<Props_> = () => {
         initialRouteName="Posts"
         screenOptions={{
           tabBarLabelStyle: {
-            fontSize: 16,
+            fontSize: 15,
             fontFamily: "mr",
             textTransform: "capitalize",
           },
