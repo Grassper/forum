@@ -2,6 +2,7 @@ import "react-native-gesture-handler";
 
 import AppLoading from "expo-app-loading";
 import * as Font from "expo-font";
+import { NativeBaseProvider } from "native-base";
 import React, { useState } from "react";
 import { enableScreens } from "react-native-screens";
 
@@ -37,7 +38,11 @@ const App: React.FC = () => {
     );
   }
 
-  return <GlobalStackNavigator />;
+  return (
+    <NativeBaseProvider>
+      <GlobalStackNavigator />
+    </NativeBaseProvider>
+  );
 };
 
 export default App;
