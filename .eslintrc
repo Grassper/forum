@@ -12,5 +12,16 @@
     "import/newline-after-import": "warn",
     "import/no-duplicates": "warn",
     "import/prefer-default-export": "off",
+    "react-native/no-unused-styles": 2,
+    "react-native/no-inline-styles": 2,
+    "react-native/no-color-literals": 2,
+    "react-native/sort-styles": [
+      "error",
+      "asc",
+      {
+          "ignoreClassNames": false,
+          "ignoreStyleProperties": false
+      }
+  ],
 }
 }
