@@ -1,24 +1,17 @@
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import React from "react";
-import { Dimensions, StyleSheet, Text, View } from "react-native";
+import { Dimensions, StyleSheet, View } from "react-native";
 
 import { colors } from "@/root/src/constants";
 
 import { About } from "./About";
 import { Comments } from "./Comment";
+import { Posts } from "./Post";
 import { ProfileCard } from "./ProfileCard";
 
 interface Props_ {}
 
 const Tab = createMaterialTopTabNavigator();
-
-const Posts = () => {
-  return (
-    <View style={styles.container}>
-      <Text>HI</Text>
-    </View>
-  );
-};
 
 const windowWidth = Dimensions.get("window").width;
 
