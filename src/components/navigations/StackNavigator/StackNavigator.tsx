@@ -14,7 +14,7 @@ export const GlobalStackNavigator = () => {
           name="Profile"
           component={Profile}
           options={{
-            title: "Profile",
+            title: "",
           }}
         />
       </Stack.Navigator>
