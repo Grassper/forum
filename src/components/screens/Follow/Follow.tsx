@@ -7,10 +7,11 @@ import { FlatList, ListRenderItem, StyleSheet, View } from "react-native";
 
 import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
 import { colors } from "@/root/src/constants";
-
 type NavigationProp_ = StackNavigationProp<RootStackParamList, "Follow">;
 
-interface Props_ {}
+interface Props_ {
+  navigation: NavigationProp_;
+}
 
 interface FollowCard_ {
   id: string;

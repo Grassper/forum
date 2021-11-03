@@ -29,7 +29,7 @@ export const ProfileCard: React.FC<Props_> = () => {
       <View style={styles.statsContainer}>
         <Pressable
           onPress={() => {
-            navigation.navigate("Follow");
+            navigation.navigate("Follow", { title: "Followers" });
           }}
         >
           <View style={styles.statsItem}>
@@ -39,7 +39,7 @@ export const ProfileCard: React.FC<Props_> = () => {
         </Pressable>
         <Pressable
           onPress={() => {
-            navigation.navigate("Follow");
+            navigation.navigate("Follow", { title: "Following" });
           }}
         >
           <View style={styles.statsItem}>
