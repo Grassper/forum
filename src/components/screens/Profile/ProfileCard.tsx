@@ -1,11 +1,12 @@
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { Pressable, Text } from "native-base";
+import { Button, Pressable, Text } from "native-base";
 import React from "react";
 import { Image, StyleSheet, View } from "react-native";
 
 import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
 import { colors } from "@/root/src/constants";
+import { useToggle } from "@/root/src/hooks";
 
 type NavigationProp_ = StackNavigationProp<RootStackParamList>;
 
@@ -13,7 +14,7 @@ interface Props_ {}
 
 export const ProfileCard: React.FC<Props_> = () => {
   const navigation = useNavigation<NavigationProp_>();
-
+  const [value, toggleValue] = useToggle(false);
   return (
     <View style={styles.profileContainer}>
       <View style={styles.imageContainer}>
@@ -26,6 +27,16 @@ export const ProfileCard: React.FC<Props_> = () => {
       </View>
       <Text style={styles.profileName}>Diana Kiev</Text>
       <Text style={styles.joinedDate}>Joined Oct 2021</Text>
+      <Button
+        onPress={() => toggleValue()}
+        bg={value ? "tertiary.400" : "danger.500"}
+        variant="unstyled"
+        mb="5"
+        minWidth="24"
+        borderRadius="50"
+      >
+        {value ? "Follow" : "Unfollow"}
+      </Button>
       <View style={styles.statsContainer}>
         <Pressable
           onPress={() => {
@@ -77,7 +88,7 @@ const styles = StyleSheet.create({
   joinedDate: {
     fontFamily: "mr",
     fontSize: 12,
-    marginBottom: 20,
+    marginBottom: 10,
   },
   profileContainer: {
     alignItems: "center",

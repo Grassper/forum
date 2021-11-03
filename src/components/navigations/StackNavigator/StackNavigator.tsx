@@ -27,7 +27,7 @@ export const StackNavigator = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="SideDrawerNavigator"
+        initialRouteName="Profile"
         screenOptions={defaultStackOptions}
       >
         <Stack.Screen
