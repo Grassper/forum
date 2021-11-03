@@ -1,4 +1,4 @@
-import { Ionicons } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
 import {
   createDrawerNavigator,
   DrawerContentScrollView,
@@ -9,6 +9,7 @@ import { Avatar, Box, Text } from "native-base";
 import React from "react";
 import { StyleSheet } from "react-native";
 
+import { Follow } from "@/root/src/components/screens/Follow";
 import { Profile } from "@/root/src/components/screens/Profile";
 import { colors } from "@/root/src/constants";
 
@@ -47,6 +48,7 @@ const CustomDrawerContent = (props) => {
 
       <Box mt="8">
         <DrawerItem
+          style={styles.drawerItem}
           label={() => (
             <Text
               fontSize="sm"
@@ -59,7 +61,25 @@ const CustomDrawerContent = (props) => {
             </Text>
           )}
           onPress={() => DrawerNavigation.navigate("Profile")}
-          icon={() => <Ionicons name="person" size={20} color={colors.black} />}
+          icon={() => <Feather name="user" size={20} color={colors.black} />}
+        />
+        <DrawerItem
+          style={styles.drawerItem}
+          label={() => (
+            <Text
+              fontSize="sm"
+              fontFamily="body"
+              fontWeight="500"
+              color="black"
+              ml="-4"
+            >
+              Blocked Accounts
+            </Text>
+          )}
+          onPress={() =>
+            DrawerNavigation.navigate("Follow", { title: "Blocked Accounts" })
+          }
+          icon={() => <Feather name="user-x" size={20} color={colors.black} />}
         />
       </Box>
     </DrawerContentScrollView>
@@ -73,10 +93,16 @@ export const SideDrawerNavigator = () => {
       initialRouteName="Profile"
     >
       <DrawerNavigator.Screen name="Profile" component={Profile} />
+      <DrawerNavigator.Screen name="Follow" component={Follow} />
     </DrawerNavigator.Navigator>
   );
 };
 
 const styles = StyleSheet.create({
   container: { paddingVertical: 30 },
+  drawerItem: {
+    borderRadius: 0,
+    marginVertical: -2,
+    paddingVertical: 0,
+  },
 });

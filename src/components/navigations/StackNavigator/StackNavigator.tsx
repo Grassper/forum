@@ -9,7 +9,7 @@ import { colors } from "@/root/src/constants";
 
 export type RootStackParamList = {
   Profile: undefined;
-  Follow: { title: "Followers" | "Following" };
+  Follow: { title: "Followers" | "Following" | "Blocked Accounts" };
   SideDrawerNavigator: undefined;
 };
 
@@ -27,7 +27,7 @@ export const StackNavigator = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Profile"
+        initialRouteName="SideDrawerNavigator"
         screenOptions={defaultStackOptions}
       >
         <Stack.Screen
