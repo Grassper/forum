@@ -1,32 +1,48 @@
+import { useNavigation } from "@react-navigation/native";
+import { Pressable, Text } from "native-base";
 import React from "react";
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Image, StyleSheet, View } from "react-native";
 
 import { colors } from "@/root/src/constants";
 
 interface Props_ {}
 
 export const ProfileCard: React.FC<Props_> = () => {
+  const navigation = useNavigation();
+
   return (
     <View style={styles.profileContainer}>
-      <TouchableOpacity onPress={() => {}} style={styles.imageContainer}>
+      <View style={styles.imageContainer}>
         <Image
           source={{
             uri: "https://randomuser.me/api/portraits/women/49.jpg",
           }}
           style={styles.image}
         />
-      </TouchableOpacity>
+      </View>
       <Text style={styles.profileName}>Diana Kiev</Text>
       <Text style={styles.joinedDate}>Joined Oct 2021</Text>
       <View style={styles.statsContainer}>
-        <View style={styles.statsItem}>
-          <Text style={styles.count}>862</Text>
-          <Text style={styles.countText}>Followers</Text>
-        </View>
-        <View style={styles.statsItem}>
-          <Text style={styles.count}>468</Text>
-          <Text style={styles.countText}>Following</Text>
-        </View>
+        <Pressable
+          onPress={() => {
+            navigation.navigate("Follow");
+          }}
+        >
+          <View style={styles.statsItem}>
+            <Text style={styles.count}>862</Text>
+            <Text style={styles.countText}>Followers</Text>
+          </View>
+        </Pressable>
+        <Pressable
+          onPress={() => {
+            navigation.navigate("Follow");
+          }}
+        >
+          <View style={styles.statsItem}>
+            <Text style={styles.count}>468</Text>
+            <Text style={styles.countText}>Following</Text>
+          </View>
+        </Pressable>
         <View style={styles.statsItem}>
           <Text style={styles.count}>52</Text>
           <Text style={styles.countText}>Posts</Text>
