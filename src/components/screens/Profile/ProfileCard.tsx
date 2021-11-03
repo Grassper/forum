@@ -1,14 +1,18 @@
 import { useNavigation } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
 import { Pressable, Text } from "native-base";
 import React from "react";
 import { Image, StyleSheet, View } from "react-native";
 
+import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
 import { colors } from "@/root/src/constants";
+
+type NavigationProp_ = StackNavigationProp<RootStackParamList>;
 
 interface Props_ {}
 
 export const ProfileCard: React.FC<Props_> = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProp_>();
 
   return (
     <View style={styles.profileContainer}>

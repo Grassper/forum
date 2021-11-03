@@ -1,7 +1,9 @@
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+import { StackNavigationProp } from "@react-navigation/stack";
 import React from "react";
 import { Dimensions, StyleSheet, View } from "react-native";
 
+import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
 import { colors } from "@/root/src/constants";
 
 import { About } from "./About";
@@ -9,7 +11,11 @@ import { Comments } from "./Comment";
 import { Posts } from "./Post";
 import { ProfileCard } from "./ProfileCard";
 
-interface Props_ {}
+type NavigationProp_ = StackNavigationProp<RootStackParamList, "Profile">;
+
+interface Props_ {
+  navigation: NavigationProp_;
+}
 
 const Tab = createMaterialTopTabNavigator();
 

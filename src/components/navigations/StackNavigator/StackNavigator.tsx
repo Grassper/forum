@@ -1,12 +1,18 @@
 import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
 
 import { SideDrawerNavigator } from "@/root/src/components/navigations/SideDrawerNavigator";
 import { Follow } from "@/root/src/components/screens/Follow";
 import { Profile } from "@/root/src/components/screens/Profile";
 
-const Stack = createNativeStackNavigator();
+export type RootStackParamList = {
+  Profile: undefined;
+  Follow: undefined;
+  SideDrawerNavigator: undefined;
+};
+
+const Stack = createStackNavigator<RootStackParamList>();
 
 export const StackNavigator = () => {
   return (

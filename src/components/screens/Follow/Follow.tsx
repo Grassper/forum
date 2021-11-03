@@ -1,10 +1,14 @@
 import { Entypo } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
 import { Avatar, HStack, Pressable, Text } from "native-base";
 import React from "react";
 import { FlatList, ListRenderItem, StyleSheet, View } from "react-native";
 
+import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
 import { colors } from "@/root/src/constants";
+
+type NavigationProp_ = StackNavigationProp<RootStackParamList, "Follow">;
 
 interface Props_ {}
 
@@ -47,12 +51,12 @@ const Data = [
 ];
 
 const FollowCard: React.FC<FollowCard_> = ({ username, avatarUrl }) => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProp_>();
 
   return (
     <Pressable
       onPress={() => {
-        navigation.navigate("Profile");
+        navigation.push("Profile");
       }}
     >
       <HStack alignItems="center" justifyContent="space-between" my="2">
