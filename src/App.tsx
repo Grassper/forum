@@ -6,7 +6,8 @@ import { NativeBaseProvider } from "native-base";
 import React, { useState } from "react";
 import { enableScreens } from "react-native-screens";
 
-import { GlobalStackNavigator } from "@/root/src/components/navigations/StackNavigator";
+import { StackNavigator } from "@/root/src/components/navigations/StackNavigator";
+import { NativeBaseTheme as Theme } from "@/root/src/config";
 
 enableScreens();
 
@@ -39,8 +40,8 @@ const App: React.FC = () => {
   }
 
   return (
-    <NativeBaseProvider>
-      <GlobalStackNavigator />
+    <NativeBaseProvider theme={Theme}>
+      <StackNavigator />
     </NativeBaseProvider>
   );
 };
