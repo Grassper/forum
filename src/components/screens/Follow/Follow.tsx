@@ -1,12 +1,14 @@
-import { Entypo } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { Avatar, HStack, Pressable, Text } from "native-base";
+import { Box } from "native-base";
 import React from "react";
 import { FlatList, ListRenderItem, StyleSheet, View } from "react-native";
 
 import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
 import { colors } from "@/root/src/constants";
+
+import { FollowCard } from "./FollowCard";
+import { SearchBar } from "./SearchBar";
+
 type NavigationProp_ = StackNavigationProp<RootStackParamList, "Follow">;
 
 interface Props_ {
@@ -51,48 +53,6 @@ const Data = [
   },
 ];
 
-const FollowCard: React.FC<FollowCard_> = ({ username, avatarUrl }) => {
-  const navigation = useNavigation<NavigationProp_>();
-
-  return (
-    <Pressable
-      onPress={() => {
-        navigation.push("Profile");
-      }}
-    >
-      <HStack alignItems="center" justifyContent="space-between" my="2">
-        <HStack space={3} alignItems="center">
-          <Avatar
-            bg="green.500"
-            size="md"
-            source={{
-              uri: avatarUrl,
-            }}
-          >
-            <Text
-              fontSize="md"
-              fontFamily="body"
-              fontWeight="600"
-              color="white"
-            >
-              {username.charAt(0).toUpperCase() || "Ef"}
-            </Text>
-          </Avatar>
-          <Text
-            fontSize="sm"
-            fontFamily="body"
-            fontWeight="500"
-            color="muted.900"
-          >
-            {username}
-          </Text>
-        </HStack>
-        <Entypo name="chevron-small-right" size={24} color="black" />
-      </HStack>
-    </Pressable>
-  );
-};
-
 const FollowCardRenderer: ListRenderItem<FollowCard_> = ({ item }) => {
   return (
     <FollowCard
@@ -107,11 +67,14 @@ export const Follow: React.FC<Props_> = () => {
   return (
     <View style={styles.wrapper}>
       <View style={styles.container}>
-        <FlatList
-          data={Data}
-          renderItem={FollowCardRenderer}
-          keyExtractor={(item) => item.id}
-        />
+        <SearchBar />
+        <Box mt="4">
+          <FlatList
+            data={Data}
+            renderItem={FollowCardRenderer}
+            keyExtractor={(item) => item.id}
+          />
+        </Box>
       </View>
     </View>
   );
