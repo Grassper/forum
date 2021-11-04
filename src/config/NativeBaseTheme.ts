@@ -1,7 +1,14 @@
 import { extendTheme } from "native-base";
 
 export const NativeBaseTheme = extendTheme({
+  colors: {
+    // Add new color
+    eGreen: {
+      400: "#0CBF76",
+    },
+  },
   fontConfig: {
+    // Add new fonts
     Montserrat: {
       300: {
         normal: "ml",

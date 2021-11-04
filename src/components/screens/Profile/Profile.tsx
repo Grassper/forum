@@ -1,5 +1,6 @@
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { StackNavigationProp } from "@react-navigation/stack";
+import { Button } from "native-base";
 import React from "react";
 import { Dimensions, StyleSheet, View } from "react-native";
 
@@ -21,7 +22,22 @@ const Tab = createMaterialTopTabNavigator();
 
 const windowWidth = Dimensions.get("window").width;
 
-export const Profile: React.FC<Props_> = () => {
+export const Profile: React.FC<Props_> = ({ navigation }) => {
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <Button
+          size="md"
+          _text={{ fontWeight: "600", color: "eGreen.400" }}
+          variant="unstyled"
+          onPress={() => navigation.navigate("EditProfile")}
+        >
+          Edit
+        </Button>
+      ),
+    });
+  }, [navigation]);
+
   return (
     <View style={styles.container}>
       <ProfileCard />

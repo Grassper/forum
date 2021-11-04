@@ -3,6 +3,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
 
 import { SideDrawerNavigator } from "@/root/src/components/navigations/SideDrawerNavigator";
+import { EditProfile } from "@/root/src/components/screens/EditProfile";
 import { Follow } from "@/root/src/components/screens/Follow";
 import { Profile } from "@/root/src/components/screens/Profile";
 import { Saved } from "@/root/src/components/screens/Saved";
@@ -13,6 +14,7 @@ export type RootStackParamList = {
   Follow: { title: "Followers" | "Following" | "Blocked Accounts" };
   SideDrawerNavigator: undefined;
   Saved: undefined;
+  EditProfile: undefined;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -29,7 +31,7 @@ export const StackNavigator = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Saved"
+        initialRouteName="Profile"
         screenOptions={defaultStackOptions}
       >
         <Stack.Screen
@@ -63,6 +65,17 @@ export const StackNavigator = () => {
           component={Saved}
           options={() => ({
             title: "Saved",
+            headerStyle: {
+              backgroundColor: colors.green,
+            },
+            headerTintColor: colors.white,
+          })}
+        />
+        <Stack.Screen
+          name="EditProfile"
+          component={EditProfile}
+          options={() => ({
+            title: "Edit Profile",
             headerStyle: {
               backgroundColor: colors.green,
             },

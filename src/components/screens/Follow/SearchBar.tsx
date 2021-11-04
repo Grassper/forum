@@ -12,7 +12,7 @@ export const SearchBar: React.FC = () => {
     <>
       <Input
         bg="muted.100"
-        py="4"
+        py="3"
         value={value}
         onChange={handleChange}
         borderRadius="md"

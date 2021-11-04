@@ -14,7 +14,7 @@ interface Props_ {}
 
 export const ProfileCard: React.FC<Props_> = () => {
   const navigation = useNavigation<NavigationProp_>();
-  const [value, toggleValue] = useToggle(false);
+  const [value, toggleValue] = useToggle(true);
   return (
     <View style={styles.profileContainer}>
       <View style={styles.imageContainer}>
@@ -29,7 +29,7 @@ export const ProfileCard: React.FC<Props_> = () => {
       <Text style={styles.joinedDate}>Joined Oct 2021</Text>
       <Button
         onPress={() => toggleValue()}
-        bg={value ? "tertiary.400" : "danger.500"}
+        bg={value ? "tertiary.500" : "danger.500"}
         variant="unstyled"
         mb="5"
         minWidth="24"
