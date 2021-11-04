@@ -1,11 +1,10 @@
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
-import { Icon, Input, Pressable, useContrastText } from "native-base";
+import { Icon, Input, Pressable } from "native-base";
 import React from "react";
 
 export const SearchBar: React.FC = () => {
   const [value, setValue] = React.useState("");
 
-  const colorContrast = useContrastText("muted.100");
   const handleChange = (event: any) => setValue(event.target.value);
 
   return (

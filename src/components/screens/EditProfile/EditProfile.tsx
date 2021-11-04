@@ -1,9 +1,14 @@
+import { MaterialIcons } from "@expo/vector-icons";
 import { StackNavigationProp } from "@react-navigation/stack";
 import {
+  Avatar,
   Box,
   Button,
   FormControl,
+  Icon,
   Input,
+  Pressable,
+  Text,
   WarningOutlineIcon,
 } from "native-base";
 import React from "react";
@@ -21,9 +26,6 @@ interface Props_ {
 export const EditProfile: React.FC<Props_> = ({ navigation }) => {
   const [userName, setUserName] = React.useState("");
   const [about, setAbout] = React.useState("");
-
-  const handleUserName = (event: any) => setUserName(event.target.value);
-  const handleAbout = (event: any) => setAbout(event.target.value);
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -43,13 +45,53 @@ export const EditProfile: React.FC<Props_> = ({ navigation }) => {
   return (
     <Box style={styles.wrapper}>
       <Box style={styles.container}>
+        <Box alignItems="center" justifyContent="center" my="4">
+          <Box position="relative">
+            <Avatar
+              bg="green.500"
+              size="xl"
+              source={{
+                uri: "https://randomuser.me/api/portraits/women/49.jpg",
+              }}
+            >
+              <Text
+                fontSize="md"
+                fontFamily="body"
+                fontWeight="600"
+                color="white"
+              >
+                Dk
+              </Text>
+            </Avatar>
+            <Pressable
+              onPress={() => {
+                console.log("open gallary");
+              }}
+            >
+              <Box
+                bg="eGreen.400"
+                p="2"
+                borderRadius="full"
+                position="absolute"
+                bottom="0"
+                right="0"
+              >
+                <Icon
+                  as={<MaterialIcons name="motion-photos-on" />}
+                  size={18}
+                  color="white"
+                />
+              </Box>
+            </Pressable>
+          </Box>
+        </Box>
         <FormControl isRequired>
           <FormControl.Label mb="3">User Name</FormControl.Label>
           <Input
             bg="muted.100"
             p="4"
             value={userName}
-            onChange={handleUserName}
+            onChangeText={setUserName}
             borderRadius="md"
             placeholder="John joe."
             placeholderTextColor="muted.400"
@@ -71,7 +113,7 @@ export const EditProfile: React.FC<Props_> = ({ navigation }) => {
             maxLength={300}
             numberOfLines={4}
             value={about}
-            onChange={handleAbout}
+            onChangeText={setAbout}
             borderRadius="md"
             placeholder="About (optional)"
             placeholderTextColor="muted.400"
