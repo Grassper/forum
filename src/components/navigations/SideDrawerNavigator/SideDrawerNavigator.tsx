@@ -1,17 +1,17 @@
-import { Feather } from "@expo/vector-icons";
+import { Entypo, Feather } from "@expo/vector-icons";
 import {
   createDrawerNavigator,
   DrawerContentScrollView,
   DrawerItem,
 } from "@react-navigation/drawer";
 import { useNavigation } from "@react-navigation/native";
-import { Avatar, Box, Text } from "native-base";
+import { Avatar, Box, Icon, Text } from "native-base";
 import React from "react";
 import { StyleSheet } from "react-native";
 
 import { Follow } from "@/root/src/components/screens/Follow";
 import { Profile } from "@/root/src/components/screens/Profile";
-import { colors } from "@/root/src/constants";
+import { Saved } from "@/root/src/components/screens/Saved";
 
 const DrawerNavigator = createDrawerNavigator();
 
@@ -63,7 +63,9 @@ const CustomDrawerContent = (props) => {
           onPress={() =>
             DrawerNavigation.navigate("Profile", { userId: undefined })
           } // pass undefined for current user
-          icon={() => <Feather name="user" size={20} color={colors.black} />}
+          icon={() => (
+            <Icon as={<Feather name="user" />} size={5} ml="3" color="black" />
+          )}
         />
         <DrawerItem
           style={styles.drawerItem}
@@ -81,7 +83,32 @@ const CustomDrawerContent = (props) => {
           onPress={() =>
             DrawerNavigation.navigate("Follow", { title: "Blocked Accounts" })
           }
-          icon={() => <Feather name="user-x" size={20} color={colors.black} />}
+          icon={() => (
+            <Icon as={<Entypo name="block" />} size={5} ml="3" color="black" />
+          )}
+        />
+        <DrawerItem
+          style={styles.drawerItem}
+          label={() => (
+            <Text
+              fontSize="sm"
+              fontFamily="body"
+              fontWeight="500"
+              color="black"
+              ml="-4"
+            >
+              Saved
+            </Text>
+          )}
+          onPress={() => DrawerNavigation.navigate("Saved")}
+          icon={() => (
+            <Icon
+              as={<Feather name="bookmark" />}
+              size={5}
+              ml="3"
+              color="black"
+            />
+          )}
         />
       </Box>
     </DrawerContentScrollView>
@@ -94,8 +121,15 @@ export const SideDrawerNavigator = () => {
       drawerContent={(props) => <CustomDrawerContent {...props} />}
       initialRouteName="Profile"
     >
-      <DrawerNavigator.Screen name="Profile" component={Profile} />
-      <DrawerNavigator.Screen name="Follow" component={Follow} />
+      <DrawerNavigator.Screen
+        name="Profile"
+        component={Profile}
+        options={{
+          title: "",
+        }}
+      />
+      <DrawerNavigator.Screen name="Blocked Accounts" component={Follow} />
+      <DrawerNavigator.Screen name="Saved" component={Saved} />
     </DrawerNavigator.Navigator>
   );
 };
