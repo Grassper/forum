@@ -17,7 +17,7 @@ export const SearchBar: React.FC = () => {
         onChange={handleChange}
         borderRadius="md"
         placeholder="Search"
-        placeholderTextColor={colorContrast}
+        placeholderTextColor="muted.400"
         fontSize="sm"
         variant="unstyled"
         InputLeftElement={
@@ -25,7 +25,7 @@ export const SearchBar: React.FC = () => {
             as={<Ionicons name="search-outline" />}
             size={18}
             ml="3"
-            color={colorContrast}
+            color="muted.400"
           />
         }
         InputRightElement={
@@ -34,7 +34,7 @@ export const SearchBar: React.FC = () => {
               as={<MaterialIcons name="clear" />}
               size={18}
               mr="3"
-              color={colorContrast}
+              color="muted.400"
             />
           </Pressable>
         }

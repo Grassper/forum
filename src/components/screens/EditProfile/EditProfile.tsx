@@ -4,7 +4,6 @@ import {
   Button,
   FormControl,
   Input,
-  useContrastText,
   WarningOutlineIcon,
 } from "native-base";
 import React from "react";
@@ -22,8 +21,6 @@ interface Props_ {
 export const EditProfile: React.FC<Props_> = ({ navigation }) => {
   const [userName, setUserName] = React.useState("");
   const [about, setAbout] = React.useState("");
-
-  const colorContrast = useContrastText("muted.100");
 
   const handleUserName = (event: any) => setUserName(event.target.value);
   const handleAbout = (event: any) => setAbout(event.target.value);
@@ -55,7 +52,7 @@ export const EditProfile: React.FC<Props_> = ({ navigation }) => {
             onChange={handleUserName}
             borderRadius="md"
             placeholder="John joe."
-            placeholderTextColor={colorContrast}
+            placeholderTextColor="muted.400"
             fontSize="sm"
             variant="unstyled"
           />
@@ -77,7 +74,7 @@ export const EditProfile: React.FC<Props_> = ({ navigation }) => {
             onChange={handleAbout}
             borderRadius="md"
             placeholder="About (optional)"
-            placeholderTextColor={colorContrast}
+            placeholderTextColor="muted.400"
             fontSize="sm"
             variant="unstyled"
           />
