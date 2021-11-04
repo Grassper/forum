@@ -5,15 +5,13 @@ import React from "react";
 export const SearchBar: React.FC = () => {
   const [value, setValue] = React.useState("");
 
-  const handleChange = (event: any) => setValue(event.target.value);
-
   return (
     <>
       <Input
         bg="muted.100"
         py="3"
         value={value}
-        onChange={handleChange}
+        onChangeText={setValue}
         borderRadius="md"
         placeholder="Search"
         placeholderTextColor="muted.400"
