@@ -10,9 +10,11 @@ import { useToggle } from "@/root/src/hooks";
 
 type NavigationProp_ = StackNavigationProp<RootStackParamList>;
 
-interface Props_ {}
+interface Props_ {
+  userId?: string;
+}
 
-export const ProfileCard: React.FC<Props_> = () => {
+export const ProfileCard: React.FC<Props_> = ({ userId }) => {
   const navigation = useNavigation<NavigationProp_>();
   const [value, toggleValue] = useToggle(true);
   return (
@@ -27,16 +29,19 @@ export const ProfileCard: React.FC<Props_> = () => {
       </View>
       <Text style={styles.profileName}>Diana Kiev</Text>
       <Text style={styles.joinedDate}>Joined Oct 2021</Text>
-      <Button
-        onPress={() => toggleValue()}
-        bg={value ? "tertiary.500" : "danger.500"}
-        variant="unstyled"
-        mb="5"
-        minWidth="24"
-        borderRadius="50"
-      >
-        {value ? "Follow" : "Unfollow"}
-      </Button>
+      {userId &&
+        userId !== "1" && ( // checking our user id with incoming user id to show follow button
+          <Button
+            onPress={() => toggleValue()}
+            bg={value ? "tertiary.500" : "danger.500"}
+            variant="unstyled"
+            mb="5"
+            minWidth="24"
+            borderRadius="50"
+          >
+            {value ? "Follow" : "Unfollow"}
+          </Button>
+        )}
       <View style={styles.statsContainer}>
         <Pressable
           onPress={() => {

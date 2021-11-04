@@ -60,7 +60,9 @@ const CustomDrawerContent = (props) => {
               My Profile
             </Text>
           )}
-          onPress={() => DrawerNavigation.navigate("Profile")}
+          onPress={() =>
+            DrawerNavigation.navigate("Profile", { userId: undefined })
+          } // pass undefined for current user
           icon={() => <Feather name="user" size={20} color={colors.black} />}
         />
         <DrawerItem

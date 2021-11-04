@@ -20,7 +20,7 @@ export const FollowCard: React.FC<FollowCard_> = ({ username, avatarUrl }) => {
   return (
     <Pressable
       onPress={() => {
-        navigation.push("Profile");
+        navigation.push("Profile", { userId: "2" }); // pass user id here of follow card user example: 2
       }}
     >
       <HStack alignItems="center" justifyContent="space-between" mb="4">

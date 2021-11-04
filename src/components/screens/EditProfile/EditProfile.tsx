@@ -34,7 +34,7 @@ export const EditProfile: React.FC<Props_> = ({ navigation }) => {
           size="md"
           _text={{ fontWeight: "600", color: "white" }}
           variant="unstyled"
-          onPress={() => navigation.navigate("Profile")}
+          onPress={() => navigation.navigate("Profile", { userId: undefined })} // pass undefined for current user
         >
           Save
         </Button>

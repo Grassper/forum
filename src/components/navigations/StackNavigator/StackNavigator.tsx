@@ -10,7 +10,7 @@ import { Saved } from "@/root/src/components/screens/Saved";
 import { colors } from "@/root/src/constants";
 
 export type RootStackParamList = {
-  Profile: undefined;
+  Profile: { userId?: string };
   Follow: { title: "Followers" | "Following" | "Blocked Accounts" };
   SideDrawerNavigator: undefined;
   Saved: undefined;
