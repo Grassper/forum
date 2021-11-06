@@ -6,6 +6,9 @@ export const NativeBaseTheme = extendTheme({
     eGreen: {
       400: "#0CBF76",
     },
+    border: {
+      400: "#55555515",
+    },
   },
   fontConfig: {
     // Add new fonts

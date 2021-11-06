@@ -21,7 +21,9 @@ export const SubForum: React.FC<Props_> = ({ navigation }) => {
           size="md"
           _text={{ fontWeight: "600", color: "eGreen.400" }}
           variant="unstyled"
-          onPress={() => {}}
+          onPress={() => {
+            navigation.navigate("SubForumMod");
+          }}
         >
           Manage
         </Button>
