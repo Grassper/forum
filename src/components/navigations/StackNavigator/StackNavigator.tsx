@@ -3,8 +3,8 @@ import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
 
 import { SideDrawerNavigator } from "@/root/src/components/navigations/SideDrawerNavigator";
+import { EditAndCreateSubForum } from "@/root/src/components/screens/EditAndCreateSubForum";
 import { EditProfile } from "@/root/src/components/screens/EditProfile";
-import { EditSubForum } from "@/root/src/components/screens/EditSubForum";
 import { Follow } from "@/root/src/components/screens/Follow";
 import { Profile } from "@/root/src/components/screens/Profile";
 import { Saved } from "@/root/src/components/screens/Saved";
@@ -19,7 +19,7 @@ export type RootStackParamList = {
   Saved: undefined;
   EditProfile: undefined;
   SubForum: undefined;
-  EditSubForum: undefined;
+  EditAndCreateSubForum: { title: "Edit Subforum" | "Create Subforum" };
   SubForumMod: undefined;
 };
 
@@ -37,7 +37,7 @@ export const StackNavigator = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="SubForum"
+        initialRouteName="SideDrawerNavigator"
         screenOptions={defaultStackOptions}
       >
         <Stack.Screen
@@ -96,10 +96,10 @@ export const StackNavigator = () => {
           })}
         />
         <Stack.Screen
-          name="EditSubForum"
-          component={EditSubForum}
-          options={() => ({
-            title: "Edit SubForum",
+          name="EditAndCreateSubForum"
+          component={EditAndCreateSubForum}
+          options={({ route }) => ({
+            title: route.params.title,
             headerStyle: {
               backgroundColor: colors.green,
             },

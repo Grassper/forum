@@ -120,7 +120,13 @@ export const SubForumCard: React.FC<Props_> = ({
                 <Text fontSize="md" fontWeight="500">
                   {name}
                 </Text>
-                <Pressable onPress={() => navigation.navigate("EditSubForum")}>
+                <Pressable
+                  onPress={() =>
+                    navigation.navigate("EditAndCreateSubForum", {
+                      title: "Edit Subforum",
+                    })
+                  }
+                >
                   <Icon
                     as={<Foundation name="pencil" />}
                     size={18}

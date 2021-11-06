@@ -1,3 +1,4 @@
+import { RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import {
   Box,
@@ -12,13 +13,24 @@ import { StyleSheet, View } from "react-native";
 import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
 import { SubForumCard } from "@/root/src/components/screens/SubForum/SubForumCard";
 
-type NavigationProp_ = StackNavigationProp<RootStackParamList, "EditSubForum">;
+type RouteProp_ = RouteProp<RootStackParamList, "EditAndCreateSubForum">;
+
+type NavigationProp_ = StackNavigationProp<
+  RootStackParamList,
+  "EditAndCreateSubForum"
+>;
 
 interface Props_ {
   navigation: NavigationProp_;
+  route: RouteProp_;
 }
 
-export const EditSubForum: React.FC<Props_> = ({ navigation }) => {
+export const EditAndCreateSubForum: React.FC<Props_> = ({
+  navigation,
+  route,
+}) => {
+  const { title } = route.params;
+
   const [forum, setForum] = React.useState("");
   const [description, setDescripton] = React.useState("");
 
@@ -31,7 +43,7 @@ export const EditSubForum: React.FC<Props_> = ({ navigation }) => {
           variant="unstyled"
           onPress={() => navigation.navigate("SubForum")}
         >
-          Save
+          {title === "Edit Subforum" ? "Save" : "Create"}
         </Button>
       ),
     });

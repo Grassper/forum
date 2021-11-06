@@ -1,4 +1,4 @@
-import { Entypo, Feather } from "@expo/vector-icons";
+import { AntDesign, Entypo, Feather } from "@expo/vector-icons";
 import {
   createDrawerNavigator,
   DrawerContentScrollView,
@@ -9,6 +9,7 @@ import { Avatar, Box, Icon, Text } from "native-base";
 import React from "react";
 import { StyleSheet } from "react-native";
 
+import { EditAndCreateSubForum } from "@/root/src/components/screens/EditAndCreateSubForum";
 import { Follow } from "@/root/src/components/screens/Follow";
 import { Profile } from "@/root/src/components/screens/Profile";
 import { Saved } from "@/root/src/components/screens/Saved";
@@ -110,6 +111,33 @@ const CustomDrawerContent = (props) => {
             />
           )}
         />
+        <DrawerItem
+          style={styles.drawerItem}
+          label={() => (
+            <Text
+              fontSize="sm"
+              fontFamily="body"
+              fontWeight="500"
+              color="black"
+              ml="-4"
+            >
+              Create Subforum
+            </Text>
+          )}
+          onPress={() =>
+            DrawerNavigation.navigate("EditAndCreateSubForum", {
+              title: "Create Subforum",
+            })
+          }
+          icon={() => (
+            <Icon
+              as={<AntDesign name="pluscircleo" />}
+              size={5}
+              ml="3"
+              color="black"
+            />
+          )}
+        />
       </Box>
     </DrawerContentScrollView>
   );
@@ -130,6 +158,10 @@ export const SideDrawerNavigator = () => {
       />
       <DrawerNavigator.Screen name="Blocked Accounts" component={Follow} />
       <DrawerNavigator.Screen name="Saved" component={Saved} />
+      <DrawerNavigator.Screen
+        name="EditAndCreateSubForum"
+        component={EditAndCreateSubForum}
+      />
     </DrawerNavigator.Navigator>
   );
 };
