@@ -1,4 +1,11 @@
 import { StackNavigationProp } from "@react-navigation/stack";
+import {
+  Box,
+  Button,
+  FormControl,
+  Input,
+  WarningOutlineIcon,
+} from "native-base";
 import React from "react";
 import { StyleSheet, View } from "react-native";
 
@@ -11,14 +18,88 @@ interface Props_ {
   navigation: NavigationProp_;
 }
 
-export const EditSubForum: React.FC<Props_> = () => {
+export const EditSubForum: React.FC<Props_> = ({ navigation }) => {
+  const [forum, setForum] = React.useState("");
+  const [description, setDescripton] = React.useState("");
+
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <Button
+          size="md"
+          _text={{ fontWeight: "600", color: "white" }}
+          variant="unstyled"
+          onPress={() => navigation.navigate("SubForum")}
+        >
+          Save
+        </Button>
+      ),
+    });
+  }, [navigation]);
+
   return (
     <View style={styles.container}>
       <SubForumCard isEdit />
+      <Box style={styles.wrapper} bg="white">
+        <Box style={styles.inputContainer}>
+          <FormControl isRequired>
+            <FormControl.Label mb="3">Forum Name</FormControl.Label>
+            <Input
+              bg="muted.100"
+              p="4"
+              value={forum}
+              onChangeText={setForum}
+              borderRadius="md"
+              placeholder="Mechkeys"
+              placeholderTextColor="muted.400"
+              fontSize="sm"
+              variant="unstyled"
+            />
+            <FormControl.ErrorMessage
+              leftIcon={<WarningOutlineIcon size="xs" />}
+            >
+              You must provide username
+            </FormControl.ErrorMessage>
+          </FormControl>
+          <FormControl mt="4" isRequired>
+            <FormControl.Label mb="3">Description</FormControl.Label>
+            <Input
+              bg="muted.100"
+              p="4"
+              mb="2"
+              minHeight="125"
+              multiline
+              maxLength={140}
+              numberOfLines={4}
+              value={description}
+              onChangeText={setDescripton}
+              borderRadius="md"
+              placeholder="We talk about keyboards"
+              placeholderTextColor="muted.400"
+              fontSize="sm"
+              variant="unstyled"
+            />
+            <FormControl.HelperText>
+              Crispy introduction about forum
+            </FormControl.HelperText>
+          </FormControl>
+        </Box>
+      </Box>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
+  inputContainer: {
+    flex: 1,
+    marginBottom: 20,
+    paddingVertical: 15,
+    width: "90%",
+  },
+  wrapper: {
+    alignItems: "center",
+    flex: 1,
+    width: "100%",
+  },
 });
