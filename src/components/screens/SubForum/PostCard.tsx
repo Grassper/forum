@@ -26,8 +26,8 @@ export const PostCard: React.FC<Props_> = ({
   mediaUrl,
   contentText,
 }) => {
-  const video = React.useRef(null);
-  const [status, setStatus] = React.useState({});
+  const videoRef = React.useRef(null);
+
   return (
     <Box bg="white" alignItems="center" py="4" mb="2">
       <Box width="90%">
@@ -76,15 +76,13 @@ export const PostCard: React.FC<Props_> = ({
       {type === "Video" && mediaUrl && (
         <Box mb="4" width="100%">
           <Video
-            ref={video}
+            ref={videoRef}
             style={styles.video}
             source={{
               uri: mediaUrl,
             }}
             useNativeControls
             resizeMode="cover"
-            isLooping
-            onPlaybackStatusUpdate={(status) => setStatus(() => status)}
           />
         </Box>
       )}
@@ -94,7 +92,7 @@ export const PostCard: React.FC<Props_> = ({
       {type === "Image" && mediaUrl && (
         <Image
           width="100%"
-          height="200"
+          height="350"
           alt="fallback text"
           source={{
             uri: mediaUrl,
@@ -152,6 +150,5 @@ const styles = StyleSheet.create({
   video: {
     backgroundColor: colors.black,
     height: 200,
-    width: "100%",
   },
 });

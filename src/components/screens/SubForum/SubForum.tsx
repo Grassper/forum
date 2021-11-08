@@ -16,18 +16,6 @@ interface Props_ {
 
 const Data: PostCardProps_[] = [
   {
-    id: "58694a0f-3da1-471f-bd96-145571e29d72",
-    contentText:
-      "Felicity grew up in a middle class neighbourhood. She was raised by her mother, her father having left when she was young.",
-    type: "Video",
-    timeStamp: "Nov 30",
-    subForum: "MechKeys",
-    username: "Anci Barroco",
-    mediaUrl:
-      "https://ia800501.us.archive.org/11/items/popeye_i_dont_scare/popeye_i_dont_scare_512kb.mp4",
-    avatarUrl: "https://miro.medium.com/max/1400/0*0fClPmIScV5pTLoE.jpg",
-  },
-  {
     id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
     contentText:
       "Felicity grew up in a middle class neighbourhood. She was raised by her mother, her father having left when she was young.",
@@ -50,6 +38,18 @@ const Data: PostCardProps_[] = [
       "https://images.unsplash.com/photo-1636302304088-e1bd81885a71?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=764&q=80",
     avatarUrl:
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyEaZqT3fHeNrPGcnjLLX1v_W4mvBlgpwxnA&usqp=CAU",
+  },
+  {
+    id: "58694a0f-3da1-471f-bd96-145571e29d72",
+    contentText:
+      "Felicity grew up in a middle class neighbourhood. She was raised by her mother, her father having left when she was young.",
+    type: "Video",
+    timeStamp: "Nov 30",
+    subForum: "MechKeys",
+    username: "Anci Barroco",
+    mediaUrl:
+      "https://ia800501.us.archive.org/11/items/popeye_i_dont_scare/popeye_i_dont_scare_512kb.mp4",
+    avatarUrl: "https://miro.medium.com/max/1400/0*0fClPmIScV5pTLoE.jpg",
   },
 ];
 
