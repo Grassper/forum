@@ -37,7 +37,7 @@ export const StackNavigator = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="SideDrawerNavigator"
+        initialRouteName="SubForum"
         screenOptions={defaultStackOptions}
       >
         <Stack.Screen

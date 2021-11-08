@@ -47,7 +47,7 @@ export const EditAndCreateSubForum: React.FC<Props_> = ({
         </Button>
       ),
     });
-  }, [navigation]);
+  }, [navigation, title]);
 
   return (
     <View style={styles.container}>
