@@ -1,6 +1,15 @@
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import { Video } from "expo-av";
-import { Avatar, Box, HStack, Icon, Image, Pressable, Text } from "native-base";
+import {
+  Avatar,
+  Box,
+  Flex,
+  HStack,
+  Icon,
+  Image,
+  Pressable,
+  Text,
+} from "native-base";
 import React from "react";
 import { StyleSheet } from "react-native";
 
@@ -8,7 +17,7 @@ import { colors } from "@/root/src/constants";
 
 export interface Props_ {
   id: string;
-  type: "Image" | "Text" | "Video";
+  type: "Image" | "Text" | "Video" | "Audio" | "Poll";
   username: string;
   avatarUrl: string;
   subForum: string;
@@ -27,7 +36,7 @@ export const PostCard: React.FC<Props_> = ({
   contentText,
 }) => {
   const videoRef = React.useRef(null);
-
+  const [voted, setVoted] = React.useState(false);
   return (
     <Box bg="white" alignItems="center" py="4" mb="2">
       <Box width="90%">
@@ -100,10 +109,156 @@ export const PostCard: React.FC<Props_> = ({
           mb="4"
         />
       )}
-      {/**
-       * text only post
-       */}
+
       <Box width="90%">
+        {/**
+         * poll post
+         */}
+        {type === "Poll" && (
+          <Box bg="green.50" px="3" py="4" mb="4">
+            <Text fontSize="14.5" fontWeight="500" mb="2">
+              What is role of day to day software engineering?
+            </Text>
+            <Box mt="2">
+              {/**
+               * before user is voted
+               */}
+              {!voted ? (
+                <Box mb="2">
+                  <Pressable
+                    onPress={() => {
+                      setVoted(true);
+                    }}
+                  >
+                    <Flex
+                      p="3"
+                      py="2"
+                      bg="white"
+                      mb="2"
+                      alignItems="center"
+                      borderRadius="5"
+                    >
+                      <Text fontWeight="500">Front end</Text>
+                    </Flex>
+                  </Pressable>
+                  <Pressable
+                    onPress={() => {
+                      setVoted(true);
+                    }}
+                  >
+                    <Flex
+                      p="3"
+                      py="2"
+                      bg="white"
+                      mb="2"
+                      alignItems="center"
+                      borderRadius="5"
+                    >
+                      <Text fontWeight="500">Back end</Text>
+                    </Flex>
+                  </Pressable>
+                  <Pressable
+                    onPress={() => {
+                      setVoted(true);
+                    }}
+                  >
+                    <Flex
+                      p="3"
+                      py="2"
+                      bg="white"
+                      mb="2"
+                      alignItems="center"
+                      borderRadius="5"
+                    >
+                      <Text fontWeight="500">Infrastructure</Text>
+                    </Flex>
+                  </Pressable>
+                </Box>
+              ) : (
+                <Box mb="2">
+                  {/**
+                   * after user is voted
+                   */}
+                  <Flex
+                    p="3"
+                    py="2"
+                    bg="white"
+                    position="relative"
+                    overflow="hidden"
+                    mb="2"
+                    alignItems="flex-start"
+                    borderRadius="5"
+                  >
+                    <Box
+                      position="absolute"
+                      bg="green.200"
+                      height="100"
+                      width="12%"
+                    />
+                    <Text fontWeight="500">Front end</Text>
+                  </Flex>
+                  <Flex
+                    p="3"
+                    py="2"
+                    bg="white"
+                    position="relative"
+                    overflow="hidden"
+                    mb="2"
+                    alignItems="flex-start"
+                    borderRadius="5"
+                  >
+                    <Box
+                      position="absolute"
+                      bg="green.200"
+                      height="100"
+                      width="63%"
+                    />
+                    <Text fontWeight="500">Back end</Text>
+                  </Flex>
+                  <Flex
+                    p="3"
+                    py="2"
+                    bg="white"
+                    position="relative"
+                    overflow="hidden"
+                    mb="2"
+                    alignItems="flex-start"
+                    borderRadius="5"
+                  >
+                    <Box
+                      position="absolute"
+                      bg="green.200"
+                      height="100"
+                      width="28%"
+                    />
+                    <Text fontWeight="500">Infrastructure</Text>
+                  </Flex>
+                </Box>
+              )}
+            </Box>
+            <Flex flexDirection="row" justifyContent="space-between">
+              <HStack alignItems="center">
+                <Text fontSize="xs">2832 votes</Text>
+                <Box bg="blueGray.500" style={styles.separatorDot} />
+                <Text fontSize="xs">1 day Left</Text>
+              </HStack>
+              {voted && (
+                <Pressable
+                  onPress={() => {
+                    setVoted(false);
+                  }}
+                >
+                  <Text fontSize="xs" fontWeight="500">
+                    Undo
+                  </Text>
+                </Pressable>
+              )}
+            </Flex>
+          </Box>
+        )}
+        {/**
+         * text only post
+         */}
         <Text mb="4">{contentText}</Text>
         {/**
          * User actions section
