@@ -1,11 +1,32 @@
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
-import { Avatar, Box, HStack, Icon, Text } from "native-base";
+import { Avatar, Box, HStack, Icon, Image, Pressable, Text } from "native-base";
 import React from "react";
 import { StyleSheet } from "react-native";
 
-export const PostCard: React.FC = () => {
+export interface Props_ {
+  id: string;
+  type: "Image" | "Text" | "Video" | "Audio";
+  username: string;
+  avatarUrl: string;
+  subForum: string;
+  timeStamp: string;
+  contentText: string;
+  imageUrl?: string;
+  videoUrl?: string;
+  audioUrl?: string;
+}
+
+export const PostCard: React.FC<Props_> = ({
+  username,
+  subForum,
+  timeStamp,
+  avatarUrl,
+  type,
+  imageUrl,
+  contentText,
+}) => {
   return (
-    <Box bg="white" alignItems="center" py="2" mb="2">
+    <Box bg="white" alignItems="center" py="4" mb="2">
       <Box width="90%">
         <HStack alignItems="center" justifyContent="space-between" mb="3">
           <HStack alignItems="center" space="3">
@@ -14,7 +35,7 @@ export const PostCard: React.FC = () => {
               width="38"
               height="38"
               source={{
-                uri: "https://avatars.dicebear.com/api/adventurer/your-custodadm-seed.svg",
+                uri: avatarUrl,
               }}
             >
               <Text
@@ -23,18 +44,18 @@ export const PostCard: React.FC = () => {
                 fontWeight="600"
                 color="white"
               >
-                Dk
+                {username.charAt(0).toUpperCase() || "Ef"}
               </Text>
             </Avatar>
             <Box>
-              <Text>Mr.Keys</Text>
+              <Text fontWeight="500">{username}</Text>
               <HStack alignItems="center">
                 <Text fontSize="xs" color="blueGray.500">
-                  in e/MechKeys
+                  in e/{subForum}
                 </Text>
                 <Box bg="blueGray.500" style={styles.separatorDot} />
                 <Text fontSize="xs" color="blueGray.500">
-                  Nov 30
+                  {timeStamp}
                 </Text>
               </HStack>
             </Box>
@@ -45,32 +66,54 @@ export const PostCard: React.FC = () => {
             color="muted.500"
           />
         </HStack>
-        <Text mb="4">
-          Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean
-          commodo ligula eget dolor. Aenean massa. Cum sociis natoque
-        </Text>
+      </Box>
+      {/**
+       * text and image post
+       */}
+      {type === "Image" && imageUrl && (
+        <Image
+          width="100%"
+          height="200"
+          alt="fallback text"
+          source={{
+            uri: imageUrl,
+          }}
+          mb="4"
+        />
+      )}
+      {/**
+       * text only post
+       */}
+      <Box width="90%">
+        <Text mb="4">{contentText}</Text>
         {/**
          * User actions section
          */}
         <Box>
           <HStack alignItems="center" justifyContent="space-between">
             <HStack space="3" alignItems="center">
-              <Icon
-                as={<FontAwesome name="heart-o" />}
-                size={5}
-                color="muted.500"
-              />
-              <Icon
-                as={<Ionicons name="chatbubble-outline" />}
-                size={5}
-                color="muted.500"
-              />
+              <Pressable onPress={() => {}}>
+                <Icon
+                  as={<FontAwesome name="heart-o" />}
+                  size={5}
+                  color="muted.500"
+                />
+              </Pressable>
+              <Pressable onPress={() => {}}>
+                <Icon
+                  as={<Ionicons name="chatbubble-outline" />}
+                  size={5}
+                  color="muted.500"
+                />
+              </Pressable>
             </HStack>
-            <Icon
-              as={<Ionicons name="share-outline" />}
-              size={5}
-              color="muted.500"
-            />
+            <Pressable onPress={() => {}}>
+              <Icon
+                as={<Ionicons name="share-outline" />}
+                size={5}
+                color="muted.500"
+              />
+            </Pressable>
           </HStack>
         </Box>
       </Box>
