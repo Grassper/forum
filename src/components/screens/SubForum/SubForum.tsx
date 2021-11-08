@@ -88,11 +88,11 @@ export const SubForum: React.FC<Props_> = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <SubForumCard />
       <Box mt="2">
         <FlatList
           data={Data}
           renderItem={PostCardRenderer}
+          ListHeaderComponent={() => <SubForumCard />}
           keyExtractor={(item) => item.id}
         />
       </Box>
