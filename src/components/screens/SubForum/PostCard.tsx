@@ -1,19 +1,20 @@
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
+import { Video } from "expo-av";
 import { Avatar, Box, HStack, Icon, Image, Pressable, Text } from "native-base";
 import React from "react";
 import { StyleSheet } from "react-native";
 
+import { colors } from "@/root/src/constants";
+
 export interface Props_ {
   id: string;
-  type: "Image" | "Text" | "Video" | "Audio";
+  type: "Image" | "Text" | "Video";
   username: string;
   avatarUrl: string;
   subForum: string;
   timeStamp: string;
   contentText: string;
-  imageUrl?: string;
-  videoUrl?: string;
-  audioUrl?: string;
+  mediaUrl?: string;
 }
 
 export const PostCard: React.FC<Props_> = ({
@@ -22,9 +23,11 @@ export const PostCard: React.FC<Props_> = ({
   timeStamp,
   avatarUrl,
   type,
-  imageUrl,
+  mediaUrl,
   contentText,
 }) => {
+  const video = React.useRef(null);
+  const [status, setStatus] = React.useState({});
   return (
     <Box bg="white" alignItems="center" py="4" mb="2">
       <Box width="90%">
@@ -68,15 +71,33 @@ export const PostCard: React.FC<Props_> = ({
         </HStack>
       </Box>
       {/**
-       * text and image post
+       * video post
        */}
-      {type === "Image" && imageUrl && (
+      {type === "Video" && mediaUrl && (
+        <Box mb="4" width="100%">
+          <Video
+            ref={video}
+            style={styles.video}
+            source={{
+              uri: mediaUrl,
+            }}
+            useNativeControls
+            resizeMode="cover"
+            isLooping
+            onPlaybackStatusUpdate={(status) => setStatus(() => status)}
+          />
+        </Box>
+      )}
+      {/**
+       * image post
+       */}
+      {type === "Image" && mediaUrl && (
         <Image
           width="100%"
           height="200"
           alt="fallback text"
           source={{
-            uri: imageUrl,
+            uri: mediaUrl,
           }}
           mb="4"
         />
@@ -127,5 +148,10 @@ const styles = StyleSheet.create({
     height: 2.5,
     marginHorizontal: 5,
     width: 2.5,
+  },
+  video: {
+    backgroundColor: colors.black,
+    height: 200,
+    width: "100%",
   },
 });
