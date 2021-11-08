@@ -1,10 +1,11 @@
 import { StackNavigationProp } from "@react-navigation/stack";
-import { Button } from "native-base";
+import { Box, Button, ScrollView } from "native-base";
 import React from "react";
 import { StyleSheet, View } from "react-native";
 
 import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
 
+import { PostCard } from "./PostCard";
 import { SubForumCard } from "./SubForumCard";
 
 type NavigationProp_ = StackNavigationProp<RootStackParamList, "SubForum">;
@@ -34,6 +35,14 @@ export const SubForum: React.FC<Props_> = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <SubForumCard />
+      <Box mt="2">
+        <ScrollView>
+          <PostCard />
+          <PostCard />
+          <PostCard />
+          <PostCard />
+        </ScrollView>
+      </Box>
     </View>
   );
 };
