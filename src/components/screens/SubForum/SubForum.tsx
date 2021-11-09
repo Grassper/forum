@@ -4,8 +4,11 @@ import React from "react";
 import { FlatList, ListRenderItem, StyleSheet, View } from "react-native";
 
 import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
+import {
+  PostCard,
+  Props_ as PostCardProps_,
+} from "@/root/src/components/shared/Cards/PostCard";
 
-import { PostCard, Props_ as PostCardProps_ } from "./PostCard";
 import { SubForumCard } from "./SubForumCard";
 
 type NavigationProp_ = StackNavigationProp<RootStackParamList, "SubForum">;
@@ -69,17 +72,17 @@ const Data: PostCardProps_[] = [
         {
           id: "1",
           content: "Front end",
-          votes: "879",
+          votes: "1832",
         },
         {
           id: "2",
           content: "Back end",
-          votes: "542",
+          votes: "500",
         },
         {
           id: "3",
           content: "Infrastructure",
-          votes: "623",
+          votes: "500",
         },
       ],
     },
@@ -97,6 +100,7 @@ const PostCardRenderer: ListRenderItem<PostCardProps_> = ({ item }) => {
       avatarUrl={item.avatarUrl}
       timeStamp={item.timeStamp}
       mediaUrl={item.mediaUrl}
+      poll={item.poll}
     />
   );
 };
