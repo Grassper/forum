@@ -17,7 +17,7 @@ interface Props_ {
   navigation: NavigationProp_;
 }
 
-const Data: PostCardProps_[] = [
+export const Data: PostCardProps_[] = [
   {
     id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
     contentText:

@@ -1,3 +1,3 @@
 export * from "./CommentCard";
-export * from "./PostTile";
 export * from "./PostCard";
+export * from "./PostTile";

@@ -6,6 +6,7 @@ import { SideDrawerNavigator } from "@/root/src/components/navigations/SideDrawe
 import { EditAndCreateSubForum } from "@/root/src/components/screens/EditAndCreateSubForum";
 import { EditProfile } from "@/root/src/components/screens/EditProfile";
 import { Follow } from "@/root/src/components/screens/Follow";
+import { Post } from "@/root/src/components/screens/Post";
 import { Profile } from "@/root/src/components/screens/Profile";
 import { Saved } from "@/root/src/components/screens/Saved";
 import { SubForum } from "@/root/src/components/screens/SubForum";
@@ -21,6 +22,7 @@ export type RootStackParamList = {
   SubForum: undefined;
   EditAndCreateSubForum: { title: "Edit Subforum" | "Create Subforum" };
   SubForumMod: undefined;
+  Post: undefined;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -115,6 +117,13 @@ export const StackNavigator = () => {
               backgroundColor: colors.green,
             },
             headerTintColor: colors.white,
+          })}
+        />
+        <Stack.Screen
+          name="Post"
+          component={Post}
+          options={() => ({
+            title: "",
           })}
         />
       </Stack.Navigator>
