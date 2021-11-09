@@ -95,7 +95,6 @@ export const PostCard: React.FC<Props_> = ({
           mb="4"
         />
       )}
-
       <Box width="90%">
         {/**
          * poll post
@@ -109,6 +108,7 @@ export const PostCard: React.FC<Props_> = ({
             votedPollId={poll.votedPollId}
           />
         )}
+
         {/**
          * text only post
          */}
