@@ -19,15 +19,15 @@ export const Post: React.FC<Props_> = () => {
   return (
     <ScrollView style={styles.container}>
       <PostCard
-        id={DummyData[1].id}
-        subForum={DummyData[1].subForum}
-        type={DummyData[1].type}
-        username={DummyData[1].username}
-        contentText={DummyData[1].contentText}
-        avatarUrl={DummyData[1].avatarUrl}
-        timeStamp={DummyData[1].timeStamp}
-        mediaUrl={DummyData[1].mediaUrl}
-        poll={DummyData[1].poll}
+        id={DummyData[2].id}
+        subForum={DummyData[2].subForum}
+        type={DummyData[2].type}
+        username={DummyData[2].username}
+        contentText={DummyData[2].contentText}
+        avatarUrl={DummyData[2].avatarUrl}
+        timeStamp={DummyData[2].timeStamp}
+        mediaUrl={DummyData[2].mediaUrl}
+        poll={DummyData[2].poll}
         postPage
       />
       <Box alignItems="center" bg="white" mt="2" pt="4">

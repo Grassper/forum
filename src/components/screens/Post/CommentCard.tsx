@@ -1,11 +1,14 @@
 import { AntDesign, Ionicons } from "@expo/vector-icons";
-import { Avatar, Box, HStack, Icon, Pressable, Text } from "native-base";
+import { Avatar, Box, Flex, HStack, Icon, Pressable, Text } from "native-base";
 import React from "react";
 import { StyleSheet } from "react-native";
 
 interface Props_ {}
 
 export const CommentCard: React.FC<Props_> = () => {
+  const [action, setAction] = React.useState<
+    "Upvoted" | "Downvoted" | "Notvoted"
+  >("Notvoted");
   return (
     <Box
       alignItems="center"
@@ -62,26 +65,48 @@ export const CommentCard: React.FC<Props_> = () => {
         <Box>
           <HStack alignItems="center" justifyContent="space-between">
             <HStack space="3" alignItems="center">
-              <Pressable onPress={() => {}}>
-                <Icon
-                  as={<AntDesign name="caretcircleoup" />}
-                  size={5}
-                  color="muted.500"
-                />
-              </Pressable>
-              <Pressable onPress={() => {}}>
-                <Box style={styles.downVoteIcon}>
+              <Pressable
+                onPress={() => {
+                  setAction("Upvoted");
+                }}
+              >
+                <Flex flexDirection="row" alignItems="flex-end">
                   <Icon
                     as={<AntDesign name="caretcircleoup" />}
                     size={5}
-                    color="muted.500"
+                    color={action === "Upvoted" ? "green.500" : "muted.500"}
                   />
-                </Box>
+                  <Text ml="1" fontSize="xs">
+                    1.5k
+                  </Text>
+                </Flex>
+              </Pressable>
+              <Pressable
+                onPress={() => {
+                  setAction("Downvoted");
+                }}
+              >
+                <Flex flexDirection="row" alignItems="flex-end">
+                  <Box style={styles.downVoteIcon}>
+                    <Icon
+                      as={<AntDesign name="caretcircleoup" />}
+                      size={5}
+                      color={action === "Downvoted" ? "red.500" : "muted.500"}
+                    />
+                  </Box>
+                  <Text ml="1" fontSize="xs">
+                    85k
+                  </Text>
+                </Flex>
               </Pressable>
             </HStack>
             <Pressable onPress={() => {}}>
+              {/**
+               * show replies only if replies exist */}
               <Box>
-                <Text>Reply</Text>
+                <Text fontWeight="500" fontSize="xs" color="info.600">
+                  24 Replies
+                </Text>
               </Box>
             </Pressable>
           </HStack>
