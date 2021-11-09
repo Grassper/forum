@@ -5,8 +5,17 @@ import {
   DrawerItem,
 } from "@react-navigation/drawer";
 import { useNavigation } from "@react-navigation/native";
-import { Avatar, Box, Icon, Text } from "native-base";
-import React from "react";
+import {
+  Avatar,
+  Box,
+  Flex,
+  Icon,
+  MoonIcon,
+  Pressable,
+  SunIcon,
+  Text,
+} from "native-base";
+import React, { useState } from "react";
 import { StyleSheet } from "react-native";
 
 import { EditAndCreateSubForum } from "@/root/src/components/screens/EditAndCreateSubForum";
@@ -18,6 +27,7 @@ const DrawerNavigator = createDrawerNavigator();
 
 const CustomDrawerContent = (props) => {
   const DrawerNavigation = useNavigation();
+  const [lightMode, setLightMode] = useState(true);
 
   return (
     <DrawerContentScrollView {...props} style={styles.container}>
@@ -42,9 +52,22 @@ const CustomDrawerContent = (props) => {
         >
           Diana Kiev
         </Text>
-        <Text fontSize="xs" fontFamily="body" color="black" mt="1">
-          Light
-        </Text>
+        <Pressable
+          onPress={() => {
+            setLightMode(!lightMode);
+          }}
+        >
+          <Flex direction="row" alignSelf="center" alignItems="center">
+            {lightMode ? (
+              <SunIcon size="4" mr="2" mt="1" />
+            ) : (
+              <MoonIcon size="4" mr="2" mt="1" />
+            )}
+            <Text fontSize="xs" fontFamily="body" color="black" mt="1">
+              {lightMode ? "Light" : "Dark"}
+            </Text>
+          </Flex>
+        </Pressable>
       </Box>
 
       <Box mt="8">
