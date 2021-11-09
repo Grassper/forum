@@ -51,7 +51,7 @@ export const PostCard: React.FC<Props_> = ({
   const videoRef = React.useRef(null);
   const [voted, setVoted] = React.useState(false);
   return (
-    <Box bg="white" alignItems="center" py="4" mb="2">
+    <Box bg="white" alignItems="center" py="4" mt="2">
       <Box width="90%">
         <HStack alignItems="center" justifyContent="space-between" mb="3">
           <HStack alignItems="center" space="3">

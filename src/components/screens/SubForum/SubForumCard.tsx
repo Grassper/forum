@@ -35,7 +35,7 @@ export const SubForumCard: React.FC<Props_> = ({
   const navigation = useNavigation<NavigationProp_>();
   const [value, toggleValue] = useToggle(true);
   return (
-    <Box mb="2">
+    <Box>
       <Box position="relative">
         <Image
           width="100%"
