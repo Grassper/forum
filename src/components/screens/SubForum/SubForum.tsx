@@ -51,6 +51,39 @@ const Data: PostCardProps_[] = [
       "https://ia800501.us.archive.org/11/items/popeye_i_dont_scare/popeye_i_dont_scare_512kb.mp4",
     avatarUrl: "https://miro.medium.com/max/1400/0*0fClPmIScV5pTLoE.jpg",
   },
+  {
+    id: "58694a0f-3da1-471f-bd96-145571e39d72",
+    contentText:
+      "Felicity grew up in a middle class neighbourhood. She was raised by her mother, her father having left when she was young.",
+    type: "Poll",
+    timeStamp: "Nov 30",
+    subForum: "MechKeys",
+    username: "Anci Barroco",
+    avatarUrl: "https://miro.medium.com/max/1400/0*0fClPmIScV5pTLoE.jpg",
+    poll: {
+      title: "What is role of day to day software engineering?",
+      totalVotes: "2832",
+      timeStamp: "Nov 30",
+      votedPollId: "1",
+      pollArr: [
+        {
+          id: "1",
+          content: "Front end",
+          votes: "879",
+        },
+        {
+          id: "2",
+          content: "Back end",
+          votes: "542",
+        },
+        {
+          id: "3",
+          content: "Infrastructure",
+          votes: "623",
+        },
+      ],
+    },
+  },
 ];
 
 const PostCardRenderer: ListRenderItem<PostCardProps_> = ({ item }) => {
@@ -88,7 +121,7 @@ export const SubForum: React.FC<Props_> = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Box mt="2">
+      <Box>
         <FlatList
           data={Data}
           renderItem={PostCardRenderer}

@@ -15,6 +15,12 @@ import { StyleSheet } from "react-native";
 
 import { colors } from "@/root/src/constants";
 
+interface Poll_ {
+  id: string;
+  content: string;
+  votes: string;
+}
+
 export interface Props_ {
   id: string;
   type: "Image" | "Text" | "Video" | "Audio" | "Poll";
@@ -24,6 +30,13 @@ export interface Props_ {
   timeStamp: string;
   contentText: string;
   mediaUrl?: string;
+  poll?: {
+    title: string;
+    totalVotes: string;
+    timeStamp: string;
+    votedPollId: string;
+    pollArr: Poll_[];
+  };
 }
 
 export const PostCard: React.FC<Props_> = ({
