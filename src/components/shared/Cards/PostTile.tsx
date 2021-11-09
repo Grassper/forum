@@ -6,7 +6,7 @@ import { colors } from "@/root/src/constants";
 
 interface Props_ {}
 
-export const PostCard: React.FC<Props_> = () => {
+export const PostTile: React.FC<Props_> = () => {
   return (
     <View style={styles.container}>
       <Text numberOfLines={2} style={styles.post}>

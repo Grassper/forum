@@ -1,7 +1,7 @@
 import React from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 
-import { PostCard } from "@/root/src/components/shared/Cards";
+import { PostTile } from "@/root/src/components/shared/Cards";
 import { colors } from "@/root/src/constants";
 
 interface Props_ {}
@@ -10,12 +10,12 @@ export const Posts: React.FC<Props_> = () => {
   return (
     <View style={styles.wrapper}>
       <ScrollView style={styles.container}>
-        <PostCard />
-        <PostCard />
-        <PostCard />
-        <PostCard />
-        <PostCard />
-        <PostCard />
+        <PostTile />
+        <PostTile />
+        <PostTile />
+        <PostTile />
+        <PostTile />
+        <PostTile />
       </ScrollView>
     </View>
   );
