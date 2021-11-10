@@ -55,7 +55,7 @@ export const AddAndEditComment: React.FC<Props_> = () => {
             value={Comment}
             onChangeText={setComment}
             borderRadius="md"
-            placeholder="We talk about keyboards"
+            placeholder="Your comment"
             placeholderTextColor="muted.400"
             fontSize="sm"
             variant="unstyled"
