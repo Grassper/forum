@@ -1,4 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
+import { Box } from "native-base";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 
@@ -10,13 +11,9 @@ interface Props_ {
 
 export const PostTile: React.FC<Props_> = ({ pinned }) => {
   return (
-    <View
-      style={[
-        styles.container,
-        {
-          backgroundColor: pinned ? "#8FDCB8" : "transparent",
-        },
-      ]}
+    <Box
+      style={styles.container}
+      bg={pinned ? colors.pinnedColor : colors.white}
     >
       <Text numberOfLines={2} style={styles.post}>
         I've managed to get the desired behavior by setting elevation: 0 inside
@@ -36,7 +33,7 @@ export const PostTile: React.FC<Props_> = ({ pinned }) => {
           color={colors.gray}
         />
       </View>
-    </View>
+    </Box>
   );
 };
 

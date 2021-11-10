@@ -12,7 +12,7 @@ export const Posts: React.FC<Props_> = () => {
       <ScrollView style={styles.container}>
         <PostTile pinned={true} />
         <PostTile pinned={true} />
-        <PostTile pinned={false} />
+        <PostTile pinned={true} />
         <PostTile pinned={false} />
         <PostTile pinned={false} />
         <PostTile pinned={false} />
