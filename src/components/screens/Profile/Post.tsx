@@ -10,12 +10,12 @@ export const Posts: React.FC<Props_> = () => {
   return (
     <View style={styles.wrapper}>
       <ScrollView style={styles.container}>
-        <PostTile />
-        <PostTile />
-        <PostTile />
-        <PostTile />
-        <PostTile />
-        <PostTile />
+        <PostTile pinned={true} />
+        <PostTile pinned={true} />
+        <PostTile pinned={false} />
+        <PostTile pinned={false} />
+        <PostTile pinned={false} />
+        <PostTile pinned={false} />
       </ScrollView>
     </View>
   );
@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     flex: 1,
     marginBottom: 20,
     paddingVertical: 15,
-    width: "90%",
+    width: "100%",
   },
   wrapper: {
     alignItems: "center",

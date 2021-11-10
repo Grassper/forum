@@ -4,11 +4,20 @@ import { StyleSheet, Text, View } from "react-native";
 
 import { colors } from "@/root/src/constants";
 
-interface Props_ {}
+interface Props_ {
+  pinned: boolean;
+}
 
-export const PostTile: React.FC<Props_> = () => {
+export const PostTile: React.FC<Props_> = ({ pinned }) => {
   return (
-    <View style={styles.container}>
+    <View
+      style={[
+        styles.container,
+        {
+          backgroundColor: pinned ? "#8FDCB8" : "transparent",
+        },
+      ]}
+    >
       <Text numberOfLines={2} style={styles.post}>
         I've managed to get the desired behavior by setting elevation: 0 inside
         the style object. Apparently there's a default elevation value given to
@@ -35,8 +44,10 @@ const styles = StyleSheet.create({
   container: {
     borderBottomColor: colors.border,
     borderBottomWidth: 1,
-    marginBottom: 7.5,
-    paddingBottom: 7.5,
+    // paddingBottom: 7.5,
+    paddingBottom: 15,
+    paddingLeft: 15,
+    paddingRight: 15,
   },
   ellipsis: {
     marginRight: 5,
