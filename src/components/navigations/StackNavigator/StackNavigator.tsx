@@ -3,6 +3,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
 
 import { SideDrawerNavigator } from "@/root/src/components/navigations/SideDrawerNavigator";
+import { AddAndEditComment } from "@/root/src/components/screens/AddAndEditComment";
 import { EditAndCreateSubForum } from "@/root/src/components/screens/EditAndCreateSubForum";
 import { EditProfile } from "@/root/src/components/screens/EditProfile";
 import { Follow } from "@/root/src/components/screens/Follow";
@@ -23,6 +24,7 @@ export type RootStackParamList = {
   EditAndCreateSubForum: { title: "Edit Subforum" | "Create Subforum" };
   SubForumMod: undefined;
   Post: undefined;
+  AddAndEditComment: undefined;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -39,7 +41,7 @@ export const StackNavigator = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="SideDrawerNavigator"
+        initialRouteName="SubForum"
         screenOptions={defaultStackOptions}
       >
         <Stack.Screen
@@ -124,6 +126,17 @@ export const StackNavigator = () => {
           component={Post}
           options={() => ({
             title: "",
+          })}
+        />
+        <Stack.Screen
+          name="AddAndEditComment"
+          component={AddAndEditComment}
+          options={() => ({
+            title: "Add Comment",
+            headerStyle: {
+              backgroundColor: colors.green,
+            },
+            headerTintColor: colors.white,
           })}
         />
       </Stack.Navigator>

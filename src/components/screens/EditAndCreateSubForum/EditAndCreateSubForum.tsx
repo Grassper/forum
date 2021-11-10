@@ -32,7 +32,7 @@ export const EditAndCreateSubForum: React.FC<Props_> = ({
   const { title } = route.params;
 
   const [forum, setForum] = React.useState("");
-  const [description, setDescripton] = React.useState("");
+  const [description, setDescription] = React.useState("");
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -84,7 +84,7 @@ export const EditAndCreateSubForum: React.FC<Props_> = ({
               maxLength={140}
               numberOfLines={4}
               value={description}
-              onChangeText={setDescripton}
+              onChangeText={setDescription}
               borderRadius="md"
               placeholder="We talk about keyboards"
               placeholderTextColor="muted.400"

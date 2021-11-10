@@ -290,7 +290,11 @@ const PostUserActions: React.FC = () => {
               color="muted.500"
             />
           </Pressable>
-          <Pressable onPress={() => {}}>
+          <Pressable
+            onPress={() => {
+              navigation.navigate("AddAndEditComment");
+            }}
+          >
             <Icon
               as={<Ionicons name="chatbubble-outline" />}
               size={5}

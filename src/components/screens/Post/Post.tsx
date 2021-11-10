@@ -1,7 +1,7 @@
 import { StackNavigationProp } from "@react-navigation/stack";
 import { Box, Flex, Text } from "native-base";
 import React from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet } from "react-native";
 
 import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
 import { Data as DummyData } from "@/root/src/components/screens/SubForum";
@@ -30,6 +30,7 @@ export const Post: React.FC<Props_> = () => {
         poll={DummyData[2].poll}
         postPage
       />
+
       <Box alignItems="center" bg="white" mt="2" pt="4">
         <Flex width="90%" flexDirection="row" alignItems="flex-end">
           <Text fontWeight="500" color="eGreen.400">
