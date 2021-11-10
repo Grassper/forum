@@ -132,7 +132,7 @@ export const StackNavigator = () => {
           name="AddAndEditComment"
           component={AddAndEditComment}
           options={() => ({
-            title: "Add Comment",
+            title: "Comment",
             headerStyle: {
               backgroundColor: colors.green,
             },
