@@ -61,7 +61,6 @@ export const Post: React.FC<Props_> = () => {
           <CommentCard replyExists={item.item.replyExists} />
         )}
         ListHeaderComponent={listHeader}
-        keyExtractor={(item) => item.key}
       />
     </Box>
   );
