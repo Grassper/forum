@@ -29,6 +29,7 @@ export const Post: React.FC<Props_> = () => {
         mediaUrl={DummyData[2].mediaUrl}
         poll={DummyData[2].poll}
         postPage
+        hidePostNavigation
       />
 
       <Box alignItems="center" bg="white" mt="2" pt="4">
@@ -41,7 +42,7 @@ export const Post: React.FC<Props_> = () => {
           </Text>
         </Flex>
       </Box>
-      <CommentCard />
+      <CommentCard replyExists />
       <CommentCard />
       <CommentCard />
       <CommentCard />

@@ -38,6 +38,8 @@ export const AddAndEditComment: React.FC<Props_> = () => {
           mediaUrl={DummyData[0].mediaUrl}
           poll={DummyData[0].poll}
           postPage
+          hidePostNavigation
+          hidePostUserActions
         />
         <Divider />
       </Box>

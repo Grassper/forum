@@ -37,6 +37,8 @@ export interface Props_ {
     pollArr: Poll_[];
   };
   postPage?: boolean; // true if post card is used in individual post page
+  hidePostNavigation?: boolean;
+  hidePostUserActions?: boolean;
 }
 
 interface Poll_ {
@@ -55,6 +57,8 @@ export const PostCard: React.FC<Props_> = ({
   contentText,
   poll,
   postPage,
+  hidePostNavigation,
+  hidePostUserActions,
 }) => {
   const videoRef = React.useRef(null);
   return (
@@ -113,7 +117,9 @@ export const PostCard: React.FC<Props_> = ({
          * text only post
          */}
         <Text mb="4">{contentText}</Text>
-        <PostUserActions />
+        {!hidePostUserActions && (
+          <PostUserActions hidePostNavigation={hidePostNavigation} />
+        )}
       </Box>
     </Box>
   );
@@ -277,7 +283,13 @@ const Poll: React.FC<Props_["poll"]> = ({ title, pollArr, totalVotes }) => {
   );
 };
 
-const PostUserActions: React.FC = () => {
+interface PostUserActions_ {
+  hidePostNavigation?: boolean;
+}
+
+const PostUserActions: React.FC<PostUserActions_> = ({
+  hidePostNavigation,
+}) => {
   const navigation = useNavigation<NavigationProp_>();
   return (
     <Box>
@@ -302,19 +314,21 @@ const PostUserActions: React.FC = () => {
             />
           </Pressable>
         </HStack>
-        <Pressable
-          onPress={() => {
-            navigation.navigate("Post");
-          }}
-        >
-          <Box style={styles.openPostIcon}>
-            <Icon
-              as={<Ionicons name="share-outline" />}
-              size={5}
-              color="muted.500"
-            />
-          </Box>
-        </Pressable>
+        {!hidePostNavigation && (
+          <Pressable
+            onPress={() => {
+              navigation.navigate("Post");
+            }}
+          >
+            <Box style={styles.openPostIcon}>
+              <Icon
+                as={<Ionicons name="share-outline" />}
+                size={5}
+                color="muted.500"
+              />
+            </Box>
+          </Pressable>
+        )}
       </HStack>
     </Box>
   );

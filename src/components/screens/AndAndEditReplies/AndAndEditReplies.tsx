@@ -26,7 +26,7 @@ export const AndAndEditReplies: React.FC<Props_> = () => {
   return (
     <Box style={styles.container} bg="white">
       <Box>
-        <CommentCard />
+        <CommentCard hideReplyButton hideCommentUserActions />
         <Divider />
       </Box>
       <Box bg="white" py="4" mt="2">
