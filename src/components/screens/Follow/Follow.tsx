@@ -1,7 +1,9 @@
+import { MaterialIcons } from "@expo/vector-icons";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { Box } from "native-base";
+import { Box, HStack, Icon, Pressable, Text, VStack } from "native-base";
 import React from "react";
-import { FlatList, ListRenderItem, StyleSheet, View } from "react-native";
+import { ListRenderItem, StyleSheet, View } from "react-native";
+import { SwipeListView } from "react-native-swipe-list-view";
 
 import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
 import { colors } from "@/root/src/constants";
@@ -20,6 +22,7 @@ interface FollowCard_ {
   username: string;
   avatarUrl: string;
 }
+interface Props_ {}
 
 const Data = [
   {
@@ -63,16 +66,46 @@ const FollowCardRenderer: ListRenderItem<FollowCard_> = ({ item }) => {
   );
 };
 
+const RenderHiddenItem: ListRenderItem<Props_> = () => {
+  return (
+    <HStack flex="1" pl="2">
+      <Pressable
+        w="70"
+        // cursor="pointer"
+        ml="auto"
+        bg="red.400"
+        borderRadius="2"
+        justifyContent="center"
+        onPress={() => console.log("function for delete")}
+        _pressed={{
+          opacity: 0.5,
+        }}
+      >
+        <VStack alignItems="center" space={2}>
+          <Icon as={<MaterialIcons name="delete" />} color="white" size="xs" />
+          <Text color="white" fontSize="xs" fontWeight="medium">
+            Delete
+          </Text>
+        </VStack>
+      </Pressable>
+    </HStack>
+  );
+};
+
 export const Follow: React.FC<Props_> = () => {
   return (
     <View style={styles.wrapper}>
       <View style={styles.container}>
         <SearchBar />
-        <Box mt="4">
-          <FlatList
+        <Box mt="4" safeArea flex="1">
+          <SwipeListView
             data={Data}
             renderItem={FollowCardRenderer}
-            keyExtractor={(item) => item.id}
+            renderHiddenItem={RenderHiddenItem}
+            rightOpenValue={-70}
+            previewRowKey={"0"}
+            previewOpenValue={-40}
+            previewOpenDelay={3000}
           />
         </Box>
       </View>
