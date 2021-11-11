@@ -1,7 +1,7 @@
 import { StackNavigationProp } from "@react-navigation/stack";
 import { Box, Flex, Text } from "native-base";
 import React from "react";
-import { ScrollView, StyleSheet } from "react-native";
+import { FlatList, ScrollView, StyleSheet } from "react-native";
 
 import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
 import { Data as DummyData } from "@/root/src/components/screens/SubForum";
@@ -14,10 +14,11 @@ type NavigationProp_ = StackNavigationProp<RootStackParamList, "Post">;
 interface Props_ {
   navigation: NavigationProp_;
 }
+interface listProps {}
 
-export const Post: React.FC<Props_> = () => {
+const listHeader: React.FC<listProps> = () => {
   return (
-    <ScrollView style={styles.container}>
+    <Box>
       <PostCard
         id={DummyData[2].id}
         subForum={DummyData[2].subForum}
@@ -42,11 +43,27 @@ export const Post: React.FC<Props_> = () => {
           </Text>
         </Flex>
       </Box>
-      <CommentCard replyExists />
-      <CommentCard />
-      <CommentCard />
-      <CommentCard />
-    </ScrollView>
+    </Box>
+  );
+};
+
+export const Post: React.FC<Props_> = () => {
+  const Data = [
+    { key: 1, replyExists: true },
+    { key: 2, replyExists: false },
+    { key: 3, replyExists: true },
+  ];
+  return (
+    <Box style={styles.container}>
+      <FlatList
+        data={Data}
+        renderItem={(item) => (
+          <CommentCard replyExists={item.item.replyExists} />
+        )}
+        ListHeaderComponent={listHeader}
+        keyExtractor={(item) => item.key}
+      />
+    </Box>
   );
 };
 
