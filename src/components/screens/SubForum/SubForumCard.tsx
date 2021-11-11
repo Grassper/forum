@@ -1,6 +1,7 @@
 import { Foundation, MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
+import * as ImagePicker from "expo-image-picker";
 import {
   Avatar,
   Box,
@@ -11,7 +12,7 @@ import {
   Pressable,
   Text,
 } from "native-base";
-import React from "react";
+import React, { useState } from "react";
 import { Dimensions, StyleSheet } from "react-native";
 
 import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
@@ -34,6 +35,36 @@ export const SubForumCard: React.FC<Props_> = ({
 }) => {
   const navigation = useNavigation<NavigationProp_>();
   const [value, toggleValue] = useToggle(true);
+  const [image, setImage] = useState(
+    "https://randomuser.me/api/portraits/women/49.jpg"
+  );
+  const [wallPaper, setWallPaper] = useState(
+    "https://images.pexels.com/photos/735911/pexels-photo-735911.jpeg?cs=srgb&dl=pexels-soumil-kumar-735911.jpg&fm=jpg"
+  );
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.cancelled) {
+      setImage(result.uri);
+    }
+  };
+  const pickWallPaperImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.cancelled) {
+      setWallPaper(result.uri);
+    }
+  };
   return (
     <Box>
       <Box position="relative">
@@ -42,14 +73,14 @@ export const SubForumCard: React.FC<Props_> = ({
           height="115"
           alt="fallback text"
           source={{
-            uri: "https://images.pexels.com/photos/735911/pexels-photo-735911.jpeg?cs=srgb&dl=pexels-soumil-kumar-735911.jpg&fm=jpg",
+            uri: wallPaper,
           }}
           fallbackSource={{
-            uri: "https://images.pexels.com/photos/1038916/pexels-photo-1038916.jpeg?cs=srgb&dl=pexels-fox-1038916.jpg&fm=jpg",
+            uri: wallPaper,
           }}
         />
         {isEdit && (
-          <Pressable onPress={() => {}}>
+          <Pressable onPress={pickWallPaperImage}>
             <Box
               bg="eGreen.400"
               p="2"
@@ -75,7 +106,7 @@ export const SubForumCard: React.FC<Props_> = ({
             ml={windowWidth * 0.025}
             size="xl"
             source={{
-              uri: "https://images.pexels.com/photos/4792716/pexels-photo-4792716.jpeg?cs=srgb&dl=pexels-anete-lusina-4792716.jpg&fm=jpg",
+              uri: image,
             }}
           >
             <Text
@@ -88,7 +119,7 @@ export const SubForumCard: React.FC<Props_> = ({
             </Text>
           </Avatar>
           {isEdit && (
-            <Pressable onPress={() => {}}>
+            <Pressable onPress={pickImage}>
               <Box
                 bg="eGreen.400"
                 p="2"
