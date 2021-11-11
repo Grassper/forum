@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import React from "react";
 
-import { Feed } from "@/root/src/components/screens/Feed";
+import { Home } from "@/root/src/components/screens/Home";
 
 const Tab = createBottomTabNavigator();
 
@@ -17,7 +17,7 @@ export const BottomTabNavigator = () => {
       <Tab.Navigator>
         <Tab.Screen
           name="Feed"
-          component={Feed}
+          component={Home}
           options={{
             title: "",
             tabBarShowLabel: false,

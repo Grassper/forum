@@ -89,7 +89,7 @@ export const Data: PostCardProps_[] = [
   },
 ];
 
-const PostCardRenderer: ListRenderItem<PostCardProps_> = ({ item }) => {
+export const PostCardRenderer: ListRenderItem<PostCardProps_> = ({ item }) => {
   return (
     <PostCard
       id={item.id}
@@ -125,14 +125,12 @@ export const SubForum: React.FC<Props_> = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Box>
-        <FlatList
-          data={Data}
-          renderItem={PostCardRenderer}
-          ListHeaderComponent={() => <SubForumCard />}
-          keyExtractor={(item) => item.id}
-        />
-      </Box>
+      <FlatList
+        data={Data}
+        renderItem={PostCardRenderer}
+        ListHeaderComponent={() => <SubForumCard />}
+        keyExtractor={(item) => item.id}
+      />
     </View>
   );
 };
