@@ -6,7 +6,7 @@ import { NativeBaseProvider } from "native-base";
 import React, { useState } from "react";
 import { enableScreens } from "react-native-screens";
 
-import { StackNavigator } from "@/root/src/components/navigations/StackNavigator";
+import { BottomTabNavigator } from "@/root/src/components/navigations/BottomTabNavigator";
 import { NativeBaseTheme as Theme } from "@/root/src/config";
 
 enableScreens();
@@ -41,7 +41,7 @@ const App: React.FC = () => {
 
   return (
     <NativeBaseProvider theme={Theme}>
-      <StackNavigator />
+      <BottomTabNavigator />
     </NativeBaseProvider>
   );
 };
