@@ -4,6 +4,8 @@ import React from "react";
 
 import { SideDrawerNavigator } from "@/root/src/components/navigations/SideDrawerNavigator";
 import { AddAndEditComment } from "@/root/src/components/screens/AddAndEditComment";
+import { AndAndEditReplies } from "@/root/src/components/screens/AndAndEditReplies";
+import { Comment } from "@/root/src/components/screens/Comment";
 import { EditAndCreateSubForum } from "@/root/src/components/screens/EditAndCreateSubForum";
 import { EditProfile } from "@/root/src/components/screens/EditProfile";
 import { Follow } from "@/root/src/components/screens/Follow";
@@ -25,6 +27,8 @@ export type RootStackParamList = {
   SubForumMod: undefined;
   Post: undefined;
   AddAndEditComment: undefined;
+  Comment: undefined;
+  AndAndEditReplies: undefined;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -41,7 +45,7 @@ export const StackNavigator = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="SideDrawerNavigator"
+        initialRouteName="SubForum"
         screenOptions={defaultStackOptions}
       >
         <Stack.Screen
@@ -132,7 +136,29 @@ export const StackNavigator = () => {
           name="AddAndEditComment"
           component={AddAndEditComment}
           options={() => ({
-            title: "Comment",
+            title: "Add Comment",
+            headerStyle: {
+              backgroundColor: colors.green,
+            },
+            headerTintColor: colors.white,
+          })}
+        />
+        <Stack.Screen
+          name="Comment"
+          component={Comment}
+          options={() => ({
+            title: "",
+            headerStyle: {
+              backgroundColor: colors.green,
+            },
+            headerTintColor: colors.white,
+          })}
+        />
+        <Stack.Screen
+          name="AndAndEditReplies"
+          component={AndAndEditReplies}
+          options={() => ({
+            title: "",
             headerStyle: {
               backgroundColor: colors.green,
             },

@@ -1,14 +1,26 @@
-import { AntDesign, Ionicons } from "@expo/vector-icons";
+import { AntDesign, Entypo, Ionicons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
 import { Avatar, Box, Flex, HStack, Icon, Pressable, Text } from "native-base";
 import React from "react";
 import { StyleSheet } from "react-native";
 
+import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
+
+type NavigationProp_ = StackNavigationProp<
+  RootStackParamList,
+  "AddAndEditComment"
+>;
+
 interface Props_ {}
 
 export const CommentCard: React.FC<Props_> = () => {
+  const Navigation = useNavigation<NavigationProp_>();
+
   const [action, setAction] = React.useState<
     "Upvoted" | "Downvoted" | "Notvoted"
   >("Notvoted");
+
   return (
     <Box
       alignItems="center"
@@ -99,8 +111,27 @@ export const CommentCard: React.FC<Props_> = () => {
                   </Text>
                 </Flex>
               </Pressable>
+              <Pressable
+                onPress={() => {
+                  Navigation.push("AndAndEditReplies");
+                }}
+              >
+                <Flex flexDirection="row" alignItems="flex-end">
+                  <Box>
+                    <Icon
+                      as={<Entypo name="reply" />}
+                      size={5}
+                      color={"muted.500"}
+                    />
+                  </Box>
+                </Flex>
+              </Pressable>
             </HStack>
-            <Pressable onPress={() => {}}>
+            <Pressable
+              onPress={() => {
+                Navigation.push("Comment");
+              }}
+            >
               {/**
                * show replies only if replies exist */}
               <Box>

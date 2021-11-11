@@ -6,7 +6,7 @@ import { StyleSheet, Text, View } from "react-native";
 import { colors } from "@/root/src/constants";
 
 interface Props_ {
-  pinned: boolean;
+  pinned?: boolean;
 }
 
 export const PostTile: React.FC<Props_> = ({ pinned }) => {
