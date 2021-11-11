@@ -12,9 +12,17 @@ type NavigationProp_ = StackNavigationProp<
   "AddAndEditComment"
 >;
 
-interface Props_ {}
+interface Props_ {
+  replyExists?: boolean;
+  hideReplyButton?: boolean;
+  hideCommentUserActions?: boolean;
+}
 
-export const CommentCard: React.FC<Props_> = () => {
+export const CommentCard: React.FC<Props_> = ({
+  replyExists,
+  hideReplyButton,
+  hideCommentUserActions,
+}) => {
   const Navigation = useNavigation<NavigationProp_>();
 
   const [action, setAction] = React.useState<
@@ -74,74 +82,80 @@ export const CommentCard: React.FC<Props_> = () => {
           You know you're in love when you cant't fall asleep because reality is
           finally better than your dreams
         </Text>
-        <Box>
-          <HStack alignItems="center" justifyContent="space-between">
-            <HStack space="3" alignItems="center">
-              <Pressable
-                onPress={() => {
-                  setAction("Upvoted");
-                }}
-              >
-                <Flex flexDirection="row" alignItems="flex-end">
-                  <Icon
-                    as={<AntDesign name="caretcircleoup" />}
-                    size={5}
-                    color={action === "Upvoted" ? "green.500" : "muted.500"}
-                  />
-                  <Text ml="1" fontSize="xs">
-                    1.5k
-                  </Text>
-                </Flex>
-              </Pressable>
-              <Pressable
-                onPress={() => {
-                  setAction("Downvoted");
-                }}
-              >
-                <Flex flexDirection="row" alignItems="flex-end">
-                  <Box style={styles.downVoteIcon}>
+        {!hideCommentUserActions && (
+          <Box>
+            <HStack alignItems="center" justifyContent="space-between">
+              <HStack space="3" alignItems="center">
+                <Pressable
+                  onPress={() => {
+                    setAction("Upvoted");
+                  }}
+                >
+                  <Flex flexDirection="row" alignItems="flex-end">
                     <Icon
                       as={<AntDesign name="caretcircleoup" />}
                       size={5}
-                      color={action === "Downvoted" ? "red.500" : "muted.500"}
+                      color={action === "Upvoted" ? "green.500" : "muted.500"}
                     />
-                  </Box>
-                  <Text ml="1" fontSize="xs">
-                    85k
-                  </Text>
-                </Flex>
-              </Pressable>
-              <Pressable
-                onPress={() => {
-                  Navigation.push("AndAndEditReplies");
-                }}
-              >
-                <Flex flexDirection="row" alignItems="flex-end">
+                    <Text ml="1" fontSize="xs">
+                      1.5k
+                    </Text>
+                  </Flex>
+                </Pressable>
+                <Pressable
+                  onPress={() => {
+                    setAction("Downvoted");
+                  }}
+                >
+                  <Flex flexDirection="row" alignItems="flex-end">
+                    <Box style={styles.downVoteIcon}>
+                      <Icon
+                        as={<AntDesign name="caretcircleoup" />}
+                        size={5}
+                        color={action === "Downvoted" ? "red.500" : "muted.500"}
+                      />
+                    </Box>
+                    <Text ml="1" fontSize="xs">
+                      85k
+                    </Text>
+                  </Flex>
+                </Pressable>
+                {!hideReplyButton && (
+                  <Pressable
+                    onPress={() => {
+                      Navigation.push("AndAndEditReplies");
+                    }}
+                  >
+                    <Flex flexDirection="row" alignItems="flex-end">
+                      <Box>
+                        <Icon
+                          as={<Entypo name="reply" />}
+                          size={5}
+                          color={"muted.500"}
+                        />
+                      </Box>
+                    </Flex>
+                  </Pressable>
+                )}
+              </HStack>
+              {replyExists && (
+                <Pressable
+                  onPress={() => {
+                    Navigation.push("Comment");
+                  }}
+                >
+                  {/**
+                   * show replies only if replies exist */}
                   <Box>
-                    <Icon
-                      as={<Entypo name="reply" />}
-                      size={5}
-                      color={"muted.500"}
-                    />
+                    <Text fontWeight="500" fontSize="xs" color="info.600">
+                      24 Replies
+                    </Text>
                   </Box>
-                </Flex>
-              </Pressable>
+                </Pressable>
+              )}
             </HStack>
-            <Pressable
-              onPress={() => {
-                Navigation.push("Comment");
-              }}
-            >
-              {/**
-               * show replies only if replies exist */}
-              <Box>
-                <Text fontWeight="500" fontSize="xs" color="info.600">
-                  24 Replies
-                </Text>
-              </Box>
-            </Pressable>
-          </HStack>
-        </Box>
+          </Box>
+        )}
       </Box>
     </Box>
   );
