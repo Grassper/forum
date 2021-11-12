@@ -3,7 +3,10 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import React from "react";
 
-import { StackNavigator } from "@/root/src/components/navigations/StackNavigator";
+import {
+  MessageStackNavigator,
+  StackNavigator,
+} from "@/root/src/components/navigations/StackNavigator";
 import { Explore } from "@/root/src/components/screens/Explore";
 
 const Tab = createBottomTabNavigator();
@@ -43,8 +46,8 @@ export const BottomTabNavigator = () => {
           }}
         />
         <Tab.Screen
-          name="Messenger"
-          component={Explore}
+          name="MessageStackNavigator"
+          component={MessageStackNavigator}
           options={{
             title: "",
             headerShown: false,
