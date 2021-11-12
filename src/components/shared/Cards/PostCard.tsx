@@ -18,6 +18,8 @@ import { StyleSheet } from "react-native";
 import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
 import { colors } from "@/root/src/constants";
 
+import { AudioComponent } from "./audio";
+
 type NavigationProp_ = StackNavigationProp<RootStackParamList>;
 
 export interface Props_ {
@@ -29,6 +31,7 @@ export interface Props_ {
   timeStamp: string;
   contentText: string;
   mediaUrl?: string;
+  audioUrl?: string;
   poll?: {
     title: string;
     totalVotes: string;
@@ -54,6 +57,7 @@ export const PostCard: React.FC<Props_> = ({
   avatarUrl,
   type,
   mediaUrl,
+  audioUrl,
   contentText,
   poll,
   postPage,
@@ -83,6 +87,14 @@ export const PostCard: React.FC<Props_> = ({
             useNativeControls
             resizeMode="cover"
           />
+        </Box>
+      )}
+      {/**
+       * audio post
+       */}
+      {type === "Audio" && mediaUrl && (
+        <Box mb="4" width="100%">
+          <AudioComponent />
         </Box>
       )}
       {/**

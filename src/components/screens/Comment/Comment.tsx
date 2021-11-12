@@ -1,14 +1,14 @@
 import { Box, Flex, Text } from "native-base";
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { FlatList, StyleSheet, View } from "react-native";
 
 import { CommentCard } from "@/root/src/components/screens/Post/CommentCard";
 
 interface Props_ {}
 
-export const Comment: React.FC<Props_> = () => {
+const commentListHeader: React.FC<Props_> = () => {
   return (
-    <View style={styles.container}>
+    <Box>
       <CommentCard />
       <Box alignItems="center" bg="white" mt="2" pt="4">
         <Flex width="90%" flexDirection="row" alignItems="flex-end">
@@ -20,11 +20,24 @@ export const Comment: React.FC<Props_> = () => {
           </Text>
         </Flex>
       </Box>
-      <CommentCard />
-      <CommentCard />
-      <CommentCard />
-      <CommentCard />
-    </View>
+    </Box>
+  );
+};
+
+export const Comment: React.FC<Props_> = () => {
+  const Data = [
+    { key: 1, replyExists: true },
+    { key: 2, replyExists: false },
+    { key: 3, replyExists: true },
+  ];
+  return (
+    <Box style={styles.container}>
+      <FlatList
+        data={Data}
+        renderItem={() => <CommentCard />}
+        ListHeaderComponent={commentListHeader}
+      />
+    </Box>
   );
 };
 
