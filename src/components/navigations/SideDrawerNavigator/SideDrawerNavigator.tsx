@@ -170,7 +170,6 @@ export const SideDrawerNavigator = () => {
   return (
     <DrawerNavigator.Navigator
       drawerContent={(props) => <CustomDrawerContent {...props} />}
-      initialRouteName="Profile"
     >
       <DrawerNavigator.Screen
         name="Profile"

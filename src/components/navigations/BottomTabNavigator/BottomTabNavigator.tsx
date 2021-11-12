@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import React from "react";
 
-import { Home } from "@/root/src/components/screens/Home";
+import { StackNavigator } from "@/root/src/components/navigations/StackNavigator";
 
 const Tab = createBottomTabNavigator();
 
@@ -16,10 +16,11 @@ export const BottomTabNavigator = () => {
     <NavigationContainer>
       <Tab.Navigator>
         <Tab.Screen
-          name="Feed"
-          component={Home}
+          name="StackNavigator"
+          component={StackNavigator}
           options={{
             title: "",
+            headerShown: false,
             tabBarShowLabel: false,
             tabBarIconStyle: { alignItems: "center" },
             tabBarIcon: () => {

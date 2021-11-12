@@ -1,5 +1,5 @@
 import { StackNavigationProp } from "@react-navigation/stack";
-import { Box, Button } from "native-base";
+import { Button } from "native-base";
 import React from "react";
 import { FlatList, ListRenderItem, StyleSheet, View } from "react-native";
 
