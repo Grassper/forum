@@ -2,10 +2,12 @@ import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
 
 import { ChatList } from "@/root/src/components/screens/ChatList";
+import { ChatRoom } from "@/root/src/components/screens/ChatRoom";
 import { colors } from "@/root/src/constants";
 
 export type MessageRootStackParamList = {
   ChatList: undefined;
+  ChatRoom: undefined;
 };
 
 const Stack = createStackNavigator<MessageRootStackParamList>();
@@ -27,6 +29,13 @@ export const MessageStackNavigator = () => {
       <Stack.Screen
         name="ChatList"
         component={ChatList}
+        options={{
+          title: "",
+        }}
+      />
+      <Stack.Screen
+        name="ChatRoom"
+        component={ChatRoom}
         options={{
           title: "",
         }}

@@ -1,3 +1,5 @@
+import { useNavigation } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
 import {
   Avatar,
   Box,
@@ -10,11 +12,23 @@ import {
 import React from "react";
 import { StyleSheet } from "react-native";
 
+import { MessageRootStackParamList } from "@/root/src/components/navigations/StackNavigator";
+
+type NavigationProp_ = StackNavigationProp<
+  MessageRootStackParamList,
+  "ChatList"
+>;
+
 interface Props_ {}
 
 const ChatCard: React.FC = () => {
+  const Navigation = useNavigation<NavigationProp_>();
   return (
-    <Pressable onPress={() => {}}>
+    <Pressable
+      onPress={() => {
+        Navigation.push("ChatRoom");
+      }}
+    >
       <Box
         alignItems="center"
         bg="white"
