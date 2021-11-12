@@ -1,4 +1,11 @@
-import { FontAwesome, Ionicons } from "@expo/vector-icons";
+import {
+  AntDesign,
+  FontAwesome,
+  FontAwesome5,
+  Ionicons,
+  MaterialCommunityIcons,
+  MaterialIcons,
+} from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { Video } from "expo-av";
@@ -11,9 +18,13 @@ import {
   Image,
   Pressable,
   Text,
+  View,
 } from "native-base";
-import React from "react";
-import { StyleSheet } from "react-native";
+import React, { useState } from "react";
+import { Platform, StatusBar, StyleSheet } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import Tooltip from "react-native-walkthrough-tooltip";
+import { alignItems, backgroundColor, justifyContent } from "styled-system";
 
 import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
 import { colors } from "@/root/src/constants";
@@ -65,6 +76,7 @@ export const PostCard: React.FC<Props_> = ({
   hidePostUserActions,
 }) => {
   const videoRef = React.useRef(null);
+
   return (
     <Box bg="white" alignItems="center" py="4" mt={`${postPage ? "0" : "2"}`}>
       <PostInfo
@@ -303,17 +315,61 @@ const PostUserActions: React.FC<PostUserActions_> = ({
   hidePostNavigation,
 }) => {
   const navigation = useNavigation<NavigationProp_>();
+  const [showTip, setTip] = useState(false);
+
   return (
     <Box>
       <HStack alignItems="center" justifyContent="space-between">
         <HStack space="3" alignItems="center">
-          <Pressable onPress={() => {}}>
-            <Icon
-              as={<FontAwesome name="heart-o" />}
-              size={5}
-              color="muted.500"
-            />
-          </Pressable>
+          <Tooltip
+            isVisible={showTip}
+            // allowChildInteraction={false}
+            content={
+              <Box style={styles.roottooltip}>
+                <TouchableOpacity
+                  style={styles.IconBackUp}
+                  onPress={() => console.log("clkj")}
+                >
+                  <AntDesign name="like1" size={16} color="white" />
+                </TouchableOpacity>
+                <Ionicons name="heart-circle" size={28} color="red" />
+                <FontAwesome5 name="smile" size={24} color="#FFEF78" />
+                <MaterialIcons name="emoji-emotions" size={25} color="black" />
+                <MaterialIcons name="emoji-emotions" size={25} color="black" />
+                <MaterialIcons name="emoji-emotions" size={25} color="black" />
+                <MaterialCommunityIcons
+                  name="emoticon-angry"
+                  size={24}
+                  color="red"
+                />
+                <Text> 1.5k Responses </Text>
+              </Box>
+            }
+            onClose={() => {
+              setTip(false);
+            }}
+            placement="top"
+            // below is for the status bar of react navigation bar
+            topAdjustment={
+              Platform.OS === "android" ? -StatusBar.currentHeight : 0
+            }
+            arrowSize={{ width: 0, height: 0 }}
+            contentStyle={styles.tooltipContainer}
+            displayInsets={{
+              top: 24,
+              bottom: 34,
+              left: 14,
+              right: 14,
+            }}
+          >
+            <Pressable onPress={() => setTip(true)}>
+              <Icon
+                as={<FontAwesome name="heart-o" />}
+                size={5}
+                color="muted.500"
+              />
+            </Pressable>
+          </Tooltip>
           <Pressable
             onPress={() => {
               navigation.navigate("AddAndEditComment");
@@ -347,14 +403,45 @@ const PostUserActions: React.FC<PostUserActions_> = ({
 };
 
 const styles = StyleSheet.create({
+  IconBackUp: {
+    alignItems: "center",
+    backgroundColor: "blue",
+    borderRadius: 50,
+    justifyContent: "center",
+    paddingBottom: 4,
+    paddingLeft: 4,
+    paddingRight: 4,
+    paddingTop: 1,
+  },
   openPostIcon: {
     transform: [{ rotate: "90deg" }],
+  },
+  roottooltip: {
+    alignItems: "center",
+    backgroundColor: colors.white,
+    flex: 1,
+    flexDirection: "row",
+    height: "100%",
+    width: "100%",
   },
   separatorDot: {
     borderRadius: 50,
     height: 2.5,
     marginHorizontal: 5,
     width: 2.5,
+  },
+  tooltipContainer: {
+    backgroundColor: colors.white,
+    flex: 1,
+    height: 45,
+    alignItems: "center",
+    justifyContent: "center",
+    // paddingBottom: 15,
+    // paddingTop: 15,
+    width: "100%",
+    paddingRight: 10,
+    paddingLeft: 10,
+    borderRadius: 25,
   },
   video: {
     backgroundColor: colors.black,
