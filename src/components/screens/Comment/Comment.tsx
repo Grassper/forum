@@ -1,12 +1,12 @@
 import { Box, Flex, Text } from "native-base";
 import React from "react";
-import { FlatList, StyleSheet, View } from "react-native";
+import { FlatList, StyleSheet } from "react-native";
 
 import { CommentCard } from "@/root/src/components/screens/Post/CommentCard";
 
 interface Props_ {}
 
-const commentListHeader: React.FC<Props_> = () => {
+const commentListHeader: React.FC = () => {
   return (
     <Box>
       <CommentCard />
