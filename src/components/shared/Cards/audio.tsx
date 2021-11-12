@@ -2,15 +2,15 @@ import { Audio } from "expo-av";
 import React, { useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-interface props {}
-export const AudioComponent: React.FC<props> = () => {
+interface props {
+  audioUri: string;
+}
+export const AudioComponent: React.FC<props> = ({ audioUri }) => {
   const [sound, setSound] = useState();
 
   async function playSound() {
     console.log("Loading Sound");
-    const { sound } = await Audio.Sound.createAsync(
-      require("@/root/assets/audio/sample.mp3")
-    );
+    const { sound } = await Audio.Sound.createAsync({ uri: audioUri });
     setSound(sound);
 
     console.log("Playing Sound");

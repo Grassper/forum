@@ -94,7 +94,7 @@ export const PostCard: React.FC<Props_> = ({
        */}
       {type === "Audio" && mediaUrl && (
         <Box mb="4" width="100%">
-          <AudioComponent />
+          <AudioComponent audioUri={audioUrl} />
         </Box>
       )}
       {/**

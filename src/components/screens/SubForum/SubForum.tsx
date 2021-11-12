@@ -37,6 +37,7 @@ export const Data: PostCardProps_[] = [
     timeStamp: "Nov 30",
     subForum: "MechKeys",
     username: "Anci Barroco",
+    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3",
     mediaUrl:
       "https://ia800501.us.archive.org/11/items/popeye_i_dont_scare/popeye_i_dont_scare_512kb.mp4",
     avatarUrl: "https://miro.medium.com/max/1400/0*0fClPmIScV5pTLoE.jpg",
@@ -113,6 +114,7 @@ const PostCardRenderer: ListRenderItem<PostCardProps_> = ({ item }) => {
       timeStamp={item.timeStamp}
       mediaUrl={item.mediaUrl}
       poll={item.poll}
+      audioUrl={item.audioUrl}
     />
   );
 };
