@@ -96,12 +96,16 @@ const ChatCard: React.FC = () => {
 };
 
 export const ChatList: React.FC<Props_> = () => {
+  const Navigation = useNavigation<NavigationProp_>();
   return (
     <Box style={styles.container}>
       <ChatCard />
       <ChatCard />
       <ChatCard />
       <Fab
+        onPress={() => {
+          Navigation.push("NewChat");
+        }}
         placement="bottom-right"
         bg="eGreen.400"
         variant="unstyled"

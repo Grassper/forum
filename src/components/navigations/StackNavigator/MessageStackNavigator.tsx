@@ -3,11 +3,13 @@ import React from "react";
 
 import { ChatList } from "@/root/src/components/screens/ChatList";
 import { ChatRoom } from "@/root/src/components/screens/ChatRoom";
+import { NewChat } from "@/root/src/components/screens/NewChat";
 import { colors } from "@/root/src/constants";
 
 export type MessageRootStackParamList = {
   ChatList: undefined;
   ChatRoom: undefined;
+  NewChat: undefined;
 };
 
 const Stack = createStackNavigator<MessageRootStackParamList>();
@@ -39,6 +41,21 @@ export const MessageStackNavigator = () => {
         component={ChatRoom}
         options={{
           title: "",
+          headerStyle: {
+            backgroundColor: colors.green,
+          },
+          headerTintColor: colors.white,
+        }}
+      />
+      <Stack.Screen
+        name="NewChat"
+        component={NewChat}
+        options={{
+          title: "New Chat",
+          headerStyle: {
+            backgroundColor: colors.green,
+          },
+          headerTintColor: colors.white,
         }}
       />
     </Stack.Navigator>
