@@ -1,8 +1,10 @@
+import { AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import {
   Avatar,
   Box,
+  Fab,
   HStack,
   Pressable,
   Spacer,
@@ -99,10 +101,18 @@ export const ChatList: React.FC<Props_> = () => {
       <ChatCard />
       <ChatCard />
       <ChatCard />
+      <Fab
+        placement="bottom-right"
+        bg="eGreen.400"
+        variant="unstyled"
+        bottom={"100px"}
+        size="lg"
+        icon={<AntDesign name="plus" size={24} color="white" />}
+      />
     </Box>
   );
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
+  container: { flex: 1, position: "relative" },
 });

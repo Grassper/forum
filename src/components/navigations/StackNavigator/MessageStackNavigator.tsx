@@ -30,7 +30,8 @@ export const MessageStackNavigator = () => {
         name="ChatList"
         component={ChatList}
         options={{
-          title: "",
+          title: "Message",
+          headerTintColor: colors.black,
         }}
       />
       <Stack.Screen
