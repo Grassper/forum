@@ -8,7 +8,7 @@ import { colors } from "@/root/src/constants";
 
 export type MessageRootStackParamList = {
   ChatList: undefined;
-  ChatRoom: undefined;
+  ChatRoom: { title: string };
   NewChat: undefined;
 };
 
@@ -39,13 +39,13 @@ export const MessageStackNavigator = () => {
       <Stack.Screen
         name="ChatRoom"
         component={ChatRoom}
-        options={{
-          title: "",
+        options={({ route }) => ({
+          title: route.params.title,
           headerStyle: {
             backgroundColor: colors.green,
           },
           headerTintColor: colors.white,
-        }}
+        })}
       />
       <Stack.Screen
         name="NewChat"

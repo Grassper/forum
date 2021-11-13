@@ -1,7 +1,21 @@
+import { RouteProp } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
 import { Box, Flex, ScrollView, Text, VStack } from "native-base";
 import React from "react";
 
-interface Props_ {}
+import { MessageRootStackParamList } from "@/root/src/components/navigations/StackNavigator";
+
+type RouteProp_ = RouteProp<MessageRootStackParamList, "ChatRoom">;
+
+type NavigationProp_ = StackNavigationProp<
+  MessageRootStackParamList,
+  "ChatRoom"
+>;
+
+interface Props_ {
+  navigation: NavigationProp_;
+  route: RouteProp_;
+}
 
 interface ChatCard_ {
   align: "left" | "right";

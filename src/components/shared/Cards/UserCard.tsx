@@ -6,10 +6,7 @@ import React from "react";
 
 import { MessageRootStackParamList } from "@/root/src/components/navigations/StackNavigator";
 
-type NavigationProp_ = StackNavigationProp<
-  MessageRootStackParamList,
-  "NewChat"
->;
+type NavigationProp_ = StackNavigationProp<MessageRootStackParamList>;
 
 interface UserCard_ {
   id: string;
@@ -22,7 +19,10 @@ export const UserCard: React.FC<UserCard_> = ({ username, avatarUrl }) => {
 
   return (
     <Box>
-      <Pressable onPress={() => navigation.push("ChatRoom")} bg="white">
+      <Pressable
+        onPress={() => navigation.push("ChatRoom", { title: username })}
+        bg="white"
+      >
         <HStack alignItems="center" justifyContent="space-between" mb="4">
           <HStack space={3} alignItems="center">
             <Avatar

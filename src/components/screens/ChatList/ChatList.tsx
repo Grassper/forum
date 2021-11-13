@@ -28,7 +28,7 @@ const ChatCard: React.FC = () => {
   return (
     <Pressable
       onPress={() => {
-        Navigation.push("ChatRoom");
+        Navigation.push("ChatRoom", { title: "Ferdinand" });
       }}
     >
       <Box
