@@ -1,9 +1,13 @@
-import { Foundation } from "@expo/vector-icons";
+import { FontAwesome, Foundation, Ionicons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import React from "react";
 
-import { StackNavigator } from "@/root/src/components/navigations/StackNavigator";
+import {
+  MessageStackNavigator,
+  StackNavigator,
+} from "@/root/src/components/navigations/StackNavigator";
+import { Explore } from "@/root/src/components/screens/Explore";
 
 const Tab = createBottomTabNavigator();
 
@@ -25,6 +29,32 @@ export const BottomTabNavigator = () => {
             tabBarIconStyle: { alignItems: "center" },
             tabBarIcon: () => {
               return <Foundation name="home" size={24} color="black" />;
+            },
+          }}
+        />
+        <Tab.Screen
+          name="Explore"
+          component={Explore}
+          options={{
+            title: "",
+            headerShown: false,
+            tabBarShowLabel: false,
+            tabBarIconStyle: { alignItems: "center" },
+            tabBarIcon: () => {
+              return <Ionicons name="compass" size={24} color="black" />;
+            },
+          }}
+        />
+        <Tab.Screen
+          name="MessageStackNavigator"
+          component={MessageStackNavigator}
+          options={{
+            title: "",
+            headerShown: false,
+            tabBarShowLabel: false,
+            tabBarIconStyle: { alignItems: "center" },
+            tabBarIcon: () => {
+              return <FontAwesome name="send" size={21} color="black" />;
             },
           }}
         />

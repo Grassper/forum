@@ -1,28 +1,27 @@
-import { MaterialIcons } from "@expo/vector-icons";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { Box, HStack, Icon, Pressable, Text, VStack } from "native-base";
+import { Box } from "native-base";
 import React from "react";
-import { ListRenderItem, StyleSheet, View } from "react-native";
-import { SwipeListView } from "react-native-swipe-list-view";
+import { FlatList, ListRenderItem, StyleSheet, View } from "react-native";
 
-import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
+import { MessageRootStackParamList } from "@/root/src/components/navigations/StackNavigator";
+import { UserCard } from "@/root/src/components/shared/Cards/UserCard";
 import { SearchBar } from "@/root/src/components/shared/SearchBar";
 import { colors } from "@/root/src/constants";
 
-import { FollowCard } from "./FollowCard";
-
-type NavigationProp_ = StackNavigationProp<RootStackParamList, "Follow">;
+type NavigationProp_ = StackNavigationProp<
+  MessageRootStackParamList,
+  "NewChat"
+>;
 
 interface Props_ {
-  navigation: NavigationProp_;
+  Navigation: NavigationProp_;
 }
 
-interface FollowCard_ {
+interface UserCard_ {
   id: string;
   username: string;
   avatarUrl: string;
 }
-interface Props_ {}
 
 const Data = [
   {
@@ -54,11 +53,23 @@ const Data = [
     avatarUrl:
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBwgu1A5zgPSvfE83nurkuzNEoXs9DMNr8Ww&usqp=CAU",
   },
+  {
+    id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28wba",
+    username: "Aafreen Khan",
+    avatarUrl:
+      "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+  },
+  {
+    id: "3ac68afc-c605-48d3-a4f8-fbd91awa97f63",
+    username: "Sujitha Mathur",
+    avatarUrl:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyEaZqT3fHeNrPGcnjLLX1v_W4mvBlgpwxnA&usqp=CAU",
+  },
 ];
 
-const FollowCardRenderer: ListRenderItem<FollowCard_> = ({ item }) => {
+const UserCardRenderer: ListRenderItem<UserCard_> = ({ item }) => {
   return (
-    <FollowCard
+    <UserCard
       id={item.id}
       username={item.username}
       avatarUrl={item.avatarUrl}
@@ -66,46 +77,16 @@ const FollowCardRenderer: ListRenderItem<FollowCard_> = ({ item }) => {
   );
 };
 
-const RenderHiddenItem = () => {
-  return (
-    <HStack flex="1" pl="2">
-      <Pressable
-        w="70"
-        // cursor="pointer"
-        ml="auto"
-        bg="red.400"
-        borderRadius="2"
-        justifyContent="center"
-        onPress={() => console.log("function for delete")}
-        _pressed={{
-          opacity: 0.5,
-        }}
-      >
-        <VStack alignItems="center" space={2}>
-          <Icon as={<MaterialIcons name="delete" />} color="white" size="xs" />
-          <Text color="white" fontSize="xs" fontWeight="medium">
-            Delete
-          </Text>
-        </VStack>
-      </Pressable>
-    </HStack>
-  );
-};
-
-export const Follow: React.FC<Props_> = () => {
+export const NewChat: React.FC<Props_> = () => {
   return (
     <View style={styles.wrapper}>
       <View style={styles.container}>
         <SearchBar />
-        <Box mt="4" safeArea flex="1">
-          <SwipeListView
+        <Box my="4">
+          <FlatList
             data={Data}
-            renderItem={FollowCardRenderer}
-            renderHiddenItem={RenderHiddenItem}
-            rightOpenValue={-70}
-            previewRowKey={"0"}
-            previewOpenValue={-40}
-            previewOpenDelay={3000}
+            renderItem={UserCardRenderer}
+            keyExtractor={(item) => item.id}
           />
         </Box>
       </View>

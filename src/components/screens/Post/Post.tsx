@@ -1,7 +1,7 @@
 import { StackNavigationProp } from "@react-navigation/stack";
 import { Box, Flex, Text } from "native-base";
 import React from "react";
-import { FlatList, ScrollView, StyleSheet } from "react-native";
+import { FlatList, StyleSheet } from "react-native";
 
 import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
 import { Data as DummyData } from "@/root/src/components/screens/SubForum";
@@ -14,9 +14,8 @@ type NavigationProp_ = StackNavigationProp<RootStackParamList, "Post">;
 interface Props_ {
   navigation: NavigationProp_;
 }
-interface listProps {}
 
-const listHeader: React.FC<listProps> = () => {
+const listHeader: React.FC = () => {
   return (
     <Box>
       <PostCard
