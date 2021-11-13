@@ -6,10 +6,10 @@ import { ListRenderItem, StyleSheet, View } from "react-native";
 import { SwipeListView } from "react-native-swipe-list-view";
 
 import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
+import { SearchBar } from "@/root/src/components/shared/SearchBar";
 import { colors } from "@/root/src/constants";
 
 import { FollowCard } from "./FollowCard";
-import { SearchBar } from "./SearchBar";
 
 type NavigationProp_ = StackNavigationProp<RootStackParamList, "Follow">;
 
@@ -66,7 +66,7 @@ const FollowCardRenderer: ListRenderItem<FollowCard_> = ({ item }) => {
   );
 };
 
-const RenderHiddenItem: ListRenderItem<Props_> = () => {
+const RenderHiddenItem = () => {
   return (
     <HStack flex="1" pl="2">
       <Pressable
