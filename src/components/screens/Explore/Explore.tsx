@@ -1,7 +1,7 @@
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { Box } from "native-base";
 import React from "react";
-import { Dimensions, FlatList, StyleSheet, View } from "react-native";
+import { Dimensions, FlatList, StyleSheet } from "react-native";
 
 import {
   Data as UserDummyData,

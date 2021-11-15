@@ -1,0 +1,126 @@
+import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
+import {
+  Actionsheet,
+  Box,
+  HStack,
+  Icon,
+  Pressable,
+  Text,
+  VStack,
+} from "native-base";
+import React from "react";
+
+interface Props_ {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+export const BottomSheet: React.FC<Props_> = ({ isOpen, onClose }) => {
+  return (
+    <Actionsheet isOpen={isOpen} onClose={onClose}>
+      <Actionsheet.Content bg="eGreen.400">
+        <VStack alignItems="center" space="4">
+          <Text color="white" fontWeight="500" fontSize="xl" mb="4">
+            Create a Post
+          </Text>
+          <HStack width="100%" space="4" mb="4">
+            <VStack space="1.5" alignItems="center">
+              <Box
+                bg="white"
+                alignItems="center"
+                width="50px"
+                height="50px"
+                justifyContent="center"
+                borderRadius="full"
+              >
+                <Icon
+                  as={<MaterialCommunityIcons name="image" />}
+                  size={6}
+                  color="black"
+                />
+              </Box>
+              <Text color="white">IMAGE</Text>
+            </VStack>
+            <VStack space="1.5" alignItems="center">
+              <Box
+                bg="white"
+                alignItems="center"
+                width="50px"
+                height="50px"
+                justifyContent="center"
+                borderRadius="full"
+              >
+                <Icon
+                  as={<MaterialCommunityIcons name="microphone" />}
+                  size={6}
+                  color="black"
+                />
+              </Box>
+              <Text color="white">AUDIO</Text>
+            </VStack>
+            <VStack space="1.5" alignItems="center">
+              <Box
+                bg="white"
+                alignItems="center"
+                width="50px"
+                height="50px"
+                justifyContent="center"
+                borderRadius="full"
+              >
+                <Icon
+                  as={<MaterialCommunityIcons name="video-plus" />}
+                  size={6}
+                  color="black"
+                />
+              </Box>
+              <Text color="white">VIDEO</Text>
+            </VStack>
+            <VStack space="1.5" alignItems="center">
+              <Box
+                bg="white"
+                alignItems="center"
+                width="50px"
+                height="50px"
+                justifyContent="center"
+                borderRadius="full"
+              >
+                <Icon
+                  as={<MaterialCommunityIcons name="text-box-outline" />}
+                  size={6}
+                  color="black"
+                />
+              </Box>
+              <Text color="white">TEXT</Text>
+            </VStack>
+            <VStack space="1.5" alignItems="center">
+              <Box
+                bg="white"
+                alignItems="center"
+                width="50px"
+                height="50px"
+                justifyContent="center"
+                borderRadius="full"
+              >
+                <Icon
+                  as={<MaterialCommunityIcons name="poll-box" />}
+                  size={6}
+                  color="black"
+                />
+              </Box>
+              <Text color="white">POLL</Text>
+            </VStack>
+          </HStack>
+          <Box>
+            <Pressable onPress={onClose}>
+              <Icon
+                as={<MaterialIcons name="cancel" />}
+                size={6}
+                color="white"
+              />
+            </Pressable>
+          </Box>
+        </VStack>
+      </Actionsheet.Content>
+    </Actionsheet>
+  );
+};
