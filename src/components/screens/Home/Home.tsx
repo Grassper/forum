@@ -1,5 +1,4 @@
-import { AntDesign } from "@expo/vector-icons";
-import { Fab, useDisclose } from "native-base";
+import { useDisclose } from "native-base";
 import React from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 
@@ -24,7 +23,8 @@ export const Home: React.FC<Props_> = () => {
         renderItem={PostCardRenderer}
         keyExtractor={(item) => item.id}
       />
-      <Fab
+      <FloatingActionButton />
+      {/* <Fab
         onPress={() => onOpen()}
         placement="bottom-right"
         bg="eGreen.400"
@@ -32,7 +32,7 @@ export const Home: React.FC<Props_> = () => {
         bottom={"100px"}
         size="lg"
         icon={<AntDesign name="plus" size={24} color="white" />}
-      />
+      /> */}
     </View>
   );
 };
