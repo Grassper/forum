@@ -1,10 +1,8 @@
-import { AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import {
   Avatar,
   Box,
-  Fab,
   HStack,
   Pressable,
   Spacer,
@@ -15,6 +13,8 @@ import React from "react";
 import { StyleSheet } from "react-native";
 
 import { MessageRootStackParamList } from "@/root/src/components/navigations/StackNavigator";
+
+import { FloatingActionButton } from "../../shared/FabButton";
 
 type NavigationProp_ = StackNavigationProp<
   MessageRootStackParamList,
@@ -102,17 +102,6 @@ export const ChatList: React.FC<Props_> = () => {
       <ChatCard />
       <ChatCard />
       <ChatCard />
-      <Fab
-        onPress={() => {
-          Navigation.push("NewChat");
-        }}
-        placement="bottom-right"
-        bg="eGreen.400"
-        variant="unstyled"
-        bottom={"100px"}
-        size="lg"
-        icon={<AntDesign name="plus" size={24} color="white" />}
-      />
     </Box>
   );
 };

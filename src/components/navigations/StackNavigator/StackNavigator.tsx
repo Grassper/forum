@@ -45,7 +45,7 @@ const defaultStackOptions = {
 export const StackNavigator = () => {
   return (
     <Stack.Navigator
-      initialRouteName="SideDrawerNavigator"
+      initialRouteName="Home"
       screenOptions={defaultStackOptions}
     >
       <Stack.Screen

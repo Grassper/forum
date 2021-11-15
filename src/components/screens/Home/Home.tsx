@@ -6,6 +6,8 @@ import {
   PostCardRenderer,
 } from "@/root/src/components/screens/SubForum";
 
+import { FloatingActionButton } from "../../shared/FabButton";
+
 interface Props_ {}
 
 export const Home: React.FC<Props_> = () => {
@@ -16,6 +18,7 @@ export const Home: React.FC<Props_> = () => {
         renderItem={PostCardRenderer}
         keyExtractor={(item) => item.id}
       />
+      <FloatingActionButton />
     </View>
   );
 };
