@@ -37,7 +37,6 @@ export const BottomTabNavigator = () => {
           component={Explore}
           options={{
             title: "",
-            headerShown: false,
             tabBarShowLabel: false,
             tabBarIconStyle: { alignItems: "center" },
             tabBarIcon: () => {

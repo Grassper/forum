@@ -18,13 +18,11 @@ import {
   Image,
   Pressable,
   Text,
-  View,
 } from "native-base";
 import React, { useState } from "react";
 import { Platform, StatusBar, StyleSheet } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import Tooltip from "react-native-walkthrough-tooltip";
-import { alignItems, backgroundColor, justifyContent } from "styled-system";
 
 import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
 import { colors } from "@/root/src/constants";
@@ -431,17 +429,15 @@ const styles = StyleSheet.create({
     width: 2.5,
   },
   tooltipContainer: {
+    alignItems: "center",
     backgroundColor: colors.white,
+    borderRadius: 25,
     flex: 1,
     height: 45,
-    alignItems: "center",
     justifyContent: "center",
-    // paddingBottom: 15,
-    // paddingTop: 15,
-    width: "100%",
-    paddingRight: 10,
     paddingLeft: 10,
-    borderRadius: 25,
+    paddingRight: 10,
+    width: "100%",
   },
   video: {
     backgroundColor: colors.black,

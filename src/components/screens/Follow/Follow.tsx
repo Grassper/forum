@@ -24,7 +24,7 @@ interface FollowCard_ {
 }
 interface Props_ {}
 
-const Data = [
+export const Data = [
   {
     id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
     username: "Aafreen Khan",
@@ -56,7 +56,7 @@ const Data = [
   },
 ];
 
-const FollowCardRenderer: ListRenderItem<FollowCard_> = ({ item }) => {
+export const FollowCardRenderer: ListRenderItem<FollowCard_> = ({ item }) => {
   return (
     <FollowCard
       id={item.id}
