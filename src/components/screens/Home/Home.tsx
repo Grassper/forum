@@ -1,5 +1,5 @@
-import { useDisclose } from "native-base";
-import React from "react";
+import { Box, useDisclose } from "native-base";
+import React, { useState } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 
 import {
@@ -13,7 +13,12 @@ import { FloatingActionButton } from "../../shared/FabButton";
 interface Props_ {}
 
 export const Home: React.FC<Props_> = () => {
-  const { isOpen, onOpen, onClose } = useDisclose();
+  const { onOpen, onClose } = useDisclose();
+  const [isOpen, setIsOpen] = useState(false);
+  const HandleBottomSheet = () => {
+    console.log("clolkjlk");
+    setIsOpen(!isOpen);
+  };
 
   return (
     <View style={styles.container}>
@@ -23,16 +28,11 @@ export const Home: React.FC<Props_> = () => {
         renderItem={PostCardRenderer}
         keyExtractor={(item) => item.id}
       />
-      <FloatingActionButton />
-      {/* <Fab
-        onPress={() => onOpen()}
-        placement="bottom-right"
-        bg="eGreen.400"
-        variant="unstyled"
-        bottom={"100px"}
-        size="lg"
-        icon={<AntDesign name="plus" size={24} color="white" />}
-      /> */}
+
+      <FloatingActionButton
+        isOpen={isOpen}
+        HandleBottomSheet={HandleBottomSheet}
+      />
     </View>
   );
 };

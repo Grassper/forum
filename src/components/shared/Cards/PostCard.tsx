@@ -340,7 +340,7 @@ const PostUserActions: React.FC<PostUserActions_> = ({
                   size={24}
                   color="red"
                 />
-                <Text> 1.5k Responses </Text>
+                {/* <Text> 1.5k Responses </Text> */}
               </Box>
             }
             onClose={() => {

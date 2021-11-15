@@ -1,12 +1,20 @@
 import { AntDesign } from "@expo/vector-icons";
-import { Box, Icon, Pressable } from "native-base";
+import { Box, Icon, Pressable, Text } from "native-base";
 import React from "react";
 import { SafeAreaView, StyleSheet } from "react-native";
 
-interface Props_ {}
-export const FloatingActionButton: React.FC<Props_> = () => {
+interface Props_ {
+  isOpen: boolean;
+  HandleBottomSheet: () => void;
+}
+export const FloatingActionButton: React.FC<Props_> = ({
+  isOpen,
+  HandleBottomSheet,
+}) => {
   const clickHandler = () => {
     console.log("action trigger");
+    // setIsOpen(!isOpen);
+    HandleBottomSheet();
   };
 
   return (
@@ -36,9 +44,9 @@ const styles = StyleSheet.create({
 
   touchableOpacityStyle: {
     alignItems: "center",
-
     borderRadius: 50,
     bottom: 30,
+    elevation: 100,
     height: 50,
     justifyContent: "center",
     position: "absolute",
