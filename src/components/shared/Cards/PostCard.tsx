@@ -22,6 +22,7 @@ import {
 import React, { useState } from "react";
 import { Platform, StatusBar, StyleSheet } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { color } from "react-native-reanimated";
 import Tooltip from "react-native-walkthrough-tooltip";
 
 import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
@@ -321,44 +322,80 @@ const PostUserActions: React.FC<PostUserActions_> = ({
         <HStack space="3" alignItems="center">
           <Tooltip
             isVisible={showTip}
-            // allowChildInteraction={false}
             content={
               <Box style={styles.roottooltip}>
                 <TouchableOpacity
                   style={styles.IconBackUp}
                   onPress={() => console.log("clkj")}
                 >
-                  <AntDesign name="like1" size={16} color="white" />
+                  <AntDesign
+                    name="like1"
+                    size={16}
+                    color="white"
+                    onPress={() => {
+                      console.log("Press enter to");
+                    }}
+                  />
                 </TouchableOpacity>
                 <Ionicons name="heart-circle" size={28} color="red" />
-                <FontAwesome5 name="smile" size={24} color="#FFEF78" />
-                <MaterialIcons name="emoji-emotions" size={25} color="black" />
-                <MaterialIcons name="emoji-emotions" size={25} color="black" />
-                <MaterialIcons name="emoji-emotions" size={25} color="black" />
+                <FontAwesome5
+                  name="smile"
+                  size={24}
+                  color="#FFEF78"
+                  onPress={() => {
+                    console.log("Press enter to");
+                  }}
+                  style={styles.icons}
+                />
+                <MaterialIcons
+                  name="emoji-emotions"
+                  size={25}
+                  color="black"
+                  style={styles.icons}
+                />
+                <MaterialIcons
+                  name="emoji-emotions"
+                  size={25}
+                  color="black"
+                  style={styles.icons}
+                />
+                <MaterialIcons
+                  name="emoji-emotions"
+                  size={25}
+                  color="black"
+                  style={styles.icons}
+                />
                 <MaterialCommunityIcons
                   name="emoticon-angry"
                   size={24}
                   color="red"
+                  onPress={() => {
+                    console.log("Press enter to");
+                  }}
+                  style={styles.icons}
                 />
-                {/* <Text> 1.5k Responses </Text> */}
               </Box>
             }
             onClose={() => {
               setTip(false);
             }}
             placement="top"
-            // below is for the status bar of react navigation bar
             topAdjustment={
               Platform.OS === "android" ? -StatusBar.currentHeight : 0
             }
             arrowSize={{ width: 0, height: 0 }}
             contentStyle={styles.tooltipContainer}
+            backgroundColor="transparent"
             displayInsets={{
               top: 24,
               bottom: 34,
               left: 14,
               right: 14,
             }}
+            allowChildInteraction={false}
+            childContentSpacing={4}
+            closeOnChildInteraction={false}
+            closeOnContentInteraction={false}
           >
             <Pressable onPress={() => setTip(true)}>
               <Icon
@@ -406,10 +443,14 @@ const styles = StyleSheet.create({
     backgroundColor: "blue",
     borderRadius: 50,
     justifyContent: "center",
+    marginRight: 4,
     paddingBottom: 4,
     paddingLeft: 4,
     paddingRight: 4,
     paddingTop: 1,
+  },
+  icons: {
+    marginRight: 4,
   },
   openPostIcon: {
     transform: [{ rotate: "90deg" }],
@@ -427,6 +468,10 @@ const styles = StyleSheet.create({
     height: 2.5,
     marginHorizontal: 5,
     width: 2.5,
+  },
+  tooltipBackground: {
+    backgroundColor: colors.green,
+    flex: 1,
   },
   tooltipContainer: {
     alignItems: "center",
