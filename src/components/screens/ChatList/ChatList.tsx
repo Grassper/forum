@@ -13,8 +13,7 @@ import React from "react";
 import { StyleSheet } from "react-native";
 
 import { MessageRootStackParamList } from "@/root/src/components/navigations/StackNavigator";
-
-import { FloatingActionButton } from "../../shared/FabButton";
+import { FloatingActionButton } from "@/root/src/components/shared/FabButton";
 
 type NavigationProp_ = StackNavigationProp<
   MessageRootStackParamList,
@@ -102,6 +101,16 @@ export const ChatList: React.FC<Props_> = () => {
       <ChatCard />
       <ChatCard />
       <ChatCard />
+      <ChatCard />
+      <ChatCard />
+      <ChatCard />
+      <ChatCard />
+      <ChatCard />
+      <ChatCard />
+      <ChatCard />
+      <ChatCard />
+      <ChatCard />
+      <FloatingActionButton onPress={() => Navigation.push("NewChat")} />
     </Box>
   );
 };

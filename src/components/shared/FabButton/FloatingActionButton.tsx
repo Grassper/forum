@@ -1,42 +1,26 @@
 import { AntDesign } from "@expo/vector-icons";
-import { Box, Icon, Pressable } from "native-base";
+import { Icon, Pressable } from "native-base";
 import React from "react";
-import { SafeAreaView, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 
-interface Props_ {}
-export const FloatingActionButton: React.FC<Props_> = () => {
-  const clickHandler = () => {
-    console.log("action trigger");
-  };
-
+interface Props_ {
+  onPress: () => void;
+}
+export const FloatingActionButton: React.FC<Props_> = ({ onPress }) => {
   return (
-    <SafeAreaView style={styles.container}>
-      <Box style={styles.container}>
-        <Pressable
-          onPress={clickHandler}
-          style={styles.touchableOpacityStyle}
-          bgColor="eGreen.400"
-        >
-          <Icon
-            as={<AntDesign name="plus" size={24} color="white" />}
-            size="lg"
-            color="white"
-          />
-        </Pressable>
-      </Box>
-    </SafeAreaView>
+    <Pressable
+      onPress={onPress}
+      style={styles.touchableOpacityStyle}
+      bgColor="eGreen.400"
+    >
+      <Icon as={<AntDesign name="plus" />} size="sm" color="white" />
+    </Pressable>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: "transparent",
-    flex: 1,
-  },
-
   touchableOpacityStyle: {
     alignItems: "center",
-
     borderRadius: 50,
     bottom: 30,
     height: 50,
