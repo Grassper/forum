@@ -9,6 +9,8 @@ import { enableScreens } from "react-native-screens";
 import { BottomTabNavigator } from "@/root/src/components/navigations/BottomTabNavigator";
 import { NativeBaseTheme as Theme } from "@/root/src/config";
 
+import { SideDrawerNavigator } from "./components/navigations/SideDrawerNavigator";
+
 enableScreens();
 
 const fetchFonts = (): Promise<void> => {
@@ -41,7 +43,7 @@ const App: React.FC = () => {
 
   return (
     <NativeBaseProvider theme={Theme}>
-      <BottomTabNavigator />
+      <SideDrawerNavigator />
     </NativeBaseProvider>
   );
 };

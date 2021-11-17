@@ -4,10 +4,11 @@ import {
   DrawerContentScrollView,
   DrawerItem,
 } from "@react-navigation/drawer";
-import { useNavigation } from "@react-navigation/native";
+import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import {
   Avatar,
   Box,
+  Button,
   Flex,
   Icon,
   MoonIcon,
@@ -22,6 +23,8 @@ import { EditAndCreateSubForum } from "@/root/src/components/screens/EditAndCrea
 import { Follow } from "@/root/src/components/screens/Follow";
 import { Profile } from "@/root/src/components/screens/Profile";
 import { Saved } from "@/root/src/components/screens/Saved";
+
+import { BottomTabNavigator } from "../BottomTabNavigator";
 
 const DrawerNavigator = createDrawerNavigator();
 
@@ -167,24 +170,49 @@ const CustomDrawerContent = (props) => {
 };
 
 export const SideDrawerNavigator = () => {
+  // const navigation = useNavigation();
+  // React.useLayoutEffect(() => {
+  //   navigation.setOptions({
+  //     headerRight: () => (
+  //       <Button
+  //         size="md"
+  //         _text={{ fontWeight: "600", color: "white" }}
+  //         variant="unstyled"
+  //         onPress={() => {}}
+  //       >
+  //         Next
+  //       </Button>
+  //     ),
+  //   });
+  // }, [navigation]);
   return (
-    <DrawerNavigator.Navigator
-      drawerContent={(props) => <CustomDrawerContent {...props} />}
-    >
-      <DrawerNavigator.Screen
-        name="Profile"
-        component={Profile}
-        options={{
-          title: "",
-        }}
-      />
-      <DrawerNavigator.Screen name="Blocked Accounts" component={Follow} />
-      <DrawerNavigator.Screen name="Saved" component={Saved} />
-      <DrawerNavigator.Screen
-        name="EditAndCreateSubForum"
-        component={EditAndCreateSubForum}
-      />
-    </DrawerNavigator.Navigator>
+    <NavigationContainer>
+      <DrawerNavigator.Navigator
+        drawerContent={(props) => <CustomDrawerContent {...props} />}
+      >
+        <DrawerNavigator.Screen
+          name="bottomTabNavigator"
+          component={BottomTabNavigator}
+          options={{
+            title: "",
+            headerShown: false,
+          }}
+        />
+        <DrawerNavigator.Screen
+          name="Profile"
+          component={Profile}
+          options={{
+            title: "",
+          }}
+        />
+        <DrawerNavigator.Screen name="Blocked Accounts" component={Follow} />
+        <DrawerNavigator.Screen name="Saved" component={Saved} />
+        <DrawerNavigator.Screen
+          name="EditAndCreateSubForum"
+          component={EditAndCreateSubForum}
+        />
+      </DrawerNavigator.Navigator>
+    </NavigationContainer>
   );
 };
 

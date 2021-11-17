@@ -1,3 +1,6 @@
+import { Ionicons } from "@expo/vector-icons";
+import { DrawerActions, useNavigation } from "@react-navigation/native";
+import { Box, Button } from "native-base";
 import React, { useState } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 
@@ -15,7 +18,32 @@ export const Home: React.FC<Props_> = () => {
   const HandleBottomSheet = () => {
     setIsOpen(!isOpen);
   };
-
+  const navigation = useNavigation();
+  console.log(navigation, "navigation");
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => (
+        <Box ml="3">
+          <Ionicons
+            name="ios-menu-sharp"
+            size={24}
+            color="black"
+            onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
+          />
+        </Box>
+      ),
+      headerRight: () => (
+        <Box mr="3">
+          <Ionicons
+            name="search"
+            size={24}
+            color="black"
+            onPress={() => console.log("Search called")}
+          />
+        </Box>
+      ),
+    });
+  }, [navigation]);
   return (
     <View style={styles.container}>
       <BottomSheet isOpen={isOpen} onClose={HandleBottomSheet} />

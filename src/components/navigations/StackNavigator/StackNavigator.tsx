@@ -55,6 +55,14 @@ export const StackNavigator = () => {
       screenOptions={defaultStackOptions}
     >
       <Stack.Screen
+        name="Home"
+        component={Home}
+        options={{
+          title: "",
+          // headerShown: false,
+        }}
+      />
+      <Stack.Screen
         name="SideDrawerNavigator"
         component={SideDrawerNavigator}
         options={{
@@ -62,13 +70,7 @@ export const StackNavigator = () => {
           headerShown: false,
         }}
       />
-      <Stack.Screen
-        name="Home"
-        component={Home}
-        options={{
-          title: "",
-        }}
-      />
+
       <Stack.Screen
         name="Profile"
         component={Profile}
