@@ -95,10 +95,9 @@ const ChatCard: React.FC = () => {
 };
 
 export const ChatList: React.FC<Props_> = () => {
-  const Navigation = useNavigation<NavigationProp_>();
+  const navigation = useNavigation<NavigationProp_>();
   const Onpress = () => {
-    console.log("clicked");
-    Navigation.push("NewChat");
+    navigation.push("NewChat");
   };
   return (
     <Box style={styles.container}>
