@@ -1,4 +1,4 @@
-import { Box, useDisclose } from "native-base";
+import { useDisclose } from "native-base";
 import React, { useState } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 
@@ -7,13 +7,12 @@ import {
   PostCardRenderer,
 } from "@/root/src/components/screens/SubForum";
 import { BottomSheet } from "@/root/src/components/shared/BottomSheet";
-
-import { FloatingActionButton } from "../../shared/FabButton";
+import { FloatingActionButton } from "@/root/src/components/shared/FabButton";
 
 interface Props_ {}
 
 export const Home: React.FC<Props_> = () => {
-  const { onOpen, onClose } = useDisclose();
+  const { onClose } = useDisclose();
   const [isOpen, setIsOpen] = useState(false);
   const HandleBottomSheet = () => {
     console.log("clolkjlk");
