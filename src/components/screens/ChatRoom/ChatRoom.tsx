@@ -1,6 +1,7 @@
+import { FontAwesome } from "@expo/vector-icons";
 import { RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { Box, Flex, ScrollView, Text, VStack } from "native-base";
+import { Box, Flex, Icon, Input, ScrollView, Text, VStack } from "native-base";
 import React from "react";
 
 import { MessageRootStackParamList } from "@/root/src/components/navigations/StackNavigator";
@@ -54,15 +55,60 @@ const ChatCard: React.FC<ChatCard_> = ({ align }) => {
 };
 
 export const ChatRoom: React.FC<Props_> = () => {
+  const [Comment, setComment] = React.useState("");
+
   return (
-    <ScrollView>
-      <Box alignItems="center">
-        <Flex width="90%" pt="4">
-          <ChatCard align="right" />
-          <ChatCard align="left" />
-          <ChatCard align="right" />
+    <Box flex="1">
+      <ScrollView>
+        <Box alignItems="center">
+          <Flex width="90%" pt="4">
+            <ChatCard align="right" />
+            <ChatCard align="left" />
+            <ChatCard align="right" />
+            <ChatCard align="right" />
+            <ChatCard align="left" />
+            <ChatCard align="right" />
+          </Flex>
+        </Box>
+      </ScrollView>
+      <Box bg="transparent" py="1" justifyContent="center">
+        <Flex
+          flexDirection="row"
+          alignItems="center"
+          justifyContent="center"
+          bgColor="transparent"
+        >
+          <Input
+            bg="muted.100"
+            p="3"
+            width="80%"
+            multiline
+            value={Comment}
+            onChangeText={setComment}
+            borderRadius="md"
+            placeholder="Your comment"
+            placeholderTextColor="muted.400"
+            fontSize="sm"
+            variant="unstyled"
+          />
+          <Flex
+            bg="eGreen.400"
+            width="10"
+            ml="2"
+            height="10"
+            alignItems="center"
+            justifyContent="center"
+            borderRadius="full"
+          >
+            <Icon
+              as={<FontAwesome name="send" />}
+              size={4}
+              color="white"
+              // bgColor="red.400"
+            />
+          </Flex>
         </Flex>
       </Box>
-    </ScrollView>
+    </Box>
   );
 };
