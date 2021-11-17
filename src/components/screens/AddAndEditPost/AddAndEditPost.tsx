@@ -5,6 +5,7 @@ import {
   Box,
   Button,
   Center,
+  Flex,
   Icon,
   Input,
   Pressable,
@@ -69,70 +70,92 @@ export const AddAndEditPost: React.FC<Props_> = ({ navigation, route }) => {
             <Input
               multiline
               numberOfLines={2}
+              maxLength={100}
               value={PollTitle}
               onChangeText={setPollTitle}
-              borderRadius="md"
               placeholder="Title"
               placeholderTextColor="muted.400"
               fontSize="md"
-              fontWeight="500"
               variant="unstyled"
             />
             <Box mt="2">
               {Polls.map((entry, index) => {
                 return (
-                  <Text
-                    key={`poll-${index}`}
-                    p="3"
-                    bg="muted.100"
-                    mb="2"
-                    alignItems="center"
-                    borderRadius="5"
-                  >
-                    {entry.content}
-                  </Text>
+                  <Flex flexDirection="row" alignItems="center">
+                    <Text
+                      key={`poll-${index}`}
+                      p="3"
+                      width="85%"
+                      bg="muted.100"
+                      mb="2"
+                      minHeight="50px"
+                      alignItems="center"
+                      borderRadius="5"
+                    >
+                      {entry.content}
+                    </Text>
+
+                    <Pressable
+                      bg="danger.400"
+                      width="15%"
+                      height="50px"
+                      mb="2"
+                      alignItems="center"
+                      justifyContent="center"
+                      onPress={() => {
+                        setPoll((prev) =>
+                          prev.filter(
+                            (entry1) => entry1.content !== entry.content
+                          )
+                        );
+                      }}
+                    >
+                      <Icon
+                        as={<AntDesign name="plus" />}
+                        size={4}
+                        style={styles.cancelIcon}
+                        color="white"
+                      />
+                    </Pressable>
+                  </Flex>
                 );
               })}
             </Box>
             {Polls.length <= 2 && (
-              <Input
-                bg="muted.100"
-                p="4"
-                maxLength={30}
-                value={Option}
-                onChangeText={setOption}
-                borderRadius="md"
-                placeholder="Add Option"
-                placeholderTextColor="muted.400"
-                fontSize="sm"
-                variant="unstyled"
-                InputRightElement={
-                  <Button
-                    bg="eGreen.400"
-                    width="1/6"
-                    rounded="none"
-                    height="full"
-                    onPress={() => {
-                      setPoll((prev) => [...prev, { content: Option }]);
-                      setOption("");
-                    }}
-                  >
-                    <Icon
-                      as={<AntDesign name="plus" />}
-                      size={4}
-                      color="white"
-                    />
-                  </Button>
-                }
-              />
+              <Flex flexDirection="row" alignItems="center">
+                <Input
+                  bg="muted.100"
+                  p="4"
+                  maxLength={30}
+                  width="85%"
+                  value={Option}
+                  onChangeText={setOption}
+                  placeholder="Add Option"
+                  placeholderTextColor="muted.400"
+                  fontSize="sm"
+                  variant="unstyled"
+                />
+                <Pressable
+                  bg="eGreen.400"
+                  width="15%"
+                  height="50px"
+                  alignItems="center"
+                  justifyContent="center"
+                  onPress={() => {
+                    setPoll((prev) => [...prev, { content: Option }]);
+                    setOption("");
+                  }}
+                >
+                  <Icon as={<AntDesign name="plus" />} size={4} color="white" />
+                </Pressable>
+              </Flex>
             )}
             <Input
               mt="2"
-              width="90%"
+              maxLength={140}
               multiline
               value={Content}
               onChangeText={setContent}
-              borderRadius="md"
               placeholder="Purpose of this poll"
               placeholderTextColor="muted.400"
               fontSize="sm"
@@ -186,5 +209,8 @@ export const AddAndEditPost: React.FC<Props_> = ({ navigation, route }) => {
 };
 
 const styles = StyleSheet.create({
+  cancelIcon: {
+    transform: [{ rotate: "45deg" }],
+  },
   container: { flex: 1 },
 });
