@@ -170,21 +170,6 @@ const CustomDrawerContent = (props) => {
 };
 
 export const SideDrawerNavigator = () => {
-  // const navigation = useNavigation();
-  // React.useLayoutEffect(() => {
-  //   navigation.setOptions({
-  //     headerRight: () => (
-  //       <Button
-  //         size="md"
-  //         _text={{ fontWeight: "600", color: "white" }}
-  //         variant="unstyled"
-  //         onPress={() => {}}
-  //       >
-  //         Next
-  //       </Button>
-  //     ),
-  //   });
-  // }, [navigation]);
   return (
     <NavigationContainer>
       <DrawerNavigator.Navigator
