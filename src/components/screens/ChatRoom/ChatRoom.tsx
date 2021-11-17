@@ -1,8 +1,19 @@
-import { FontAwesome } from "@expo/vector-icons";
-import { RouteProp } from "@react-navigation/native";
+import { Feather, FontAwesome } from "@expo/vector-icons";
+import { RouteProp, useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { Box, Flex, Icon, Input, ScrollView, Text, VStack } from "native-base";
+import {
+  Avatar,
+  Box,
+  Button,
+  Flex,
+  Icon,
+  Input,
+  ScrollView,
+  Text,
+  VStack,
+} from "native-base";
 import React from "react";
+import { ImageBackground } from "react-native";
 
 import { MessageRootStackParamList } from "@/root/src/components/navigations/StackNavigator";
 
@@ -56,21 +67,61 @@ const ChatCard: React.FC<ChatCard_> = ({ align }) => {
 
 export const ChatRoom: React.FC<Props_> = () => {
   const [Comment, setComment] = React.useState("");
+  const navigation = useNavigation();
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => (
+        <Box>
+          <Flex direction="row" alignItems="center">
+            <Feather
+              name="chevron-left"
+              size={30}
+              color="white"
+              mr="100"
+              onPress={() => navigation.goBack()}
+            />
+            <Avatar
+              bg="green.500"
+              size="35px"
+              source={{
+                uri: "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+              }}
+            />
+          </Flex>
+        </Box>
+        // <Button
+        //   size="md"
+        //   _text={{ fontWeight: "600", color: "white" }}
+        //   variant="unstyled"
+        //   onPress={() => navigation.navigate("Profile", { userId: undefined })} // pass undefined for current user
+        // >
+        //   Save
+        // </Button>
+      ),
+    });
+  }, [navigation]);
 
   return (
     <Box flex="1">
-      <ScrollView>
-        <Box alignItems="center">
-          <Flex width="90%" pt="4">
-            <ChatCard align="right" />
-            <ChatCard align="left" />
-            <ChatCard align="right" />
-            <ChatCard align="right" />
-            <ChatCard align="left" />
-            <ChatCard align="right" />
-          </Flex>
-        </Box>
-      </ScrollView>
+      <ImageBackground
+        source={require("../../../../assets/images/chatroomWallpaper.jpg")}
+        resizeMode="cover"
+        style={{ flex: 1 }}
+      >
+        <ScrollView>
+          <Box alignItems="center">
+            <Flex width="90%" pt="4">
+              <ChatCard align="right" />
+              <ChatCard align="left" />
+              <ChatCard align="right" />
+              <ChatCard align="right" />
+              <ChatCard align="left" />
+              <ChatCard align="right" />
+            </Flex>
+          </Box>
+        </ScrollView>
+      </ImageBackground>
+
       <Box bg="transparent" py="1" justifyContent="center">
         <Flex
           flexDirection="row"
