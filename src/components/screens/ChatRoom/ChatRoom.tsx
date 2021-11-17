@@ -4,7 +4,6 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import {
   Avatar,
   Box,
-  Button,
   Flex,
   Icon,
   Input,
@@ -68,6 +67,7 @@ const ChatCard: React.FC<ChatCard_> = ({ align }) => {
 export const ChatRoom: React.FC<Props_> = () => {
   const [Comment, setComment] = React.useState("");
   const navigation = useNavigation();
+  console.log(navigation);
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
@@ -89,14 +89,6 @@ export const ChatRoom: React.FC<Props_> = () => {
             />
           </Flex>
         </Box>
-        // <Button
-        //   size="md"
-        //   _text={{ fontWeight: "600", color: "white" }}
-        //   variant="unstyled"
-        //   onPress={() => navigation.navigate("Profile", { userId: undefined })} // pass undefined for current user
-        // >
-        //   Save
-        // </Button>
       ),
     });
   }, [navigation]);
@@ -120,46 +112,45 @@ export const ChatRoom: React.FC<Props_> = () => {
             </Flex>
           </Box>
         </ScrollView>
-      </ImageBackground>
-
-      <Box bg="transparent" py="1" justifyContent="center">
-        <Flex
-          flexDirection="row"
-          alignItems="center"
-          justifyContent="center"
-          bgColor="transparent"
-        >
-          <Input
-            bg="muted.100"
-            p="3"
-            width="80%"
-            multiline
-            value={Comment}
-            onChangeText={setComment}
-            borderRadius="md"
-            placeholder="Your comment"
-            placeholderTextColor="muted.400"
-            fontSize="sm"
-            variant="unstyled"
-          />
+        <Box bg="transparent" py="1" justifyContent="center">
           <Flex
-            bg="eGreen.400"
-            width="10"
-            ml="2"
-            height="10"
+            flexDirection="row"
             alignItems="center"
             justifyContent="center"
-            borderRadius="full"
+            bgColor="transparent"
           >
-            <Icon
-              as={<FontAwesome name="send" />}
-              size={4}
-              color="white"
-              // bgColor="red.400"
+            <Input
+              bg="white"
+              p="3"
+              width="80%"
+              multiline
+              value={Comment}
+              onChangeText={setComment}
+              borderRadius="md"
+              placeholder="Your comment"
+              placeholderTextColor="muted.400"
+              fontSize="sm"
+              variant="unstyled"
             />
+            <Flex
+              bg="eGreen.400"
+              width="10"
+              ml="2"
+              height="10"
+              alignItems="center"
+              justifyContent="center"
+              borderRadius="full"
+            >
+              <Icon
+                as={<FontAwesome name="send" />}
+                size={4}
+                color="white"
+                // bgColor="red.400"
+              />
+            </Flex>
           </Flex>
-        </Flex>
-      </Box>
+        </Box>
+      </ImageBackground>
     </Box>
   );
 };

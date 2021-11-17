@@ -27,7 +27,11 @@ const ChatCard: React.FC = () => {
   return (
     <Pressable
       onPress={() => {
-        Navigation.push("ChatRoom", { title: "Ferdinand" });
+        Navigation.push("ChatRoom", {
+          title: "Ferdinand",
+          imageUri:
+            "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+        });
       }}
     >
       <Box
