@@ -316,7 +316,7 @@ const PostUserActions: React.FC<PostUserActions_> = ({
   const navigation = useNavigation<NavigationProp_>();
   const [showTip, setTip] = useState(false);
   const [likeIcon, setLikeIcon] = useState("smile");
-  var text123 = `@/root/assets/faces/${likeIcon}.png`;
+  const text123 = `@/root/assets/faces/${likeIcon}.png`;
   return (
     <Box>
       <HStack alignItems="center" justifyContent="space-between">
@@ -325,35 +325,6 @@ const PostUserActions: React.FC<PostUserActions_> = ({
             isVisible={showTip}
             content={
               <Box style={styles.roottooltip}>
-                {/* <TouchableOpacity
-                  style={styles.IconBackUp}
-                  onPress={() => console.log("clkj")}
-                >
-                  <AntDesign
-                    name="like1"
-                    size={16}
-                    color="white"
-                    onPress={() => {
-                      console.log("Press enter to");
-                    }}
-                  />
-                </TouchableOpacity>
-                <Ionicons name="heart-circle" size={28} color="red" />
-                <FontAwesome5
-                  name="smile"
-                  size={24}
-                  color="#FFEF78"
-                  onPress={() => {
-                    console.log("Press enter to");
-                  }}
-                  style={styles.icons}
-                /> */}
-                {/* <MaterialIcons
-                  name="emoji-emotions"
-                  size={25}
-                  color="black"
-                  style={styles.icons}
-                /> */}
                 <Pressable
                   onPress={() => {
                     setLikeIcon("smile"), setTip(false);
@@ -391,15 +362,7 @@ const PostUserActions: React.FC<PostUserActions_> = ({
                     size={9}
                   />
                 </Pressable>
-                {/* <MaterialCommunityIcons
-                  name="emoticon-angry"
-                  size={24}
-                  color="red"
-                  onPress={() => {
-                    setLikeIcon("emoticon-angry"), setTip(false);
-                  }}
-                  style={styles.icons}
-                /> */}
+
                 <Pressable
                   onPress={() => {
                     setLikeIcon("angry"), setTip(false);
@@ -418,7 +381,7 @@ const PostUserActions: React.FC<PostUserActions_> = ({
             }}
             placement="top"
             topAdjustment={
-              Platform.OS === "android" ? -StatusBar.currentHeight - 11 : 0
+              Platform.OS === "android" ? -StatusBar.currentHeight : 0
             }
             arrowSize={{ width: 0, height: 0 }}
             contentStyle={styles.tooltipContainer}
@@ -431,20 +394,11 @@ const PostUserActions: React.FC<PostUserActions_> = ({
             }}
             allowChildInteraction={false}
             childContentSpacing={0}
-            // closeOnChildInteraction={false}
-            // closeOnContentInteraction={false}
           >
-            {/* <Pressable onPress={() => setTip(true)}>
-              <Icon
-                as={<MaterialCommunityIcons name={likeIcon} />}
-                size={6}
-                color="muted.500"
-              />
-            </Pressable> */}
             <TouchableOpacity onPress={() => setTip(true)}>
-              {console.log(text123)}
+              {/* {console.log(text123)} */}
               <Img
-                source={require(`../../../../assets/faces/smile.png`)}
+                source={require("@/root/assets/faces/angry.png")}
                 // alt="Alternate Text"
                 style={{ width: 25, height: 25 }}
               />
