@@ -21,17 +21,14 @@ export const Home: React.FC<Props_> = () => {
 
   return (
     <View style={styles.container}>
-      <BottomSheet isOpen={isOpen} onClose={onClose} />
+      <BottomSheet isOpen={isOpen} onClose={HandleBottomSheet} />
       <FlatList
         data={DummyData}
         renderItem={PostCardRenderer}
         keyExtractor={(item) => item.id}
       />
 
-      <FloatingActionButton
-        isOpen={isOpen}
-        HandleBottomSheet={HandleBottomSheet}
-      />
+      <FloatingActionButton onPress={HandleBottomSheet} />
     </View>
   );
 };

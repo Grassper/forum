@@ -105,7 +105,7 @@ export const ChatList: React.FC<Props_> = () => {
       <ChatCard />
       <ChatCard />
       <ChatCard />
-      <FloatingActionButton HandleBottomSheet={Onpress} isOpen={false} />
+      <FloatingActionButton onPress={Onpress} />
     </Box>
   );
 };

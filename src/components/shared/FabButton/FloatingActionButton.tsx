@@ -1,7 +1,7 @@
 import { AntDesign } from "@expo/vector-icons";
-import { Box, Icon, Pressable, Text } from "native-base";
+import { Icon, Pressable } from "native-base";
 import React from "react";
-import { SafeAreaView, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 
 // interface Props_ {
 //   isOpen: boolean;
