@@ -3,6 +3,20 @@ import { Icon, Pressable } from "native-base";
 import React from "react";
 import { StyleSheet } from "react-native";
 
+// interface Props_ {
+//   isOpen: boolean;
+//   HandleBottomSheet: () => void;
+// }
+// export const FloatingActionButton: React.FC<Props_> = ({
+//   isOpen,
+//   HandleBottomSheet,
+// }) => {
+//   // const clickHandler = () => {
+//   //   console.log("action trigger");
+//   //   // setIsOpen(!isOpen);
+//   //   HandleBottomSheet();
+//   // };
+
 interface Props_ {
   onPress: () => void;
 }
@@ -23,6 +37,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 50,
     bottom: 30,
+    elevation: 100,
     height: 50,
     justifyContent: "center",
     position: "absolute",

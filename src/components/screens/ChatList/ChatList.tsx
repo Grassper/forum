@@ -96,21 +96,16 @@ const ChatCard: React.FC = () => {
 
 export const ChatList: React.FC<Props_> = () => {
   const Navigation = useNavigation<NavigationProp_>();
+  const Onpress = () => {
+    console.log("clicked");
+    Navigation.push("NewChat");
+  };
   return (
     <Box style={styles.container}>
       <ChatCard />
       <ChatCard />
       <ChatCard />
-      <ChatCard />
-      <ChatCard />
-      <ChatCard />
-      <ChatCard />
-      <ChatCard />
-      <ChatCard />
-      <ChatCard />
-      <ChatCard />
-      <ChatCard />
-      <FloatingActionButton onPress={() => Navigation.push("NewChat")} />
+      <FloatingActionButton onPress={Onpress} />
     </Box>
   );
 };

@@ -20,8 +20,9 @@ import {
   Text,
 } from "native-base";
 import React, { useState } from "react";
-import { Platform, StatusBar, StyleSheet } from "react-native";
+import { Image as Img, Platform, StatusBar, StyleSheet } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { color } from "react-native-reanimated";
 import Tooltip from "react-native-walkthrough-tooltip";
 
 import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
@@ -314,59 +315,140 @@ const PostUserActions: React.FC<PostUserActions_> = ({
 }) => {
   const navigation = useNavigation<NavigationProp_>();
   const [showTip, setTip] = useState(false);
-
+  const [likeIcon, setLikeIcon] = useState("smile");
+  var text123 = `@/root/assets/faces/${likeIcon}.png`;
   return (
     <Box>
       <HStack alignItems="center" justifyContent="space-between">
         <HStack space="3" alignItems="center">
           <Tooltip
             isVisible={showTip}
-            // allowChildInteraction={false}
             content={
               <Box style={styles.roottooltip}>
-                <TouchableOpacity
+                {/* <TouchableOpacity
                   style={styles.IconBackUp}
                   onPress={() => console.log("clkj")}
                 >
-                  <AntDesign name="like1" size={16} color="white" />
+                  <AntDesign
+                    name="like1"
+                    size={16}
+                    color="white"
+                    onPress={() => {
+                      console.log("Press enter to");
+                    }}
+                  />
                 </TouchableOpacity>
                 <Ionicons name="heart-circle" size={28} color="red" />
-                <FontAwesome5 name="smile" size={24} color="#FFEF78" />
-                <MaterialIcons name="emoji-emotions" size={25} color="black" />
-                <MaterialIcons name="emoji-emotions" size={25} color="black" />
-                <MaterialIcons name="emoji-emotions" size={25} color="black" />
-                <MaterialCommunityIcons
+                <FontAwesome5
+                  name="smile"
+                  size={24}
+                  color="#FFEF78"
+                  onPress={() => {
+                    console.log("Press enter to");
+                  }}
+                  style={styles.icons}
+                /> */}
+                {/* <MaterialIcons
+                  name="emoji-emotions"
+                  size={25}
+                  color="black"
+                  style={styles.icons}
+                /> */}
+                <Pressable
+                  onPress={() => {
+                    setLikeIcon("smile"), setTip(false);
+                  }}
+                  style={styles.icons}
+                >
+                  <Image
+                    source={require("@/root/assets/faces/smile.png")}
+                    alt="Alternate Text"
+                    size={35}
+                  />
+                </Pressable>
+
+                <Pressable
+                  onPress={() => {
+                    setLikeIcon("wow"), setTip(false);
+                  }}
+                  style={styles.icons}
+                >
+                  <Image
+                    source={require("@/root/assets/faces/wow.png")}
+                    alt="Alternate Text"
+                    size={8}
+                  />
+                </Pressable>
+                <Pressable
+                  onPress={() => {
+                    setLikeIcon("sad"), setTip(false);
+                  }}
+                  style={styles.icons}
+                >
+                  <Image
+                    source={require("@/root/assets/faces/sad.png")}
+                    alt="Alternate Text"
+                    size={9}
+                  />
+                </Pressable>
+                {/* <MaterialCommunityIcons
                   name="emoticon-angry"
                   size={24}
                   color="red"
-                />
-                <Text> 1.5k Responses </Text>
+                  onPress={() => {
+                    setLikeIcon("emoticon-angry"), setTip(false);
+                  }}
+                  style={styles.icons}
+                /> */}
+                <Pressable
+                  onPress={() => {
+                    setLikeIcon("angry"), setTip(false);
+                  }}
+                >
+                  <Image
+                    source={require("@/root/assets/faces/angry.png")}
+                    alt="Alternate Text"
+                    size={30}
+                  />
+                </Pressable>
               </Box>
             }
             onClose={() => {
               setTip(false);
             }}
             placement="top"
-            // below is for the status bar of react navigation bar
             topAdjustment={
-              Platform.OS === "android" ? -StatusBar.currentHeight : 0
+              Platform.OS === "android" ? -StatusBar.currentHeight - 11 : 0
             }
             arrowSize={{ width: 0, height: 0 }}
             contentStyle={styles.tooltipContainer}
+            backgroundColor="transparent"
             displayInsets={{
               top: 24,
               bottom: 34,
               left: 14,
               right: 14,
             }}
+            allowChildInteraction={false}
+            childContentSpacing={0}
+            // closeOnChildInteraction={false}
+            // closeOnContentInteraction={false}
           >
-            <Pressable onPress={() => setTip(true)}>
+            {/* <Pressable onPress={() => setTip(true)}>
               <Icon
-                as={<FontAwesome name="heart-o" />}
-                size={5}
+                as={<MaterialCommunityIcons name={likeIcon} />}
+                size={6}
                 color="muted.500"
               />
-            </Pressable>
+            </Pressable> */}
+            <TouchableOpacity onPress={() => setTip(true)}>
+              {console.log(text123)}
+              <Img
+                source={require(`../../../../assets/faces/smile.png`)}
+                // alt="Alternate Text"
+                style={{ width: 25, height: 25 }}
+              />
+            </TouchableOpacity>
           </Tooltip>
           <Pressable
             onPress={() => {
@@ -406,10 +488,14 @@ const styles = StyleSheet.create({
     backgroundColor: "blue",
     borderRadius: 50,
     justifyContent: "center",
+    marginRight: 4,
     paddingBottom: 4,
     paddingLeft: 4,
     paddingRight: 4,
     paddingTop: 1,
+  },
+  icons: {
+    marginRight: 4,
   },
   openPostIcon: {
     transform: [{ rotate: "90deg" }],
@@ -428,6 +514,10 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
     width: 2.5,
   },
+  tooltipBackground: {
+    backgroundColor: colors.green,
+    flex: 1,
+  },
   tooltipContainer: {
     alignItems: "center",
     backgroundColor: colors.white,
@@ -437,6 +527,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingLeft: 10,
     paddingRight: 10,
+    position: "relative",
     width: "100%",
   },
   video: {
