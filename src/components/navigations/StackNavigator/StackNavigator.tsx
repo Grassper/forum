@@ -3,6 +3,7 @@ import React from "react";
 
 import { SideDrawerNavigator } from "@/root/src/components/navigations/SideDrawerNavigator";
 import { AddAndEditComment } from "@/root/src/components/screens/AddAndEditComment";
+import { AddAndEditPost } from "@/root/src/components/screens/AddAndEditPost";
 import { AndAndEditReplies } from "@/root/src/components/screens/AndAndEditReplies";
 import { Comment } from "@/root/src/components/screens/Comment";
 import { EditAndCreateSubForum } from "@/root/src/components/screens/EditAndCreateSubForum";
@@ -27,6 +28,11 @@ export type RootStackParamList = {
   SubForumMod: undefined;
   Post: undefined;
   AddAndEditComment: undefined;
+  AddAndEditPost: {
+    postType: "Image" | "Text" | "Video" | "Audio" | "Poll";
+    action: "Add" | "Edit";
+    hideUpload?: boolean;
+  };
   Comment: undefined;
   AndAndEditReplies: undefined;
   Home: undefined;
@@ -164,6 +170,17 @@ export const StackNavigator = () => {
       <Stack.Screen
         name="AndAndEditReplies"
         component={AndAndEditReplies}
+        options={() => ({
+          title: "",
+          headerStyle: {
+            backgroundColor: colors.green,
+          },
+          headerTintColor: colors.white,
+        })}
+      />
+      <Stack.Screen
+        name="AddAndEditPost"
+        component={AddAndEditPost}
         options={() => ({
           title: "",
           headerStyle: {
