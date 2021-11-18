@@ -34,7 +34,7 @@ export const BottomSheet: React.FC<Props_> = ({ isOpen, onClose }) => {
             <VStack space="1.5" alignItems="center">
               <Pressable
                 onPress={() => {
-                  navigation.push("AddAndEditPost", {
+                  navigation.push("ChooseSubForum", {
                     postType: "Image",
                     action: "Add",
                   });
@@ -60,7 +60,7 @@ export const BottomSheet: React.FC<Props_> = ({ isOpen, onClose }) => {
             <VStack space="1.5" alignItems="center">
               <Pressable
                 onPress={() => {
-                  navigation.push("AddAndEditPost", {
+                  navigation.push("ChooseSubForum", {
                     postType: "Audio",
                     action: "Add",
                   });
@@ -86,7 +86,7 @@ export const BottomSheet: React.FC<Props_> = ({ isOpen, onClose }) => {
             <VStack space="1.5" alignItems="center">
               <Pressable
                 onPress={() => {
-                  navigation.push("AddAndEditPost", {
+                  navigation.push("ChooseSubForum", {
                     postType: "Video",
                     action: "Add",
                   });
@@ -112,7 +112,7 @@ export const BottomSheet: React.FC<Props_> = ({ isOpen, onClose }) => {
             <VStack space="1.5" alignItems="center">
               <Pressable
                 onPress={() => {
-                  navigation.push("AddAndEditPost", {
+                  navigation.push("ChooseSubForum", {
                     postType: "Text",
                     action: "Add",
                     hideUpload: true,
@@ -139,7 +139,7 @@ export const BottomSheet: React.FC<Props_> = ({ isOpen, onClose }) => {
             <VStack space="1.5" alignItems="center">
               <Pressable
                 onPress={() => {
-                  navigation.push("AddAndEditPost", {
+                  navigation.push("ChooseSubForum", {
                     postType: "Poll",
                     action: "Add",
                     hideUpload: true,

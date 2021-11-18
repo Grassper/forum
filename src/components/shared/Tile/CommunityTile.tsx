@@ -1,8 +1,10 @@
+import { Entypo } from "@expo/vector-icons";
 import {
   Avatar,
   Box,
   Divider,
   HStack,
+  Icon,
   Pressable,
   Spacer,
   Text,
@@ -11,16 +13,20 @@ import {
 import React from "react";
 
 interface Props_ {
+  onPress: () => void;
   hideDivider?: boolean;
   hideMembers?: boolean;
+  hideFavorites?: boolean;
 }
 
 export const CommunityTile: React.FC<Props_> = ({
   hideDivider,
   hideMembers,
+  hideFavorites,
+  onPress,
 }) => {
   return (
-    <Pressable onPress={() => {}}>
+    <Pressable onPress={onPress}>
       <Box alignItems="center" bg="white" py="4">
         <Box width="90%">
           <HStack alignItems="center" space={3}>
@@ -59,6 +65,15 @@ export const CommunityTile: React.FC<Props_> = ({
               )}
             </VStack>
             <Spacer />
+            {!hideFavorites && (
+              <HStack space="4">
+                <Icon
+                  as={<Entypo name="star-outlined" />}
+                  size={"20px"}
+                  color="black"
+                />
+              </HStack>
+            )}
           </HStack>
         </Box>
       </Box>

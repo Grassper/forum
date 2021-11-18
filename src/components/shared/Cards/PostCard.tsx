@@ -308,7 +308,6 @@ const PostUserActions: React.FC<PostUserActions_> = ({
   const navigation = useNavigation<NavigationProp_>();
   const [showTip, setTip] = useState(false);
   const [likeIcon, setLikeIcon] = useState("smile");
-  console.log(likeIcon);
   return (
     <Box>
       <HStack alignItems="center" justifyContent="space-between">

@@ -24,7 +24,7 @@ const windowWidth = Dimensions.get("window").width;
 
 export const Explore: React.FC<Props_> = () => {
   return (
-    <>
+    <Box style={styles.container} safeAreaTop>
       <Box width="100%" alignItems="center" bg="white">
         <Box py="15px" width="90%">
           <SearchBar />
@@ -53,7 +53,7 @@ export const Explore: React.FC<Props_> = () => {
         <Tab.Screen name="Community" component={CommunitySearch} />
         <Tab.Screen name="Profile" component={ProfileSearch} />
       </Tab.Navigator>
-    </>
+    </Box>
   );
 };
 
