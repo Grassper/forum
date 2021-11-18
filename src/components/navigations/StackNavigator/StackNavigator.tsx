@@ -1,7 +1,6 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
 
-import { SideDrawerNavigator } from "@/root/src/components/navigations/SideDrawerNavigator";
 import { AddAndEditComment } from "@/root/src/components/screens/AddAndEditComment";
 import { AddAndEditPost } from "@/root/src/components/screens/AddAndEditPost";
 import { AndAndEditReplies } from "@/root/src/components/screens/AndAndEditReplies";
@@ -59,18 +58,8 @@ export const StackNavigator = () => {
         component={Home}
         options={{
           title: "",
-          // headerShown: false,
         }}
       />
-      <Stack.Screen
-        name="SideDrawerNavigator"
-        component={SideDrawerNavigator}
-        options={{
-          title: "",
-          headerShown: false,
-        }}
-      />
-
       <Stack.Screen
         name="Profile"
         component={Profile}

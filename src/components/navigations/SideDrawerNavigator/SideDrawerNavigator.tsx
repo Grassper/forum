@@ -18,12 +18,11 @@ import {
 import React, { useState } from "react";
 import { StyleSheet } from "react-native";
 
+import { BottomTabNavigator } from "@/root/src/components/navigations/BottomTabNavigator";
 import { EditAndCreateSubForum } from "@/root/src/components/screens/EditAndCreateSubForum";
 import { Follow } from "@/root/src/components/screens/Follow";
 import { Profile } from "@/root/src/components/screens/Profile";
 import { Saved } from "@/root/src/components/screens/Saved";
-
-import { BottomTabNavigator } from "../BottomTabNavigator";
 
 const DrawerNavigator = createDrawerNavigator();
 
