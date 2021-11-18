@@ -1,6 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import { DrawerActions, useNavigation } from "@react-navigation/native";
-import { Box } from "native-base";
+import { Box, Image, Pressable } from "native-base";
 import React, { useState } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 
@@ -23,12 +23,19 @@ export const Home: React.FC<Props_> = () => {
     navigation.setOptions({
       headerLeft: () => (
         <Box ml="3">
-          <Ionicons
-            name="ios-menu-sharp"
-            size={24}
-            color="black"
+          <Pressable
             onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
-          />
+          >
+            <Image
+              size={30}
+              resizeMode={"cover"}
+              borderRadius={150}
+              source={{
+                uri: "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+              }}
+              alt="Alternate Text"
+            />
+          </Pressable>
         </Box>
       ),
       headerRight: () => (
