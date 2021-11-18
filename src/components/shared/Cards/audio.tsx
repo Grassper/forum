@@ -6,54 +6,50 @@ interface props {
   audioUri: string;
 }
 export const AudioComponent: React.FC<props> = ({ audioUri }) => {
-  const [sound, setSound] = useState();
+  const [music, setMusic] = useState();
 
   async function playSound() {
     console.log("Loading Sound");
     const { sound } = await Audio.Sound.createAsync({ uri: audioUri });
-    setSound(sound);
+    setMusic(sound);
 
     console.log("Playing Sound");
     await sound.playAsync();
   }
 
   async function pause() {
-    await sound.pauseAsync();
+    await music.pauseAsync();
   }
   async function resume() {
-    await sound.playAsync();
+    await music.playAsync();
   }
 
   React.useEffect(() => {
-    return sound
+    return music
       ? () => {
           console.log("Unloading Sound");
-          sound.unloadAsync();
+          music.unloadAsync();
         }
       : undefined;
-  }, [sound]);
+  }, [music]);
 
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.touchableOpacity} onPress={playSound}>
-        <Text style={styles.text}>Play Sound</Text>
+        <Text>Play Sound</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.touchableOpacity} onPress={pause}>
-        <Text style={styles.text}>Pause</Text>
+        <Text>Pause</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.touchableOpacity} onPress={resume}>
-        <Text style={styles.text}>Resume</Text>
+        <Text>Resume</Text>
       </TouchableOpacity>
     </View>
   );
 };
 const styles = StyleSheet.create({
   container: { flexDirection: "row", justifyContent: "space-evenly" },
-  text: {
-    color: "white",
-  },
   touchableOpacity: {
-    backgroundColor: "gray",
     borderRadius: 10,
     paddingBottom: 10,
     paddingLeft: 20,
