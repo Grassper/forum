@@ -141,12 +141,7 @@ export const ChatRoom: React.FC<Props_> = () => {
               justifyContent="center"
               borderRadius="full"
             >
-              <Icon
-                as={<FontAwesome name="send" />}
-                size={4}
-                color="white"
-                // bgColor="red.400"
-              />
+              <Icon as={<FontAwesome name="send" />} size={4} color="white" />
             </Flex>
           </Flex>
         </Box>

@@ -8,7 +8,7 @@ import { colors } from "@/root/src/constants";
 
 export type MessageRootStackParamList = {
   ChatList: undefined;
-  ChatRoom: { title: string };
+  ChatRoom: { title: string; imageUri: string };
   NewChat: undefined;
 };
 
