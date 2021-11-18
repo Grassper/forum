@@ -12,7 +12,7 @@ import {
   VStack,
 } from "native-base";
 import React from "react";
-import { ImageBackground } from "react-native";
+import { ImageBackground, StyleSheet } from "react-native";
 
 import { MessageRootStackParamList } from "@/root/src/components/navigations/StackNavigator";
 
@@ -67,7 +67,6 @@ const ChatCard: React.FC<ChatCard_> = ({ align }) => {
 export const ChatRoom: React.FC<Props_> = () => {
   const [Comment, setComment] = React.useState("");
   const navigation = useNavigation();
-  console.log(navigation);
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
@@ -96,9 +95,9 @@ export const ChatRoom: React.FC<Props_> = () => {
   return (
     <Box flex="1">
       <ImageBackground
-        source={require("../../../../assets/images/chatroomWallpaper.jpg")}
+        source={require("@/root/assets/images/chatroomWallpaper.jpg")}
         resizeMode="cover"
-        style={{ flex: 1 }}
+        style={styles.container}
       >
         <ScrollView>
           <Box alignItems="center">
@@ -149,3 +148,7 @@ export const ChatRoom: React.FC<Props_> = () => {
     </Box>
   );
 };
+
+const styles = StyleSheet.create({
+  container: { flex: 1 },
+});

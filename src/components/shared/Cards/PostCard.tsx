@@ -1,11 +1,4 @@
-import {
-  AntDesign,
-  FontAwesome,
-  FontAwesome5,
-  Ionicons,
-  MaterialCommunityIcons,
-  MaterialIcons,
-} from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { Video } from "expo-av";
@@ -20,9 +13,8 @@ import {
   Text,
 } from "native-base";
 import React, { useState } from "react";
-import { Image as Img, Platform, StatusBar, StyleSheet } from "react-native";
+import { Platform, StatusBar, StyleSheet } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { color } from "react-native-reanimated";
 import Tooltip from "react-native-walkthrough-tooltip";
 
 import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
@@ -316,7 +308,6 @@ const PostUserActions: React.FC<PostUserActions_> = ({
   const navigation = useNavigation<NavigationProp_>();
   const [showTip, setTip] = useState(false);
   const [likeIcon, setLikeIcon] = useState("smile");
-  const text123 = `@/root/assets/faces/${likeIcon}.png`;
   return (
     <Box>
       <HStack alignItems="center" justifyContent="space-between">
@@ -327,7 +318,8 @@ const PostUserActions: React.FC<PostUserActions_> = ({
               <Box style={styles.roottooltip}>
                 <Pressable
                   onPress={() => {
-                    setLikeIcon("smile"), setTip(false);
+                    setLikeIcon("smile");
+                    setTip(false);
                   }}
                   style={styles.icons}
                 >
@@ -340,7 +332,8 @@ const PostUserActions: React.FC<PostUserActions_> = ({
 
                 <Pressable
                   onPress={() => {
-                    setLikeIcon("wow"), setTip(false);
+                    setLikeIcon("wow");
+                    setTip(false);
                   }}
                   style={styles.icons}
                 >
@@ -352,7 +345,8 @@ const PostUserActions: React.FC<PostUserActions_> = ({
                 </Pressable>
                 <Pressable
                   onPress={() => {
-                    setLikeIcon("sad"), setTip(false);
+                    setLikeIcon("sad");
+                    setTip(false);
                   }}
                   style={styles.icons}
                 >
@@ -365,7 +359,8 @@ const PostUserActions: React.FC<PostUserActions_> = ({
 
                 <Pressable
                   onPress={() => {
-                    setLikeIcon("angry"), setTip(false);
+                    setLikeIcon("angry");
+                    setTip(false);
                   }}
                 >
                   <Image
@@ -396,11 +391,10 @@ const PostUserActions: React.FC<PostUserActions_> = ({
             childContentSpacing={0}
           >
             <TouchableOpacity onPress={() => setTip(true)}>
-              {/* {console.log(text123)} */}
-              <Img
+              <Image
                 source={require("@/root/assets/faces/angry.png")}
-                // alt="Alternate Text"
-                style={{ width: 25, height: 25 }}
+                alt="Alternate Text"
+                size={"20px"}
               />
             </TouchableOpacity>
           </Tooltip>
@@ -437,17 +431,6 @@ const PostUserActions: React.FC<PostUserActions_> = ({
 };
 
 const styles = StyleSheet.create({
-  IconBackUp: {
-    alignItems: "center",
-    backgroundColor: "blue",
-    borderRadius: 50,
-    justifyContent: "center",
-    marginRight: 4,
-    paddingBottom: 4,
-    paddingLeft: 4,
-    paddingRight: 4,
-    paddingTop: 1,
-  },
   icons: {
     marginRight: 4,
   },
@@ -467,10 +450,6 @@ const styles = StyleSheet.create({
     height: 2.5,
     marginHorizontal: 5,
     width: 2.5,
-  },
-  tooltipBackground: {
-    backgroundColor: colors.green,
-    flex: 1,
   },
   tooltipContainer: {
     alignItems: "center",

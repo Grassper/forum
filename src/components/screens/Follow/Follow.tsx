@@ -71,12 +71,11 @@ const RenderHiddenItem = () => {
     <HStack flex="1" pl="2">
       <Pressable
         w="70"
-        // cursor="pointer"
         ml="auto"
         bg="red.400"
         borderRadius="2"
         justifyContent="center"
-        onPress={() => console.log("function for delete")}
+        onPress={() => {}} // delete function here
         _pressed={{
           opacity: 0.5,
         }}

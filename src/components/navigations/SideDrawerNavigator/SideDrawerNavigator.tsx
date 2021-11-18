@@ -8,7 +8,6 @@ import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import {
   Avatar,
   Box,
-  Button,
   Flex,
   Icon,
   MoonIcon,

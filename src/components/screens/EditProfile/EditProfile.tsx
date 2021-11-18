@@ -63,11 +63,7 @@ export const EditProfile: React.FC<Props_> = ({ navigation }) => {
                 Dk
               </Text>
             </Avatar>
-            <Pressable
-              onPress={() => {
-                console.log("open gallary");
-              }}
-            >
+            <Pressable onPress={() => {}}>
               <Box
                 bg="eGreen.400"
                 p="2"

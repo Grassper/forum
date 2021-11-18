@@ -6,7 +6,6 @@ import { NativeBaseProvider } from "native-base";
 import React, { useState } from "react";
 import { enableScreens } from "react-native-screens";
 
-import { BottomTabNavigator } from "@/root/src/components/navigations/BottomTabNavigator";
 import { NativeBaseTheme as Theme } from "@/root/src/config";
 
 import { SideDrawerNavigator } from "./components/navigations/SideDrawerNavigator";

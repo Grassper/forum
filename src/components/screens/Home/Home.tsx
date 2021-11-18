@@ -19,7 +19,6 @@ export const Home: React.FC<Props_> = () => {
     setIsOpen(!isOpen);
   };
   const navigation = useNavigation();
-  console.log(navigation, "navigation");
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
@@ -34,12 +33,7 @@ export const Home: React.FC<Props_> = () => {
       ),
       headerRight: () => (
         <Box mr="3">
-          <Ionicons
-            name="search"
-            size={24}
-            color="black"
-            onPress={() => console.log("Search called")}
-          />
+          <Ionicons name="search" size={24} color="black" onPress={() => {}} />
         </Box>
       ),
     });
