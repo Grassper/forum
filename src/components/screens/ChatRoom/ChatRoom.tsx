@@ -11,7 +11,7 @@ import {
   Text,
   VStack,
 } from "native-base";
-import React from "react";
+import React, { useRef } from "react";
 import { ImageBackground, StyleSheet } from "react-native";
 
 import { MessageRootStackParamList } from "@/root/src/components/navigations/StackNavigator";
@@ -67,6 +67,8 @@ const ChatCard: React.FC<ChatCard_> = ({ align }) => {
 export const ChatRoom: React.FC<Props_> = () => {
   const [Comment, setComment] = React.useState("");
   const navigation = useNavigation();
+  const scrollViewRef = useRef();
+
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
@@ -99,8 +101,13 @@ export const ChatRoom: React.FC<Props_> = () => {
         resizeMode="cover"
         style={styles.container}
       >
-        <ScrollView>
-          <Box alignItems="center">
+        <ScrollView
+          ref={scrollViewRef}
+          onContentSizeChange={() =>
+            scrollViewRef.current.scrollToEnd({ y: 0 })
+          }
+        >
+          <Box alignItems="center" flex="1">
             <Flex width="90%" pt="4">
               <ChatCard align="right" />
               <ChatCard align="left" />
