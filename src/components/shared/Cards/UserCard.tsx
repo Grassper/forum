@@ -20,7 +20,13 @@ export const UserCard: React.FC<UserCard_> = ({ username, avatarUrl }) => {
   return (
     <Box>
       <Pressable
-        onPress={() => navigation.push("ChatRoom", { title: username })}
+        onPress={() =>
+          navigation.push("ChatRoom", {
+            title: username,
+            imageUri:
+              "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+          })
+        }
         bg="white"
       >
         <HStack alignItems="center" justifyContent="space-between" mb="4">
