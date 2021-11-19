@@ -1,6 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import { DrawerActions, useNavigation } from "@react-navigation/native";
-import { Box, Image, Pressable } from "native-base";
+import { Box, Icon, Image, Pressable } from "native-base";
 import React, { useState } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 
@@ -40,7 +40,12 @@ export const Home: React.FC<Props_> = () => {
       ),
       headerRight: () => (
         <Box mr="3">
-          <Ionicons name="search" size={24} color="black" onPress={() => {}} />
+          <Icon
+            as={<Ionicons name="search-outline" />}
+            size={"20px"}
+            ml="3"
+            color="muted.900"
+          />
         </Box>
       ),
     });

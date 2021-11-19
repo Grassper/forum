@@ -4,6 +4,7 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import {
   Avatar,
   Box,
+  Center,
   Flex,
   Icon,
   Input,
@@ -107,7 +108,7 @@ export const ChatRoom: React.FC<Props_> = () => {
             scrollViewRef.current.scrollToEnd({ y: 0 })
           }
         >
-          <Box alignItems="center" flex="1">
+          <Center>
             <Flex width="90%" pt="4">
               <ChatCard align="right" />
               <ChatCard align="left" />
@@ -116,8 +117,9 @@ export const ChatRoom: React.FC<Props_> = () => {
               <ChatCard align="left" />
               <ChatCard align="right" />
             </Flex>
-          </Box>
+          </Center>
         </ScrollView>
+
         <Box bg="transparent" py="1" justifyContent="center">
           <Flex
             flexDirection="row"
