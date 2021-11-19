@@ -123,7 +123,12 @@ const CustomDrawerContent = (props) => {
             DrawerNavigation.navigate("Follow", { title: "Blocked Accounts" })
           }
           icon={() => (
-            <Icon as={<Entypo name="block" />} size={5} ml="3" color="black" />
+            <Icon
+              as={<Entypo name="block" />}
+              size={"18px"}
+              ml="3"
+              color="black"
+            />
           )}
         />
         <DrawerItem
@@ -143,7 +148,7 @@ const CustomDrawerContent = (props) => {
           icon={() => (
             <Icon
               as={<Feather name="bookmark" />}
-              size={5}
+              size={"19px"}
               ml="3"
               color="black"
             />
@@ -170,7 +175,7 @@ const CustomDrawerContent = (props) => {
           icon={() => (
             <Icon
               as={<AntDesign name="pluscircleo" />}
-              size={5}
+              size={"18px"}
               ml="3"
               color="black"
             />
