@@ -1,4 +1,4 @@
-import { Entypo } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import {
   Avatar,
   Box,
@@ -13,7 +13,7 @@ import {
 import React from "react";
 
 interface Props_ {
-  onPress: () => void;
+  onPress?: () => void;
   hideDivider?: boolean;
   hideMembers?: boolean;
   hideFavorites?: boolean;
@@ -68,7 +68,7 @@ export const CommunityTile: React.FC<Props_> = ({
             {!hideFavorites && (
               <HStack space="4">
                 <Icon
-                  as={<Entypo name="star-outlined" />}
+                  as={<Ionicons name="bookmark-outline" />}
                   size={"20px"}
                   color="black"
                 />
