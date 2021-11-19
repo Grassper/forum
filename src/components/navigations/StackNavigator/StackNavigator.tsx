@@ -1,15 +1,17 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
 
+import { BottomTabNavigator } from "@/root/src/components/navigations/BottomTabNavigator";
 import { AddAndEditComment } from "@/root/src/components/screens/AddAndEditComment";
 import { AddAndEditPost } from "@/root/src/components/screens/AddAndEditPost";
 import { AndAndEditReplies } from "@/root/src/components/screens/AndAndEditReplies";
+import { ChatRoom } from "@/root/src/components/screens/ChatRoom";
 import { ChooseSubForum } from "@/root/src/components/screens/ChooseSubForum";
 import { Comment } from "@/root/src/components/screens/Comment";
 import { EditAndCreateSubForum } from "@/root/src/components/screens/EditAndCreateSubForum";
 import { EditProfile } from "@/root/src/components/screens/EditProfile";
 import { Follow } from "@/root/src/components/screens/Follow";
-import { Home } from "@/root/src/components/screens/Home";
+import { NewChat } from "@/root/src/components/screens/NewChat";
 import { Post } from "@/root/src/components/screens/Post";
 import { Profile } from "@/root/src/components/screens/Profile";
 import { Saved } from "@/root/src/components/screens/Saved";
@@ -18,9 +20,9 @@ import { SubForumMod } from "@/root/src/components/screens/SubForumMod";
 import { colors } from "@/root/src/constants";
 
 export type RootStackParamList = {
+  BottomTabNavigator: undefined;
   Profile: { userId?: string };
   Follow: { title: "Followers" | "Following" | "Blocked Accounts" };
-  SideDrawerNavigator: undefined;
   Saved: undefined;
   EditProfile: undefined;
   SubForum: undefined;
@@ -35,12 +37,13 @@ export type RootStackParamList = {
   };
   Comment: undefined;
   AndAndEditReplies: undefined;
-  Home: undefined;
   ChooseSubForum: {
     postType: "Image" | "Text" | "Video" | "Audio" | "Poll";
     action: "Add" | "Edit";
     hideUpload?: boolean;
   };
+  ChatRoom: { title: string; imageUri: string };
+  NewChat: undefined;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -56,14 +59,15 @@ const defaultStackOptions = {
 export const StackNavigator = () => {
   return (
     <Stack.Navigator
-      initialRouteName="Home"
       screenOptions={defaultStackOptions}
+      initialRouteName="BottomTabNavigator"
     >
       <Stack.Screen
-        name="Home"
-        component={Home}
+        name="BottomTabNavigator"
+        component={BottomTabNavigator}
         options={{
           title: "",
+          headerShown: false,
         }}
       />
       <Stack.Screen
@@ -196,6 +200,28 @@ export const StackNavigator = () => {
           },
           headerTintColor: colors.white,
         })}
+      />
+      <Stack.Screen
+        name="ChatRoom"
+        component={ChatRoom}
+        options={({ route }) => ({
+          title: route.params.title,
+          headerStyle: {
+            backgroundColor: colors.green,
+          },
+          headerTintColor: colors.white,
+        })}
+      />
+      <Stack.Screen
+        name="NewChat"
+        component={NewChat}
+        options={{
+          title: "New Chat",
+          headerStyle: {
+            backgroundColor: colors.green,
+          },
+          headerTintColor: colors.white,
+        }}
       />
     </Stack.Navigator>
   );

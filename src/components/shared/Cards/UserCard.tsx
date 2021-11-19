@@ -4,9 +4,9 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { Avatar, Box, HStack, Pressable, Text } from "native-base";
 import React from "react";
 
-import { MessageRootStackParamList } from "@/root/src/components/navigations/StackNavigator";
+import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
 
-type NavigationProp_ = StackNavigationProp<MessageRootStackParamList>;
+type NavigationProp_ = StackNavigationProp<RootStackParamList>;
 
 interface UserCard_ {
   id: string;

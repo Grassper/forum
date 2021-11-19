@@ -2,11 +2,9 @@ import { FontAwesome, Foundation, Ionicons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import React from "react";
 
-import {
-  MessageStackNavigator,
-  StackNavigator,
-} from "@/root/src/components/navigations/StackNavigator";
+import { ChatList } from "@/root/src/components/screens/ChatList";
 import { Explore } from "@/root/src/components/screens/Explore";
+import { Home } from "@/root/src/components/screens/Home";
 
 const Tab = createBottomTabNavigator();
 
@@ -18,11 +16,10 @@ export const BottomTabNavigator = () => {
   return (
     <Tab.Navigator>
       <Tab.Screen
-        name="StackNavigator"
-        component={StackNavigator}
+        name="Home"
+        component={Home}
         options={{
           title: "",
-          headerShown: false,
           tabBarShowLabel: false,
           tabBarIconStyle: { alignItems: "center" },
           tabBarIcon: () => {
@@ -44,11 +41,10 @@ export const BottomTabNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="MessageStackNavigator"
-        component={MessageStackNavigator}
+        name="ChatList"
+        component={ChatList}
         options={{
           title: "",
-          headerShown: false,
           tabBarShowLabel: false,
           tabBarIconStyle: { alignItems: "center" },
           tabBarIcon: () => {

@@ -18,7 +18,7 @@ import {
 import React, { useState } from "react";
 import { StyleSheet } from "react-native";
 
-import { BottomTabNavigator } from "@/root/src/components/navigations/BottomTabNavigator";
+import { StackNavigator } from "@/root/src/components/navigations/StackNavigator";
 import { EditAndCreateSubForum } from "@/root/src/components/screens/EditAndCreateSubForum";
 import { Follow } from "@/root/src/components/screens/Follow";
 import { Profile } from "@/root/src/components/screens/Profile";
@@ -174,8 +174,8 @@ export const SideDrawerNavigator = () => {
         drawerContent={(props) => <CustomDrawerContent {...props} />}
       >
         <DrawerNavigator.Screen
-          name="bottomTabNavigator"
-          component={BottomTabNavigator}
+          name="StackNavigator"
+          component={StackNavigator}
           options={{
             title: "",
             headerShown: false,

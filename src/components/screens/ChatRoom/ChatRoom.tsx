@@ -15,14 +15,11 @@ import {
 import React, { useRef } from "react";
 import { ImageBackground, StyleSheet } from "react-native";
 
-import { MessageRootStackParamList } from "@/root/src/components/navigations/StackNavigator";
+import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
 
-type RouteProp_ = RouteProp<MessageRootStackParamList, "ChatRoom">;
+type RouteProp_ = RouteProp<RootStackParamList, "ChatRoom">;
 
-type NavigationProp_ = StackNavigationProp<
-  MessageRootStackParamList,
-  "ChatRoom"
->;
+type NavigationProp_ = StackNavigationProp<RootStackParamList, "ChatRoom">;
 
 interface Props_ {
   navigation: NavigationProp_;

@@ -12,13 +12,10 @@ import {
 import React from "react";
 import { StyleSheet } from "react-native";
 
-import { MessageRootStackParamList } from "@/root/src/components/navigations/StackNavigator";
+import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
 import { FloatingActionButton } from "@/root/src/components/shared/FabButton";
 
-type NavigationProp_ = StackNavigationProp<
-  MessageRootStackParamList,
-  "ChatList"
->;
+type NavigationProp_ = StackNavigationProp<RootStackParamList>;
 
 interface Props_ {}
 

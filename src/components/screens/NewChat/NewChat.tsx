@@ -3,15 +3,12 @@ import { Box } from "native-base";
 import React from "react";
 import { FlatList, ListRenderItem, StyleSheet, View } from "react-native";
 
-import { MessageRootStackParamList } from "@/root/src/components/navigations/StackNavigator";
+import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
 import { UserCard } from "@/root/src/components/shared/Cards/UserCard";
 import { SearchBar } from "@/root/src/components/shared/SearchBar";
 import { colors } from "@/root/src/constants";
 
-type NavigationProp_ = StackNavigationProp<
-  MessageRootStackParamList,
-  "NewChat"
->;
+type NavigationProp_ = StackNavigationProp<RootStackParamList, "NewChat">;
 
 interface Props_ {
   Navigation: NavigationProp_;
