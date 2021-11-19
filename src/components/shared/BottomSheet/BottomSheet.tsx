@@ -1,4 +1,4 @@
-import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import {
@@ -11,6 +11,7 @@ import {
   VStack,
 } from "native-base";
 import React from "react";
+import { StyleSheet } from "react-native";
 
 import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
 
@@ -25,12 +26,9 @@ export const BottomSheet: React.FC<Props_> = ({ isOpen, onClose }) => {
   const navigation = useNavigation<NavigationProp_>();
   return (
     <Actionsheet isOpen={isOpen} onClose={onClose}>
-      <Actionsheet.Content bg="eGreen.400">
-        <VStack alignItems="center" space="4">
-          <Text color="white" fontWeight="500" fontSize="xl" mb="4">
-            Create a Post
-          </Text>
-          <HStack width="100%" space="4" mb="4">
+      <Actionsheet.Content bg="white">
+        <VStack alignItems="center" space="4" mt="5">
+          <HStack width="100%" space="4">
             <VStack space="1.5" alignItems="center">
               <Pressable
                 onPress={() => {
@@ -41,7 +39,7 @@ export const BottomSheet: React.FC<Props_> = ({ isOpen, onClose }) => {
                 }}
               >
                 <Box
-                  bg="white"
+                  bg="green.200"
                   alignItems="center"
                   width="50px"
                   height="50px"
@@ -49,13 +47,13 @@ export const BottomSheet: React.FC<Props_> = ({ isOpen, onClose }) => {
                   borderRadius="full"
                 >
                   <Icon
-                    as={<MaterialCommunityIcons name="image" />}
-                    size={6}
-                    color="black"
+                    as={<Ionicons name="ios-image" />}
+                    size={"20px"}
+                    color="coolGray.800"
                   />
                 </Box>
               </Pressable>
-              <Text color="white">IMAGE</Text>
+              <Text color="coolGray.500">IMAGE</Text>
             </VStack>
             <VStack space="1.5" alignItems="center">
               <Pressable
@@ -67,7 +65,7 @@ export const BottomSheet: React.FC<Props_> = ({ isOpen, onClose }) => {
                 }}
               >
                 <Box
-                  bg="white"
+                  bg="green.200"
                   alignItems="center"
                   width="50px"
                   height="50px"
@@ -75,13 +73,13 @@ export const BottomSheet: React.FC<Props_> = ({ isOpen, onClose }) => {
                   borderRadius="full"
                 >
                   <Icon
-                    as={<MaterialCommunityIcons name="microphone" />}
-                    size={6}
-                    color="black"
+                    as={<Ionicons name="mic" />}
+                    size={"22px"}
+                    color="coolGray.800"
                   />
                 </Box>
               </Pressable>
-              <Text color="white">AUDIO</Text>
+              <Text color="coolGray.500">AUDIO</Text>
             </VStack>
             <VStack space="1.5" alignItems="center">
               <Pressable
@@ -93,7 +91,7 @@ export const BottomSheet: React.FC<Props_> = ({ isOpen, onClose }) => {
                 }}
               >
                 <Box
-                  bg="white"
+                  bg="green.200"
                   alignItems="center"
                   width="50px"
                   height="50px"
@@ -101,13 +99,13 @@ export const BottomSheet: React.FC<Props_> = ({ isOpen, onClose }) => {
                   borderRadius="full"
                 >
                   <Icon
-                    as={<MaterialCommunityIcons name="video-plus" />}
-                    size={6}
-                    color="black"
+                    as={<Ionicons name="ios-videocam" />}
+                    size={"20px"}
+                    color="coolGray.800"
                   />
                 </Box>
               </Pressable>
-              <Text color="white">VIDEO</Text>
+              <Text color="coolGray.500">VIDEO</Text>
             </VStack>
             <VStack space="1.5" alignItems="center">
               <Pressable
@@ -120,7 +118,7 @@ export const BottomSheet: React.FC<Props_> = ({ isOpen, onClose }) => {
                 }}
               >
                 <Box
-                  bg="white"
+                  bg="green.200"
                   alignItems="center"
                   width="50px"
                   height="50px"
@@ -128,13 +126,13 @@ export const BottomSheet: React.FC<Props_> = ({ isOpen, onClose }) => {
                   borderRadius="full"
                 >
                   <Icon
-                    as={<MaterialCommunityIcons name="text-box-outline" />}
-                    size={6}
-                    color="black"
+                    as={<Ionicons name="ios-text" />}
+                    size={"20px"}
+                    color="coolGray.800"
                   />
                 </Box>
               </Pressable>
-              <Text color="white">TEXT</Text>
+              <Text color="coolGray.500">TEXT</Text>
             </VStack>
             <VStack space="1.5" alignItems="center">
               <Pressable
@@ -147,7 +145,7 @@ export const BottomSheet: React.FC<Props_> = ({ isOpen, onClose }) => {
                 }}
               >
                 <Box
-                  bg="white"
+                  bg="green.200"
                   alignItems="center"
                   width="50px"
                   height="50px"
@@ -155,22 +153,20 @@ export const BottomSheet: React.FC<Props_> = ({ isOpen, onClose }) => {
                   borderRadius="full"
                 >
                   <Icon
-                    as={<MaterialCommunityIcons name="poll-box" />}
-                    size={6}
-                    color="black"
+                    as={<Ionicons name="stats-chart" />}
+                    size={"20px"}
+                    color="coolGray.800"
                   />
                 </Box>
               </Pressable>
-              <Text color="white">POLL</Text>
+              <Text color="coolGray.500">POLL</Text>
             </VStack>
           </HStack>
           <Box>
             <Pressable onPress={onClose}>
-              <Icon
-                as={<MaterialIcons name="cancel" />}
-                size={6}
-                color="white"
-              />
+              <Box style={styles.cancelIcon}>
+                <Icon as={<Ionicons name="add" />} size={6} color="muted.700" />
+              </Box>
             </Pressable>
           </Box>
         </VStack>
@@ -178,3 +174,9 @@ export const BottomSheet: React.FC<Props_> = ({ isOpen, onClose }) => {
     </Actionsheet>
   );
 };
+
+const styles = StyleSheet.create({
+  cancelIcon: {
+    transform: [{ rotate: "45deg" }],
+  },
+});
