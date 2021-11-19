@@ -17,6 +17,7 @@ import {
 } from "native-base";
 import React, { useState } from "react";
 import { StyleSheet } from "react-native";
+import { SvgUri } from "react-native-svg";
 
 import { StackNavigator } from "@/root/src/components/navigations/StackNavigator";
 import { EditAndCreateSubForum } from "@/root/src/components/screens/EditAndCreateSubForum";
@@ -33,7 +34,7 @@ const CustomDrawerContent = (props) => {
   return (
     <DrawerContentScrollView {...props} style={styles.container}>
       <Box alignItems="center" justifyContent="center">
-        <Avatar
+        {/* <Avatar
           bg="green.500"
           size="lg"
           source={{
@@ -43,7 +44,20 @@ const CustomDrawerContent = (props) => {
           <Text fontSize="md" fontFamily="body" fontWeight="600" color="white">
             Dk
           </Text>
-        </Avatar>
+        </Avatar>*/}
+        <Box
+          width="100px"
+          height="100px"
+          bg="amber.100"
+          borderRadius="full"
+          overflow="hidden"
+        >
+          <SvgUri
+            uri="https://avatars.dicebear.com/api/micah/asdf.svg"
+            width="100%"
+            height="100%"
+          />
+        </Box>
         <Text
           fontSize="xl"
           fontFamily="heading"

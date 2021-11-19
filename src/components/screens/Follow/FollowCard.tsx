@@ -3,6 +3,7 @@ import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { Avatar, Box, HStack, Pressable, Text } from "native-base";
 import React from "react";
+import { SvgUri } from "react-native-svg";
 
 import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
 
@@ -27,7 +28,7 @@ export const FollowCard: React.FC<FollowCard_> = ({ username, avatarUrl }) => {
         <Box width="90%">
           <HStack alignItems="center" justifyContent="space-between" mb="4">
             <HStack space={3} alignItems="center">
-              <Avatar
+              {/* <Avatar
                 bg="green.500"
                 size="md"
                 source={{
@@ -42,7 +43,16 @@ export const FollowCard: React.FC<FollowCard_> = ({ username, avatarUrl }) => {
                 >
                   {username.charAt(0).toUpperCase() || "Ef"}
                 </Text>
-              </Avatar>
+              </Avatar> */}
+              <Box
+                width="40px"
+                height="40px"
+                bg="amber.100"
+                borderRadius="full"
+                overflow="hidden"
+              >
+                <SvgUri uri={avatarUrl} width="100%" height="100%" />
+              </Box>
               <Text
                 fontSize="sm"
                 fontFamily="body"

@@ -15,6 +15,7 @@ import {
 import React, { useState } from "react";
 import { Platform, StatusBar, StyleSheet } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { SvgUri } from "react-native-svg";
 import Tooltip from "react-native-walkthrough-tooltip";
 
 import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
@@ -163,7 +164,7 @@ const PostInfo: React.FC<PostInfo_> = ({
               navigation.navigate("Profile", { userId: "1" });
             }}
           >
-            <Avatar
+            {/* <Avatar
               bg="green.500"
               width="38"
               height="38"
@@ -179,7 +180,16 @@ const PostInfo: React.FC<PostInfo_> = ({
               >
                 {username.charAt(0).toUpperCase() || "Ef"}
               </Text>
-            </Avatar>
+            </Avatar> */}
+            <Box
+              width="40px"
+              height="40px"
+              bg="amber.100"
+              borderRadius="full"
+              overflow="hidden"
+            >
+              <SvgUri uri={avatarUrl} width="100%" height="100%" />
+            </Box>
           </Pressable>
           <Box>
             <Text fontWeight="500">{username}</Text>

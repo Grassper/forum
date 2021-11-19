@@ -1,8 +1,9 @@
 import { Ionicons } from "@expo/vector-icons";
 import { DrawerActions, useNavigation } from "@react-navigation/native";
-import { Box, Icon, Image, Pressable } from "native-base";
+import { Box, Icon, Pressable } from "native-base";
 import React, { useState } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
+import { SvgUri } from "react-native-svg";
 
 import {
   Data as DummyData,
@@ -18,6 +19,7 @@ export const Home: React.FC<Props_> = () => {
   const HandleBottomSheet = () => {
     setIsOpen(!isOpen);
   };
+
   const navigation = useNavigation();
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -26,7 +28,7 @@ export const Home: React.FC<Props_> = () => {
           <Pressable
             onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
           >
-            <Image
+            {/* <Image
               size={30}
               resizeMode={"cover"}
               borderRadius={150}
@@ -34,7 +36,20 @@ export const Home: React.FC<Props_> = () => {
                 uri: "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
               }}
               alt="Alternate Text"
-            />
+            /> */}
+            <Box
+              width="8"
+              height="8"
+              bg="amber.100"
+              borderRadius="full"
+              overflow="hidden"
+            >
+              <SvgUri
+                uri="https://avatars.dicebear.com/api/micah/asdf.svg"
+                width="100%"
+                height="100%"
+              />
+            </Box>
           </Pressable>
         </Box>
       ),

@@ -26,8 +26,7 @@ export const Data: PostCardProps_[] = [
     timeStamp: "Nov 30",
     subForum: "MechKeys",
     username: "Aafreen Khan",
-    avatarUrl:
-      "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+    avatarUrl: "https://avatars.dicebear.com/api/micah/asddasdff.svg",
   },
   {
     id: "58694a0f-1-471f-bd96-145571e29d72",
@@ -40,7 +39,7 @@ export const Data: PostCardProps_[] = [
     audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3",
     mediaUrl:
       "https://ia800501.us.archive.org/11/items/popeye_i_dont_scare/popeye_i_dont_scare_512kb.mp4",
-    avatarUrl: "https://miro.medium.com/max/1400/0*0fClPmIScV5pTLoE.jpg",
+    avatarUrl: "https://avatars.dicebear.com/api/micah/asasdfasfdf.svg",
   },
   {
     id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
@@ -52,8 +51,7 @@ export const Data: PostCardProps_[] = [
     username: "Sujitha Mathur",
     mediaUrl:
       "https://images.unsplash.com/photo-1636302304088-e1bd81885a71?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=764&q=80",
-    avatarUrl:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyEaZqT3fHeNrPGcnjLLX1v_W4mvBlgpwxnA&usqp=CAU",
+    avatarUrl: "https://avatars.dicebear.com/api/micah/max.svg",
   },
   {
     id: "58694a0f-3da1-471f-bd96-145571e29d72",
@@ -65,7 +63,7 @@ export const Data: PostCardProps_[] = [
     username: "Anci Barroco",
     mediaUrl:
       "https://ia800501.us.archive.org/11/items/popeye_i_dont_scare/popeye_i_dont_scare_512kb.mp4",
-    avatarUrl: "https://miro.medium.com/max/1400/0*0fClPmIScV5pTLoE.jpg",
+    avatarUrl: "https://avatars.dicebear.com/api/micah/qwerty.svg",
   },
   {
     id: "58694a0f-3da1-471f-bd96-145571e39d72",
@@ -75,7 +73,7 @@ export const Data: PostCardProps_[] = [
     timeStamp: "Nov 30",
     subForum: "MechKeys",
     username: "Anci Barroco",
-    avatarUrl: "https://miro.medium.com/max/1400/0*0fClPmIScV5pTLoE.jpg",
+    avatarUrl: "https://avatars.dicebear.com/api/micah/keyword.svg",
     poll: {
       title: "What is role of day to day software engineering?",
       totalVotes: "2832",
