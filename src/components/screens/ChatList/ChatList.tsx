@@ -1,16 +1,9 @@
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import {
-  Avatar,
-  Box,
-  HStack,
-  Pressable,
-  Spacer,
-  Text,
-  VStack,
-} from "native-base";
+import { Box, HStack, Pressable, Spacer, Text, VStack } from "native-base";
 import React from "react";
 import { StyleSheet } from "react-native";
+import { SvgUri } from "react-native-svg";
 
 import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
 import { FloatingActionButton } from "@/root/src/components/shared/FabButton";
@@ -27,7 +20,7 @@ const ChatCard: React.FC = () => {
         Navigation.push("ChatRoom", {
           title: "Ferdinand",
           imageUri:
-            "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+            "https://avatars.dicebear.com/api/micah/ram.svg?mouth=smile&baseColor=apricot",
         });
       }}
     >
@@ -40,7 +33,7 @@ const ChatCard: React.FC = () => {
       >
         <Box width="90%">
           <HStack alignItems="center" space={3}>
-            <Avatar
+            {/* <Avatar
               bg="green.500"
               size="40px"
               source={{
@@ -55,7 +48,20 @@ const ChatCard: React.FC = () => {
               >
                 {"sujitha".charAt(0).toUpperCase() || "Ef"}
               </Text>
-            </Avatar>
+            </Avatar> */}
+            <Box
+              width="40px"
+              height="40px"
+              bg="amber.100"
+              borderRadius="full"
+              overflow="hidden"
+            >
+              <SvgUri
+                uri="https://avatars.dicebear.com/api/micah/ram.svg?mouth=smile&baseColor=apricot"
+                width="100%"
+                height="100%"
+              />
+            </Box>
             <VStack>
               <Text color="coolGray.800" _dark={{ color: "warmGray.50" }} bold>
                 Ferdinand

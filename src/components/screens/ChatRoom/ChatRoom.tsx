@@ -2,7 +2,6 @@ import { Feather, FontAwesome } from "@expo/vector-icons";
 import { RouteProp, useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import {
-  Avatar,
   Box,
   Center,
   Flex,
@@ -14,6 +13,7 @@ import {
 } from "native-base";
 import React, { useRef } from "react";
 import { ImageBackground, StyleSheet } from "react-native";
+import { SvgUri } from "react-native-svg";
 
 import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
 
@@ -62,10 +62,12 @@ const ChatCard: React.FC<ChatCard_> = ({ align }) => {
   );
 };
 
-export const ChatRoom: React.FC<Props_> = () => {
+export const ChatRoom: React.FC<Props_> = ({ route }) => {
   const [Comment, setComment] = React.useState("");
   const navigation = useNavigation();
   const scrollViewRef = useRef();
+
+  const { imageUri } = route.params;
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -79,18 +81,27 @@ export const ChatRoom: React.FC<Props_> = () => {
               mr="100"
               onPress={() => navigation.goBack()}
             />
-            <Avatar
+            {/* <Avatar
               bg="green.500"
               size="35px"
               source={{
                 uri: "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
               }}
-            />
+            /> */}
+            <Box
+              width="35px"
+              height="35px"
+              bg="amber.100"
+              borderRadius="full"
+              overflow="hidden"
+            >
+              <SvgUri uri={imageUri} width="100%" height="100%" />
+            </Box>
           </Flex>
         </Box>
       ),
     });
-  }, [navigation]);
+  }, [imageUri, navigation]);
 
   return (
     <Box flex="1">
