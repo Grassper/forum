@@ -2,16 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { Video } from "expo-av";
-import {
-  Avatar,
-  Box,
-  Flex,
-  HStack,
-  Icon,
-  Image,
-  Pressable,
-  Text,
-} from "native-base";
+import { Box, Flex, HStack, Icon, Image, Pressable, Text } from "native-base";
 import React, { useState } from "react";
 import { Platform, StatusBar, StyleSheet } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";

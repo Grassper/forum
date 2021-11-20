@@ -1,5 +1,5 @@
 import { Audio } from "expo-av";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 interface props {
@@ -7,13 +7,20 @@ interface props {
 }
 export const AudioComponent: React.FC<props> = ({ audioUri }) => {
   const [music, setMusic] = useState();
+  // useEffect(() => {
+  //   setInterval(function () {
+  //     if (music) {
+  //       console.log("called", music);
+  //     }
+  //   }, 1000000);
+  // });
 
   async function playSound() {
     console.log("Loading Sound");
     const { sound } = await Audio.Sound.createAsync({ uri: audioUri });
+
     setMusic(sound);
 
-    console.log("Playing Sound");
     await sound.playAsync();
   }
 
@@ -32,23 +39,38 @@ export const AudioComponent: React.FC<props> = ({ audioUri }) => {
         }
       : undefined;
   }, [music]);
+  async function status() {
+    const val = await music.getStatusAsync();
+    console.log("mus", val);
+  }
+  //   <TouchableOpacity style={styles.touchableOpacity} onPress={playSound}>
+  //   <Text>Play Sound</Text>
+  // </TouchableOpacity>
+  // <TouchableOpacity style={styles.touchableOpacity} onPress={pause}>
+  //   <Text>Pause</Text>
+  // </TouchableOpacity>
+  // <TouchableOpacity style={styles.touchableOpacity} onPress={resume}>
+  //   <Text>Resume</Text>
+  // </TouchableOpacity>
+  // <TouchableOpacity style={styles.touchableOpacity} onPress={status}>
+  //   <Text>status</Text>
+  // </TouchableOpacity>
 
   return (
-    <View style={styles.container}>
-      <TouchableOpacity style={styles.touchableOpacity} onPress={playSound}>
-        <Text>Play Sound</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.touchableOpacity} onPress={pause}>
-        <Text>Pause</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.touchableOpacity} onPress={resume}>
-        <Text>Resume</Text>
-      </TouchableOpacity>
+    <View style={styles.outerContainer}>
+      <View style={styles.container}>
+        <Text>guru</Text>
+      </View>
     </View>
   );
 };
 const styles = StyleSheet.create({
-  container: { flexDirection: "row", justifyContent: "space-evenly" },
+  container: { backgroundColor: "gray", width: "90%" },
+  outerContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
+  },
   touchableOpacity: {
     borderRadius: 10,
     paddingBottom: 10,

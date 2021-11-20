@@ -6,7 +6,6 @@ import {
 } from "@react-navigation/drawer";
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import {
-  Avatar,
   Box,
   Flex,
   Icon,
