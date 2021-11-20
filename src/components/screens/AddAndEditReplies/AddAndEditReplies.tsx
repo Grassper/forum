@@ -7,11 +7,11 @@ import { StyleSheet } from "react-native";
 import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
 import { CommentCard } from "@/root/src/components/shared/Cards/CommentCard";
 
-type RouteProp_ = RouteProp<RootStackParamList, "AndAndEditReplies">;
+type RouteProp_ = RouteProp<RootStackParamList, "AddAndEditReplies">;
 
 type NavigationProp_ = StackNavigationProp<
   RootStackParamList,
-  "AndAndEditReplies"
+  "AddAndEditReplies"
 >;
 
 interface Props_ {
@@ -19,7 +19,7 @@ interface Props_ {
   route: RouteProp_;
 }
 
-export const AndAndEditReplies: React.FC<Props_> = ({ navigation, route }) => {
+export const AddAndEditReplies: React.FC<Props_> = ({ navigation, route }) => {
   const [Reply, setReply] = React.useState("");
 
   const { action } = route.params;
