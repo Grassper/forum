@@ -6,7 +6,7 @@ import React from "react";
 import { StyleSheet } from "react-native";
 
 import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
-import { CommentCard } from "@/root/src/components/screens/Post/CommentCard";
+import { CommentCard } from "@/root/src/components/shared/Cards/CommentCard";
 
 type RouteProp_ = RouteProp<RootStackParamList, "AndAndEditReplies">;
 
