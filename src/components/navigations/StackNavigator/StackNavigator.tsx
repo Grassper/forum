@@ -213,8 +213,8 @@ export const StackNavigator = () => {
       <Stack.Screen
         name="ChatRoom"
         component={ChatRoom}
-        options={({ route }) => ({
-          title: route.params.title,
+        options={() => ({
+          title: "",
           headerStyle: {
             backgroundColor: colors.green,
           },

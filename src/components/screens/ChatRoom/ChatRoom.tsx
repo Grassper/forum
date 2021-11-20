@@ -1,21 +1,20 @@
 import { Feather, FontAwesome } from "@expo/vector-icons";
 import { RouteProp, useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
+import { Box, Center, Flex, Icon, Input, Text } from "native-base";
+import React from "react";
 import {
-  Box,
-  Center,
-  Flex,
-  Icon,
-  Input,
+  ImageBackground,
+  KeyboardAvoidingView,
+  Platform,
   ScrollView,
-  Text,
-  VStack,
-} from "native-base";
-import React, { useRef } from "react";
-import { ImageBackground, StyleSheet } from "react-native";
+  StyleSheet,
+} from "react-native";
 import { SvgUri } from "react-native-svg";
 
 import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
+
+import { ChatCard } from "./ChatCard";
 
 type RouteProp_ = RouteProp<RootStackParamList, "ChatRoom">;
 
@@ -26,48 +25,12 @@ interface Props_ {
   route: RouteProp_;
 }
 
-interface ChatCard_ {
-  align: "left" | "right";
-}
-
-const ChatCard: React.FC<ChatCard_> = ({ align }) => {
-  return (
-    <Box pb="4" alignItems={align === "left" ? "flex-start" : "flex-end"}>
-      <Box
-        maxWidth="60%"
-        px="3"
-        pt="2"
-        pb="3"
-        bg={align === "left" ? "white" : "green.500"}
-        borderRadius="5"
-      >
-        <VStack>
-          <Text
-            color={align === "left" ? "coolGray.600" : "white"}
-            fontWeight="500"
-          >
-            Hi nice to meet you too. hope soon we can take a project together!
-          </Text>
-          <Text
-            fontSize="xs"
-            color={align === "left" ? "coolGray.600" : "white"}
-            alignSelf="flex-end"
-            mt="1"
-          >
-            11.30 am
-          </Text>
-        </VStack>
-      </Box>
-    </Box>
-  );
-};
-
 export const ChatRoom: React.FC<Props_> = ({ route }) => {
   const [Comment, setComment] = React.useState("");
   const navigation = useNavigation();
-  const scrollViewRef = useRef();
+  const scrollViewRef: React.RefObject<ScrollView> = React.createRef();
 
-  const { imageUri } = route.params;
+  const { imageUri, title } = route.params;
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -97,11 +60,14 @@ export const ChatRoom: React.FC<Props_> = ({ route }) => {
             >
               <SvgUri uri={imageUri} width="100%" height="100%" />
             </Box>
+            <Text color="white" fontSize="md" fontWeight="500" ml="2">
+              {title}
+            </Text>
           </Flex>
         </Box>
       ),
     });
-  }, [imageUri, navigation]);
+  }, [imageUri, navigation, title]);
 
   return (
     <Box flex="1">
@@ -112,9 +78,7 @@ export const ChatRoom: React.FC<Props_> = ({ route }) => {
       >
         <ScrollView
           ref={scrollViewRef}
-          onContentSizeChange={() =>
-            scrollViewRef.current.scrollToEnd({ y: 0 })
-          }
+          onContentSizeChange={() => scrollViewRef.current?.scrollToEnd()}
         >
           <Center>
             <Flex width="90%" pt="4">
@@ -127,40 +91,43 @@ export const ChatRoom: React.FC<Props_> = ({ route }) => {
             </Flex>
           </Center>
         </ScrollView>
-
-        <Box bg="transparent" py="1" justifyContent="center">
-          <Flex
-            flexDirection="row"
-            alignItems="center"
-            justifyContent="center"
-            bgColor="transparent"
-          >
-            <Input
-              bg="white"
-              p="3"
-              width="80%"
-              multiline
-              value={Comment}
-              onChangeText={setComment}
-              borderRadius="md"
-              placeholder="Your comment"
-              placeholderTextColor="muted.400"
-              fontSize="sm"
-              variant="unstyled"
-            />
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+        >
+          <Box bg="transparent" py="1" justifyContent="center" safeAreaBottom>
             <Flex
-              bg="eGreen.400"
-              width="10"
-              ml="2"
-              height="10"
+              flexDirection="row"
               alignItems="center"
               justifyContent="center"
-              borderRadius="full"
+              bgColor="transparent"
             >
-              <Icon as={<FontAwesome name="send" />} size={4} color="white" />
+              <Input
+                bg="white"
+                p="3"
+                width="80%"
+                multiline
+                value={Comment}
+                onChangeText={setComment}
+                borderRadius="md"
+                placeholder="Type here.."
+                placeholderTextColor="muted.400"
+                fontSize="sm"
+                variant="unstyled"
+              />
+              <Flex
+                bg="eGreen.400"
+                width="10"
+                ml="2"
+                height="10"
+                alignItems="center"
+                justifyContent="center"
+                borderRadius="full"
+              >
+                <Icon as={<FontAwesome name="send" />} size={4} color="white" />
+              </Flex>
             </Flex>
-          </Flex>
-        </Box>
+          </Box>
+        </KeyboardAvoidingView>
       </ImageBackground>
     </Box>
   );
