@@ -401,7 +401,7 @@ const PostUserActions: React.FC<PostUserActions_> = ({
           </Tooltip>
           <Pressable
             onPress={() => {
-              navigation.navigate("AddAndEditComment");
+              navigation.navigate("AddAndEditComment", { action: "Add" });
             }}
           >
             <Icon

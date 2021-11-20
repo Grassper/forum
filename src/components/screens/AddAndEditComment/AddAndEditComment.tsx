@@ -1,7 +1,6 @@
-import { FontAwesome } from "@expo/vector-icons";
 import { RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { Box, Divider, Flex, Icon, Input } from "native-base";
+import { Box, Button, Divider, Flex, Input } from "native-base";
 import React from "react";
 import { StyleSheet } from "react-native";
 
@@ -21,8 +20,25 @@ interface Props_ {
   route: RouteProp_;
 }
 
-export const AddAndEditComment: React.FC<Props_> = () => {
+export const AddAndEditComment: React.FC<Props_> = ({ navigation, route }) => {
   const [Comment, setComment] = React.useState("");
+
+  const { action } = route.params;
+
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <Button
+          size="md"
+          _text={{ fontWeight: "600", color: "white" }}
+          variant="unstyled"
+          onPress={() => {}}
+        >
+          {action === "Add" ? "Post" : "Update"}
+        </Button>
+      ),
+    });
+  }, [action, navigation]);
 
   return (
     <Box style={styles.container} bg="white">
@@ -33,7 +49,7 @@ export const AddAndEditComment: React.FC<Props_> = () => {
           type={dummyData[0].type}
           username={dummyData[0].username}
           contentText={dummyData[0].contentText}
-          avatarUrl={dummyData[0].avatarUrl}
+          avatarUrl={dummyData[1].avatarUrl}
           timeStamp={dummyData[0].timeStamp}
           mediaUrl={dummyData[0].mediaUrl}
           poll={dummyData[0].poll}
@@ -50,29 +66,16 @@ export const AddAndEditComment: React.FC<Props_> = () => {
           justifyContent="center"
         >
           <Input
-            bg="muted.100"
-            p="4"
-            width="80%"
+            width="90%"
             multiline
             value={Comment}
             onChangeText={setComment}
             borderRadius="md"
-            placeholder="Your comment"
+            placeholder="Type some goods!"
             placeholderTextColor="muted.400"
             fontSize="sm"
             variant="unstyled"
           />
-          <Flex
-            bg="eGreen.400"
-            width="10"
-            ml="2"
-            height="10"
-            alignItems="center"
-            justifyContent="center"
-            borderRadius="full"
-          >
-            <Icon as={<FontAwesome name="send" />} size={4} color="white" />
-          </Flex>
         </Flex>
       </Box>
     </Box>

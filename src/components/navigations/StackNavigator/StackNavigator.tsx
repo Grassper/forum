@@ -47,7 +47,7 @@ export type RootStackParamList = {
 
   // * Comment
   Comment: undefined;
-  AddAndEditComment: undefined;
+  AddAndEditComment: { action: "Add" | "Edit" };
   AndAndEditReplies: undefined;
 
   // * Message
