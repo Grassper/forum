@@ -4,8 +4,8 @@ import React from "react";
 import { FlatList, StyleSheet } from "react-native";
 
 import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
-import { Data as DummyData } from "@/root/src/components/screens/SubForum";
 import { PostCard } from "@/root/src/components/shared/Cards/PostCard";
+import { dummyData } from "@/root/src/data/dummyData";
 
 import { CommentCard } from "./CommentCard";
 
@@ -19,15 +19,15 @@ const listHeader: React.FC = () => {
   return (
     <Box>
       <PostCard
-        id={DummyData[2].id}
-        subForum={DummyData[2].subForum}
-        type={DummyData[2].type}
-        username={DummyData[2].username}
-        contentText={DummyData[2].contentText}
-        avatarUrl={DummyData[2].avatarUrl}
-        timeStamp={DummyData[2].timeStamp}
-        mediaUrl={DummyData[2].mediaUrl}
-        poll={DummyData[2].poll}
+        id={dummyData[2].id}
+        subForum={dummyData[2].subForum}
+        type={dummyData[2].type}
+        username={dummyData[2].username}
+        contentText={dummyData[2].contentText}
+        avatarUrl={dummyData[2].avatarUrl}
+        timeStamp={dummyData[2].timeStamp}
+        mediaUrl={dummyData[2].mediaUrl}
+        poll={dummyData[2].poll}
         postPage
         hidePostNavigation
       />

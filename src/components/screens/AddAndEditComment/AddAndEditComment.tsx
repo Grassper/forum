@@ -6,8 +6,8 @@ import React from "react";
 import { StyleSheet } from "react-native";
 
 import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
-import { Data as DummyData } from "@/root/src/components/screens/SubForum";
 import { PostCard } from "@/root/src/components/shared/Cards/PostCard";
+import { dummyData } from "@/root/src/data/dummyData";
 
 type RouteProp_ = RouteProp<RootStackParamList, "AddAndEditComment">;
 
@@ -28,15 +28,15 @@ export const AddAndEditComment: React.FC<Props_> = () => {
     <Box style={styles.container} bg="white">
       <Box>
         <PostCard
-          id={DummyData[0].id}
-          subForum={DummyData[0].subForum}
-          type={DummyData[0].type}
-          username={DummyData[0].username}
-          contentText={DummyData[0].contentText}
-          avatarUrl={DummyData[0].avatarUrl}
-          timeStamp={DummyData[0].timeStamp}
-          mediaUrl={DummyData[0].mediaUrl}
-          poll={DummyData[0].poll}
+          id={dummyData[0].id}
+          subForum={dummyData[0].subForum}
+          type={dummyData[0].type}
+          username={dummyData[0].username}
+          contentText={dummyData[0].contentText}
+          avatarUrl={dummyData[0].avatarUrl}
+          timeStamp={dummyData[0].timeStamp}
+          mediaUrl={dummyData[0].mediaUrl}
+          poll={dummyData[0].poll}
           postPage
           hidePostNavigation
           hidePostUserActions

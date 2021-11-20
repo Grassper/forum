@@ -5,13 +5,10 @@ import React, { useState } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 import { SvgUri } from "react-native-svg";
 
-import {
-  Data as DummyData,
-  PostCardRenderer,
-} from "@/root/src/components/screens/SubForum";
+import { PostCardRenderer } from "@/root/src/components/screens/SubForum";
 import { BottomSheet } from "@/root/src/components/shared/BottomSheet";
 import { FloatingActionButton } from "@/root/src/components/shared/FabButton";
-
+import { dummyData } from "@/root/src/data/dummyData";
 interface Props_ {}
 
 export const Home: React.FC<Props_> = () => {
@@ -69,7 +66,7 @@ export const Home: React.FC<Props_> = () => {
     <View style={styles.container}>
       <BottomSheet isOpen={isOpen} onClose={HandleBottomSheet} />
       <FlatList
-        data={DummyData}
+        data={dummyData}
         renderItem={PostCardRenderer}
         keyExtractor={(item) => item.id}
       />
