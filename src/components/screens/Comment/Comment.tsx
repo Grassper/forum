@@ -4,7 +4,7 @@ import { FlatList, StyleSheet } from "react-native";
 
 import { CommentCard } from "@/root/src/components/shared/Cards/CommentCard";
 
-import { CommentListHeader } from "./commentListHeader";
+import { CommentListHeader } from "./CommentListHeader";
 
 interface Props_ {}
 

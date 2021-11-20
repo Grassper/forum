@@ -1,2 +1,2 @@
 export * from "./Comment";
-export * from "./commentListHeader";
+export * from "./CommentListHeader";
