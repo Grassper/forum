@@ -4,7 +4,7 @@ import React from "react";
 import { BottomTabNavigator } from "@/root/src/components/navigations/BottomTabNavigator";
 import { AddAndEditComment } from "@/root/src/components/screens/AddAndEditComment";
 import { AddAndEditPost } from "@/root/src/components/screens/AddAndEditPost";
-import { AndAndEditReplies } from "@/root/src/components/screens/AndAndEditReplies";
+import { AddAndEditReplies } from "@/root/src/components/screens/AddAndEditReplies";
 import { ChatRoom } from "@/root/src/components/screens/ChatRoom";
 import { ChooseSubForum } from "@/root/src/components/screens/ChooseSubForum";
 import { Comment } from "@/root/src/components/screens/Comment";
@@ -48,7 +48,7 @@ export type RootStackParamList = {
   // * Comment
   Comment: undefined;
   AddAndEditComment: { action: "Add" | "Edit" };
-  AndAndEditReplies: undefined;
+  AddAndEditReplies: { action: "Add" | "Edit" };
 
   // * Message
   NewChat: undefined;
@@ -178,8 +178,8 @@ export const StackNavigator = () => {
         })}
       />
       <Stack.Screen
-        name="AndAndEditReplies"
-        component={AndAndEditReplies}
+        name="AddAndEditReplies"
+        component={AddAndEditReplies}
         options={() => ({
           title: "",
           headerStyle: {
