@@ -123,7 +123,7 @@ export const CommentCard: React.FC<Props_> = ({
                 {!hideReplyButton && (
                   <Pressable
                     onPress={() => {
-                      Navigation.push("AndAndEditReplies");
+                      Navigation.push("AndAndEditReplies", { action: "Add" });
                     }}
                   >
                     <Flex flexDirection="row" alignItems="flex-end">
