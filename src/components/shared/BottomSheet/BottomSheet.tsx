@@ -35,7 +35,8 @@ export const BottomSheet: React.FC<Props_> = ({ isOpen, onClose }) => {
                   navigation.push("ChooseSubForum", {
                     postType: "Image",
                     action: "Add",
-                  });
+                  }),
+                    onClose();
                 }}
               >
                 <Box
@@ -61,7 +62,8 @@ export const BottomSheet: React.FC<Props_> = ({ isOpen, onClose }) => {
                   navigation.push("ChooseSubForum", {
                     postType: "Audio",
                     action: "Add",
-                  });
+                  }),
+                    onClose();
                 }}
               >
                 <Box
@@ -87,7 +89,8 @@ export const BottomSheet: React.FC<Props_> = ({ isOpen, onClose }) => {
                   navigation.push("ChooseSubForum", {
                     postType: "Video",
                     action: "Add",
-                  });
+                  }),
+                    onClose();
                 }}
               >
                 <Box
@@ -114,7 +117,8 @@ export const BottomSheet: React.FC<Props_> = ({ isOpen, onClose }) => {
                     postType: "Text",
                     action: "Add",
                     hideUpload: true,
-                  });
+                  }),
+                    onClose();
                 }}
               >
                 <Box
@@ -141,7 +145,8 @@ export const BottomSheet: React.FC<Props_> = ({ isOpen, onClose }) => {
                     postType: "Poll",
                     action: "Add",
                     hideUpload: true,
-                  });
+                  }),
+                    onClose();
                 }}
               >
                 <Box

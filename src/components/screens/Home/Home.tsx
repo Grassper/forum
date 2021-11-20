@@ -9,6 +9,7 @@ import { PostCardRenderer } from "@/root/src/components/screens/SubForum";
 import { BottomSheet } from "@/root/src/components/shared/BottomSheet";
 import { FloatingActionButton } from "@/root/src/components/shared/FabButton";
 import { dummyData } from "@/root/src/data/dummyData";
+
 interface Props_ {}
 
 export const Home: React.FC<Props_> = () => {

@@ -2,11 +2,12 @@ import { RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { Box, Button, Text } from "native-base";
 import React from "react";
-import { StyleSheet } from "react-native";
+import { FlatList, StyleSheet } from "react-native";
 
 import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
 import { SearchBar } from "@/root/src/components/shared/SearchBar";
 import { CommunityTile } from "@/root/src/components/shared/Tile";
+import { dummyData } from "@/root/src/data/dummyData";
 
 type RouteProp_ = RouteProp<RootStackParamList, "ChooseSubForum">;
 
@@ -46,29 +47,18 @@ export const ChooseSubForum: React.FC<Props_> = ({ navigation, route }) => {
           <SearchBar />
         </Box>
       </Box>
-      <CommunityTile
-        hideDivider
-        hideMembers
-        hideFavorites
-        onPress={() => navigation.push("AddAndEditPost", { ...route.params })}
-      />
-      <CommunityTile
-        hideDivider
-        hideMembers
-        hideFavorites
-        onPress={() => navigation.push("AddAndEditPost", { ...route.params })}
-      />
-      <CommunityTile
-        hideDivider
-        hideMembers
-        hideFavorites
-        onPress={() => navigation.push("AddAndEditPost", { ...route.params })}
-      />
-      <CommunityTile
-        hideDivider
-        hideMembers
-        hideFavorites
-        onPress={() => navigation.push("AddAndEditPost", { ...route.params })}
+      <FlatList
+        data={dummyData}
+        renderItem={() => (
+          <CommunityTile
+            hideDivider
+            hideMembers
+            hideFavorites
+            onPress={() =>
+              navigation.push("AddAndEditPost", { ...route.params })
+            }
+          />
+        )}
       />
     </Box>
   );
