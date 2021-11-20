@@ -1,8 +1,14 @@
 import { Ionicons } from "@expo/vector-icons";
 import { Audio } from "expo-av";
-import { Box, Flex, Text as Tex } from "native-base";
-import React, { useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { Box, Flex, Pressable, Text as Tex } from "native-base";
+import React, { useEffect, useRef, useState } from "react";
+import {
+  Animated,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 import { colors } from "@/root/src/constants";
 
@@ -11,14 +17,60 @@ interface props {
 }
 export const AudioComponent: React.FC<props> = ({ audioUri }) => {
   const [music, setMusic] = useState();
+  const [position, setPosition] = useState(0);
+  const [duration, setDuration] = useState(0);
+  // const counter = useRef(new Animated.Value(0)).current;
+  // const countInterval = useRef(null);
+  // const [count, setCount] = useState(0);
+
+  // useEffect(() => {
+  //   countInterval.current = setInterval(() => setCount((old) => old + 5), 1000);
+  //   // return () => {
+  //   //   clearInterval(countInterval);
+  //   // };
+  // }, []);
+  // useEffect(() => {
+  //   load(count);
+  //   if (count >= 100) {
+  //     setCount(100);
+  //     clearInterval(countInterval);
+  //   }
+  // }, [count]);
+  // const load = (count) => {
+  //   Animated.timing(counter, {
+  //     toValue: count,
+  //     duration: 500,
+  //     useNativeDriver: true,
+  //   }).start();
+  // };
+
+  // const width = counter.interpolate({
+  //   inputRange: [0, 100],
+  //   outputRange: ["0%", "100%"],
+  //   extrapolate: "clamp",
+  // });
   // useEffect(() => {
   //   setInterval(function () {
   //     if (music) {
-  //       console.log("called", music);
+  //       status();
   //     }
-  //   }, 1000000);
+  //   }, 1000);
   // });
+  // setInterval(function () {
+  //   if (music) {
+  //     status();
+  //   }
+  // }, 2000);
 
+  const ProgressBar = () => {
+    return (
+      <View style={styles.progressContainer}>
+        <View style={styles.progressBar}>
+          <Animated.View style={[styles.absoluteFill, { width: "100%" }]} />
+        </View>
+      </View>
+    );
+  };
   async function playSound() {
     console.log("Loading Sound");
     const { sound } = await Audio.Sound.createAsync({ uri: audioUri });
@@ -45,7 +97,12 @@ export const AudioComponent: React.FC<props> = ({ audioUri }) => {
   }, [music]);
   async function status() {
     const val = await music.getStatusAsync();
-    console.log("mus", val);
+    const pos =
+      100 -
+      ((val.playableDurationMillis - val.positionMillis) /
+        val.playableDurationMillis) *
+        100;
+    console.log("mus", pos);
   }
   //   <TouchableOpacity style={styles.touchableOpacity} onPress={playSound}>
   //   <Text>Play Sound</Text>
@@ -65,11 +122,24 @@ export const AudioComponent: React.FC<props> = ({ audioUri }) => {
       <View style={styles.container}>
         <Box pt="3" pb="3">
           <Flex direction="row" pl="3" pr="3">
-            <Ionicons name="ios-pause" size={24} color={colors.white} />
-            <Tex>00:04</Tex>
-            <Tex>hellow</Tex>
-            <Tex>00:18</Tex>
-            <Ionicons name="volume-high-sharp" size={24} color={colors.white} />
+            <Pressable onPress={playSound} mr="2">
+              <Ionicons name="ios-pause" size={24} color={colors.white} />
+            </Pressable>
+            <Box mr="2">
+              <Tex>00:04</Tex>
+            </Box>
+
+            <ProgressBar />
+            <Box mr="2" ml="2">
+              <Tex>00:18</Tex>
+            </Box>
+            <Pressable onPress={pause}>
+              <Ionicons
+                name="volume-high-sharp"
+                size={24}
+                color={colors.white}
+              />
+            </Pressable>
           </Flex>
         </Box>
       </View>
@@ -77,11 +147,27 @@ export const AudioComponent: React.FC<props> = ({ audioUri }) => {
   );
 };
 const styles = StyleSheet.create({
+  absoluteFill: {
+    backgroundColor: "#8BED4F",
+  },
   container: { backgroundColor: "gray", borderRadius: 20, width: "90%" },
   outerContainer: {
     alignItems: "center",
     justifyContent: "center",
     width: "100%",
+  },
+  progressBar: {
+    backgroundColor: "white",
+    borderColor: "#000",
+    // borderRadius: 5,
+    borderWidth: 0.5,
+    flexDirection: "row",
+    height: 10,
+    width: "100%",
+  },
+  progressContainer: {
+    justifyContent: "center",
+    width: "50%",
   },
   touchableOpacity: {
     borderRadius: 10,

@@ -2,11 +2,12 @@ import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { Box, HStack, Pressable, Spacer, Text, VStack } from "native-base";
 import React from "react";
-import { StyleSheet } from "react-native";
+import { FlatList, StyleSheet } from "react-native";
 import { SvgUri } from "react-native-svg";
 
 import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
 import { FloatingActionButton } from "@/root/src/components/shared/FabButton";
+import { dummyData } from "@/root/src/data/dummyData";
 
 type NavigationProp_ = StackNavigationProp<RootStackParamList>;
 
@@ -33,22 +34,6 @@ const ChatCard: React.FC = () => {
       >
         <Box width="90%">
           <HStack alignItems="center" space={3}>
-            {/* <Avatar
-              bg="green.500"
-              size="40px"
-              source={{
-                uri: "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-              }}
-            >
-              <Text
-                fontSize="sm"
-                fontFamily="body"
-                fontWeight="600"
-                color="white"
-              >
-                {"sujitha".charAt(0).toUpperCase() || "Ef"}
-              </Text>
-            </Avatar> */}
             <Box
               width="40px"
               height="40px"
@@ -103,14 +88,14 @@ const ChatCard: React.FC = () => {
 
 export const ChatList: React.FC<Props_> = () => {
   const navigation = useNavigation<NavigationProp_>();
+
   const Onpress = () => {
     navigation.push("NewChat");
   };
   return (
     <Box style={styles.container}>
-      <ChatCard />
-      <ChatCard />
-      <ChatCard />
+      <FlatList data={dummyData} renderItem={() => <ChatCard />} />
+
       <FloatingActionButton onPress={Onpress} />
     </Box>
   );
