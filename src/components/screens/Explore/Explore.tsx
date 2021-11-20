@@ -7,12 +7,10 @@ import {
   Data as UserDummyData,
   FollowCardRenderer,
 } from "@/root/src/components/screens/Follow/Follow";
-import {
-  Data as DummyData,
-  PostCardRenderer,
-} from "@/root/src/components/screens/SubForum";
+import { PostCardRenderer } from "@/root/src/components/screens/SubForum";
 import { SearchBar } from "@/root/src/components/shared/SearchBar";
 import { colors } from "@/root/src/constants";
+import { dummyData } from "@/root/src/data/dummyData";
 
 import { CommunitySearch } from "./CommunitySearch";
 
@@ -61,7 +59,7 @@ const PostSearch: React.FC = () => {
   return (
     <Box>
       <FlatList
-        data={DummyData}
+        data={dummyData}
         renderItem={PostCardRenderer}
         keyExtractor={(item) => item.id}
       />

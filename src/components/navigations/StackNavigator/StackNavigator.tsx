@@ -21,29 +21,38 @@ import { colors } from "@/root/src/constants";
 
 export type RootStackParamList = {
   BottomTabNavigator: undefined;
+  // * User
   Profile: { userId?: string };
+  EditProfile: undefined;
   Follow: { title: "Followers" | "Following" | "Blocked Accounts" };
   Saved: undefined;
-  EditProfile: undefined;
+
+  // * SubForum
   SubForum: undefined;
-  EditAndCreateSubForum: { title: "Edit Subforum" | "Create Subforum" };
   SubForumMod: undefined;
+  EditAndCreateSubForum: { title: "Edit Subforum" | "Create Subforum" };
+
+  // * Post
   Post: undefined;
-  AddAndEditComment: undefined;
   AddAndEditPost: {
     postType: "Image" | "Text" | "Video" | "Audio" | "Poll";
     action: "Add" | "Edit";
     hideUpload?: boolean;
   };
-  Comment: undefined;
-  AndAndEditReplies: undefined;
   ChooseSubForum: {
     postType: "Image" | "Text" | "Video" | "Audio" | "Poll";
     action: "Add" | "Edit";
     hideUpload?: boolean;
   };
-  ChatRoom: { title: string; imageUri: string };
+
+  // * Comment
+  Comment: undefined;
+  AddAndEditComment: { action: "Add" | "Edit" };
+  AndAndEditReplies: undefined;
+
+  // * Message
   NewChat: undefined;
+  ChatRoom: { title: string; imageUri: string };
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
