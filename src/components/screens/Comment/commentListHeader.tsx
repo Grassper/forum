@@ -3,7 +3,7 @@ import React from "react";
 
 import { CommentCard } from "@/root/src/components/shared/Cards/CommentCard";
 
-export const commentListHeader: React.FC = () => {
+export const CommentListHeader: React.FC = () => {
   return (
     <Box>
       <CommentCard />

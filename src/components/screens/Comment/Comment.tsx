@@ -1,10 +1,10 @@
-import { Box, Flex, Text } from "native-base";
+import { Box } from "native-base";
 import React from "react";
 import { FlatList, StyleSheet } from "react-native";
 
 import { CommentCard } from "@/root/src/components/shared/Cards/CommentCard";
 
-import { commentListHeader } from ".";
+import { CommentListHeader } from "./commentListHeader";
 
 interface Props_ {}
 
@@ -19,7 +19,7 @@ export const Comment: React.FC<Props_> = () => {
       <FlatList
         data={Data}
         renderItem={() => <CommentCard />}
-        ListHeaderComponent={commentListHeader}
+        ListHeaderComponent={CommentListHeader}
       />
     </Box>
   );

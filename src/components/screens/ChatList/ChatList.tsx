@@ -8,7 +8,7 @@ import { RootStackParamList } from "@/root/src/components/navigations/StackNavig
 import { FloatingActionButton } from "@/root/src/components/shared/FabButton";
 import { dummyData } from "@/root/src/data/dummyData";
 
-import { ChatCard } from ".";
+import { ChatCard } from "./ChatCard";
 
 type NavigationProp_ = StackNavigationProp<RootStackParamList>;
 
