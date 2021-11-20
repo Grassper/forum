@@ -2,7 +2,6 @@ import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { Box, HStack, Pressable, Spacer, Text, VStack } from "native-base";
 import React from "react";
-import { StyleSheet } from "react-native";
 import { SvgUri } from "react-native-svg";
 
 import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
