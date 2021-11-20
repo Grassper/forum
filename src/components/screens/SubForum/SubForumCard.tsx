@@ -119,7 +119,7 @@ export const SubForumCard: React.FC<Props_> = ({
             </Text>
           </Avatar>
           {isEdit && (
-            <Pressable onPress={pickImage}>
+            <Pressable onPress={pickImage} zIndex="999">
               <Box
                 bg="eGreen.400"
                 p="2"

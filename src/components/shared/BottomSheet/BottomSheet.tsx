@@ -32,11 +32,11 @@ export const BottomSheet: React.FC<Props_> = ({ isOpen, onClose }) => {
             <VStack space="1.5" alignItems="center">
               <Pressable
                 onPress={() => {
-                  navigation.push("ChooseSubForum", {
-                    postType: "Image",
-                    action: "Add",
-                  }),
-                    onClose();
+                  onClose(),
+                    navigation.push("ChooseSubForum", {
+                      postType: "Image",
+                      action: "Add",
+                    });
                 }}
               >
                 <Box
