@@ -5,7 +5,7 @@ import { colors } from "@/root/src/constants";
 
 interface Props_ {}
 
-export const CommentCard: React.FC<Props_> = () => {
+export const CommentTile: React.FC<Props_> = () => {
   return (
     <View style={styles.container}>
       <Text numberOfLines={2} style={styles.post}>

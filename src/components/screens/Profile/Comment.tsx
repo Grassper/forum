@@ -1,7 +1,7 @@
 import React from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 
-import { CommentCard } from "@/root/src/components/shared/Cards";
+import { CommentTile } from "@/root/src/components/shared/Cards";
 import { colors } from "@/root/src/constants";
 
 interface Props_ {}
@@ -10,9 +10,9 @@ export const Comments: React.FC<Props_> = () => {
   return (
     <View style={styles.wrapper}>
       <ScrollView style={styles.container}>
-        <CommentCard />
-        <CommentCard />
-        <CommentCard />
+        <CommentTile />
+        <CommentTile />
+        <CommentTile />
       </ScrollView>
     </View>
   );
