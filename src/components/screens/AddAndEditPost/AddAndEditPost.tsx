@@ -35,10 +35,10 @@ interface PollType_ {
 }
 
 export const AddAndEditPost: React.FC<Props_> = ({ navigation, route }) => {
-  const [Content, setContent] = React.useState("");
+  const [Content, setContent] = React.useState(""); // post content
   const [PollTitle, setPollTitle] = React.useState("");
-  const [Option, setOption] = React.useState("");
-  const [Polls, setPoll] = React.useState<PollType_[]>([]);
+  const [Option, setOption] = React.useState(""); // poll option input
+  const [Polls, setPoll] = React.useState<PollType_[]>([]); // poll options
 
   const { hideUpload, postType } = route.params;
 
@@ -63,7 +63,8 @@ export const AddAndEditPost: React.FC<Props_> = ({ navigation, route }) => {
       bg="white"
       justifyContent={postType !== "Poll" ? "space-between" : "flex-start"}
     >
-      <CommunityTile hideDivider hideMembers />
+      <CommunityTile hideDivider hideMembers hideFavorites />
+      {/* if poll exist */}
       {postType === "Poll" && (
         <Box bg="white" alignItems="center">
           <Box width="90%">
@@ -121,6 +122,7 @@ export const AddAndEditPost: React.FC<Props_> = ({ navigation, route }) => {
                 );
               })}
             </Box>
+            {/* max poll array length is 3. hide input if that exceed  */}
             {Polls.length <= 2 && (
               <Flex flexDirection="row" alignItems="center">
                 <Input

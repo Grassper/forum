@@ -4,10 +4,9 @@ import React from "react";
 import { FlatList, StyleSheet } from "react-native";
 
 import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
+import { CommentCard } from "@/root/src/components/shared/Cards/CommentCard";
 import { PostCard } from "@/root/src/components/shared/Cards/PostCard";
 import { dummyData } from "@/root/src/data/dummyData";
-
-import { CommentCard } from "./CommentCard";
 
 type NavigationProp_ = StackNavigationProp<RootStackParamList, "Post">;
 

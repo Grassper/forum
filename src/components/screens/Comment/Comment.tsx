@@ -2,7 +2,7 @@ import { Box, Flex, Text } from "native-base";
 import React from "react";
 import { FlatList, StyleSheet } from "react-native";
 
-import { CommentCard } from "@/root/src/components/screens/Post/CommentCard";
+import { CommentCard } from "@/root/src/components/shared/Cards/CommentCard";
 
 interface Props_ {}
 
