@@ -93,6 +93,7 @@ export const ChatRoom: React.FC<Props_> = ({ route }) => {
         </ScrollView>
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : "height"}
+          keyboardVerticalOffset={60}
         >
           <Box bg="transparent" py="1" justifyContent="center" safeAreaBottom>
             <Flex
