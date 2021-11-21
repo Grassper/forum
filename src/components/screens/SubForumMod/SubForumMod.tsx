@@ -7,81 +7,43 @@ interface Props_ {}
 export const SubForumMod: React.FC<Props_> = () => {
   return (
     <Box bg="white" style={styles.container}>
-      <HStack
-        justifyContent="center"
-        borderBottomWidth={0.25}
-        borderBottomColor="border.400"
-      >
-        <Box width="90%">
-          <Pressable onPress={() => {}}>
-            <Text fontSize="sm" py="3" fontWeight="medium">
-              Members
-            </Text>
-          </Pressable>
-        </Box>
-      </HStack>
-      <HStack
-        justifyContent="center"
-        borderBottomWidth={0.25}
-        borderBottomColor="border.400"
-      >
-        <Box width="90%">
-          <Pressable onPress={() => {}}>
-            <Text fontSize="sm" py="3" fontWeight="medium">
-              Topics
-            </Text>
-          </Pressable>
-        </Box>
-      </HStack>
-      <HStack
-        justifyContent="center"
-        borderBottomWidth={0.25}
-        borderBottomColor="border.400"
-      >
-        <Box width="90%">
-          <Pressable onPress={() => {}}>
-            <Text fontSize="sm" py="3" fontWeight="medium">
-              Screen Post / Comments
-            </Text>
-          </Pressable>
-        </Box>
-      </HStack>
-      <HStack
-        justifyContent="center"
-        borderBottomWidth={0.25}
-        borderBottomColor="border.400"
-      >
-        <Box width="90%">
-          <Pressable onPress={() => {}}>
-            <Text fontSize="sm" py="3" fontWeight="medium">
-              Blocked Post / Comments
-            </Text>
-          </Pressable>
-        </Box>
-      </HStack>
-      <HStack
-        justifyContent="center"
-        borderBottomWidth={0.25}
-        borderBottomColor="border.400"
-      >
-        <Box width="90%">
-          <Pressable onPress={() => {}}>
-            <Text fontSize="sm" py="3" fontWeight="medium">
-              Blocked Members
-            </Text>
-          </Pressable>
-        </Box>
-      </HStack>
-      <HStack justifyContent="center">
-        <Box width="90%">
-          <Pressable onPress={() => {}}>
-            <Text fontSize="sm" py="3" fontWeight="medium" color="danger.600">
-              Delete Community
-            </Text>
-          </Pressable>
-        </Box>
-      </HStack>
+      <Items name="Members" />
+      <Items name="Topics" />
+      <Items name="Screen Post / Comments" />
+      <Items name="Blocked Post / Comments" />
+      <Items name="Blocked Members" />
+      <Items name="Delete Community" isDanger />
     </Box>
+  );
+};
+
+interface Items_ {
+  onPress?: () => void;
+  name: string;
+  hideBordered?: boolean;
+  isDanger?: boolean;
+}
+
+const Items: React.FC<Items_> = ({ onPress, name, hideBordered, isDanger }) => {
+  return (
+    <HStack
+      justifyContent="center"
+      borderBottomWidth={hideBordered ? 0 : 0.25}
+      borderBottomColor="border.400"
+    >
+      <Box width="90%">
+        <Pressable onPress={onPress}>
+          <Text
+            fontSize="sm"
+            py="3"
+            fontWeight="medium"
+            color={isDanger ? "danger.600" : "coolGray.900"}
+          >
+            {name}
+          </Text>
+        </Pressable>
+      </Box>
+    </HStack>
   );
 };
 

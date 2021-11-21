@@ -1,14 +1,11 @@
 import { StackNavigationProp } from "@react-navigation/stack";
 import { Button } from "native-base";
 import React from "react";
-import { FlatList, ListRenderItem, StyleSheet, View } from "react-native";
+import { FlatList, StyleSheet, View } from "react-native";
 
 import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
+import { PostCardRenderer } from "@/root/src/components/shared/CardRenderer";
 import { SubForumCard } from "@/root/src/components/shared/Cards";
-import {
-  PostCard,
-  Props_ as PostCardProps_,
-} from "@/root/src/components/shared/Cards/PostCard";
 import { dummyData } from "@/root/src/data/dummyData";
 
 type NavigationProp_ = StackNavigationProp<RootStackParamList, "SubForum">;
@@ -16,23 +13,6 @@ type NavigationProp_ = StackNavigationProp<RootStackParamList, "SubForum">;
 interface Props_ {
   navigation: NavigationProp_;
 }
-
-export const PostCardRenderer: ListRenderItem<PostCardProps_> = ({ item }) => {
-  return (
-    <PostCard
-      id={item.id}
-      subForum={item.subForum}
-      type={item.type}
-      username={item.username}
-      contentText={item.contentText}
-      avatarUrl={item.avatarUrl}
-      timeStamp={item.timeStamp}
-      mediaUrl={item.mediaUrl}
-      poll={item.poll}
-      audioUrl={item.audioUrl}
-    />
-  );
-};
 
 export const SubForum: React.FC<Props_> = ({ navigation }) => {
   React.useLayoutEffect(() => {
