@@ -26,15 +26,6 @@ export const Home: React.FC<Props_> = () => {
           <Pressable
             onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
           >
-            {/* <Image
-              size={30}
-              resizeMode={"cover"}
-              borderRadius={150}
-              source={{
-                uri: "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-              }}
-              alt="Alternate Text"
-            /> */}
             <Box
               width="8"
               height="8"
