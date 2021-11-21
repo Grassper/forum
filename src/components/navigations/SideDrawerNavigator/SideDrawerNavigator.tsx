@@ -19,10 +19,10 @@ import { StyleSheet } from "react-native";
 import { SvgUri } from "react-native-svg";
 
 import { StackNavigator } from "@/root/src/components/navigations/StackNavigator";
+import { Bookmark } from "@/root/src/components/screens/Bookmark";
 import { EditAndCreateSubForum } from "@/root/src/components/screens/EditAndCreateSubForum";
 import { Follow } from "@/root/src/components/screens/Follow";
 import { Profile } from "@/root/src/components/screens/Profile";
-import { Saved } from "@/root/src/components/screens/Saved";
 
 const DrawerNavigator = createDrawerNavigator();
 
@@ -140,10 +140,10 @@ const CustomDrawerContent = (props) => {
               color="black"
               ml="-4"
             >
-              Saved
+              Bookmarks
             </Text>
           )}
-          onPress={() => DrawerNavigation.navigate("Saved")}
+          onPress={() => DrawerNavigation.navigate("Bookmark")}
           icon={() => (
             <Icon
               as={<Feather name="bookmark" />}
@@ -207,7 +207,7 @@ export const SideDrawerNavigator = () => {
           }}
         />
         <DrawerNavigator.Screen name="Blocked Accounts" component={Follow} />
-        <DrawerNavigator.Screen name="Saved" component={Saved} />
+        <DrawerNavigator.Screen name="Bookmarks" component={Bookmark} />
         <DrawerNavigator.Screen
           name="EditAndCreateSubForum"
           component={EditAndCreateSubForum}
