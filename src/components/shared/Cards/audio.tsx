@@ -19,6 +19,8 @@ export const AudioComponent: React.FC<props> = ({ audioUri }) => {
   const [music, setMusic] = useState();
   const [position, setPosition] = useState(0);
   const [duration, setDuration] = useState(0);
+  const [play, setPlay] = useState(false);
+  var pos = 0;
   // const counter = useRef(new Animated.Value(0)).current;
   // const countInterval = useRef(null);
   // const [count, setCount] = useState(0);
@@ -56,31 +58,23 @@ export const AudioComponent: React.FC<props> = ({ audioUri }) => {
   //     }
   //   }, 1000);
   // });
-  // setInterval(function () {
-  //   if (music) {
-  //     status();
-  //   }
-  // }, 2000);
+  var timer = setInterval(function () {
+    if (music) {
+      status();
+    }
+  }, 1000);
 
-  const ProgressBar = () => {
-    return (
-      <View style={styles.progressContainer}>
-        <View style={styles.progressBar}>
-          <Animated.View style={[styles.absoluteFill, { width: "100%" }]} />
-        </View>
-      </View>
-    );
-  };
   async function playSound() {
     console.log("Loading Sound");
     const { sound } = await Audio.Sound.createAsync({ uri: audioUri });
 
     setMusic(sound);
-
+    setPlay(true);
     await sound.playAsync();
   }
 
   async function pause() {
+    clearInterval(timer);
     await music.pauseAsync();
   }
   async function resume() {
@@ -97,13 +91,28 @@ export const AudioComponent: React.FC<props> = ({ audioUri }) => {
   }, [music]);
   async function status() {
     const val = await music.getStatusAsync();
-    const pos =
+
+    setPosition(
       100 -
-      ((val.playableDurationMillis - val.positionMillis) /
-        val.playableDurationMillis) *
-        100;
-    console.log("mus", pos);
+        ((val.playableDurationMillis - val.positionMillis) /
+          val.playableDurationMillis) *
+          100
+    );
   }
+  const ProgressBar = () => {
+    return (
+      <View style={styles.progressContainer}>
+        <View style={styles.progressBar}>
+          <Animated.View
+            style={[
+              styles.absoluteFill,
+              { width: `${parseInt(position) ? parseInt(position) : 45}%` },
+            ]}
+          />
+        </View>
+      </View>
+    );
+  };
   //   <TouchableOpacity style={styles.touchableOpacity} onPress={playSound}>
   //   <Text>Play Sound</Text>
   // </TouchableOpacity>
@@ -119,19 +128,23 @@ export const AudioComponent: React.FC<props> = ({ audioUri }) => {
 
   return (
     <View style={styles.outerContainer}>
-      <View style={styles.container}>
+      <View style={[styles.container, { backgroundColor: colors.black }]}>
         <Box pt="3" pb="3">
           <Flex direction="row" pl="3" pr="3">
-            <Pressable onPress={playSound} mr="2">
-              <Ionicons name="ios-pause" size={24} color={colors.white} />
+            <Pressable onPress={() => setPlay(!play)} mr="1">
+              {play ? (
+                <Ionicons name="ios-pause" size={24} color={colors.white} />
+              ) : (
+                <Ionicons name="ios-play" size={24} color={colors.white} />
+              )}
             </Pressable>
-            <Box mr="2">
-              <Tex>00:04</Tex>
+            <Box mr="2" alignItems="center" justifyContent="center">
+              <Tex color={colors.white}>00:04</Tex>
             </Box>
 
             <ProgressBar />
-            <Box mr="2" ml="2">
-              <Tex>00:18</Tex>
+            <Box mr="2" ml="2" alignItems="center" justifyContent="center">
+              <Tex color={colors.white}>00:18</Tex>
             </Box>
             <Pressable onPress={pause}>
               <Ionicons
@@ -148,7 +161,7 @@ export const AudioComponent: React.FC<props> = ({ audioUri }) => {
 };
 const styles = StyleSheet.create({
   absoluteFill: {
-    backgroundColor: "#8BED4F",
+    backgroundColor: "#17D7A0",
   },
   container: { backgroundColor: "gray", borderRadius: 20, width: "90%" },
   outerContainer: {
@@ -159,10 +172,10 @@ const styles = StyleSheet.create({
   progressBar: {
     backgroundColor: "white",
     borderColor: "#000",
-    // borderRadius: 5,
+    borderRadius: 1,
     borderWidth: 0.5,
     flexDirection: "row",
-    height: 10,
+    height: 7,
     width: "100%",
   },
   progressContainer: {

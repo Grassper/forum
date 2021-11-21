@@ -1,5 +1,5 @@
 import React from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
+import { FlatList, ScrollView, StyleSheet, View } from "react-native";
 
 import { PostTile } from "@/root/src/components/shared/Cards";
 import { colors } from "@/root/src/constants";
@@ -7,16 +7,22 @@ import { colors } from "@/root/src/constants";
 interface Props_ {}
 
 export const Posts: React.FC<Props_> = () => {
+  const Data = [
+    { key: 1, pinned: true },
+    { key: 2, pinned: true },
+    { key: 3, pinned: false },
+    { key: 6, pinned: false },
+    { key: 5, pinned: false },
+    { key: 4, pinned: false },
+  ];
   return (
     <View style={styles.wrapper}>
-      <ScrollView style={styles.container}>
-        <PostTile pinned={true} />
-        <PostTile pinned={true} />
-        <PostTile pinned={true} />
-        <PostTile pinned={false} />
-        <PostTile pinned={false} />
-        <PostTile pinned={false} />
-      </ScrollView>
+      <View style={styles.container}>
+        <FlatList
+          data={Data}
+          renderItem={(item) => <PostTile pinned={item.item.pinned} />}
+        />
+      </View>
     </View>
   );
 };
@@ -26,7 +32,9 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     flex: 1,
     marginBottom: 20,
-    paddingVertical: 15,
+    paddingBottom: 2,
+    paddingTop: 15,
+
     width: "100%",
   },
   wrapper: {
