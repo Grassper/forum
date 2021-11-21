@@ -77,13 +77,14 @@ export const EditAndCreateSubForum: React.FC<Props_> = ({
             <FormControl.Label mb="3">Description</FormControl.Label>
             <Input
               bg="muted.100"
-              // p="4"
-              // mb="2"
-              width="90%"
+              p="4"
+              mb="2"
+              width="100%"
+              // height="100%"
               minHeight="125"
               multiline
-              // maxLength={140}
-              // numberOfLines={4}
+              maxLength={140}
+              numberOfLines={4}
               value={description}
               onChangeText={setDescription}
               borderRadius="md"
@@ -103,7 +104,7 @@ export const EditAndCreateSubForum: React.FC<Props_> = ({
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
+  container: { backgroundColor: "white", flex: 1 },
   inputContainer: {
     flex: 1,
     marginBottom: 20,
