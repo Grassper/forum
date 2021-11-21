@@ -1,66 +1,25 @@
 import { MaterialIcons } from "@expo/vector-icons";
+import { RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { Box, HStack, Icon, Pressable, Text, VStack } from "native-base";
 import React from "react";
-import { ListRenderItem, StyleSheet, View } from "react-native";
+import { FlatList } from "react-native";
 import { SwipeListView } from "react-native-swipe-list-view";
 
 import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
+import { FollowCardRenderer } from "@/root/src/components/shared/CardRenderer";
 import { SearchBar } from "@/root/src/components/shared/SearchBar";
-import { colors } from "@/root/src/constants";
+import { UserData } from "@/root/src/data/userData";
 
-import { FollowCard } from "./FollowCard";
+type RouteProp_ = RouteProp<RootStackParamList, "Follow">;
 
 type NavigationProp_ = StackNavigationProp<RootStackParamList, "Follow">;
-
 interface Props_ {
   navigation: NavigationProp_;
+  route: RouteProp_;
 }
 
-interface FollowCard_ {
-  id: string;
-  username: string;
-  avatarUrl: string;
-}
 interface Props_ {}
-
-export const Data = [
-  {
-    id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
-    username: "Aafreen Khan",
-    avatarUrl: "https://avatars.dicebear.com/api/micah/john.svg",
-  },
-  {
-    id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
-    username: "Sujitha Mathur",
-    avatarUrl: "https://avatars.dicebear.com/api/micah/cena.svg",
-  },
-  {
-    id: "58694a0f-3da1-471f-bd96-145571e29d72",
-    username: "Anci Barroco",
-    avatarUrl: "https://avatars.dicebear.com/api/micah/harry.svg",
-  },
-  {
-    id: "68694a0f-3da1-431f-bd56-142371e29d72",
-    username: "Aniket Kumar",
-    avatarUrl: "https://avatars.dicebear.com/api/micah/pottor.svg",
-  },
-  {
-    id: "28694a0f-3da1-471f-bd96-142456e29d72",
-    username: "Kiara",
-    avatarUrl: "https://avatars.dicebear.com/api/micah/micheal.svg",
-  },
-];
-
-export const FollowCardRenderer: ListRenderItem<FollowCard_> = ({ item }) => {
-  return (
-    <FollowCard
-      id={item.id}
-      username={item.username}
-      avatarUrl={item.avatarUrl}
-    />
-  );
-};
 
 const RenderHiddenItem = () => {
   return (
@@ -87,38 +46,33 @@ const RenderHiddenItem = () => {
   );
 };
 
-export const Follow: React.FC<Props_> = () => {
+export const Follow: React.FC<Props_> = ({ route }) => {
+  const { title } = route.params;
   return (
-    <View style={styles.wrapper}>
-      <View style={styles.container}>
+    <Box bg="white" flex="1" alignItems="center">
+      <Box width="90%" pt="20px">
         <SearchBar />
-        <Box mt="4" safeArea flex="1">
-          <SwipeListView
-            data={Data}
+      </Box>
+      <Box mt="4" width="100%" flex="1">
+        {title !== "Blocked Accounts" ? (
+          <FlatList
+            data={UserData}
             renderItem={FollowCardRenderer}
+            keyExtractor={(item) => item.id}
+          />
+        ) : (
+          <SwipeListView
+            data={UserData}
+            renderItem={FollowCardRenderer}
+            keyExtractor={(item) => item.id}
             renderHiddenItem={RenderHiddenItem}
             rightOpenValue={-70}
             previewRowKey={"0"}
             previewOpenValue={-40}
             previewOpenDelay={3000}
           />
-        </Box>
-      </View>
-    </View>
+        )}
+      </Box>
+    </Box>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: colors.white,
-    flex: 1,
-    paddingVertical: 15,
-    width: "90%",
-  },
-  wrapper: {
-    alignItems: "center",
-    backgroundColor: colors.white,
-    flex: 1,
-    width: "100%",
-  },
-});

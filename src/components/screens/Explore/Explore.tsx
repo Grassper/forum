@@ -12,7 +12,13 @@ import { ProfileSearch } from "./ProfileSearch";
 
 interface Props_ {}
 
-const Tab = createMaterialTopTabNavigator();
+type TabParamList = {
+  Post: undefined;
+  Community: undefined;
+  Profile: undefined;
+};
+
+const Tab = createMaterialTopTabNavigator<TabParamList>();
 
 const windowWidth = Dimensions.get("window").width;
 
@@ -25,7 +31,7 @@ export const Explore: React.FC<Props_> = () => {
         </Box>
       </Box>
       <Tab.Navigator
-        initialRouteName="Posts"
+        initialRouteName="Post"
         screenOptions={{
           tabBarLabelStyle: {
             fontSize: 15,

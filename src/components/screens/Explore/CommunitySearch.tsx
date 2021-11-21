@@ -15,13 +15,8 @@ export const CommunitySearch: React.FC<Props_> = () => {
   const navigation = useNavigation<NavigationProp_>();
   return (
     <ScrollView style={styles.container}>
-      <CommunityTile onPress={() => navigation.push("SubForum")} />
-      <CommunityTile onPress={() => navigation.push("SubForum")} />
-      <CommunityTile onPress={() => navigation.push("SubForum")} />
-      <CommunityTile onPress={() => navigation.push("SubForum")} />
-      <CommunityTile onPress={() => navigation.push("SubForum")} />
-      <CommunityTile onPress={() => navigation.push("SubForum")} />
-      <CommunityTile onPress={() => navigation.push("SubForum")} />
+      <CommunityTile onPress={() => navigation.push("SubForum")} hideDivider />
+      <CommunityTile onPress={() => navigation.push("SubForum")} hideDivider />
     </ScrollView>
   );
 };
