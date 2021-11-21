@@ -1,11 +1,10 @@
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { Button, Pressable, Text } from "native-base";
+import { Box, Button, HStack, Pressable, Text, VStack } from "native-base";
 import React from "react";
-import { Image, StyleSheet, View } from "react-native";
+import { SvgUri } from "react-native-svg";
 
 import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
-import { colors } from "@/root/src/constants";
 import { useToggle } from "@/root/src/hooks";
 
 type NavigationProp_ = StackNavigationProp<RootStackParamList>;
@@ -18,17 +17,28 @@ export const ProfileCard: React.FC<Props_> = ({ userId }) => {
   const navigation = useNavigation<NavigationProp_>();
   const [value, toggleValue] = useToggle(true);
   return (
-    <View style={styles.profileContainer}>
-      <View style={styles.imageContainer}>
-        <Image
-          source={{
-            uri: "https://randomuser.me/api/portraits/women/49.jpg",
-          }}
-          style={styles.image}
+    <Box alignItems="center" mt="5">
+      <Box
+        width="80px"
+        height="80px"
+        bg="amber.100"
+        borderRadius="full"
+        overflow="hidden"
+        mb="10px"
+      >
+        <SvgUri
+          uri="https://avatars.dicebear.com/api/micah/jessy.svg?mouth=smile"
+          width="100%"
+          height="100%"
         />
-      </View>
-      <Text style={styles.profileName}>Diana Kiev</Text>
-      <Text style={styles.joinedDate}>Joined Oct 2021</Text>
+      </Box>
+
+      <Text fontFamily="heading" fontSize="22px" mb="5px">
+        Diana Kiev
+      </Text>
+      <Text fontSize="12px" mb="15px">
+        Joined Oct 2021
+      </Text>
       {userId &&
         userId !== "1" && ( // checking our user id with incoming user id to show follow button
           <Button
@@ -42,76 +52,54 @@ export const ProfileCard: React.FC<Props_> = ({ userId }) => {
             {value ? "Follow" : "Unfollow"}
           </Button>
         )}
-      <View style={styles.statsContainer}>
-        <Pressable
+      <HStack alignItems="center" justifyContent="center" mb="15px">
+        <StatsCard
           onPress={() => {
             navigation.navigate("Follow", { title: "Followers" });
           }}
-        >
-          <View style={styles.statsItem}>
-            <Text style={styles.count}>862</Text>
-            <Text style={styles.countText}>Followers</Text>
-          </View>
-        </Pressable>
-        <Pressable
+          count="862"
+          countName="Followers"
+        />
+        <StatsCard
           onPress={() => {
             navigation.navigate("Follow", { title: "Following" });
           }}
-        >
-          <View style={styles.statsItem}>
-            <Text style={styles.count}>468</Text>
-            <Text style={styles.countText}>Following</Text>
-          </View>
-        </Pressable>
-        <View style={styles.statsItem}>
-          <Text style={styles.count}>52</Text>
-          <Text style={styles.countText}>Posts</Text>
-        </View>
-      </View>
-    </View>
+          count="862"
+          countName="Followers"
+        />
+        <StatsCard count="52" countName="Posts" />
+      </HStack>
+    </Box>
   );
 };
 
-const styles = StyleSheet.create({
-  count: {
-    fontFamily: "mb",
-    fontSize: 16,
-    lineHeight: 24,
-    marginBottom: 5,
-  },
-  countText: {
-    color: colors.green,
-    fontFamily: "mm",
-    fontSize: 14,
-    letterSpacing: 0.1,
-    lineHeight: 21,
-  },
-  image: { borderRadius: 50, height: 60, width: 60 },
-  imageContainer: {
-    marginBottom: 10,
-  },
-  joinedDate: {
-    fontFamily: "mr",
-    fontSize: 12,
-    marginBottom: 10,
-  },
-  profileContainer: {
-    alignItems: "center",
-    flexDirection: "column",
-    marginTop: 20,
-  },
-  profileName: { fontFamily: "rr", fontSize: 22, marginBottom: 10 },
-  statsContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
-    marginBottom: 15,
-    width: "100%",
-  },
-  statsItem: {
-    alignItems: "center",
-    flexDirection: "column",
-    justifyContent: "center",
-    marginHorizontal: 10,
-    minWidth: 80,
-  },
-});
+interface StatsCard_ {
+  onPress?: () => void;
+  count: string;
+  countName: string;
+}
+
+const StatsCard: React.FC<StatsCard_> = ({ onPress, count, countName }) => {
+  return (
+    <Pressable onPress={onPress}>
+      <VStack
+        alignItems="center"
+        justifyContent="center"
+        minWidth="80px"
+        mx="10px"
+      >
+        <Text fontSize="16px" fontWeight="600" lineHeight="24px" mb="5px">
+          {count}
+        </Text>
+        <Text
+          fontSize="14px"
+          fontWeight="500"
+          lineHeight="21px"
+          color="eGreen.400"
+        >
+          {countName}
+        </Text>
+      </VStack>
+    </Pressable>
+  );
+};
