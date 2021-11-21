@@ -148,13 +148,7 @@ export const StackNavigator = () => {
           headerTintColor: colors.white,
         })}
       />
-      <Stack.Screen
-        name="Post"
-        component={Post}
-        options={() => ({
-          title: "",
-        })}
-      />
+
       <Stack.Screen
         name="AddAndEditComment"
         component={AddAndEditComment}
@@ -231,6 +225,13 @@ export const StackNavigator = () => {
           },
           headerTintColor: colors.white,
         }}
+      />
+      <Stack.Screen
+        name="Post"
+        component={Post}
+        options={() => ({
+          title: "",
+        })}
       />
     </Stack.Navigator>
   );

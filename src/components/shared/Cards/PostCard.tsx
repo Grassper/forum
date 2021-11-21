@@ -4,8 +4,12 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { Video } from "expo-av";
 import { Box, Flex, HStack, Icon, Image, Pressable, Text } from "native-base";
 import React, { useState } from "react";
-import { Platform, StatusBar, StyleSheet } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import {
+  Platform,
+  StatusBar,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
 import { SvgUri } from "react-native-svg";
 import Tooltip from "react-native-walkthrough-tooltip";
 
@@ -414,7 +418,7 @@ const PostUserActions: React.FC<PostUserActions_> = ({
         {!hidePostNavigation && (
           <Pressable
             onPress={() => {
-              navigation.navigate("Post");
+              console.log("data"), navigation.navigate("Post");
             }}
           >
             <Box style={styles.openPostIcon}>
