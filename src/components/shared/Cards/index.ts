@@ -1,4 +1,4 @@
-export * from "./audio";
+export * from "./aAudio";
 export * from "./CommentCard";
 export * from "./CommentTile";
 export * from "./FollowCard";

@@ -12,7 +12,7 @@ import Tooltip from "react-native-walkthrough-tooltip";
 import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
 import { colors } from "@/root/src/constants";
 
-import { AudioComponent } from "./audio";
+import { AudioComponent } from "./aAudio";
 
 type NavigationProp_ = StackNavigationProp<RootStackParamList>;
 
