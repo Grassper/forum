@@ -13,9 +13,9 @@ import { ProfileSearch } from "./ProfileSearch";
 interface Props_ {}
 
 type TabParamList = {
-  Post: undefined;
+  Post1: undefined;
   Community: undefined;
-  Profile: undefined;
+  Profile1: undefined;
 };
 
 const Tab = createMaterialTopTabNavigator<TabParamList>();
@@ -26,13 +26,13 @@ export const Explore: React.FC<Props_> = () => {
   return (
     <Box style={styles.container} safeAreaTop>
       <StatusBar backgroundColor={colors.black} />
-      <Box width="100%" alignItems="center" bg="white">
+      <Box width="100%" alignItems="center" bg={colors.white}>
         <Box py="15px" width="90%">
           <SearchBar />
         </Box>
       </Box>
       <Tab.Navigator
-        initialRouteName="Post"
+        initialRouteName="Post1"
         screenOptions={{
           tabBarLabelStyle: {
             fontSize: 15,
@@ -50,9 +50,9 @@ export const Explore: React.FC<Props_> = () => {
           },
         }}
       >
-        <Tab.Screen name="Post" component={PostSearch} />
+        <Tab.Screen name="Post1" component={PostSearch} />
         <Tab.Screen name="Community" component={CommunitySearch} />
-        <Tab.Screen name="Profile" component={ProfileSearch} />
+        <Tab.Screen name="Profile1" component={ProfileSearch} />
       </Tab.Navigator>
     </Box>
   );

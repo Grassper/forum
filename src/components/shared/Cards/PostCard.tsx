@@ -418,7 +418,7 @@ const PostUserActions: React.FC<PostUserActions_> = ({
         {!hidePostNavigation && (
           <Pressable
             onPress={() => {
-              console.log("data"), navigation.navigate("Post");
+              navigation.navigate("Post");
             }}
           >
             <Box style={styles.openPostIcon}>

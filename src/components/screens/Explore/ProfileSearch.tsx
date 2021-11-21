@@ -3,11 +3,12 @@ import React from "react";
 import { FlatList, StyleSheet } from "react-native";
 
 import { FollowCardRenderer } from "@/root/src/components/shared/CardRenderer";
+import { colors } from "@/root/src/constants";
 import { UserData } from "@/root/src/data/userData";
 
 export const ProfileSearch: React.FC = () => {
   return (
-    <Box style={styles.container} bg="white" pt="4">
+    <Box style={styles.container} bg={colors.white} pt="4">
       <FlatList
         data={UserData}
         renderItem={FollowCardRenderer}
