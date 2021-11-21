@@ -8,12 +8,16 @@ import { Comments } from "./Comment";
 import { Posts } from "./Post";
 
 interface Props_ {}
+type tabParamList = {
+  Posts: undefined;
+  Comments: undefined;
+};
 
-const Tab = createMaterialTopTabNavigator();
+const Tab = createMaterialTopTabNavigator<tabParamList>();
 
 const windowWidth = Dimensions.get("window").width;
 
-export const Saved: React.FC<Props_> = () => {
+export const Bookmark: React.FC<Props_> = () => {
   return (
     <View style={styles.container}>
       <Tab.Navigator
@@ -43,5 +47,5 @@ export const Saved: React.FC<Props_> = () => {
 };
 
 const styles = StyleSheet.create({
-  container: { backgroundColor: colors.white, flex: 1 },
+  container: { flex: 1 },
 });

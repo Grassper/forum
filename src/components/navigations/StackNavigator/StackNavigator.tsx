@@ -5,6 +5,7 @@ import { BottomTabNavigator } from "@/root/src/components/navigations/BottomTabN
 import { AddAndEditComment } from "@/root/src/components/screens/AddAndEditComment";
 import { AddAndEditPost } from "@/root/src/components/screens/AddAndEditPost";
 import { AddAndEditReplies } from "@/root/src/components/screens/AddAndEditReplies";
+import { Bookmark } from "@/root/src/components/screens/Bookmark";
 import { ChatRoom } from "@/root/src/components/screens/ChatRoom";
 import { ChooseSubForum } from "@/root/src/components/screens/ChooseSubForum";
 import { Comment } from "@/root/src/components/screens/Comment";
@@ -14,7 +15,6 @@ import { Follow } from "@/root/src/components/screens/Follow";
 import { NewChat } from "@/root/src/components/screens/NewChat";
 import { Post } from "@/root/src/components/screens/Post";
 import { Profile } from "@/root/src/components/screens/Profile";
-import { Saved } from "@/root/src/components/screens/Saved";
 import { SubForum } from "@/root/src/components/screens/SubForum";
 import { SubForumMod } from "@/root/src/components/screens/SubForumMod";
 import { colors } from "@/root/src/constants";
@@ -25,7 +25,7 @@ export type RootStackParamList = {
   Profile: { userId?: string };
   EditProfile: undefined;
   Follow: { title: "Followers" | "Following" | "Blocked Accounts" };
-  Saved: undefined;
+  Bookmark: undefined;
 
   // * SubForum
   SubForum: undefined;
@@ -98,10 +98,10 @@ export const StackNavigator = () => {
         })}
       />
       <Stack.Screen
-        name="Saved"
-        component={Saved}
+        name="Bookmark"
+        component={Bookmark}
         options={() => ({
-          title: "Saved",
+          title: "Bookmark",
           headerStyle: {
             backgroundColor: colors.green,
           },
