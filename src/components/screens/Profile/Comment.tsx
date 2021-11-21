@@ -2,7 +2,7 @@ import { Box } from "native-base";
 import React from "react";
 import { ScrollView, StyleSheet } from "react-native";
 
-import { CommentTile } from "@/root/src/components/shared/Cards";
+import { CommentTile } from "@/root/src/components/shared/Tile";
 
 interface Props_ {}
 

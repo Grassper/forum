@@ -14,9 +14,8 @@ import { SvgUri } from "react-native-svg";
 import Tooltip from "react-native-walkthrough-tooltip";
 
 import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
+import { AudioComponent } from "@/root/src/components/shared/Audio";
 import { colors } from "@/root/src/constants";
-
-import { AudioComponent } from "./Audio";
 
 type NavigationProp_ = StackNavigationProp<RootStackParamList>;
 
