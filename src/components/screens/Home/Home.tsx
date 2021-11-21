@@ -5,8 +5,8 @@ import React, { useState } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 import { SvgUri } from "react-native-svg";
 
-import { PostCardRenderer } from "@/root/src/components/screens/SubForum";
 import { BottomSheet } from "@/root/src/components/shared/BottomSheet";
+import { PostCardRenderer } from "@/root/src/components/shared/CardRenderer";
 import { FloatingActionButton } from "@/root/src/components/shared/FabButton";
 import { dummyData } from "@/root/src/data/dummyData";
 
@@ -62,7 +62,6 @@ export const Home: React.FC<Props_> = () => {
         renderItem={PostCardRenderer}
         keyExtractor={(item) => item.id}
       />
-
       <FloatingActionButton onPress={HandleBottomSheet} />
     </View>
   );

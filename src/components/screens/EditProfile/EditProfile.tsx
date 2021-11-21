@@ -1,18 +1,14 @@
-import { MaterialIcons } from "@expo/vector-icons";
 import { StackNavigationProp } from "@react-navigation/stack";
 import {
-  Avatar,
   Box,
   Button,
   FormControl,
-  Icon,
   Input,
-  Pressable,
-  Text,
   WarningOutlineIcon,
 } from "native-base";
 import React from "react";
 import { StyleSheet } from "react-native";
+import { SvgUri } from "react-native-svg";
 
 import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
 import { colors } from "@/root/src/constants";
@@ -46,7 +42,7 @@ export const EditProfile: React.FC<Props_> = ({ navigation }) => {
     <Box style={styles.wrapper}>
       <Box style={styles.container}>
         <Box alignItems="center" justifyContent="center" my="4">
-          <Box position="relative">
+          {/* <Box position="relative">
             <Avatar
               bg="green.500"
               size="xl"
@@ -79,6 +75,19 @@ export const EditProfile: React.FC<Props_> = ({ navigation }) => {
                 />
               </Box>
             </Pressable>
+          </Box> */}
+          <Box
+            width="100px"
+            height="100px"
+            bg="amber.100"
+            borderRadius="full"
+            overflow="hidden"
+          >
+            <SvgUri
+              uri="https://avatars.dicebear.com/api/micah/jessy.svg?mouth=smile"
+              width="100%"
+              height="100%"
+            />
           </Box>
         </Box>
         <FormControl isRequired>
@@ -104,7 +113,7 @@ export const EditProfile: React.FC<Props_> = ({ navigation }) => {
             bg="muted.100"
             p="4"
             mb="2"
-            minHeight="175"
+            height="175"
             multiline
             maxLength={300}
             numberOfLines={4}
