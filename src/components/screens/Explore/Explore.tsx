@@ -1,7 +1,7 @@
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { Box } from "native-base";
 import React from "react";
-import { Dimensions, StyleSheet } from "react-native";
+import { Dimensions, StatusBar, StyleSheet } from "react-native";
 
 import { SearchBar } from "@/root/src/components/shared/SearchBar";
 import { colors } from "@/root/src/constants";
@@ -19,6 +19,7 @@ const windowWidth = Dimensions.get("window").width;
 export const Explore: React.FC<Props_> = () => {
   return (
     <Box style={styles.container} safeAreaTop>
+      <StatusBar backgroundColor={colors.black} />
       <Box width="100%" alignItems="center" bg="white">
         <Box py="15px" width="90%">
           <SearchBar />
