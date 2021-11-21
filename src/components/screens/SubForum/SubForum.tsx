@@ -4,13 +4,12 @@ import React from "react";
 import { FlatList, ListRenderItem, StyleSheet, View } from "react-native";
 
 import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
+import { SubForumCard } from "@/root/src/components/shared/Cards";
 import {
   PostCard,
   Props_ as PostCardProps_,
 } from "@/root/src/components/shared/Cards/PostCard";
 import { dummyData } from "@/root/src/data/dummyData";
-
-import { SubForumCard } from "./SubForumCard";
 
 type NavigationProp_ = StackNavigationProp<RootStackParamList, "SubForum">;
 
