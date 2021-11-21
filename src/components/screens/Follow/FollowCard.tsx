@@ -28,22 +28,6 @@ export const FollowCard: React.FC<FollowCard_> = ({ username, avatarUrl }) => {
         <Box width="90%">
           <HStack alignItems="center" justifyContent="space-between" mb="4">
             <HStack space={3} alignItems="center">
-              {/* <Avatar
-                bg="green.500"
-                size="md"
-                source={{
-                  uri: avatarUrl,
-                }}
-              >
-                <Text
-                  fontSize="md"
-                  fontFamily="body"
-                  fontWeight="600"
-                  color="white"
-                >
-                  {username.charAt(0).toUpperCase() || "Ef"}
-                </Text>
-              </Avatar> */}
               <Box
                 width="40px"
                 height="40px"
