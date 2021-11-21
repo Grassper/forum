@@ -22,7 +22,13 @@ interface Props_ {
   route: RouteProp_;
 }
 
-const Tab = createMaterialTopTabNavigator();
+type TabParamList = {
+  Posts: undefined;
+  Comments: undefined;
+  About: undefined;
+};
+
+const Tab = createMaterialTopTabNavigator<TabParamList>();
 
 const windowWidth = Dimensions.get("window").width;
 

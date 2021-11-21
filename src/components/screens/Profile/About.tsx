@@ -1,108 +1,58 @@
+import { Box, HStack, Text, VStack } from "native-base";
 import React from "react";
-import { Dimensions, ScrollView, StyleSheet, Text, View } from "react-native";
-
-import { colors } from "@/root/src/constants";
-
-const windowWidth = Dimensions.get("window").width;
+import { ScrollView, StyleSheet } from "react-native";
 
 interface Props_ {}
 
 export const About: React.FC<Props_> = () => {
   return (
-    <View style={styles.wrapper}>
+    <Box style={styles.wrapper} alignItems="center" bg="white">
       <ScrollView style={styles.container}>
-        <Text numberOfLines={4} style={styles.description}>
+        <Text numberOfLines={4} mb="3">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris id
           quam id ipsum aliquet consequat non quis nisl. Integer et ultrices
           mauris, ac semper nunc.
         </Text>
-        <View style={styles.statsContainer}>
-          <View style={[styles.statsItem]}>
-            <Text style={styles.count}>8</Text>
-            <Text style={styles.countText}>Post Loves</Text>
-          </View>
-          <View style={styles.statsItem}>
-            <Text style={styles.count}>10</Text>
-            <Text style={styles.countText}>Post Supports</Text>
-          </View>
-          <View style={[styles.statsItem]}>
-            <Text style={styles.count}>8</Text>
-            <Text style={styles.countText}>Post Likes</Text>
-          </View>
-          <View style={[styles.statsItem]}>
-            <Text style={styles.count}>8</Text>
-            <Text style={styles.countText}>Post Dislikes</Text>
-          </View>
-          <View style={styles.statsItem}>
-            <Text style={styles.count}>10</Text>
-            <Text style={styles.countText}>Comment Ups</Text>
-          </View>
-          <View style={styles.statsItem}>
-            <Text style={styles.count}>18</Text>
-            <Text style={styles.countText}>Comment Downs</Text>
-          </View>
-          <View style={styles.statsItem}>
-            <Text style={styles.count}>10</Text>
-            <Text style={styles.countText}>Badges Earned</Text>
-          </View>
-          <View style={[styles.statsItem]}>
-            <Text style={styles.count}>8</Text>
-            <Text style={styles.countText}>Popularity Level</Text>
-          </View>
-          <View style={styles.statsItem}>
-            <Text style={styles.count}>10</Text>
-            <Text style={styles.countText}>Active Days</Text>
-          </View>
-          <View style={[styles.statsItem]}>
-            <Text style={styles.count}>8</Text>
-            <Text style={styles.countText}>Last Active</Text>
-          </View>
-        </View>
+        <HStack flexWrap="wrap" justifyContent="space-between" mb="5">
+          <StatsItem value="8" name="Post Loves" />
+          <StatsItem value="8" name="Post Supports" />
+          <StatsItem value="8" name="Post Likes" />
+          <StatsItem value="8" name="Post Dislikes" />
+          <StatsItem value="8" name="Comment Ups" />
+          <StatsItem value="8" name="Comment Downs" />
+          <StatsItem value="8" name="Badges Earned" />
+          <StatsItem value="8" name="Popularity Level" />
+          <StatsItem value="8" name="Active Days" />
+          <StatsItem value="8" name="Last Active" />
+        </HStack>
       </ScrollView>
-    </View>
+    </Box>
+  );
+};
+
+interface StatsItem_ {
+  value: string;
+  name: string;
+}
+
+const StatsItem: React.FC<StatsItem_> = ({ value, name }) => {
+  return (
+    <VStack width="50%" alignItems="center" mb="3">
+      <Text color="eGreen.400" fontWeight="600" fontSize="md" marginBottom="1">
+        {value}
+      </Text>
+      <Text color="coolGray.700">{name}</Text>
+    </VStack>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: colors.white,
     flex: 1,
     paddingVertical: 15,
     width: "90%",
   },
-  count: {
-    color: colors.green,
-    fontFamily: "mb",
-    fontSize: 16,
-    lineHeight: 24,
-    marginBottom: 5,
-  },
-  countText: {
-    color: colors.black,
-    fontFamily: "mr",
-    fontSize: 14,
-    lineHeight: 21,
-  },
-  description: {
-    fontFamily: "mr",
-    fontSize: 14,
-    lineHeight: 21,
-    marginBottom: 15,
-  },
-  statsContainer: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "space-between",
-    marginBottom: 20,
-  },
-  statsItem: {
-    marginBottom: 15,
-    minWidth: windowWidth / 3,
-  },
   wrapper: {
-    alignItems: "center",
-    backgroundColor: colors.white,
     flex: 1,
-    width: "100%",
   },
 });
