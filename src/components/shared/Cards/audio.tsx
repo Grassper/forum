@@ -163,7 +163,11 @@ const styles = StyleSheet.create({
   absoluteFill: {
     backgroundColor: "#17D7A0",
   },
-  container: { backgroundColor: "gray", borderRadius: 20, width: "90%" },
+  container: {
+    backgroundColor: "gray",
+    borderRadius: 20,
+    width: "90%",
+  },
   outerContainer: {
     alignItems: "center",
     justifyContent: "center",

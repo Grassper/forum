@@ -114,6 +114,7 @@ export const ChatRoom: React.FC<Props_> = ({ route }) => {
                 placeholderTextColor="muted.400"
                 fontSize="sm"
                 variant="unstyled"
+                onFocus={() => scrollViewRef.current?.scrollToEnd()}
               />
               <Flex
                 bg="eGreen.400"

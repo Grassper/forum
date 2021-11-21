@@ -1,5 +1,5 @@
 import React from "react";
-import { FlatList, ScrollView, StyleSheet, View } from "react-native";
+import { FlatList, StyleSheet, View } from "react-native";
 
 import { PostTile } from "@/root/src/components/shared/Cards";
 import { colors } from "@/root/src/constants";
