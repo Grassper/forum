@@ -377,7 +377,7 @@ const PostUserActions: React.FC<PostUserActions_> = ({
             }}
             placement="top"
             topAdjustment={
-              Platform.OS === "android" ? -StatusBar.currentHeight : 0
+              Platform.OS === "android" ? -StatusBar.currentHeight + 23 : 0
             }
             arrowSize={{ width: 0, height: 0 }}
             contentStyle={styles.tooltipContainer}

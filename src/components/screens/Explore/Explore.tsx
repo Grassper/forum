@@ -37,7 +37,7 @@ export const Explore: React.FC<Props_> = () => {
           tabBarLabelStyle: {
             fontSize: 15,
             fontFamily: "mr",
-            textTransform: "none",
+            textTransform: "capitalize",
           },
           tabBarStyle: { backgroundColor: colors.white, elevation: 0 },
           tabBarActiveTintColor: colors.black,
