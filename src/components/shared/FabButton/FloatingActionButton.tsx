@@ -1,19 +1,30 @@
-import { AntDesign } from "@expo/vector-icons";
+import { AntDesign, Entypo } from "@expo/vector-icons";
 import { Icon, Pressable } from "native-base";
 import React from "react";
 import { StyleSheet } from "react-native";
 
 interface Props_ {
   onPress: () => void;
+  screen: "Home" | "ChatList";
 }
-export const FloatingActionButton: React.FC<Props_> = ({ onPress }) => {
+export const FloatingActionButton: React.FC<Props_> = ({ onPress, screen }) => {
   return (
     <Pressable
       onPress={onPress}
       style={styles.touchableOpacityStyle}
       bgColor="eGreen.400"
     >
-      <Icon as={<AntDesign name="plus" />} size="sm" color="white" />
+      <Icon
+        as={
+          screen === "Home" ? (
+            <AntDesign name="plus" />
+          ) : (
+            <Entypo name="feather" />
+          )
+        }
+        size="sm"
+        color="white"
+      />
     </Pressable>
   );
 };

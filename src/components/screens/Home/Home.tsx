@@ -62,7 +62,7 @@ export const Home: React.FC<Props_> = () => {
         renderItem={PostCardRenderer}
         keyExtractor={(item) => item.id}
       />
-      <FloatingActionButton onPress={HandleBottomSheet} />
+      <FloatingActionButton onPress={HandleBottomSheet} screen="Home" />
     </View>
   );
 };
