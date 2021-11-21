@@ -29,143 +29,72 @@ export const BottomSheet: React.FC<Props_> = ({ isOpen, onClose }) => {
       <Actionsheet.Content bg="white">
         <VStack alignItems="center" space="4" mt="5">
           <HStack width="100%" space="4">
-            <VStack space="1.5" alignItems="center">
-              <Pressable
-                onPress={() => {
-                  onClose(),
-                    navigation.push("ChooseSubForum", {
-                      postType: "Image",
-                      action: "Add",
-                    });
-                }}
-              >
-                <Box
-                  bg="green.200"
-                  alignItems="center"
-                  width="50px"
-                  height="50px"
-                  justifyContent="center"
-                  borderRadius="full"
-                >
-                  <Icon
-                    as={<Ionicons name="ios-image" />}
-                    size={"20px"}
-                    color="coolGray.800"
-                  />
-                </Box>
-              </Pressable>
-              <Text color="coolGray.500">IMAGE</Text>
-            </VStack>
-            <VStack space="1.5" alignItems="center">
-              <Pressable
-                onPress={() => {
+            <Item
+              onPress={() => {
+                onClose(),
                   navigation.push("ChooseSubForum", {
-                    postType: "Audio",
+                    postType: "Image",
                     action: "Add",
-                  }),
-                    onClose();
-                }}
-              >
-                <Box
-                  bg="green.200"
-                  alignItems="center"
-                  width="50px"
-                  height="50px"
-                  justifyContent="center"
-                  borderRadius="full"
-                >
-                  <Icon
-                    as={<Ionicons name="mic" />}
-                    size={"22px"}
-                    color="coolGray.800"
-                  />
-                </Box>
-              </Pressable>
-              <Text color="coolGray.500">AUDIO</Text>
-            </VStack>
-            <VStack space="1.5" alignItems="center">
-              <Pressable
-                onPress={() => {
-                  navigation.push("ChooseSubForum", {
-                    postType: "Video",
-                    action: "Add",
-                  }),
-                    onClose();
-                }}
-              >
-                <Box
-                  bg="green.200"
-                  alignItems="center"
-                  width="50px"
-                  height="50px"
-                  justifyContent="center"
-                  borderRadius="full"
-                >
-                  <Icon
-                    as={<Ionicons name="ios-videocam" />}
-                    size={"20px"}
-                    color="coolGray.800"
-                  />
-                </Box>
-              </Pressable>
-              <Text color="coolGray.500">VIDEO</Text>
-            </VStack>
-            <VStack space="1.5" alignItems="center">
-              <Pressable
-                onPress={() => {
-                  navigation.push("ChooseSubForum", {
-                    postType: "Text",
-                    action: "Add",
-                    hideUpload: true,
-                  }),
-                    onClose();
-                }}
-              >
-                <Box
-                  bg="green.200"
-                  alignItems="center"
-                  width="50px"
-                  height="50px"
-                  justifyContent="center"
-                  borderRadius="full"
-                >
-                  <Icon
-                    as={<Ionicons name="ios-text" />}
-                    size={"20px"}
-                    color="coolGray.800"
-                  />
-                </Box>
-              </Pressable>
-              <Text color="coolGray.500">TEXT</Text>
-            </VStack>
-            <VStack space="1.5" alignItems="center">
-              <Pressable
-                onPress={() => {
-                  navigation.push("ChooseSubForum", {
-                    postType: "Poll",
-                    action: "Add",
-                    hideUpload: true,
-                  }),
-                    onClose();
-                }}
-              >
-                <Box
-                  bg="green.200"
-                  alignItems="center"
-                  width="50px"
-                  height="50px"
-                  justifyContent="center"
-                  borderRadius="full"
-                >
-                  <Icon
-                    as={<Ionicons name="stats-chart" />}
-                    size={"20px"}
-                    color="coolGray.800"
-                  />
-                </Box>
-              </Pressable>
-              <Text color="coolGray.500">POLL</Text>
-            </VStack>
+                  });
+              }}
+              iconName="ios-image"
+              iconSize="20px"
+              postType="image"
+            />
+
+            <Item
+              onPress={() => {
+                navigation.push("ChooseSubForum", {
+                  postType: "Audio",
+                  action: "Add",
+                }),
+                  onClose();
+              }}
+              iconName="mic"
+              iconSize="22px"
+              postType="audio"
+            />
+
+            <Item
+              onPress={() => {
+                navigation.push("ChooseSubForum", {
+                  postType: "Video",
+                  action: "Add",
+                }),
+                  onClose();
+              }}
+              iconName="ios-videocam"
+              iconSize="20px"
+              postType="video"
+            />
+
+            <Item
+              onPress={() => {
+                navigation.push("ChooseSubForum", {
+                  postType: "Text",
+                  action: "Add",
+                  hideUpload: true,
+                }),
+                  onClose();
+              }}
+              iconName="ios-text"
+              iconSize="20px"
+              postType="text"
+            />
+
+            <Item
+              onPress={() => {
+                navigation.push("ChooseSubForum", {
+                  postType: "Poll",
+                  action: "Add",
+                  hideUpload: true,
+                }),
+                  onClose();
+              }}
+              iconName="stats-chart"
+              iconSize="20px"
+              postType="poll"
+            />
           </HStack>
           <Box>
             <Pressable onPress={onClose}>
@@ -177,6 +106,39 @@ export const BottomSheet: React.FC<Props_> = ({ isOpen, onClose }) => {
         </VStack>
       </Actionsheet.Content>
     </Actionsheet>
+  );
+};
+
+interface Items_ {
+  onPress: () => void;
+  iconName: "stats-chart" | "ios-text" | "ios-image" | "mic" | "ios-videocam";
+  iconSize: string;
+  postType: string;
+}
+
+const Item: React.FC<Items_> = ({ onPress, iconName, postType, iconSize }) => {
+  return (
+    <VStack space="1.5" alignItems="center">
+      <Pressable onPress={onPress}>
+        <Box
+          bg="green.200"
+          alignItems="center"
+          width="50px"
+          height="50px"
+          justifyContent="center"
+          borderRadius="full"
+        >
+          <Icon
+            as={<Ionicons name={iconName} />}
+            size={iconSize}
+            color="coolGray.800"
+          />
+        </Box>
+      </Pressable>
+      <Text color="coolGray.500" textTransform="uppercase">
+        {postType}
+      </Text>
+    </VStack>
   );
 };
 
