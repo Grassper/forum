@@ -1,4 +1,9 @@
-import { FontAwesome, Foundation, Ionicons } from "@expo/vector-icons";
+import {
+  FontAwesome,
+  Foundation,
+  Ionicons,
+  MaterialIcons,
+} from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import React from "react";
 
@@ -22,8 +27,14 @@ export const BottomTabNavigator = () => {
           title: "",
           tabBarShowLabel: false,
           tabBarIconStyle: { alignItems: "center" },
-          tabBarIcon: () => {
-            return <Foundation name="home" size={24} color="black" />;
+          tabBarIcon: ({ focused }) => {
+            return (
+              <Foundation
+                name="home"
+                size={24}
+                color={focused ? "#17D7A0" : "black"}
+              />
+            );
           },
         }}
       />
@@ -35,8 +46,14 @@ export const BottomTabNavigator = () => {
           headerShown: false,
           tabBarShowLabel: false,
           tabBarIconStyle: { alignItems: "center" },
-          tabBarIcon: () => {
-            return <Ionicons name="compass" size={24} color="black" />;
+          tabBarIcon: ({ focused }) => {
+            return (
+              <Ionicons
+                name="compass"
+                size={24}
+                color={focused ? "#17D7A0" : "black"}
+              />
+            );
           },
         }}
       />
@@ -47,8 +64,14 @@ export const BottomTabNavigator = () => {
           title: "",
           tabBarShowLabel: false,
           tabBarIconStyle: { alignItems: "center" },
-          tabBarIcon: () => {
-            return <FontAwesome name="send" size={21} color="black" />;
+          tabBarIcon: ({ focused }) => {
+            return (
+              <FontAwesome
+                name="send"
+                size={21}
+                color={focused ? "#17D7A0" : "black"}
+              />
+            );
           },
         }}
       />
