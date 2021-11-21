@@ -1,7 +1,7 @@
 import React from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 
-import { CommentTile } from "@/root/src/components/shared/Cards";
+import { CommentTile } from "@/root/src/components/shared/Tile";
 import { colors } from "@/root/src/constants";
 
 interface Props_ {}

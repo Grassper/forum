@@ -24,7 +24,7 @@ export const ChatList: React.FC<Props_> = () => {
     <Box style={styles.container}>
       <FlatList data={dummyData} renderItem={() => <ChatCard />} />
 
-      <FloatingActionButton onPress={Onpress} />
+      <FloatingActionButton onPress={Onpress} screen="ChatList" />
     </Box>
   );
 };
