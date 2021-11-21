@@ -8,10 +8,10 @@ import {
   WarningOutlineIcon,
 } from "native-base";
 import React from "react";
-import { ScrollView, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 
 import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
-import { SubForumCard } from "@/root/src/components/screens/SubForum/SubForumCard";
+import { SubForumCard } from "@/root/src/components/shared/Cards";
 
 type RouteProp_ = RouteProp<RootStackParamList, "EditAndCreateSubForum">;
 
@@ -50,7 +50,7 @@ export const EditAndCreateSubForum: React.FC<Props_> = ({
   }, [navigation, title]);
 
   return (
-    <ScrollView style={styles.container}>
+    <Box style={styles.container}>
       <SubForumCard isEdit />
       <Box style={styles.wrapper} bg="white">
         <Box style={styles.inputContainer}>
@@ -79,9 +79,8 @@ export const EditAndCreateSubForum: React.FC<Props_> = ({
               bg="muted.100"
               p="4"
               mb="2"
-              width="100%"
-              // height="100%"
               minHeight="125"
+              maxHeight="150"
               multiline
               maxLength={140}
               numberOfLines={4}
@@ -99,12 +98,12 @@ export const EditAndCreateSubForum: React.FC<Props_> = ({
           </FormControl>
         </Box>
       </Box>
-    </ScrollView>
+    </Box>
   );
 };
 
 const styles = StyleSheet.create({
-  container: { backgroundColor: "white", flex: 1 },
+  container: { flex: 1 },
   inputContainer: {
     flex: 1,
     marginBottom: 20,
