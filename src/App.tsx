@@ -1,14 +1,21 @@
 import "react-native-gesture-handler";
 
+import Amplify, { API, Auth, graphqlOperation } from "aws-amplify";
+// @ts-ignore
+import { withAuthenticator } from "aws-amplify-react-native";
 import AppLoading from "expo-app-loading";
 import * as Font from "expo-font";
 import { NativeBaseProvider } from "native-base";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { enableScreens } from "react-native-screens";
 
 import { NativeBaseTheme as Theme } from "@/root/src/config";
 
+// @ts-ignore
+import config from "./aws-exports";
 import { SideDrawerNavigator } from "./components/navigations/SideDrawerNavigator";
+
+Amplify.configure({ ...config, Analytics: { disabled: true } });
 
 enableScreens();
 
@@ -30,6 +37,46 @@ const fetchFonts = (): Promise<void> => {
 const App: React.FC = () => {
   const [fontLoaded, setFontLoaded] = useState(false);
 
+  useEffect(() => {
+    const checkCurrentUserInDb = async () => {
+      try {
+        // get authenticated user from cognito
+        const currentUser = await Auth.currentAuthenticatedUser({
+          bypassCache: true,
+        });
+
+        if (currentUser) {
+          // check user exist in db
+          const userData = await API.graphql(
+            graphqlOperation(getUser, { id: currentUser.attributes.sub })
+          );
+
+          if (userData.data.getUser) {
+            console.log("user already registered in database");
+            return;
+          }
+
+          // if user is not registered. register user to db
+          const newUser = {
+            id: currentUser.attributes.sub,
+            username: currentUser.username,
+            email: currentUser.attributes.email,
+            coins: 1000,
+          };
+
+          await API.graphql(
+            graphqlOperation(createUser, {
+              input: newUser,
+            })
+          );
+        }
+      } catch (err) {
+        console.log("error while registering user in app.tsx", err);
+      }
+    };
+    checkCurrentUserInDb();
+  }, []);
+
   if (!fontLoaded) {
     return (
       <AppLoading
@@ -47,4 +94,20 @@ const App: React.FC = () => {
   );
 };
 
-export default App;
+export default withAuthenticator(App);
+
+const getUser = /* GraphQL */ `
+  query GetUser($id: ID!) {
+    getUser(id: $id) {
+      id
+    }
+  }
+`;
+
+const createUser = /* GraphQL */ `
+  mutation CreateUser($input: CreateUserInput!) {
+    createUser(input: $input) {
+      id
+    }
+  }
+`;
