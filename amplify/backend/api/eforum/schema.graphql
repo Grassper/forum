@@ -23,19 +23,10 @@ type Mutation {
     tags: [String!]!
     mediaUrl: AWSURL
     poll: [PollInput]
-  ): Post
-    @function(name: "createPostAndTimeline-${env}")
-    @auth(rules: [{ allow: private, provider: userPools }])
+  ): Post @function(name: "createPostAndTimeline-${env}")
 }
 
-type User
-  @model
-  @auth(
-    rules: [
-      { allow: owner, provider: userPools, operations: [read, create, update] }
-      { allow: private, provider: userPools, operations: [read] }
-    ]
-  ) {
+type User @model {
   id: ID!
   username: String!
   email: String!
@@ -58,14 +49,7 @@ type User
     @connection(keyName: "byUser", fields: ["id"])
 }
 
-type UserMetrics
-  @model
-  @auth(
-    rules: [
-      { allow: owner, provider: userPools, operations: [read, create, update] }
-      { allow: private, provider: userPools, operations: [read] }
-    ]
-  ) {
+type UserMetrics @model {
   id: ID!
   postLikes: Int!
   postLoves: Int!
@@ -82,12 +66,6 @@ type UserMetrics
 
 type FollowRelationship
   @model
-  @auth(
-    rules: [
-      { allow: owner, provider: userPools, operations: [read, create, update] }
-      { allow: private, provider: userPools, operations: [read] }
-    ]
-  )
   @key(
     name: "byFollowerId"
     fields: ["followerId"]
@@ -110,14 +88,7 @@ enum CommunityType {
   PRIVATE
 }
 
-type Community
-  @model
-  @auth(
-    rules: [
-      { allow: owner, provider: userPools, operations: [read, create, update] }
-      { allow: private, provider: userPools, operations: [read] }
-    ]
-  ) {
+type Community @model {
   id: ID!
   name: String!
   description: String!
@@ -135,12 +106,6 @@ type Community
 
 type UserCommunityRelationShip
   @model
-  @auth(
-    rules: [
-      { allow: owner, provider: userPools, operations: [read, create, update] }
-      { allow: private, provider: userPools, operations: [read] }
-    ]
-  )
   @key(name: "byUser", fields: ["userId"])
   @key(name: "byCommunity", fields: ["communityId"]) {
   id: ID!
@@ -152,12 +117,6 @@ type UserCommunityRelationShip
 
 type ModeratorCommunityRelationShip
   @model(queries: null)
-  @auth(
-    rules: [
-      { allow: owner, provider: userPools, operations: [read, create, update] }
-      { allow: private, provider: userPools, operations: [read] }
-    ]
-  )
   @key(name: "byModerator", fields: ["moderatorId"])
   @key(name: "byCommunity", fields: ["communityId"]) {
   id: ID!
@@ -190,13 +149,7 @@ type Poll {
 type Post
   @model
   @searchable
-  @auth(
-    rules: [
-      { allow: owner, provider: userPools, operations: [read, create, update] }
-      { allow: private, provider: userPools, operations: [read] }
-      { allow: private, provider: iam, operations: [create] }
-    ]
-  )
+  @auth(rules: [{ allow: private, provider: iam, operations: [create] }])
   @key(name: "byAuthor", fields: ["authorId"])
   @key(name: "byCommunity", fields: ["communityId"]) {
   id: ID!
@@ -220,12 +173,6 @@ type Post
 
 type UserPostMetricsRelationShip
   @model
-  @auth(
-    rules: [
-      { allow: owner, provider: userPools, operations: [read, create, update] }
-      { allow: private, provider: userPools, operations: [read] }
-    ]
-  )
   @key(name: "byPost", fields: ["postId", "type", "userId"])
   @key(name: "byUser", fields: ["userId", "type", "postId"]) {
   id: ID!
@@ -240,12 +187,6 @@ type UserPostMetricsRelationShip
 
 type Comment
   @model
-  @auth(
-    rules: [
-      { allow: owner, provider: userPools, operations: [read, create, update] }
-      { allow: private, provider: userPools, operations: [read] }
-    ]
-  )
   @key(name: "byPost", fields: ["postId"])
   @key(name: "byAuthor", fields: ["authorId"])
   @key(name: "byCommunity", fields: ["communityId"]) {
@@ -265,12 +206,6 @@ type Comment
 
 type ParentChildCommentRelationship
   @model
-  @auth(
-    rules: [
-      { allow: owner, provider: userPools, operations: [read, create, update] }
-      { allow: private, provider: userPools, operations: [read] }
-    ]
-  )
   @key(
     name: "byParentComment"
     fields: ["parentCommentId"]
@@ -290,12 +225,6 @@ type ParentChildCommentRelationship
 
 type UserCommentMetricsRelationShip
   @model
-  @auth(
-    rules: [
-      { allow: owner, provider: userPools, operations: [read, create, update] }
-      { allow: private, provider: userPools, operations: [read] }
-    ]
-  )
   @key(name: "byUser", fields: ["userId", "type"])
   @key(name: "byComment", fields: ["commentId", "type"]) {
   id: ID!
@@ -312,12 +241,6 @@ type UserCommentMetricsRelationShip
 
 type UserChatRoomRelationship
   @model
-  @auth(
-    rules: [
-      { allow: owner, provider: userPools, operations: [read, create, update] }
-      { allow: private, provider: userPools, operations: [read] }
-    ]
-  )
   @key(name: "byChatRoom", fields: ["chatRoomId", "userId"])
   @key(name: "byUser", fields: ["userId", "chatRoomId"]) {
   id: ID!
@@ -327,14 +250,7 @@ type UserChatRoomRelationship
   chatRoom: ChatRoom! @connection(fields: ["chatRoomId"])
 }
 
-type ChatRoom
-  @model
-  @auth(
-    rules: [
-      { allow: owner, provider: userPools, operations: [read, create, update] }
-      { allow: private, provider: userPools, operations: [read] }
-    ]
-  ) {
+type ChatRoom @model {
   id: ID!
   users: [UserChatRoomRelationship]
     @connection(keyName: "byChatRoom", fields: ["id"])
@@ -343,12 +259,6 @@ type ChatRoom
 
 type Message
   @model
-  @auth(
-    rules: [
-      { allow: owner, provider: userPools, operations: [read, create, update] }
-      { allow: private, provider: userPools, operations: [read] }
-    ]
-  )
   @key(
     name: "byChatRoom"
     fields: ["chatRoomId"]
@@ -364,13 +274,7 @@ type Message
 
 type Timeline
   @model
-  @auth(
-    rules: [
-      { allow: owner, provider: userPools, operations: [read, create, update] }
-      { allow: private, provider: userPools, operations: [read] }
-      { allow: private, provider: iam, operations: [create] }
-    ]
-  ) {
+  @auth(rules: [{ allow: private, provider: iam, operations: [create] }]) {
   id: ID!
   userId: ID!
   postId: ID!
