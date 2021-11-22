@@ -13,9 +13,9 @@ import { ProfileSearch } from "./ProfileSearch";
 interface Props_ {}
 
 type TabParamList = {
-  Post1: undefined;
-  Community: undefined;
-  Profile1: undefined;
+  explorePost: undefined;
+  exploreCommunity: undefined;
+  exploreProfile: undefined;
 };
 
 const Tab = createMaterialTopTabNavigator<TabParamList>();
@@ -32,7 +32,7 @@ export const Explore: React.FC<Props_> = () => {
         </Box>
       </Box>
       <Tab.Navigator
-        initialRouteName="Post1"
+        initialRouteName="explorePost"
         screenOptions={{
           tabBarLabelStyle: {
             fontSize: 15,
@@ -50,9 +50,27 @@ export const Explore: React.FC<Props_> = () => {
           },
         }}
       >
-        <Tab.Screen name="Post1" component={PostSearch} />
-        <Tab.Screen name="Community" component={CommunitySearch} />
-        <Tab.Screen name="Profile1" component={ProfileSearch} />
+        <Tab.Screen
+          name="explorePost"
+          component={PostSearch}
+          options={() => ({
+            title: "Post",
+          })}
+        />
+        <Tab.Screen
+          name="exploreCommunity"
+          component={CommunitySearch}
+          options={() => ({
+            title: "Community",
+          })}
+        />
+        <Tab.Screen
+          name="exploreProfile"
+          component={ProfileSearch}
+          options={() => ({
+            title: "Profiles",
+          })}
+        />
       </Tab.Navigator>
     </Box>
   );

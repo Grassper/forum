@@ -8,12 +8,12 @@ import { Comments } from "./Comment";
 import { Posts } from "./Post";
 
 interface Props_ {}
-type tabParamList = {
-  Posts: undefined;
-  Comments: undefined;
+type TabParamList = {
+  bookmarkedPosts: undefined;
+  bookmarkedComments: undefined;
 };
 
-const Tab = createMaterialTopTabNavigator<tabParamList>();
+const Tab = createMaterialTopTabNavigator<TabParamList>();
 
 const windowWidth = Dimensions.get("window").width;
 
@@ -21,7 +21,7 @@ export const Bookmark: React.FC<Props_> = () => {
   return (
     <View style={styles.container}>
       <Tab.Navigator
-        initialRouteName="Posts"
+        initialRouteName="bookmarkedPosts"
         screenOptions={{
           tabBarLabelStyle: {
             fontSize: 15,
@@ -39,8 +39,20 @@ export const Bookmark: React.FC<Props_> = () => {
           },
         }}
       >
-        <Tab.Screen name="Posts" component={Posts} />
-        <Tab.Screen name="Comments" component={Comments} />
+        <Tab.Screen
+          name="bookmarkedPosts"
+          component={Posts}
+          options={() => ({
+            title: "Posts",
+          })}
+        />
+        <Tab.Screen
+          name="bookmarkedComments"
+          component={Comments}
+          options={() => ({
+            title: "Comments",
+          })}
+        />
       </Tab.Navigator>
     </View>
   );

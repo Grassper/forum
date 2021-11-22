@@ -23,9 +23,9 @@ interface Props_ {
 }
 
 type TabParamList = {
-  Posts: undefined;
-  Comments: undefined;
-  About: undefined;
+  profilePosts: undefined;
+  profileComments: undefined;
+  profileAbout: undefined;
 };
 
 const Tab = createMaterialTopTabNavigator<TabParamList>();
@@ -62,7 +62,7 @@ export const Profile: React.FC<Props_> = ({ navigation, route }) => {
     <View style={styles.container}>
       <ProfileCard userId={userId} />
       <Tab.Navigator
-        initialRouteName="Posts"
+        initialRouteName="profilePosts"
         screenOptions={{
           tabBarLabelStyle: {
             fontSize: 15,
@@ -80,9 +80,27 @@ export const Profile: React.FC<Props_> = ({ navigation, route }) => {
           },
         }}
       >
-        <Tab.Screen name="Posts" component={Posts} />
-        <Tab.Screen name="Comments" component={Comments} />
-        <Tab.Screen name="About" component={About} />
+        <Tab.Screen
+          name="profilePosts"
+          component={Posts}
+          options={() => ({
+            title: "Posts",
+          })}
+        />
+        <Tab.Screen
+          name="profileComments"
+          component={Comments}
+          options={() => ({
+            title: "Comments",
+          })}
+        />
+        <Tab.Screen
+          name="profileAbout"
+          component={About}
+          options={() => ({
+            title: "About",
+          })}
+        />
       </Tab.Navigator>
     </View>
   );
