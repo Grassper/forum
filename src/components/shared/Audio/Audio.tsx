@@ -1,14 +1,8 @@
 import { Ionicons } from "@expo/vector-icons";
 import { Audio } from "expo-av";
 import { Box, Flex, Pressable, Text as Tex } from "native-base";
-import React, { useEffect, useRef, useState } from "react";
-import {
-  Animated,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import React, { useState } from "react";
+import { Animated, StyleSheet, View } from "react-native";
 
 import { colors } from "@/root/src/constants";
 
