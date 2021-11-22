@@ -4,10 +4,10 @@
     "slug": "e-forum-project",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/appIcons/drawable-hdpi/logo.png",
     "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
+      "image": "./assets/appIcons/drawable-hdpi/splash_screen.png",
+      "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },
     "updates": {
@@ -24,7 +24,7 @@
       }
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/appIcons/drawable-hdpi/logo.png"
     },
     "jsEngine": "hermes"
   }
