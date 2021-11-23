@@ -55,7 +55,7 @@ const App: React.FC = () => {
           })) as GraphQLResult<getUser_>;
 
           if (userData.data?.getUser) {
-            console.log("user already registered in database");
+            // if user already exist return
             return;
           }
 
@@ -75,7 +75,7 @@ const App: React.FC = () => {
           });
         }
       } catch (err) {
-        console.log("error while registering user in app.tsx", err);
+        console.error("error while registering user in app.tsx", err);
       }
     };
     checkCurrentUserInDb();
