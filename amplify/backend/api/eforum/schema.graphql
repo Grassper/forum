@@ -58,12 +58,15 @@ type User
     @connection(keyName: "byUser", fields: ["id"])
   chatRooms: [UserChatRoomRelationship]
     @connection(keyName: "byUser", fields: ["id"])
+  userMetrics: UserMetrics @connection(fields: ["id"])
 }
 
 type UserMetrics
   @model
-  @auth(rules: [{ allow: owner }, { allow: private, operations: [read] }]) {
-  id: ID!
+  @auth(
+    rules: [{ allow: owner }, { allow: private, operations: [read, update] }]
+  ) {
+  id: ID! # id of user and usermetric are same
   postLikes: Int!
   postLoves: Int!
   postSupports: Int!
@@ -73,8 +76,8 @@ type UserMetrics
   commentUpvotes: Int!
   commentDownvotes: Int!
   activeDays: Int!
-  lastActiveDay: AWSDate!
-  User: User @connection
+  lastActiveDay: AWSDateTime!
+  User: User! @connection(fields: ["id"])
 }
 
 type FollowRelationship

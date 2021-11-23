@@ -7,10 +7,11 @@ import { withAuthenticator } from "aws-amplify-react-native";
 import AppLoading from "expo-app-loading";
 import * as Font from "expo-font";
 import { NativeBaseProvider } from "native-base";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { enableScreens } from "react-native-screens";
 
 import { NativeBaseTheme as Theme } from "@/root/src/config";
+import { UserContext, UserContext_ } from "@/root/src/context";
 
 // @ts-ignore
 import config from "./aws-exports";
@@ -36,9 +37,16 @@ const fetchFonts = (): Promise<void> => {
 };
 
 const App: React.FC = () => {
-  const [fontLoaded, setFontLoaded] = useState(false);
+  const [fontLoaded, setFontLoaded] = React.useState(false);
+  const [user, setUser] = React.useState<UserContext_>({
+    id: "",
+    username: "",
+    email: "",
+    profileImageUrl: "",
+    coins: 0,
+  });
 
-  useEffect(() => {
+  React.useEffect(() => {
     const checkCurrentUserInDb = async () => {
       try {
         // get authenticated user from cognito
@@ -55,7 +63,15 @@ const App: React.FC = () => {
           })) as GraphQLResult<getUser_>;
 
           if (userData.data?.getUser) {
-            // if user already exist return
+            // if user already exist set state and return
+            const { profileImageUrl, coins } = userData.data.getUser;
+            setUser({
+              id: currentUser.attributes.sub,
+              username: currentUser.username,
+              email: currentUser.attributes.email,
+              profileImageUrl,
+              coins,
+            });
             return;
           }
 
@@ -68,9 +84,28 @@ const App: React.FC = () => {
             coins: 1000,
           };
 
+          const newUserMetrics = {
+            id: currentUser.attributes.sub,
+            postLikes: 0,
+            postLoves: 0,
+            postSupports: 0,
+            postDislikes: 0,
+            profileViews: 0,
+            commentUpvotes: 0,
+            commentDownvotes: 0,
+            activeDays: 0,
+            lastActiveDay: new Date().toISOString(),
+          };
+
           await API.graphql({
             query: createUser,
             variables: { input: newUser },
+            authMode: "AMAZON_COGNITO_USER_POOLS",
+          });
+
+          await API.graphql({
+            query: createUserMetrics,
+            variables: { input: newUserMetrics },
             authMode: "AMAZON_COGNITO_USER_POOLS",
           });
         }
@@ -93,28 +128,40 @@ const App: React.FC = () => {
 
   return (
     <NativeBaseProvider theme={Theme}>
-      <SideDrawerNavigator />
+      <UserContext.Provider value={user}>
+        <SideDrawerNavigator />
+      </UserContext.Provider>
     </NativeBaseProvider>
   );
 };
 
 export default withAuthenticator(App);
 
+type getUser_ = {
+  getUser?: { id: string; profileImageUrl: string; coins: number };
+};
+
 const getUser = /* GraphQL */ `
   query GetUser($id: ID!) {
     getUser(id: $id) {
+      id
+      profileImageUrl
+      coins
+    }
+  }
+`;
+
+const createUser = /* GraphQL */ `
+  mutation CreateUser($input: CreateUserInput!) {
+    createUser(input: $input) {
       id
     }
   }
 `;
 
-type getUser_ = {
-  getUser?: { id: string };
-};
-
-const createUser = /* GraphQL */ `
-  mutation CreateUser($input: CreateUserInput!) {
-    createUser(input: $input) {
+const createUserMetrics = /* GraphQL */ `
+  mutation createUserMetrics($input: CreateUserMetricsInput!) {
+    createUserMetrics(input: $input) {
       id
     }
   }
