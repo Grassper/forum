@@ -1,6 +1,7 @@
 import "react-native-gesture-handler";
 
-import Amplify, { API, Auth, graphqlOperation } from "aws-amplify";
+import { GraphQLResult } from "@aws-amplify/api-graphql";
+import Amplify, { API, Auth } from "aws-amplify";
 // @ts-ignore
 import { withAuthenticator } from "aws-amplify-react-native";
 import AppLoading from "expo-app-loading";
@@ -47,11 +48,13 @@ const App: React.FC = () => {
 
         if (currentUser) {
           // check user exist in db
-          const userData = await API.graphql(
-            graphqlOperation(getUser, { id: currentUser.attributes.sub })
-          );
+          const userData = (await API.graphql({
+            query: getUser,
+            variables: { id: currentUser.attributes.sub },
+            authMode: "AMAZON_COGNITO_USER_POOLS",
+          })) as GraphQLResult<getUser_>;
 
-          if (userData.data.getUser) {
+          if (userData.data?.getUser) {
             console.log("user already registered in database");
             return;
           }
@@ -61,14 +64,15 @@ const App: React.FC = () => {
             id: currentUser.attributes.sub,
             username: currentUser.username,
             email: currentUser.attributes.email,
+            profileImageUrl: `https://avatars.dicebear.com/api/micah/${currentUser.attributes.sub}.svg`, // for user profile replace space with dash
             coins: 1000,
           };
 
-          await API.graphql(
-            graphqlOperation(createUser, {
-              input: newUser,
-            })
-          );
+          await API.graphql({
+            query: createUser,
+            variables: { input: newUser },
+            authMode: "AMAZON_COGNITO_USER_POOLS",
+          });
         }
       } catch (err) {
         console.log("error while registering user in app.tsx", err);
@@ -103,6 +107,10 @@ const getUser = /* GraphQL */ `
     }
   }
 `;
+
+type getUser_ = {
+  getUser?: { id: string };
+};
 
 const createUser = /* GraphQL */ `
   mutation CreateUser($input: CreateUserInput!) {
