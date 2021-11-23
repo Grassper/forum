@@ -8,19 +8,23 @@ import { SvgUri } from "react-native-svg";
 import { BottomSheet } from "@/root/src/components/shared/BottomSheet";
 import { PostCardRenderer } from "@/root/src/components/shared/CardRenderer";
 import { FloatingActionButton } from "@/root/src/components/shared/FabButton";
+import { UserContext } from "@/root/src/context";
 import { dummyData } from "@/root/src/data/dummyData";
 
 interface Props_ {}
 
+const WIDTH = Dimensions.get("window").width / 3;
+
 export const Home: React.FC<Props_> = () => {
+  const navigation = useNavigation();
+  const { profileImageUrl } = React.useContext(UserContext);
+
   const [isOpen, setIsOpen] = useState(false);
-  const WIDTH = Dimensions.get("window").width / 3;
+
   const HandleBottomSheet = () => {
     setIsOpen(!isOpen);
   };
 
-  const navigation = useNavigation();
-  // console.log(navigation, "log");
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
@@ -41,7 +45,10 @@ export const Home: React.FC<Props_> = () => {
                 overflow="hidden"
               >
                 <SvgUri
-                  uri="https://avatars.dicebear.com/api/micah/asdf.svg"
+                  uri={
+                    profileImageUrl ||
+                    "https://avatars.dicebear.com/api/micah/default.svg"
+                  }
                   width="100%"
                   height="100%"
                 />
@@ -53,7 +60,7 @@ export const Home: React.FC<Props_> = () => {
                 resizeMode={"cover"}
                 borderRadius={100}
                 source={require("../../../../assets/images/logo.png")}
-                alt="Alternate Text"
+                alt="eforum logo"
               />
             </Box>
           </Flex>
@@ -80,7 +87,7 @@ export const Home: React.FC<Props_> = () => {
       // </Box>
       // ),
     });
-  }, [navigation]);
+  }, [WIDTH, navigation]);
   return (
     <View style={styles.container}>
       <BottomSheet isOpen={isOpen} onClose={HandleBottomSheet} />

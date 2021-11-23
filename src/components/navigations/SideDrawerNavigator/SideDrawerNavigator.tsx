@@ -23,11 +23,14 @@ import { Bookmark } from "@/root/src/components/screens/Bookmark";
 import { EditAndCreateSubForum } from "@/root/src/components/screens/EditAndCreateSubForum";
 import { Follow } from "@/root/src/components/screens/Follow";
 import { Profile } from "@/root/src/components/screens/Profile";
+import { UserContext } from "@/root/src/context";
 
 const DrawerNavigator = createDrawerNavigator();
 
 const CustomDrawerContent = (props) => {
   const DrawerNavigation = useNavigation();
+  const { profileImageUrl, username } = React.useContext(UserContext);
+
   const [lightMode, setLightMode] = useState(true);
 
   return (
@@ -52,7 +55,10 @@ const CustomDrawerContent = (props) => {
           overflow="hidden"
         >
           <SvgUri
-            uri="https://avatars.dicebear.com/api/micah/asdf.svg"
+            uri={
+              profileImageUrl ||
+              "https://avatars.dicebear.com/api/micah/default.svg"
+            }
             width="100%"
             height="100%"
           />
@@ -64,7 +70,7 @@ const CustomDrawerContent = (props) => {
           lineHeight="lg"
           mt="1"
         >
-          Diana Kiev
+          {username}
         </Text>
         <Pressable
           onPress={() => {

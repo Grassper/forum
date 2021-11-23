@@ -137,6 +137,13 @@ const App: React.FC = () => {
 
 export default withAuthenticator(App);
 
+/**
+ * graphql queries and their types
+ * types pattern {queryName}_
+ * * note dash(_) at the end of type name
+ * order 1.queryType 2.graphql query
+ */
+
 type getUser_ = {
   getUser?: { id: string; profileImageUrl: string; coins: number };
 };
