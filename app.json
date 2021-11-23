@@ -6,25 +6,42 @@
     "orientation": "portrait",
     "icon": "./assets/appIcons/drawable-hdpi/logo.png",
     "splash": {
-      "image": "./assets/appIcons/drawable-hdpi/splash_screen.png",
+      "image": "./assets/appIcons/ios/splash_screen@1x.png",
       "resizeMode": "cover",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#B4FE98"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "splash": {
+        "image": "./assets/appIcons/drawable-hdpi/splash_screen.png",
+        "resizeMode": "cover",
+        "backgroundColor": "#FFF47D"
+      }
     },
     "android": {
+      "splash": {
+        "ldpi": "./assets/appIcons/drawable-ldpi/splash_screen.png",
+        "hdpi": "./assets/appIcons/drawable-hdpi/splash_screen.png",
+
+        "mdpi": "./assets/appIcons/drawable-mdpi/splash_screen.png",
+        "xdpi": "./assets/appIcons/drawable-xdpi/splash_screen.png",
+        "xxdpi": "./assets/appIcons/drawable-xxdpi/splash_screen.png",
+        "xxhdpi": "./assets/appIcons/drawable-xxhdpi/splash_screen.png",
+        "xxxhdpi": "./assets/appIcons/drawable-xxxhdpi/splash_screen.png",
+        "resizeMode": "cover",
+        "backgroundColor": "#FFF47D"
+      },
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
+        "foregroundImage": "./assets/appIcons/drawable-ldpi/logo.png",
+        "backgroundColor": "#FFF47D"
       }
     },
     "web": {
-      "favicon": "./assets/appIcons/drawable-hdpi/logo.png"
+      "favicon": "./assets/appIcons/drawable-ldpi/logo.png"
     },
     "jsEngine": "hermes"
   }
