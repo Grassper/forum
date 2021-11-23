@@ -75,6 +75,10 @@ type UserMetrics
   badges: [String]
   commentUpvotes: Int!
   commentDownvotes: Int!
+  followers: Int!
+  following: Int!
+  totalPosts: Int!
+  totalComments: Int!
   activeDays: Int!
   lastActiveDay: AWSDateTime!
   User: User! @connection(fields: ["id"])

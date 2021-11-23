@@ -93,6 +93,10 @@ const App: React.FC = () => {
             profileViews: 0,
             commentUpvotes: 0,
             commentDownvotes: 0,
+            followers: 0,
+            following: 0,
+            totalPosts: 0,
+            totalComments: 0,
             activeDays: 0,
             lastActiveDay: new Date().toISOString(),
           };
