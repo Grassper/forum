@@ -49,7 +49,7 @@ export const Home: React.FC<Props_> = () => {
             </Pressable>
             <Box pl={WIDTH}>
               <Image
-                size={10}
+                size={8}
                 resizeMode={"cover"}
                 borderRadius={100}
                 source={require("../../../../assets/images/logo.png")}
