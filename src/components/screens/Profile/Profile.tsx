@@ -33,12 +33,12 @@ const Tab = createMaterialTopTabNavigator<TabParamList>();
 const windowWidth = Dimensions.get("window").width;
 
 export const Profile: React.FC<Props_> = ({ navigation, route }) => {
-  const userId = route.params?.userId;
+  const routeUserId = route.params.userId;
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () =>
-        userId && userId !== "1" ? ( // checking our user id with incoming user id
+        routeUserId && routeUserId !== "1" ? ( // checking our user id with incoming user id
           <Icon
             as={<Ionicons name="ellipsis-vertical" />}
             size={5}
@@ -56,11 +56,11 @@ export const Profile: React.FC<Props_> = ({ navigation, route }) => {
           </Button>
         ),
     });
-  }, [navigation, userId]);
+  }, [navigation, routeUserId]);
 
   return (
     <View style={styles.container}>
-      <ProfileCard userId={userId} />
+      <ProfileCard routeUserId={routeUserId} />
       <Tab.Navigator
         initialRouteName="profilePosts"
         screenOptions={{

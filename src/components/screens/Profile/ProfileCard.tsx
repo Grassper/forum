@@ -1,46 +1,94 @@
+import { GraphQLResult } from "@aws-amplify/api-graphql";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
+import { API } from "aws-amplify";
+import { format } from "date-fns";
 import { Box, Button, HStack, Pressable, Text, VStack } from "native-base";
 import React from "react";
 import { SvgUri } from "react-native-svg";
 
 import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
+import { UserContext } from "@/root/src/context";
 import { useToggle } from "@/root/src/hooks";
 
 type NavigationProp_ = StackNavigationProp<RootStackParamList>;
 
 interface Props_ {
-  userId?: string;
+  routeUserId: string;
 }
 
-export const ProfileCard: React.FC<Props_> = ({ userId }) => {
+interface State_ {
+  profileImageUrl: string;
+  username: string;
+  createdAt: Date;
+}
+
+export const ProfileCard: React.FC<Props_> = ({ routeUserId }) => {
   const navigation = useNavigation<NavigationProp_>();
   const [value, toggleValue] = useToggle(true);
+
+  const { id } = React.useContext(UserContext);
+  const [profile, setProfile] = React.useState<State_>();
+
+  React.useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        // check user data for user id passed using route params
+        const userData = (await API.graphql({
+          query: getUser,
+          variables: { id: routeUserId },
+          authMode: "AMAZON_COGNITO_USER_POOLS",
+        })) as GraphQLResult<getUser_>;
+
+        if (userData.data?.getUser) {
+          setProfile(userData.data.getUser);
+        }
+      } catch (err) {
+        console.error("error while fetching user data in profile page", err);
+      }
+    };
+    fetchUserData();
+  }, [routeUserId, setProfile]);
+
   return (
     <Box alignItems="center" mt="5">
-      <Box
-        width="80px"
-        height="80px"
-        bg="amber.100"
-        borderRadius="full"
-        overflow="hidden"
-        mb="10px"
-      >
-        <SvgUri
-          uri="https://avatars.dicebear.com/api/micah/jessy.svg?mouth=smile"
-          width="100%"
-          height="100%"
-        />
+      {
+        <Box
+          width="80px"
+          height="80px"
+          bg={profile?.profileImageUrl ? "amber.100" : "transparent"}
+          borderRadius="full"
+          overflow="hidden"
+          mb="10px"
+        >
+          {profile?.profileImageUrl ? (
+            <SvgUri uri={profile.profileImageUrl} width="100%" height="100%" />
+          ) : (
+            <Box bg="coolGray.100" width="100%" height="100%" />
+          )}
+        </Box>
+      }
+      <Box>
+        {profile?.username ? (
+          <Text fontFamily="heading" fontSize="22px" mb="5px">
+            {profile.username}
+          </Text>
+        ) : (
+          <Box bg="coolGray.100" height="20px" width="150px" mb="5px" />
+        )}
+      </Box>
+      <Box>
+        {profile?.createdAt ? (
+          <Text fontSize="12px" mb="15px">
+            Joined {format(new Date(profile.createdAt), "MMM yyyy")}
+          </Text>
+        ) : (
+          <Box bg="coolGray.100" height="20px" width="100px" mb="15px" />
+        )}
       </Box>
 
-      <Text fontFamily="heading" fontSize="22px" mb="5px">
-        Diana Kiev
-      </Text>
-      <Text fontSize="12px" mb="15px">
-        Joined Oct 2021
-      </Text>
-      {userId &&
-        userId !== "1" && ( // checking our user id with incoming user id to show follow button
+      {routeUserId &&
+        routeUserId !== id && ( // checking our user id with incoming user id to show follow button
           <Button
             onPress={() => toggleValue()}
             bg={value ? "tertiary.500" : "danger.500"}
@@ -75,8 +123,8 @@ export const ProfileCard: React.FC<Props_> = ({ userId }) => {
 
 interface StatsCard_ {
   onPress?: () => void;
-  count: string;
-  countName: string;
+  count?: string;
+  countName?: string;
 }
 
 const StatsCard: React.FC<StatsCard_> = ({ onPress, count, countName }) => {
@@ -88,18 +136,51 @@ const StatsCard: React.FC<StatsCard_> = ({ onPress, count, countName }) => {
         minWidth="80px"
         mx="10px"
       >
-        <Text fontSize="16px" fontWeight="600" lineHeight="24px" mb="5px">
-          {count}
-        </Text>
-        <Text
-          fontSize="14px"
-          fontWeight="500"
-          lineHeight="21px"
-          color="eGreen.400"
-        >
-          {countName}
-        </Text>
+        <Box>
+          {count ? (
+            <Text fontSize="16px" fontWeight="600" lineHeight="24px" mb="5px">
+              {count}
+            </Text>
+          ) : (
+            <Box bg="coolGray.100" height="20px" width="150px" mb="5px" />
+          )}
+        </Box>
+        <Box>
+          {countName ? (
+            <Text
+              fontSize="14px"
+              fontWeight="500"
+              lineHeight="21px"
+              color="eGreen.400"
+            >
+              {countName}
+            </Text>
+          ) : (
+            <Box bg="coolGray.100" height="20px" width="150px" mb="5px" />
+          )}
+        </Box>
       </VStack>
     </Pressable>
   );
 };
+
+/**
+ * graphql queries and their types
+ * types pattern {queryName}_
+ * * note dash(_) at the end of type name
+ * order 1.queryType 2.graphql query
+ */
+
+type getUser_ = {
+  getUser?: State_;
+};
+
+const getUser = /* GraphQL */ `
+  query GetUser($id: ID!) {
+    getUser(id: $id) {
+      profileImageUrl
+      username
+      createdAt
+    }
+  }
+`;

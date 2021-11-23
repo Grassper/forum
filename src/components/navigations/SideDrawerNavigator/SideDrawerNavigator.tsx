@@ -29,7 +29,7 @@ const DrawerNavigator = createDrawerNavigator();
 
 const CustomDrawerContent = (props) => {
   const DrawerNavigation = useNavigation();
-  const { profileImageUrl, username } = React.useContext(UserContext);
+  const { profileImageUrl, username, id } = React.useContext(UserContext);
 
   const [lightMode, setLightMode] = useState(true);
 
@@ -104,9 +104,7 @@ const CustomDrawerContent = (props) => {
               My Profile
             </Text>
           )}
-          onPress={() =>
-            DrawerNavigation.navigate("Profile", { userId: undefined })
-          } // pass undefined for current user
+          onPress={() => DrawerNavigation.navigate("Profile", { userId: id })} // pass undefined for current user
           icon={() => (
             <Icon as={<Feather name="user" />} size={5} ml="3" color="black" />
           )}

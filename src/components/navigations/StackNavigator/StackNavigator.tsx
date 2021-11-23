@@ -22,7 +22,7 @@ import { colors } from "@/root/src/constants";
 export type RootStackParamList = {
   BottomTabNavigator: undefined;
   // * User
-  Profile: { userId?: string };
+  Profile: { userId: string };
   EditProfile: undefined;
   Follow: { title: "Followers" | "Following" | "Blocked Accounts" };
   Bookmark: undefined;
