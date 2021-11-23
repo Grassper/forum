@@ -312,6 +312,50 @@ const PostUserActions: React.FC<PostUserActions_> = ({
   const navigation = useNavigation<NavigationProp_>();
   const [showTip, setTip] = useState(false);
   const [likeIcon, setLikeIcon] = useState("smile");
+  const images = {
+    smile: require("@/root/assets/faces/smile.png"),
+    angry: require("@/root/assets/faces/angry.png"),
+    sad: require("@/root/assets/faces/sad.png"),
+    wow: require("@/root/assets/faces/wow.png"),
+  };
+  var [iconemoji, setIcon] = useState(images.smile);
+  var iconName = images.smile;
+  // useEffect(() => {
+  //   // console.log("useEffect");
+  //   setIcon(images.sad);
+  // }, [likeIcon]);
+
+  function chooseIcon() {
+    // console.log("called");
+    iconName = images.angry;
+    return iconName;
+  }
+
+  // function chooseIcon() {
+  // console.log("called");
+  // switch (likeIcon) {
+  //   case "angry":
+  //     setIcon(images.angry);
+  //     // return (iconName = require("@/root/assets/faces/angry.png"));
+  //     break;
+  //   case "wow":
+  //     setIcon(require("@/root/assets/faces/wow.png"));
+  //     break;
+  //   case "smile":
+  //     setIcon(require("@/root/assets/faces/smile.png"));
+  //     break;
+  //   case "sad":
+  //     setIcon(require("@/root/assets/faces/sad.png"));
+  //     break;
+
+  //   default:
+  //     setIcon(require("@/root/assets/faces/smile.png"));
+
+  //     break;
+  // }
+  // }
+
+  // console.log(iconemoji, "icon");
   return (
     <Box>
       <HStack alignItems="center" justifyContent="space-between">
@@ -322,8 +366,7 @@ const PostUserActions: React.FC<PostUserActions_> = ({
               <Box style={styles.roottooltip}>
                 <Pressable
                   onPress={() => {
-                    setLikeIcon("smile");
-                    setTip(false);
+                    setLikeIcon("smile"), setIcon(images.smile), setTip(false);
                   }}
                   style={styles.icons}
                 >
@@ -336,8 +379,7 @@ const PostUserActions: React.FC<PostUserActions_> = ({
 
                 <Pressable
                   onPress={() => {
-                    setLikeIcon("wow");
-                    setTip(false);
+                    setLikeIcon("wow"), setTip(false), setIcon(images.wow);
                   }}
                   style={styles.icons}
                 >
@@ -363,8 +405,7 @@ const PostUserActions: React.FC<PostUserActions_> = ({
 
                 <Pressable
                   onPress={() => {
-                    setLikeIcon("angry");
-                    setTip(false);
+                    chooseIcon(), setTip(false);
                   }}
                 >
                   <Image
@@ -395,11 +436,7 @@ const PostUserActions: React.FC<PostUserActions_> = ({
             childContentSpacing={0}
           >
             <TouchableOpacity onPress={() => setTip(true)}>
-              <Image
-                source={require("@/root/assets/faces/angry.png")}
-                alt="Alternate Text"
-                size={"20px"}
-              />
+              <Image source={iconemoji} alt="Alternate Text" size={"20px"} />
             </TouchableOpacity>
           </Tooltip>
           <Pressable

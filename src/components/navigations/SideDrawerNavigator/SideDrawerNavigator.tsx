@@ -5,6 +5,7 @@ import {
   DrawerItem,
 } from "@react-navigation/drawer";
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
 import {
   Box,
   Flex,
@@ -18,20 +19,30 @@ import React, { useState } from "react";
 import { StyleSheet } from "react-native";
 import { SvgUri } from "react-native-svg";
 
-import { StackNavigator } from "@/root/src/components/navigations/StackNavigator";
+import {
+  RootStackParamList,
+  StackNavigator,
+} from "@/root/src/components/navigations/StackNavigator";
 import { Bookmark } from "@/root/src/components/screens/Bookmark";
 import { EditAndCreateSubForum } from "@/root/src/components/screens/EditAndCreateSubForum";
 import { Follow } from "@/root/src/components/screens/Follow";
 import { Profile } from "@/root/src/components/screens/Profile";
 
-const DrawerNavigator = createDrawerNavigator();
-
-const CustomDrawerContent = (props) => {
-  const DrawerNavigation = useNavigation();
+type RootDrawerParamList = {
+  StackNavigator: undefined;
+  Profile: { userId: undefined } | undefined;
+  Blocked_Accounts: { title: "Blocked Accounts" } | undefined;
+  Bookmarks: undefined;
+  EditAndCreateSubForum: { title: "Create Subforum" } | undefined;
+};
+const DrawerNavigator = createDrawerNavigator<RootDrawerParamList>();
+type NavigationProp_ = StackNavigationProp<RootStackParamList>;
+const CustomDrawerContent = () => {
+  const DrawerNavigation = useNavigation<NavigationProp_>();
   const [lightMode, setLightMode] = useState(true);
 
   return (
-    <DrawerContentScrollView {...props} style={styles.container}>
+    <DrawerContentScrollView style={styles.container}>
       <Box alignItems="center" justifyContent="center">
         {/* <Avatar
           bg="green.500"
@@ -188,9 +199,7 @@ const CustomDrawerContent = (props) => {
 export const SideDrawerNavigator = () => {
   return (
     <NavigationContainer>
-      <DrawerNavigator.Navigator
-        drawerContent={(props) => <CustomDrawerContent {...props} />}
-      >
+      <DrawerNavigator.Navigator drawerContent={() => <CustomDrawerContent />}>
         <DrawerNavigator.Screen
           name="StackNavigator"
           component={StackNavigator}
@@ -206,7 +215,7 @@ export const SideDrawerNavigator = () => {
             title: "",
           }}
         />
-        <DrawerNavigator.Screen name="Blocked Accounts" component={Follow} />
+        <DrawerNavigator.Screen name="Blocked_Accounts" component={Follow} />
         <DrawerNavigator.Screen name="Bookmarks" component={Bookmark} />
         <DrawerNavigator.Screen
           name="EditAndCreateSubForum"
