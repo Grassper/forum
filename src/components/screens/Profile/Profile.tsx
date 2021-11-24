@@ -1,10 +1,11 @@
-import { Ionicons } from "@expo/vector-icons";
+import { AntDesign, Ionicons } from "@expo/vector-icons";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import { RouteProp } from "@react-navigation/native";
+import { DrawerActions, RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { Button, Icon } from "native-base";
+import { Box, Button, Icon, Pressable } from "native-base";
 import React from "react";
 import { Dimensions, StyleSheet, View } from "react-native";
+import { SvgUri } from "react-native-svg";
 
 import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
 import { colors } from "@/root/src/constants";
@@ -54,6 +55,38 @@ export const Profile: React.FC<Props_> = ({ navigation, route }) => {
           >
             Edit
           </Button>
+        ),
+      headerLeft: () =>
+        userId === undefined ? (
+          <Pressable
+            onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
+            ml="3"
+            alignItems="center"
+            justifyContent="center"
+          >
+            <Box
+              width="8"
+              height="8"
+              bg="amber.100"
+              borderRadius="full"
+              overflow="hidden"
+            >
+              <SvgUri
+                uri="https://avatars.dicebear.com/api/micah/asdf.svg"
+                width="100%"
+                height="100%"
+              />
+            </Box>
+          </Pressable>
+        ) : (
+          <Pressable
+            onPress={() => navigation.goBack()}
+            ml="3"
+            alignItems="center"
+            justifyContent="center"
+          >
+            <AntDesign name="arrowleft" size={24} color="#17D7A0" />
+          </Pressable>
         ),
     });
   }, [navigation, userId]);

@@ -24,6 +24,7 @@ import { Bookmark } from "@/root/src/components/screens/Bookmark";
 import { EditAndCreateSubForum } from "@/root/src/components/screens/EditAndCreateSubForum";
 import { Follow } from "@/root/src/components/screens/Follow";
 import { Profile } from "@/root/src/components/screens/Profile";
+import { colors } from "@/root/src/constants";
 
 type RootDrawerParamList = {
   StackNavigator: undefined;
@@ -36,11 +37,11 @@ type RootDrawerParamList = {
 const DrawerNavigator = createDrawerNavigator<RootDrawerParamList>();
 
 type NavigationProp_ = DrawerNavigationProp<RootDrawerParamList>;
-const CustomDrawerContent = () => {
+const CustomDrawerContent = (props) => {
   const [lightMode, setLightMode] = useState(true);
   const navigation = useNavigation<NavigationProp_>();
   return (
-    <DrawerContentScrollView style={styles.container}>
+    <DrawerContentScrollView {...props} style={styles.container}>
       <Box alignItems="center" justifyContent="center">
         {/* <Avatar
           bg="green.500"
@@ -199,7 +200,9 @@ const CustomDrawerContent = () => {
 export const SideDrawerNavigator = () => {
   return (
     <NavigationContainer>
-      <DrawerNavigator.Navigator drawerContent={() => <CustomDrawerContent />}>
+      <DrawerNavigator.Navigator
+        drawerContent={(props) => <CustomDrawerContent {...props} />}
+      >
         <DrawerNavigator.Screen
           name="StackNavigator"
           component={StackNavigator}
@@ -213,6 +216,15 @@ export const SideDrawerNavigator = () => {
           component={Profile}
           options={{
             title: "",
+            // headerShown: false,
+            drawerIcon: () => (
+              <Icon
+                as={<AntDesign name="pluscircleo" />}
+                size={"18px"}
+                ml="3"
+                color="black"
+              />
+            ),
           }}
         />
         <DrawerNavigator.Screen
@@ -220,6 +232,19 @@ export const SideDrawerNavigator = () => {
           component={Follow}
           options={{
             title: "Blocked Accounts",
+            // headerShown: false,
+            headerStyle: {
+              backgroundColor: colors.green,
+            },
+            headerTintColor: colors.white,
+            // tabBarIcon: () => {
+            // <Icon
+            //   as={<AntDesign name="pluscircleo" />}
+            //   size={"18px"}
+            //   ml="3"
+            //   color="black"
+            // />;
+            // },
           }}
         />
         <DrawerNavigator.Screen
@@ -227,6 +252,10 @@ export const SideDrawerNavigator = () => {
           component={Bookmark}
           options={{
             title: "Bookmarks",
+            headerStyle: {
+              backgroundColor: colors.green,
+            },
+            headerTintColor: colors.white,
           }}
         />
         <DrawerNavigator.Screen
@@ -234,6 +263,10 @@ export const SideDrawerNavigator = () => {
           component={EditAndCreateSubForum}
           options={{
             title: "Create Subforum",
+            headerStyle: {
+              backgroundColor: colors.green,
+            },
+            headerTintColor: colors.white,
           }}
         />
       </DrawerNavigator.Navigator>
