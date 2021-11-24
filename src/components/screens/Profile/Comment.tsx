@@ -4,9 +4,11 @@ import { ScrollView, StyleSheet } from "react-native";
 
 import { CommentTile } from "@/root/src/components/shared/Tile";
 
-interface Props_ {}
+import { TabNavigatorUserContext } from "./Context";
 
-export const Comments: React.FC<Props_> = () => {
+export const Comments: React.FC = () => {
+  const routeUserId = React.useContext(TabNavigatorUserContext);
+
   return (
     <Box style={styles.wrapper} alignItems="center" bg="white">
       <ScrollView style={styles.container}>
@@ -29,3 +31,24 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 });
+
+/**
+ * graphql queries and their types
+ * types pattern {queryName}_
+ * * note dash(_) at the end of type name
+ * order 1.queryType 2.graphql query
+ */
+
+const getCommentsByUserId = /* GraphQL */ `
+  query MyQuery($id: ID!) {
+    getUser(id: $id) {
+      comments(sortDirection: DESC, limit: 10) {
+        items {
+          id
+        }
+        nextToken
+        startedAt
+      }
+    }
+  }
+`;

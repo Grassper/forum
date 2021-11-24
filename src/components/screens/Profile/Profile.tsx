@@ -11,6 +11,7 @@ import { colors } from "@/root/src/constants";
 
 import { About } from "./About";
 import { Comments } from "./Comment";
+import { TabNavigatorUserContext } from "./Context";
 import { Posts } from "./Post";
 import { ProfileCard } from "./ProfileCard";
 
@@ -22,13 +23,7 @@ interface Props_ {
   route: RouteProp_;
 }
 
-type TabParamList = {
-  profilePosts: undefined;
-  profileComments: undefined;
-  profileAbout: undefined;
-};
-
-const Tab = createMaterialTopTabNavigator<TabParamList>();
+const Tab = createMaterialTopTabNavigator();
 
 const windowWidth = Dimensions.get("window").width;
 
@@ -61,47 +56,49 @@ export const Profile: React.FC<Props_> = ({ navigation, route }) => {
   return (
     <View style={styles.container}>
       <ProfileCard routeUserId={routeUserId} />
-      <Tab.Navigator
-        initialRouteName="profilePosts"
-        screenOptions={{
-          tabBarLabelStyle: {
-            fontSize: 15,
-            fontFamily: "mr",
-            textTransform: "capitalize",
-          },
-          tabBarStyle: { backgroundColor: colors.white, elevation: 0 },
-          tabBarActiveTintColor: colors.black,
-          tabBarInactiveTintColor: colors.gray,
-          tabBarIndicatorStyle: {
-            backgroundColor: colors.green,
-            width: windowWidth / 6,
-            left: windowWidth / 12,
-            height: 2,
-          },
-        }}
-      >
-        <Tab.Screen
-          name="profilePosts"
-          component={Posts}
-          options={() => ({
-            title: "Posts",
-          })}
-        />
-        <Tab.Screen
-          name="profileComments"
-          component={Comments}
-          options={() => ({
-            title: "Comments",
-          })}
-        />
-        <Tab.Screen
-          name="profileAbout"
-          component={About}
-          options={() => ({
-            title: "About",
-          })}
-        />
-      </Tab.Navigator>
+      <TabNavigatorUserContext.Provider value={routeUserId}>
+        <Tab.Navigator
+          initialRouteName="profilePosts"
+          screenOptions={{
+            tabBarLabelStyle: {
+              fontSize: 15,
+              fontFamily: "mr",
+              textTransform: "capitalize",
+            },
+            tabBarStyle: { backgroundColor: colors.white, elevation: 0 },
+            tabBarActiveTintColor: colors.black,
+            tabBarInactiveTintColor: colors.gray,
+            tabBarIndicatorStyle: {
+              backgroundColor: colors.green,
+              width: windowWidth / 6,
+              left: windowWidth / 12,
+              height: 2,
+            },
+          }}
+        >
+          <Tab.Screen
+            name="profilePosts"
+            component={Posts}
+            options={() => ({
+              title: "Posts",
+            })}
+          />
+          <Tab.Screen
+            name="profileComments"
+            component={Comments}
+            options={() => ({
+              title: "Comments",
+            })}
+          />
+          <Tab.Screen
+            name="profileAbout"
+            component={About}
+            options={() => ({
+              title: "About",
+            })}
+          />
+        </Tab.Navigator>
+      </TabNavigatorUserContext.Provider>
     </View>
   );
 };

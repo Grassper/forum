@@ -8,6 +8,7 @@ import React from "react";
 import { SvgUri } from "react-native-svg";
 
 import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
+import { Skeleton } from "@/root/src/components/shared/Skeleton";
 import { UserContext } from "@/root/src/context";
 import { useToggle } from "@/root/src/hooks";
 
@@ -69,7 +70,7 @@ export const ProfileCard: React.FC<Props_> = ({ routeUserId }) => {
           {profile?.profileImageUrl ? (
             <SvgUri uri={profile.profileImageUrl} width="100%" height="100%" />
           ) : (
-            <Box bg="coolGray.100" width="100%" height="100%" />
+            <Skeleton width="100%" height="100%" />
           )}
         </Box>
       }
@@ -79,7 +80,7 @@ export const ProfileCard: React.FC<Props_> = ({ routeUserId }) => {
             {profile.username}
           </Text>
         ) : (
-          <Box bg="coolGray.100" height="20px" width="150px" mb="5px" />
+          <Skeleton height="20px" width="150px" mb="5px" />
         )}
       </Box>
       <Box>
@@ -88,7 +89,7 @@ export const ProfileCard: React.FC<Props_> = ({ routeUserId }) => {
             Joined {format(new Date(profile.createdAt), "MMM yyyy")}
           </Text>
         ) : (
-          <Box bg="coolGray.100" height="20px" width="100px" mb="15px" />
+          <Skeleton height="20px" width="100px" mb="15px" />
         )}
       </Box>
 
@@ -161,7 +162,7 @@ const StatsCard: React.FC<StatsCard_> = ({ onPress, count, countName }) => {
               {count}
             </Text>
           ) : (
-            <Box bg="coolGray.100" height="20px" width="80px" mb="5px" />
+            <Skeleton height="20px" width="80px" mb="5px" />
           )}
         </Box>
         <Box>
@@ -175,7 +176,7 @@ const StatsCard: React.FC<StatsCard_> = ({ onPress, count, countName }) => {
               {countName}
             </Text>
           ) : (
-            <Box bg="coolGray.100" height="20px" width="80px" mb="5px" />
+            <Skeleton height="20px" width="80px" mb="5px" />
           )}
         </Box>
       </VStack>

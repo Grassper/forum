@@ -82,6 +82,7 @@ const App: React.FC = () => {
             email: currentUser.attributes.email,
             profileImageUrl: `https://avatars.dicebear.com/api/micah/${currentUser.attributes.sub}.svg`, // for user profile replace space with dash
             coins: 1000,
+            about: "",
           };
 
           const newUserMetrics = {
