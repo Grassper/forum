@@ -91,7 +91,7 @@ export const AudioComponent: React.FC<props> = ({ audioUri }) => {
       await music.playAsync();
     }
   }
-  console.log(play, "play", duration);
+
   React.useEffect(() => {
     return music
       ? () => {

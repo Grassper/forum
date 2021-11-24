@@ -30,40 +30,43 @@ const windowWidth = Dimensions.get("window").width;
 
 export const Bookmark: React.FC<Props_> = ({ navigation, route }) => {
   var title = route.params?.title;
-  navigation.setOptions({
-    headerLeft: () =>
-      title === "Bookmarks" ? (
-        <Pressable
-          onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
-          ml="3"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <Box
-            width="8"
-            height="8"
-            bg="amber.100"
-            borderRadius="full"
-            overflow="hidden"
+
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerLeft: () =>
+        title === "Bookmarks" ? (
+          <Pressable
+            onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
+            ml="3"
+            alignItems="center"
+            justifyContent="center"
           >
-            <SvgUri
-              uri="https://avatars.dicebear.com/api/micah/asdf.svg"
-              width="100%"
-              height="100%"
-            />
-          </Box>
-        </Pressable>
-      ) : (
-        <Pressable
-          onPress={() => navigation.goBack()}
-          ml="3"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <AntDesign name="arrowleft" size={24} color="#17D7A0" />
-        </Pressable>
-      ),
-  });
+            <Box
+              width="8"
+              height="8"
+              bg="amber.100"
+              borderRadius="full"
+              overflow="hidden"
+            >
+              <SvgUri
+                uri="https://avatars.dicebear.com/api/micah/asdf.svg"
+                width="100%"
+                height="100%"
+              />
+            </Box>
+          </Pressable>
+        ) : (
+          <Pressable
+            onPress={() => navigation.goBack()}
+            ml="3"
+            alignItems="center"
+            justifyContent="center"
+          >
+            <AntDesign name="arrowleft" size={24} color="#17D7A0" />
+          </Pressable>
+        ),
+    });
+  }, [navigation, title]);
   return (
     <View style={styles.container}>
       <Tab.Navigator

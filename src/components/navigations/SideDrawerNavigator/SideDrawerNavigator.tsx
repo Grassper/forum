@@ -27,10 +27,10 @@ import { Profile } from "@/root/src/components/screens/Profile";
 import { colors } from "@/root/src/constants";
 
 type RootDrawerParamList = {
-  StackNavigator: undefined;
+  StackNavigator: { userId: undefined };
   drawerProfile: { userId?: string };
   drawerBlocked_Accounts: { title: "Blocked Accounts" };
-  drawerBookmarks: undefined;
+  drawerBookmarks: { title?: "Bookmarks" };
   EditAndCreateSubForum: { title: "Create Subforum" };
 };
 
@@ -105,6 +105,31 @@ const CustomDrawerContent = () => {
               color="black"
               ml="-4"
             >
+              Home
+            </Text>
+          )}
+          onPress={() =>
+            navigation.navigate("StackNavigator", { userId: undefined })
+          } // pass undefined for current user
+          icon={({ focused }) => (
+            <Icon
+              as={<AntDesign name="home" />}
+              size={5}
+              ml="3"
+              color={focused ? "red" : "black"}
+            />
+          )}
+        />
+        <DrawerItem
+          style={styles.drawerItem}
+          label={() => (
+            <Text
+              fontSize="sm"
+              fontFamily="body"
+              fontWeight="500"
+              color="black"
+              ml="-4"
+            >
               My Profile
             </Text>
           )}
@@ -155,7 +180,9 @@ const CustomDrawerContent = () => {
               Bookmarks
             </Text>
           )}
-          onPress={() => navigation.navigate("drawerBookmarks")}
+          onPress={() =>
+            navigation.navigate("drawerBookmarks", { title: "Bookmarks" })
+          }
           icon={() => (
             <Icon
               as={<Feather name="bookmark" />}
@@ -207,6 +234,7 @@ export const SideDrawerNavigator = () => {
           options={{
             title: "",
             headerShown: false,
+            drawerActiveTintColor: "red",
           }}
         />
         <DrawerNavigator.Screen
@@ -215,6 +243,7 @@ export const SideDrawerNavigator = () => {
           options={{
             title: "",
             // headerShown: false,
+            drawerActiveTintColor: "red",
           }}
         />
         <DrawerNavigator.Screen
