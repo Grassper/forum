@@ -3,9 +3,9 @@ import {
   createDrawerNavigator,
   DrawerContentScrollView,
   DrawerItem,
+  DrawerNavigationProp,
 } from "@react-navigation/drawer";
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
-import { StackNavigationProp } from "@react-navigation/stack";
 import {
   Box,
   Flex,
@@ -19,10 +19,7 @@ import React, { useState } from "react";
 import { StyleSheet } from "react-native";
 import { SvgUri } from "react-native-svg";
 
-import {
-  RootStackParamList,
-  StackNavigator,
-} from "@/root/src/components/navigations/StackNavigator";
+import { StackNavigator } from "@/root/src/components/navigations/StackNavigator";
 import { Bookmark } from "@/root/src/components/screens/Bookmark";
 import { EditAndCreateSubForum } from "@/root/src/components/screens/EditAndCreateSubForum";
 import { Follow } from "@/root/src/components/screens/Follow";
@@ -30,17 +27,18 @@ import { Profile } from "@/root/src/components/screens/Profile";
 
 type RootDrawerParamList = {
   StackNavigator: undefined;
-  Profile: { userId: undefined } | undefined;
-  Blocked_Accounts: { title: "Blocked Accounts" } | undefined;
-  Bookmarks: undefined;
-  EditAndCreateSubForum: { title: "Create Subforum" } | undefined;
+  drawerProfile: { userId?: string };
+  drawerBlocked_Accounts: { title: "Blocked Accounts" };
+  drawerBookmarks: undefined;
+  EditAndCreateSubForum: { title: "Create Subforum" };
 };
-const DrawerNavigator = createDrawerNavigator<RootDrawerParamList>();
-type NavigationProp_ = StackNavigationProp<RootStackParamList>;
-const CustomDrawerContent = () => {
-  const DrawerNavigation = useNavigation<NavigationProp_>();
-  const [lightMode, setLightMode] = useState(true);
 
+const DrawerNavigator = createDrawerNavigator<RootDrawerParamList>();
+
+type NavigationProp_ = DrawerNavigationProp<RootDrawerParamList>;
+const CustomDrawerContent = () => {
+  const [lightMode, setLightMode] = useState(true);
+  const navigation = useNavigation<NavigationProp_>();
   return (
     <DrawerContentScrollView style={styles.container}>
       <Box alignItems="center" justifyContent="center">
@@ -110,7 +108,7 @@ const CustomDrawerContent = () => {
             </Text>
           )}
           onPress={() =>
-            DrawerNavigation.navigate("Profile", { userId: undefined })
+            navigation.navigate("drawerProfile", { userId: undefined })
           } // pass undefined for current user
           icon={() => (
             <Icon as={<Feather name="user" />} size={5} ml="3" color="black" />
@@ -130,7 +128,9 @@ const CustomDrawerContent = () => {
             </Text>
           )}
           onPress={() =>
-            DrawerNavigation.navigate("Follow", { title: "Blocked Accounts" })
+            navigation.navigate("drawerBlocked_Accounts", {
+              title: "Blocked Accounts",
+            })
           }
           icon={() => (
             <Icon
@@ -154,7 +154,7 @@ const CustomDrawerContent = () => {
               Bookmarks
             </Text>
           )}
-          onPress={() => DrawerNavigation.navigate("Bookmark")}
+          onPress={() => navigation.navigate("drawerBookmarks")}
           icon={() => (
             <Icon
               as={<Feather name="bookmark" />}
@@ -178,7 +178,7 @@ const CustomDrawerContent = () => {
             </Text>
           )}
           onPress={() =>
-            DrawerNavigation.navigate("EditAndCreateSubForum", {
+            navigation.navigate("EditAndCreateSubForum", {
               title: "Create Subforum",
             })
           }
@@ -209,17 +209,32 @@ export const SideDrawerNavigator = () => {
           }}
         />
         <DrawerNavigator.Screen
-          name="Profile"
+          name="drawerProfile"
           component={Profile}
           options={{
             title: "",
           }}
         />
-        <DrawerNavigator.Screen name="Blocked_Accounts" component={Follow} />
-        <DrawerNavigator.Screen name="Bookmarks" component={Bookmark} />
+        <DrawerNavigator.Screen
+          name="drawerBlocked_Accounts"
+          component={Follow}
+          options={{
+            title: "Blocked Accounts",
+          }}
+        />
+        <DrawerNavigator.Screen
+          name="drawerBookmarks"
+          component={Bookmark}
+          options={{
+            title: "Bookmarks",
+          }}
+        />
         <DrawerNavigator.Screen
           name="EditAndCreateSubForum"
           component={EditAndCreateSubForum}
+          options={{
+            title: "Create Subforum",
+          }}
         />
       </DrawerNavigator.Navigator>
     </NavigationContainer>

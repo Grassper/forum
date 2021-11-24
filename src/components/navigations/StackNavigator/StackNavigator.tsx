@@ -30,9 +30,7 @@ export type RootStackParamList = {
   // * SubForum
   SubForum: undefined;
   SubForumMod: undefined;
-  EditAndCreateSubForum:
-    | { title: "Edit Subforum" | "Create Subforum" }
-    | undefined;
+  EditAndCreateSubForum: { title: "Edit Subforum" | "Create Subforum" };
 
   // * Post
   Post: undefined;
@@ -55,13 +53,6 @@ export type RootStackParamList = {
   // * Message
   NewChat: undefined;
   ChatRoom: { title: string; imageUri: string };
-
-  // *sideDrawer
-  StackNavigator: undefined;
-  // Profile: { userId: undefined } | undefined;
-  Blocked_Accounts: { title: "Blocked Accounts" } | undefined;
-  Bookmarks: undefined;
-  // EditAndCreateSubForum: { title: "Create Subforum" } | undefined;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
