@@ -37,11 +37,11 @@ type RootDrawerParamList = {
 const DrawerNavigator = createDrawerNavigator<RootDrawerParamList>();
 
 type NavigationProp_ = DrawerNavigationProp<RootDrawerParamList>;
-const CustomDrawerContent = (props) => {
+const CustomDrawerContent = () => {
   const [lightMode, setLightMode] = useState(true);
   const navigation = useNavigation<NavigationProp_>();
   return (
-    <DrawerContentScrollView {...props} style={styles.container}>
+    <DrawerContentScrollView style={styles.container}>
       <Box alignItems="center" justifyContent="center">
         {/* <Avatar
           bg="green.500"
@@ -200,9 +200,7 @@ const CustomDrawerContent = (props) => {
 export const SideDrawerNavigator = () => {
   return (
     <NavigationContainer>
-      <DrawerNavigator.Navigator
-        drawerContent={(props) => <CustomDrawerContent {...props} />}
-      >
+      <DrawerNavigator.Navigator drawerContent={() => <CustomDrawerContent />}>
         <DrawerNavigator.Screen
           name="StackNavigator"
           component={StackNavigator}
@@ -217,14 +215,6 @@ export const SideDrawerNavigator = () => {
           options={{
             title: "",
             // headerShown: false,
-            drawerIcon: () => (
-              <Icon
-                as={<AntDesign name="pluscircleo" />}
-                size={"18px"}
-                ml="3"
-                color="black"
-              />
-            ),
           }}
         />
         <DrawerNavigator.Screen
