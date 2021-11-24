@@ -42,6 +42,7 @@ const App: React.FC = () => {
     id: "",
     username: "",
     email: "",
+    about: "",
     profileImageUrl: "",
     coins: 0,
   });
@@ -64,11 +65,12 @@ const App: React.FC = () => {
 
           if (userData.data?.getUser) {
             // if user already exist set state and return
-            const { profileImageUrl, coins } = userData.data.getUser;
+            const { profileImageUrl, coins, about } = userData.data.getUser;
             setUser({
               id: currentUser.attributes.sub,
               username: currentUser.username,
               email: currentUser.attributes.email,
+              about,
               profileImageUrl,
               coins,
             });
@@ -82,7 +84,7 @@ const App: React.FC = () => {
             email: currentUser.attributes.email,
             profileImageUrl: `https://avatars.dicebear.com/api/micah/${currentUser.attributes.sub}.svg`, // for user profile replace space with dash
             coins: 1000,
-            about: "",
+            about: "Hooray, Finally i'm am here",
           };
 
           const newUserMetrics = {
@@ -150,7 +152,12 @@ export default withAuthenticator(App);
  */
 
 type getUser_ = {
-  getUser?: { id: string; profileImageUrl: string; coins: number };
+  getUser?: {
+    id: string;
+    profileImageUrl: string;
+    coins: number;
+    about: string;
+  };
 };
 
 const getUser = /* GraphQL */ `
@@ -158,6 +165,7 @@ const getUser = /* GraphQL */ `
     getUser(id: $id) {
       id
       profileImageUrl
+      about
       coins
     }
   }

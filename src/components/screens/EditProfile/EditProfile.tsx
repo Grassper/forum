@@ -9,9 +9,12 @@ import {
 import React from "react";
 import { StyleSheet } from "react-native";
 import { SvgUri } from "react-native-svg";
+import isLength from "validator/es/lib/isLength";
+import matches from "validator/es/lib/matches";
 
 import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
 import { colors } from "@/root/src/constants";
+import { UserContext } from "@/root/src/context";
 
 type NavigationProp_ = StackNavigationProp<RootStackParamList, "EditProfile">;
 
@@ -23,6 +26,51 @@ export const EditProfile: React.FC<Props_> = ({ navigation }) => {
   const [userName, setUserName] = React.useState("");
   const [about, setAbout] = React.useState("");
 
+  const [isUserNameValid, setUserNameValid] = React.useState(false);
+  const [isAboutValid, setAboutValid] = React.useState(false);
+
+  const [userNameErrorMsg, setUserNameErrorMsg] = React.useState("");
+  const [aboutErrorMsg, setAboutErrorMsg] = React.useState("");
+
+  const currentUser = React.useContext(UserContext); // this context provided current login user
+
+  React.useEffect(() => {
+    const validateUserName = () => {
+      if (
+        isLength(userName, { min: 6, max: 20 }) &&
+        matches(userName, "^[A-Za-z][A-Za-z0-9 _|.]{6,20}$")
+      ) {
+        setUserNameValid(true);
+        setUserNameErrorMsg("");
+      } else {
+        setUserNameValid(false);
+        setUserNameErrorMsg("It should be alphanumeric, characters 6-20");
+      }
+    };
+    validateUserName();
+  }, [userName]);
+
+  React.useEffect(() => {
+    const validateAbout = () => {
+      if (
+        isLength(about, { min: 0, max: 140 }) &&
+        matches(about, "^[A-Za-z][A-Za-z0-9 _|.]{0,140}$", "m")
+      ) {
+        setAboutValid(true);
+        setAboutErrorMsg("");
+      } else {
+        setAboutValid(false);
+        setAboutErrorMsg("it should be alphanumeric max: 140 chars");
+      }
+    };
+    validateAbout();
+  }, [about]);
+
+  React.useEffect(() => {
+    setUserName(currentUser.username);
+    setAbout(currentUser.about);
+  }, [currentUser]);
+
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
@@ -30,52 +78,20 @@ export const EditProfile: React.FC<Props_> = ({ navigation }) => {
           size="md"
           _text={{ fontWeight: "600", color: "white" }}
           variant="unstyled"
-          onPress={() => navigation.navigate("Profile", { userId: undefined })} // pass undefined for current user
+          onPress={() =>
+            navigation.navigate("Profile", { userId: currentUser.id })
+          } // pass id of current user
         >
           Save
         </Button>
       ),
     });
-  }, [navigation]);
+  }, [currentUser, navigation]);
 
   return (
     <Box style={styles.wrapper}>
       <Box style={styles.container}>
         <Box alignItems="center" justifyContent="center" my="4">
-          {/* <Box position="relative">
-            <Avatar
-              bg="green.500"
-              size="xl"
-              source={{
-                uri: "https://randomuser.me/api/portraits/women/49.jpg",
-              }}
-            >
-              <Text
-                fontSize="md"
-                fontFamily="body"
-                fontWeight="600"
-                color="white"
-              >
-                Dk
-              </Text>
-            </Avatar>
-            <Pressable onPress={() => {}}>
-              <Box
-                bg="eGreen.400"
-                p="2"
-                borderRadius="full"
-                position="absolute"
-                bottom="0"
-                right="0"
-              >
-                <Icon
-                  as={<MaterialIcons name="motion-photos-on" />}
-                  size={18}
-                  color="white"
-                />
-              </Box>
-            </Pressable>
-          </Box> */}
           <Box
             width="100px"
             height="100px"
@@ -84,13 +100,13 @@ export const EditProfile: React.FC<Props_> = ({ navigation }) => {
             overflow="hidden"
           >
             <SvgUri
-              uri="https://avatars.dicebear.com/api/micah/jessy.svg?mouth=smile"
+              uri={currentUser.profileImageUrl}
               width="100%"
               height="100%"
             />
           </Box>
         </Box>
-        <FormControl isRequired>
+        <FormControl isInvalid={!isUserNameValid}>
           <FormControl.Label mb="3">User Name</FormControl.Label>
           <Input
             bg="muted.100"
@@ -104,10 +120,10 @@ export const EditProfile: React.FC<Props_> = ({ navigation }) => {
             variant="unstyled"
           />
           <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>
-            You must provide username
+            {userNameErrorMsg}
           </FormControl.ErrorMessage>
         </FormControl>
-        <FormControl mt="4">
+        <FormControl mt="4" isInvalid={!isAboutValid}>
           <FormControl.Label mb="3">About</FormControl.Label>
           <Input
             bg="muted.100"
@@ -115,16 +131,18 @@ export const EditProfile: React.FC<Props_> = ({ navigation }) => {
             mb="2"
             height="175"
             multiline
-            maxLength={300}
             numberOfLines={4}
             value={about}
             onChangeText={setAbout}
             borderRadius="md"
-            placeholder="About (optional)"
+            placeholder="Express yourself"
             placeholderTextColor="muted.400"
             fontSize="sm"
             variant="unstyled"
           />
+          <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>
+            {aboutErrorMsg}
+          </FormControl.ErrorMessage>
           <FormControl.HelperText>
             Introduce Yourself to community
           </FormControl.HelperText>
@@ -149,3 +167,7 @@ const styles = StyleSheet.create({
     width: "100%",
   },
 });
+
+/**
+ * username and about validation
+ */

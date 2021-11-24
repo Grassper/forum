@@ -8,6 +8,7 @@ import { Dimensions, StyleSheet, View } from "react-native";
 
 import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
 import { colors } from "@/root/src/constants";
+import { UserContext } from "@/root/src/context";
 
 import { About } from "./About";
 import { Comments } from "./Comment";
@@ -29,11 +30,12 @@ const windowWidth = Dimensions.get("window").width;
 
 export const Profile: React.FC<Props_> = ({ navigation, route }) => {
   const routeUserId = route.params.userId;
+  const { id } = React.useContext(UserContext); // this context provided current login user
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () =>
-        routeUserId && routeUserId !== "1" ? ( // checking our user id with incoming user id
+        routeUserId && routeUserId !== id ? ( // checking our user id with incoming user id
           <Icon
             as={<Ionicons name="ellipsis-vertical" />}
             size={5}
@@ -51,7 +53,7 @@ export const Profile: React.FC<Props_> = ({ navigation, route }) => {
           </Button>
         ),
     });
-  }, [navigation, routeUserId]);
+  }, [id, navigation, routeUserId]);
 
   return (
     <View style={styles.container}>

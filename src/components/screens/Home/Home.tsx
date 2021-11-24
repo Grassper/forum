@@ -76,18 +76,8 @@ export const Home: React.FC<Props_> = () => {
           />
         </Box>
       ),
-      // headerCenter: () => (
-      // <Box mr="10">
-      //   <Icon
-      //     as={<Ionicons name="search-outline" />}
-      //     size={"20px"}
-      //     ml="3"
-      //     color="muted.900"
-      //   />
-      // </Box>
-      // ),
     });
-  }, [WIDTH, navigation]);
+  }, [navigation, profileImageUrl]);
   return (
     <View style={styles.container}>
       <BottomSheet isOpen={isOpen} onClose={HandleBottomSheet} />
