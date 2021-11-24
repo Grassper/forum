@@ -34,6 +34,15 @@ export const EditProfile: React.FC<Props_> = ({ navigation }) => {
 
   const currentUser = React.useContext(UserContext); // this context provided current login user
 
+  const handleSubmit = React.useCallback(() => {
+    if (isUserNameValid && isAboutValid) {
+      /**
+       * post api call here
+       */
+      navigation.navigate("Profile", { userId: currentUser.id }); // pass id of current user
+    }
+  }, [currentUser.id, isAboutValid, isUserNameValid, navigation]);
+
   React.useEffect(() => {
     const validateUserName = () => {
       if (
@@ -78,15 +87,13 @@ export const EditProfile: React.FC<Props_> = ({ navigation }) => {
           size="md"
           _text={{ fontWeight: "600", color: "white" }}
           variant="unstyled"
-          onPress={() =>
-            navigation.navigate("Profile", { userId: currentUser.id })
-          } // pass id of current user
+          onPress={handleSubmit}
         >
           Save
         </Button>
       ),
     });
-  }, [currentUser, navigation]);
+  }, [handleSubmit, navigation]);
 
   return (
     <Box style={styles.wrapper}>
