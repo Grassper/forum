@@ -53,12 +53,19 @@ export const About: React.FC = () => {
     <Box style={styles.wrapper} alignItems="center" bg="white">
       <ScrollView style={styles.container}>
         <Box>
-          {about?.about && (
+          {about?.about ? (
             <Text numberOfLines={4} mb="8">
               {about?.about}
             </Text>
+          ) : (
+            <Box alignItems="center">
+              <Skeleton height="20px" width="85%" mb="5px" />
+              <Skeleton height="20px" width="95%" mb="5px" />
+              <Skeleton height="20px" width="70%" mb="5px" />
+            </Box>
           )}
         </Box>
+
         <HStack flexWrap="wrap" justifyContent="space-between" mb="5">
           {about?.userMetrics && about.userMetrics.postLikes >= 0 ? (
             <StatsItem value={about.userMetrics.postLikes} name="Post Likes" />
