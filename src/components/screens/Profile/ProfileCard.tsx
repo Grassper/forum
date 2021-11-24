@@ -21,6 +21,11 @@ interface State_ {
   profileImageUrl: string;
   username: string;
   createdAt: Date;
+  userMetrics: {
+    followers: number;
+    following: number;
+    totalPosts: number;
+  };
 }
 
 export const ProfileCard: React.FC<Props_> = ({ routeUserId }) => {
@@ -101,21 +106,35 @@ export const ProfileCard: React.FC<Props_> = ({ routeUserId }) => {
           </Button>
         )}
       <HStack alignItems="center" justifyContent="center" mb="15px">
-        <StatsCard
-          onPress={() => {
-            navigation.navigate("Follow", { title: "Followers" });
-          }}
-          count="862"
-          countName="Followers"
-        />
-        <StatsCard
-          onPress={() => {
-            navigation.navigate("Follow", { title: "Following" });
-          }}
-          count="862"
-          countName="Followers"
-        />
-        <StatsCard count="52" countName="Posts" />
+        {profile?.userMetrics && profile.userMetrics.followers >= 0 ? (
+          <StatsCard
+            onPress={() => {
+              navigation.navigate("Follow", { title: "Followers" });
+            }}
+            count={profile.userMetrics.followers}
+            countName="Followers"
+          />
+        ) : (
+          <StatsCard />
+        )}
+
+        {profile?.userMetrics && profile.userMetrics.following >= 0 ? (
+          <StatsCard
+            onPress={() => {
+              navigation.navigate("Follow", { title: "Following" });
+            }}
+            count={profile.userMetrics.following}
+            countName="Following"
+          />
+        ) : (
+          <StatsCard />
+        )}
+
+        {profile?.userMetrics && profile.userMetrics.totalPosts >= 0 ? (
+          <StatsCard count={profile.userMetrics.totalPosts} countName="Posts" />
+        ) : (
+          <StatsCard />
+        )}
       </HStack>
     </Box>
   );
@@ -123,7 +142,7 @@ export const ProfileCard: React.FC<Props_> = ({ routeUserId }) => {
 
 interface StatsCard_ {
   onPress?: () => void;
-  count?: string;
+  count?: number;
   countName?: string;
 }
 
@@ -137,12 +156,12 @@ const StatsCard: React.FC<StatsCard_> = ({ onPress, count, countName }) => {
         mx="10px"
       >
         <Box>
-          {count ? (
+          {count !== undefined && count >= 0 ? (
             <Text fontSize="16px" fontWeight="600" lineHeight="24px" mb="5px">
               {count}
             </Text>
           ) : (
-            <Box bg="coolGray.100" height="20px" width="150px" mb="5px" />
+            <Box bg="coolGray.100" height="20px" width="80px" mb="5px" />
           )}
         </Box>
         <Box>
@@ -156,7 +175,7 @@ const StatsCard: React.FC<StatsCard_> = ({ onPress, count, countName }) => {
               {countName}
             </Text>
           ) : (
-            <Box bg="coolGray.100" height="20px" width="150px" mb="5px" />
+            <Box bg="coolGray.100" height="20px" width="80px" mb="5px" />
           )}
         </Box>
       </VStack>
@@ -181,6 +200,11 @@ const getUser = /* GraphQL */ `
       profileImageUrl
       username
       createdAt
+      userMetrics {
+        followers
+        following
+        totalPosts
+      }
     }
   }
 `;
