@@ -38,13 +38,14 @@ const fetchFonts = (): Promise<void> => {
 
 const App: React.FC = () => {
   const [fontLoaded, setFontLoaded] = React.useState(false);
-  const [user, setUser] = React.useState<UserContext_>({
+  const [user, setUser] = React.useState<UserContext_["user"]>({
     id: "",
     username: "",
     email: "",
     about: "",
     profileImageUrl: "",
     coins: 0,
+    _version: 0,
   });
 
   React.useEffect(() => {
@@ -65,7 +66,9 @@ const App: React.FC = () => {
 
           if (userData.data?.getUser) {
             // if user already exist set state and return
-            const { profileImageUrl, coins, about } = userData.data.getUser;
+            const { profileImageUrl, coins, about, _version } =
+              userData.data.getUser;
+
             setUser({
               id: currentUser.attributes.sub,
               username: currentUser.username,
@@ -73,7 +76,9 @@ const App: React.FC = () => {
               about,
               profileImageUrl,
               coins,
+              _version,
             });
+
             return;
           }
 
@@ -121,7 +126,7 @@ const App: React.FC = () => {
       }
     };
     checkCurrentUserInDb();
-  }, []);
+  }, [setUser]);
 
   if (!fontLoaded) {
     return (
@@ -135,7 +140,7 @@ const App: React.FC = () => {
 
   return (
     <NativeBaseProvider theme={Theme}>
-      <UserContext.Provider value={user}>
+      <UserContext.Provider value={{ user, updateUser: setUser }}>
         <SideDrawerNavigator />
       </UserContext.Provider>
     </NativeBaseProvider>
@@ -157,6 +162,7 @@ type getUser_ = {
     profileImageUrl: string;
     coins: number;
     about: string;
+    _version: number;
   };
 };
 
@@ -167,6 +173,7 @@ const getUser = /* GraphQL */ `
       profileImageUrl
       about
       coins
+      _version
     }
   }
 `;

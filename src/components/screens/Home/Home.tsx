@@ -17,7 +17,10 @@ const WIDTH = Dimensions.get("window").width / 3;
 
 export const Home: React.FC<Props_> = () => {
   const navigation = useNavigation();
-  const { profileImageUrl } = React.useContext(UserContext);
+
+  const {
+    user: { profileImageUrl },
+  } = React.useContext(UserContext);
 
   const [isOpen, setIsOpen] = useState(false);
 

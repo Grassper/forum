@@ -29,7 +29,9 @@ const DrawerNavigator = createDrawerNavigator();
 
 const CustomDrawerContent = (props) => {
   const DrawerNavigation = useNavigation();
-  const { profileImageUrl, username, id } = React.useContext(UserContext);
+  const {
+    user: { profileImageUrl, username, id },
+  } = React.useContext(UserContext);
 
   const [lightMode, setLightMode] = useState(true);
 

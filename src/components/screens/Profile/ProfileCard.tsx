@@ -33,7 +33,9 @@ export const ProfileCard: React.FC<Props_> = ({ routeUserId }) => {
   const navigation = useNavigation<NavigationProp_>();
   const [value, toggleValue] = useToggle(true);
 
-  const { id } = React.useContext(UserContext);
+  const {
+    user: { id },
+  } = React.useContext(UserContext);
   const [profile, setProfile] = React.useState<State_>();
 
   React.useEffect(() => {

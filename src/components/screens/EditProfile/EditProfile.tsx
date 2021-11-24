@@ -1,4 +1,6 @@
+import { GraphQLResult } from "@aws-amplify/api-graphql";
 import { StackNavigationProp } from "@react-navigation/stack";
+import { API } from "aws-amplify";
 import {
   Box,
   Button,
@@ -23,60 +25,69 @@ interface Props_ {
 }
 
 export const EditProfile: React.FC<Props_> = ({ navigation }) => {
-  const [userName, setUserName] = React.useState("");
   const [about, setAbout] = React.useState("");
 
-  const [isUserNameValid, setUserNameValid] = React.useState(false);
   const [isAboutValid, setAboutValid] = React.useState(false);
-
-  const [userNameErrorMsg, setUserNameErrorMsg] = React.useState("");
   const [aboutErrorMsg, setAboutErrorMsg] = React.useState("");
 
-  const currentUser = React.useContext(UserContext); // this context provided current login user
+  const currentUser = React.useContext(UserContext).user; // this context provided current login user
+  const setUser = React.useContext(UserContext).updateUser;
 
-  const handleSubmit = React.useCallback(() => {
-    if (isUserNameValid && isAboutValid) {
+  const handleSubmit = React.useCallback(async () => {
+    if (isAboutValid) {
+      const updateUserInput = {
+        id: currentUser.id,
+        about,
+        _version: currentUser._version,
+      };
+
       /**
-       * post api call here
+       * Todo if input is same as current dont make a post call
        */
+
+      /**
+       * update user post call
+       */
+      const userData = (await API.graphql({
+        query: updateUser,
+        variables: { input: updateUserInput },
+        authMode: "AMAZON_COGNITO_USER_POOLS",
+      })) as GraphQLResult<updateUser_>;
+
+      /** update global user context */
+      if (userData.data?.updateUser) {
+        setUser({
+          id: currentUser.id,
+          username: currentUser.username,
+          email: currentUser.email,
+          about: userData.data.updateUser.about,
+          profileImageUrl: userData.data.updateUser.profileImageUrl,
+          coins: currentUser.coins,
+          _version: userData.data.updateUser._version,
+        });
+      }
+
       navigation.navigate("Profile", { userId: currentUser.id }); // pass id of current user
     }
-  }, [currentUser.id, isAboutValid, isUserNameValid, navigation]);
-
-  React.useEffect(() => {
-    const validateUserName = () => {
-      if (
-        isLength(userName, { min: 6, max: 20 }) &&
-        matches(userName, "^[A-Za-z][A-Za-z0-9 _|.]{6,20}$")
-      ) {
-        setUserNameValid(true);
-        setUserNameErrorMsg("");
-      } else {
-        setUserNameValid(false);
-        setUserNameErrorMsg("It should be alphanumeric, characters 6-20");
-      }
-    };
-    validateUserName();
-  }, [userName]);
+  }, [about, currentUser, isAboutValid, navigation, setUser]);
 
   React.useEffect(() => {
     const validateAbout = () => {
       if (
-        isLength(about, { min: 0, max: 140 }) &&
-        matches(about, "^[A-Za-z][A-Za-z0-9 _|.]{0,140}$", "m")
+        isLength(about, { min: 0, max: 300 }) &&
+        matches(about, "^[A-Za-z][A-Za-z0-9 _|.,]{0,300}$", "m")
       ) {
         setAboutValid(true);
         setAboutErrorMsg("");
       } else {
         setAboutValid(false);
-        setAboutErrorMsg("it should be alphanumeric max: 140 chars");
+        setAboutErrorMsg("it should be alphanumeric max: 300 chars");
       }
     };
     validateAbout();
   }, [about]);
 
   React.useEffect(() => {
-    setUserName(currentUser.username);
     setAbout(currentUser.about);
   }, [currentUser]);
 
@@ -113,23 +124,6 @@ export const EditProfile: React.FC<Props_> = ({ navigation }) => {
             />
           </Box>
         </Box>
-        <FormControl isInvalid={!isUserNameValid}>
-          <FormControl.Label mb="3">User Name</FormControl.Label>
-          <Input
-            bg="muted.100"
-            p="4"
-            value={userName}
-            onChangeText={setUserName}
-            borderRadius="md"
-            placeholder="John joe."
-            placeholderTextColor="muted.400"
-            fontSize="sm"
-            variant="unstyled"
-          />
-          <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>
-            {userNameErrorMsg}
-          </FormControl.ErrorMessage>
-        </FormControl>
         <FormControl mt="4" isInvalid={!isAboutValid}>
           <FormControl.Label mb="3">About</FormControl.Label>
           <Input
@@ -176,5 +170,26 @@ const styles = StyleSheet.create({
 });
 
 /**
- * username and about validation
+ * graphql queries and their types
+ * types pattern {queryName}_
+ * * note dash(_) at the end of type name
+ * order 1.queryType 2.graphql query
  */
+
+type updateUser_ = {
+  updateUser?: {
+    profileImageUrl: string;
+    about: string;
+    _version: number;
+  };
+};
+
+const updateUser = /* GraphQL */ `
+  mutation updateUser($input: UpdateUserInput!) {
+    updateUser(input: $input) {
+      profileImageUrl
+      about
+      _version
+    }
+  }
+`;

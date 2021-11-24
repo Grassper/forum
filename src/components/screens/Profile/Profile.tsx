@@ -30,7 +30,9 @@ const windowWidth = Dimensions.get("window").width;
 
 export const Profile: React.FC<Props_> = ({ navigation, route }) => {
   const routeUserId = route.params.userId;
-  const { id } = React.useContext(UserContext); // this context provided current login user
+  const {
+    user: { id },
+  } = React.useContext(UserContext); // this context provided current login user
 
   React.useLayoutEffect(() => {
     navigation.setOptions({

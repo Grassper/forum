@@ -26,6 +26,10 @@ export const About: React.FC = () => {
   const routeUserId = React.useContext(TabNavigatorUserContext);
   const [about, setAbout] = React.useState<State_>();
 
+  /**
+   * todo update about from global state
+   */
+
   React.useEffect(() => {
     const fetchUserData = async () => {
       try {
