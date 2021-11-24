@@ -227,14 +227,6 @@ export const SideDrawerNavigator = () => {
               backgroundColor: colors.green,
             },
             headerTintColor: colors.white,
-            // tabBarIcon: () => {
-            // <Icon
-            //   as={<AntDesign name="pluscircleo" />}
-            //   size={"18px"}
-            //   ml="3"
-            //   color="black"
-            // />;
-            // },
           }}
         />
         <DrawerNavigator.Screen
