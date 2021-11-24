@@ -1,6 +1,8 @@
 import { AntDesign } from "@expo/vector-icons";
 import { RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
+// import { DocumentPicker, ImagePicker } from "expo";
+import * as DocumentPicker from "expo-document-picker";
 import {
   Box,
   Button,
@@ -39,6 +41,7 @@ export const AddAndEditPost: React.FC<Props_> = ({ navigation, route }) => {
   const [PollTitle, setPollTitle] = React.useState("");
   const [Option, setOption] = React.useState(""); // poll option input
   const [Polls, setPoll] = React.useState<PollType_[]>([]); // poll options
+  const [singleFile, setSingleFile] = React.useState("");
 
   const { hideUpload, postType } = route.params;
 
@@ -56,7 +59,27 @@ export const AddAndEditPost: React.FC<Props_> = ({ navigation, route }) => {
       ),
     });
   }, [navigation]);
-
+  const imagePicker = async () => {
+    //Opening Document Picker for selection of one file
+    let result = await DocumentPicker.getDocumentAsync({ type: "image/*" });
+    console.log(result, "result");
+    console.log(result);
+  };
+  const audioPicker = async () => {
+    let audioResult = await DocumentPicker.getDocumentAsync({
+      type: "audio/*",
+    });
+    console.log(audioResult, "result");
+    console.log(audioResult);
+  };
+  const videoPicker = async () => {
+    let videoResult = await DocumentPicker.getDocumentAsync({
+      type: "video/*",
+    });
+    console.log(videoResult, "result");
+    console.log(videoResult);
+  };
+  console.log(singleFile, "singleFile");
   return (
     <VStack
       style={styles.container}
@@ -196,6 +219,15 @@ export const AddAndEditPost: React.FC<Props_> = ({ navigation, route }) => {
               height="60"
               alignItems="center"
               justifyContent="center"
+              onPress={() =>
+                postType === "Audio"
+                  ? audioPicker
+                  : postType === "Video"
+                  ? videoPicker
+                  : postType === "Image"
+                  ? imagePicker
+                  : console.log("wrong")
+              }
             >
               <Icon
                 as={<AntDesign name="plus" />}
