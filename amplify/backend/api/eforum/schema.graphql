@@ -40,6 +40,7 @@ type User
   id: ID!
   username: String!
   profileImageUrl: String
+  about: String
   email: String!
   coins: Int!
   followers: [FollowRelationship]
@@ -168,9 +169,15 @@ type Poll {
 
 type Post
   @model
-  @auth(rules: [{ allow: private, provider: iam, operations: [create] }])
-  @key(name: "byAuthor", fields: ["authorId"])
-  @key(name: "byCommunity", fields: ["communityId"]) {
+  @auth(
+    rules: [
+      { allow: owner }
+      { allow: private, operations: [read] }
+      { allow: private, provider: iam, operations: [create] }
+    ]
+  )
+  @key(name: "byAuthor", fields: ["authorId", "postedDate"])
+  @key(name: "byCommunity", fields: ["communityId", "postedDate"]) {
   id: ID!
   type: PostType!
   content: String!
@@ -183,6 +190,7 @@ type Post
   disLikes: Int
   authorId: ID!
   communityId: ID!
+  postedDate: AWSDateTime!
   author: User! @connection(fields: ["authorId"])
   community: Community! @connection(fields: ["communityId"])
   comments: [Comment] @connection(keyName: "byPost", fields: ["id"])
@@ -206,9 +214,10 @@ type UserPostMetricsRelationShip
 
 type Comment
   @model
-  @key(name: "byPost", fields: ["postId"])
-  @key(name: "byAuthor", fields: ["authorId"])
-  @key(name: "byCommunity", fields: ["communityId"]) {
+  @auth(rules: [{ allow: owner }, { allow: private, operations: [read] }])
+  @key(name: "byPost", fields: ["postId", "commentedDate"])
+  @key(name: "byAuthor", fields: ["authorId", "commentedDate"])
+  @key(name: "byCommunity", fields: ["communityId", "commentedDate"]) {
   id: ID!
   content: String!
   postId: ID!
@@ -216,6 +225,7 @@ type Comment
   authorId: ID!
   upvote: Int!
   downvote: Int!
+  commentedDate: AWSDateTime!
   post: Post @connection(fields: ["postId"])
   author: User! @connection(fields: ["authorId"])
   community: Community! @connection(fields: ["communityId"])
