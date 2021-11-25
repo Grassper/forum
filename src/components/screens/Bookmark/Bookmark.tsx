@@ -1,11 +1,12 @@
 import { AntDesign } from "@expo/vector-icons";
+import { DrawerNavigationProp } from "@react-navigation/drawer";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { RouteProp } from "@react-navigation/native";
-import { StackNavigationProp } from "@react-navigation/stack";
 import { Pressable } from "native-base";
 import React from "react";
 import { Dimensions, StyleSheet, View } from "react-native";
 
+import { RootDrawerParamList } from "@/root/src/components/navigations/SideDrawerNavigator";
 import { HeaderProfileIcon } from "@/root/src/components/shared/HeaderProfileIcon";
 import { colors } from "@/root/src/constants";
 
@@ -15,11 +16,13 @@ import { Posts } from "./Post";
 type TabParamList = {
   bookmarkedPosts: undefined;
   bookmarkedComments: undefined;
-  Bookmarks: { title: "Bookmarks" };
 };
-type RouteProp_ = RouteProp<TabParamList, "Bookmarks">;
+type RouteProp_ = RouteProp<RootDrawerParamList, "drawerBookmarks">;
 
-type NavigationProp_ = StackNavigationProp<TabParamList, "Bookmarks">;
+type NavigationProp_ = DrawerNavigationProp<
+  RootDrawerParamList,
+  "drawerBookmarks"
+>;
 interface Props_ {
   navigation: NavigationProp_;
   route: RouteProp_;
@@ -29,7 +32,7 @@ const Tab = createMaterialTopTabNavigator<TabParamList>();
 const windowWidth = Dimensions.get("window").width;
 
 export const Bookmark: React.FC<Props_> = ({ navigation, route }) => {
-  var title = route.params?.title;
+  const { title } = route.params;
 
   React.useLayoutEffect(() => {
     navigation.setOptions({

@@ -1,0 +1,9 @@
+{
+  "resourceName": "eforumdev",
+  "policyUUID": "360d5221",
+  "bucketName": "eforumd4a1f70862dd4c9ca0cdc2cbc84a314e",
+  "storageAccess": "auth",
+  "guestAccess": [],
+  "authAccess": ["CREATE_AND_UPDATE", "READ"],
+  "groupAccess": {}
+}

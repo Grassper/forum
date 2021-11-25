@@ -49,6 +49,8 @@ export const SubForumCard: React.FC<Props_> = ({
       quality: 1,
     });
 
+    console.log(result);
+
     if (!result.cancelled) {
       setImage(result.uri);
     }

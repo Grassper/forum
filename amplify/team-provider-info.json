@@ -14,7 +14,8 @@
     "categories": {
       "auth": {
         "eforum2060bb55": {},
-        "eforum2f3f8584": {}
+        "eforum2f3f8584": {},
+        "true": {}
       },
       "function": {
         "createPostAndTimeline": {
