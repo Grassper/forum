@@ -11,7 +11,7 @@ import React from "react";
 import { enableScreens } from "react-native-screens";
 
 import { NativeBaseTheme as Theme } from "@/root/src/config";
-import { UserContext, UserContext_ } from "@/root/src/context";
+import { UserContext, UserContextProvider } from "@/root/src/context";
 
 // @ts-ignore
 import config from "./aws-exports";
@@ -38,15 +38,7 @@ const fetchFonts = (): Promise<void> => {
 
 const App: React.FC = () => {
   const [fontLoaded, setFontLoaded] = React.useState(false);
-  const [user, setUser] = React.useState<UserContext_["user"]>({
-    id: "",
-    username: "",
-    email: "",
-    about: "",
-    profileImageUrl: "",
-    coins: 0,
-    _version: 0,
-  });
+  const { updateUser } = React.useContext(UserContext);
 
   React.useEffect(() => {
     const checkCurrentUserInDb = async () => {
@@ -69,7 +61,7 @@ const App: React.FC = () => {
             const { profileImageUrl, coins, about, _version } =
               userData.data.getUser;
 
-            setUser({
+            updateUser({
               id: currentUser.attributes.sub,
               username: currentUser.username,
               email: currentUser.attributes.email,
@@ -126,7 +118,7 @@ const App: React.FC = () => {
       }
     };
     checkCurrentUserInDb();
-  }, [setUser]);
+  }, [updateUser]);
 
   if (!fontLoaded) {
     return (
@@ -140,14 +132,20 @@ const App: React.FC = () => {
 
   return (
     <NativeBaseProvider theme={Theme}>
-      <UserContext.Provider value={{ user, updateUser: setUser }}>
-        <SideDrawerNavigator />
-      </UserContext.Provider>
+      <SideDrawerNavigator />
     </NativeBaseProvider>
   );
 };
 
-export default withAuthenticator(App);
+const ContextWrapper: React.FC = () => {
+  return (
+    <UserContextProvider>
+      <App />
+    </UserContextProvider>
+  );
+};
+
+export default withAuthenticator(ContextWrapper);
 
 /**
  * graphql queries and their types

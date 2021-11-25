@@ -29,36 +29,28 @@ export const UserContext = React.createContext<UserContext_>({
     coins: 0,
     _version: 0,
   },
-  updateUser: () => {
-    console.log("default");
-    return undefined;
-  },
+  updateUser: () => undefined,
 });
 
-// export const UserContextProvider: React.FC<Props_> = ({ children }) => {
-//   const [user, setUser] = React.useState<User_>({
-//     id: "",
-//     username: "",
-//     email: "",
-//     about: "",
-//     profileImageUrl: "",
-//     coins: 0,
-//     _version: 0,
-//   });
+export const UserContextProvider: React.FC<Props_> = ({ children }) => {
+  const [user, setUser] = React.useState<User_>({
+    id: "",
+    username: "",
+    email: "",
+    about: "",
+    profileImageUrl: "",
+    coins: 0,
+    _version: 0,
+  });
 
-//   const updateUser = (data: User_) => {
-//     console.log("actual update");
-//     setUser(data);
-//   };
+  const UserContextValues: UserContext_ = {
+    user,
+    updateUser: setUser,
+  };
 
-//   const UserContextValues: UserContext_ = {
-//     user,
-//     updateUser,
-//   };
-
-//   return (
-//     <UserContext.Provider value={UserContextValues}>
-//       {children}
-//     </UserContext.Provider>
-//   );
-// };
+  return (
+    <UserContext.Provider value={UserContextValues}>
+      {children}
+    </UserContext.Provider>
+  );
+};
