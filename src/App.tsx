@@ -133,8 +133,8 @@ const App: React.FC = () => {
 
   return (
     <NativeBaseProvider theme={Theme}>
-      <SideDrawerNavigator />
-      {/* <SignIn /> */}
+      {/* <SideDrawerNavigator /> */}
+      <SignIn />
     </NativeBaseProvider>
   );
 };
