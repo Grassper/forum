@@ -1,6 +1,8 @@
-import { Foundation, MaterialIcons } from "@expo/vector-icons";
+import { Foundation, Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
+import { Storage } from "aws-amplify";
+import { format } from "date-fns";
 import * as ImagePicker from "expo-image-picker";
 import {
   Avatar,
@@ -10,10 +12,12 @@ import {
   Icon,
   Image,
   Pressable,
+  Progress,
   Text,
 } from "native-base";
 import React, { useState } from "react";
-import { Dimensions, StyleSheet } from "react-native";
+import { Alert, Dimensions, Platform, StyleSheet } from "react-native";
+import uuid from "react-native-uuid";
 
 import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
 import { useToggle } from "@/root/src/hooks";
@@ -30,59 +34,142 @@ const windowWidth = Dimensions.get("window").width;
 
 export const SubForumCard: React.FC<Props_> = ({
   isEdit,
-  name = "e/Mechkeys",
-  description = `Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et ma`,
+  name = "",
+  description = "",
 }) => {
   const navigation = useNavigation<NavigationProp_>();
-  const [value, toggleValue] = useToggle(true);
-  const [image, setImage] = useState(
-    "https://randomuser.me/api/portraits/women/49.jpg"
-  );
-  const [wallPaper, setWallPaper] = useState(
-    "https://images.pexels.com/photos/735911/pexels-photo-735911.jpeg?cs=srgb&dl=pexels-soumil-kumar-735911.jpg&fm=jpg"
-  );
-  const pickImage = async () => {
+  const [status, setStatus] = useToggle(true);
+  const [profile, setProfile] = useState<string>();
+  const [wallPaper, setWallPaper] = useState<string>();
+
+  const [percentage, setPercentage] = useState(0);
+  const [coverLoader, toggleCoverLoader] = useToggle(false);
+  const [profileLoader, toggleProfileLoader] = useToggle(false);
+
+  const verifyPermissions = async () => {
+    if (Platform.OS !== "web") {
+      const { status } =
+        await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (status !== "granted") {
+        Alert.alert(
+          "Insufficient Permissions!",
+          "Sorry, we need these permissions to make this work!'",
+          [{ text: "Okay" }]
+        );
+        return false;
+      }
+    }
+    return true;
+  };
+
+  const pickImage = async (
+    aspect: [number, number],
+    callback: (data: string) => void
+  ) => {
+    const hasPermission = await verifyPermissions();
+    if (!hasPermission) {
+      return;
+    }
     let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
-      aspect: [4, 3],
+      aspect,
       quality: 1,
     });
 
-    console.log(result);
+    let uploadedUrl = await handleImagePicked(result);
 
-    if (!result.cancelled) {
-      setImage(result.uri);
+    if (uploadedUrl) {
+      Storage.get(uploadedUrl)
+        .then((result) => callback(result))
+        .catch((err) => console.log(err));
     }
   };
-  const pickWallPaperImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
 
-    if (!result.cancelled) {
-      setWallPaper(result.uri);
+  const handleImagePicked = async (
+    pickerResult: ImagePicker.ImagePickerResult
+  ) => {
+    try {
+      if (pickerResult.cancelled) {
+        return;
+      } else {
+        setPercentage(0);
+        const img = await fetchImageFromUri(pickerResult.uri);
+        const uploadUrl = await uploadImage(
+          `IMG-${format(new Date(), "yyyyMMdd")}-EF${uuid.v4()}`,
+          img
+        );
+        return uploadUrl;
+      }
+    } catch (e) {
+      console.log(e);
+      Alert.alert("Upload failed");
     }
   };
+
+  const fetchImageFromUri = async (uri: string) => {
+    const response = await fetch(uri);
+    const blob = await response.blob();
+    return blob;
+  };
+
+  const uploadImage = (filename: string, img: any) => {
+    return Storage.put(filename, img, {
+      level: "public",
+      progressCallback(progress) {
+        const calculated = parseInt(
+          // @ts-ignore
+          (progress.loaded / progress.total) * 100,
+          10
+        );
+        setPercentage(calculated);
+      },
+    })
+      .then((response) => {
+        return response.key;
+      })
+      .catch((error) => {
+        console.log(error);
+        return error.response;
+      });
+  };
+
   return (
     <Box>
-      <Box position="relative">
-        <Image
-          width="100%"
-          height="115"
-          alt="fallback text"
-          source={{
-            uri: wallPaper,
-          }}
-          fallbackSource={{
-            uri: wallPaper,
-          }}
-        />
-        {isEdit && (
-          <Pressable onPress={pickWallPaperImage}>
+      <Box position="relative" height="115px">
+        {wallPaper ? (
+          <Image
+            width="100%"
+            height="100%"
+            alt="Cover Image"
+            source={{
+              uri: wallPaper,
+            }}
+          />
+        ) : (
+          <Box
+            width="100%"
+            alignItems="center"
+            height="100%"
+            justifyContent="center"
+          >
+            <Icon
+              as={<Ionicons name="ios-image" />}
+              size={6}
+              color="muted.700"
+            />
+          </Box>
+        )}
+        {isEdit && !coverLoader && (
+          <Pressable
+            onPress={() =>
+              pickImage([4, 3], (imageUrl) => {
+                toggleCoverLoader(true);
+                setWallPaper(imageUrl);
+                toggleCoverLoader(false);
+              })
+            }
+          >
             <Box
               bg="eGreen.400"
               p="2"
@@ -102,26 +189,46 @@ export const SubForumCard: React.FC<Props_> = ({
       </Box>
       <Box alignItems="flex-start" justifyContent="center" bg="white">
         <Box position="relative">
-          <Avatar
-            bg="green.500"
-            mt="-20"
-            ml={windowWidth * 0.025}
-            size="xl"
-            source={{
-              uri: image,
-            }}
-          >
-            <Text
-              fontSize="md"
-              fontFamily="body"
-              fontWeight="600"
-              color="white"
+          {profile ? (
+            <Avatar
+              bg="green.500"
+              mt="-20"
+              ml={windowWidth * 0.025}
+              width="100px"
+              height="100px"
+              source={{
+                uri: profile,
+              }}
+            />
+          ) : (
+            <Box
+              bg="coolGray.200"
+              mt="-20"
+              ml={windowWidth * 0.025}
+              width="100px"
+              height="100px"
+              alignItems="center"
+              justifyContent="center"
+              borderRadius="full"
             >
-              Dk
-            </Text>
-          </Avatar>
-          {isEdit && (
-            <Pressable onPress={pickImage} zIndex="999">
+              <Icon
+                as={<Ionicons name="ios-image" />}
+                size={6}
+                color="muted.700"
+              />
+            </Box>
+          )}
+          {isEdit && !profileLoader && (
+            <Pressable
+              onPress={() =>
+                pickImage([1, 1], (imageUrl) => {
+                  toggleProfileLoader();
+                  setProfile(imageUrl);
+                  toggleProfileLoader();
+                })
+              }
+              zIndex="999"
+            >
               <Box
                 bg="eGreen.400"
                 p="2"
@@ -169,13 +276,13 @@ export const SubForumCard: React.FC<Props_> = ({
               </HStack>
 
               <Button
-                onPress={() => toggleValue()}
-                bg={value ? "tertiary.500" : "danger.500"}
+                onPress={() => setStatus()}
+                bg={status ? "tertiary.500" : "danger.500"}
                 variant="unstyled"
                 minWidth="24"
                 borderRadius="50"
               >
-                {value ? "Join" : "Exit"}
+                {status ? "Join" : "Exit"}
               </Button>
             </HStack>
             <HStack alignItems="center" mb="2">

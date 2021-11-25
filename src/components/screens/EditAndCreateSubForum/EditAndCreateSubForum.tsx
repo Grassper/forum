@@ -74,7 +74,7 @@ export const EditAndCreateSubForum: React.FC<Props_> = ({
           <FormControl isRequired>
             <FormControl.Label mb="3">Forum Name</FormControl.Label>
             <Input
-              bg="muted.100"
+              bg="coolGray.100"
               p="4"
               value={forum}
               onChangeText={setForum}
@@ -93,7 +93,7 @@ export const EditAndCreateSubForum: React.FC<Props_> = ({
           <FormControl mt="4" isRequired>
             <FormControl.Label mb="3">Description</FormControl.Label>
             <Input
-              bg="muted.100"
+              bg="coolGray.100"
               p="4"
               mb="2"
               minHeight="125"
