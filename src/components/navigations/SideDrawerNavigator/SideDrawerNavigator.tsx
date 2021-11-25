@@ -3,6 +3,7 @@ import {
   createDrawerNavigator,
   DrawerContentScrollView,
   DrawerItem,
+  DrawerNavigationProp,
 } from "@react-navigation/drawer";
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import {
@@ -23,32 +24,32 @@ import { Bookmark } from "@/root/src/components/screens/Bookmark";
 import { EditAndCreateSubForum } from "@/root/src/components/screens/EditAndCreateSubForum";
 import { Follow } from "@/root/src/components/screens/Follow";
 import { Profile } from "@/root/src/components/screens/Profile";
+import { colors } from "@/root/src/constants";
 import { UserContext } from "@/root/src/context";
 
-const DrawerNavigator = createDrawerNavigator();
+type RootDrawerParamList = {
+  StackNavigator: undefined;
+  drawerProfile: { userId: string };
+  drawerBlocked_Accounts: { title: "Blocked Accounts" };
+  drawerBookmarks: { title: "Bookmarks" };
+  EditAndCreateSubForum: { title: "Create Subforum" };
+};
 
-const CustomDrawerContent = (props) => {
-  const DrawerNavigation = useNavigation();
+const DrawerNavigator = createDrawerNavigator<RootDrawerParamList>();
+
+type NavigationProp_ = DrawerNavigationProp<RootDrawerParamList>;
+
+const CustomDrawerContent = () => {
+  const [lightMode, setLightMode] = useState(true);
+
   const {
     user: { profileImageUrl, username, id },
   } = React.useContext(UserContext);
 
-  const [lightMode, setLightMode] = useState(true);
-
+  const navigation = useNavigation<NavigationProp_>();
   return (
-    <DrawerContentScrollView {...props} style={styles.container}>
+    <DrawerContentScrollView style={styles.container}>
       <Box alignItems="center" justifyContent="center">
-        {/* <Avatar
-          bg="green.500"
-          size="lg"
-          source={{
-            uri: "https://randomuser.me/api/portraits/women/49.jpg",
-          }}
-        >
-          <Text fontSize="md" fontFamily="body" fontWeight="600" color="white">
-            Dk
-          </Text>
-        </Avatar>*/}
         <Box
           width="100px"
           height="100px"
@@ -103,10 +104,33 @@ const CustomDrawerContent = (props) => {
               color="black"
               ml="-4"
             >
+              Home
+            </Text>
+          )}
+          onPress={() => navigation.navigate("StackNavigator")}
+          icon={({ focused }) => (
+            <Icon
+              as={<AntDesign name="home" />}
+              size={5}
+              ml="3"
+              color={focused ? "red" : "black"}
+            />
+          )}
+        />
+        <DrawerItem
+          style={styles.drawerItem}
+          label={() => (
+            <Text
+              fontSize="sm"
+              fontFamily="body"
+              fontWeight="500"
+              color="black"
+              ml="-4"
+            >
               My Profile
             </Text>
           )}
-          onPress={() => DrawerNavigation.navigate("Profile", { userId: id })} // pass undefined for current user
+          onPress={() => navigation.navigate("drawerProfile", { userId: id })} // pass id of current user
           icon={() => (
             <Icon as={<Feather name="user" />} size={5} ml="3" color="black" />
           )}
@@ -125,7 +149,9 @@ const CustomDrawerContent = (props) => {
             </Text>
           )}
           onPress={() =>
-            DrawerNavigation.navigate("Follow", { title: "Blocked Accounts" })
+            navigation.navigate("drawerBlocked_Accounts", {
+              title: "Blocked Accounts",
+            })
           }
           icon={() => (
             <Icon
@@ -149,7 +175,9 @@ const CustomDrawerContent = (props) => {
               Bookmarks
             </Text>
           )}
-          onPress={() => DrawerNavigation.navigate("Bookmark")}
+          onPress={() =>
+            navigation.navigate("drawerBookmarks", { title: "Bookmarks" })
+          }
           icon={() => (
             <Icon
               as={<Feather name="bookmark" />}
@@ -173,7 +201,7 @@ const CustomDrawerContent = (props) => {
             </Text>
           )}
           onPress={() =>
-            DrawerNavigation.navigate("EditAndCreateSubForum", {
+            navigation.navigate("EditAndCreateSubForum", {
               title: "Create Subforum",
             })
           }
@@ -194,29 +222,58 @@ const CustomDrawerContent = (props) => {
 export const SideDrawerNavigator = () => {
   return (
     <NavigationContainer>
-      <DrawerNavigator.Navigator
-        drawerContent={(props) => <CustomDrawerContent {...props} />}
-      >
+      <DrawerNavigator.Navigator drawerContent={() => <CustomDrawerContent />}>
         <DrawerNavigator.Screen
           name="StackNavigator"
           component={StackNavigator}
           options={{
             title: "",
             headerShown: false,
+            drawerActiveTintColor: "red",
           }}
         />
         <DrawerNavigator.Screen
-          name="Profile"
+          name="drawerProfile"
           component={Profile}
           options={{
             title: "",
+            // headerShown: false,
+            drawerActiveTintColor: "red",
           }}
         />
-        <DrawerNavigator.Screen name="Blocked Accounts" component={Follow} />
-        <DrawerNavigator.Screen name="Bookmarks" component={Bookmark} />
+        <DrawerNavigator.Screen
+          name="drawerBlocked_Accounts"
+          component={Follow}
+          options={{
+            title: "Blocked Accounts",
+            // headerShown: false,
+            headerStyle: {
+              backgroundColor: colors.green,
+            },
+            headerTintColor: colors.white,
+          }}
+        />
+        <DrawerNavigator.Screen
+          name="drawerBookmarks"
+          component={Bookmark}
+          options={{
+            title: "Bookmarks",
+            headerStyle: {
+              backgroundColor: colors.green,
+            },
+            headerTintColor: colors.white,
+          }}
+        />
         <DrawerNavigator.Screen
           name="EditAndCreateSubForum"
           component={EditAndCreateSubForum}
+          options={{
+            title: "Create Subforum",
+            headerStyle: {
+              backgroundColor: colors.green,
+            },
+            headerTintColor: colors.white,
+          }}
         />
       </DrawerNavigator.Navigator>
     </NavigationContainer>

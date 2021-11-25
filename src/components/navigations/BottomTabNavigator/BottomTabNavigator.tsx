@@ -21,6 +21,7 @@ export const BottomTabNavigator = () => {
         options={{
           title: "",
           tabBarShowLabel: false,
+          headerTitleAlign: "center",
           tabBarIconStyle: { alignItems: "center" },
           tabBarIcon: ({ focused }) => {
             return (
