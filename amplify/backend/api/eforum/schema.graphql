@@ -87,6 +87,7 @@ type UserMetrics
 
 type FollowRelationship
   @model
+  @auth(rules: [{ allow: owner }])
   @key(
     name: "byFollowerId"
     fields: ["followerId"]
@@ -109,7 +110,7 @@ enum CommunityType {
   PRIVATE
 }
 
-type Community @model {
+type Community @model @auth(rules: [{ allow: owner }]) {
   id: ID!
   name: String!
   description: String!
@@ -127,6 +128,7 @@ type Community @model {
 
 type UserCommunityRelationShip
   @model
+  @auth(rules: [{ allow: owner }])
   @key(name: "byUser", fields: ["userId"])
   @key(name: "byCommunity", fields: ["communityId"]) {
   id: ID!
@@ -138,6 +140,7 @@ type UserCommunityRelationShip
 
 type ModeratorCommunityRelationShip
   @model(queries: null)
+  @auth(rules: [{ allow: owner }])
   @key(name: "byModerator", fields: ["moderatorId"])
   @key(name: "byCommunity", fields: ["communityId"]) {
   id: ID!
@@ -200,6 +203,7 @@ type Post
 
 type UserPostMetricsRelationShip
   @model
+  @auth(rules: [{ allow: owner }])
   @key(name: "byPost", fields: ["postId", "type", "userId"])
   @key(name: "byUser", fields: ["userId", "type", "postId"]) {
   id: ID!
@@ -214,7 +218,7 @@ type UserPostMetricsRelationShip
 
 type Comment
   @model
-  @auth(rules: [{ allow: owner }, { allow: private, operations: [read] }])
+  @auth(rules: [{ allow: owner }])
   @key(name: "byPost", fields: ["postId", "commentedDate"])
   @key(name: "byAuthor", fields: ["authorId", "commentedDate"])
   @key(name: "byCommunity", fields: ["communityId", "commentedDate"]) {
@@ -235,6 +239,7 @@ type Comment
 
 type ParentChildCommentRelationship
   @model
+  @auth(rules: [{ allow: owner }])
   @key(
     name: "byParentComment"
     fields: ["parentCommentId"]
@@ -254,6 +259,7 @@ type ParentChildCommentRelationship
 
 type UserCommentMetricsRelationShip
   @model
+  @auth(rules: [{ allow: owner }])
   @key(name: "byUser", fields: ["userId", "type"])
   @key(name: "byComment", fields: ["commentId", "type"]) {
   id: ID!
@@ -270,6 +276,7 @@ type UserCommentMetricsRelationShip
 
 type UserChatRoomRelationship
   @model
+  @auth(rules: [{ allow: owner }])
   @key(name: "byChatRoom", fields: ["chatRoomId", "userId"])
   @key(name: "byUser", fields: ["userId", "chatRoomId"]) {
   id: ID!
@@ -279,7 +286,9 @@ type UserChatRoomRelationship
   chatRoom: ChatRoom! @connection(fields: ["chatRoomId"])
 }
 
-type ChatRoom @model {
+type ChatRoom
+  @model
+  @auth(rules: [{ allow: owner }]) { # allow only people in the chat room to read
   id: ID!
   users: [UserChatRoomRelationship]
     @connection(keyName: "byChatRoom", fields: ["id"])
@@ -288,6 +297,7 @@ type ChatRoom @model {
 
 type Message
   @model
+  @auth(rules: [{ allow: owner }])
   @key(
     name: "byChatRoom"
     fields: ["chatRoomId"]
@@ -303,7 +313,12 @@ type Message
 
 type Timeline
   @model
-  @auth(rules: [{ allow: private, provider: iam, operations: [create] }]) {
+  @auth(
+    rules: [
+      { allow: owner }
+      { allow: private, provider: iam, operations: [create] }
+    ]
+  ) {
   id: ID!
   userId: ID!
   postId: ID!
