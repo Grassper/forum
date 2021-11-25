@@ -14,6 +14,7 @@ export type AmplifyDependentResourcesAttributes = {
       UserPoolName: "string";
       AppClientIDWeb: "string";
       AppClientID: "string";
+      CreatedSNSRole: "string";
     };
   };
   function: {
@@ -22,6 +23,12 @@ export type AmplifyDependentResourcesAttributes = {
       Arn: "string";
       Region: "string";
       LambdaExecutionRole: "string";
+    };
+  };
+  storage: {
+    eforumdev: {
+      BucketName: "string";
+      Region: "string";
     };
   };
 };

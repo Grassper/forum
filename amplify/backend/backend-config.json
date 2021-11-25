@@ -63,5 +63,12 @@
         }
       ]
     }
+  },
+  "storage": {
+    "eforumdev": {
+      "service": "S3",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": []
+    }
   }
 }
