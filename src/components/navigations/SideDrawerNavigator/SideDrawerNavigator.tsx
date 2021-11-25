@@ -27,7 +27,7 @@ import { Profile } from "@/root/src/components/screens/Profile";
 import { colors } from "@/root/src/constants";
 import { UserContext } from "@/root/src/context";
 
-type RootDrawerParamList = {
+export type RootDrawerParamList = {
   StackNavigator: undefined;
   drawerProfile: { userId: string };
   drawerBlocked_Accounts: { title: "Blocked Accounts" };
