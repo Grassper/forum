@@ -1,3 +1,4 @@
+import { Auth } from "aws-amplify";
 import { Box, Flex, Input, Pressable, Text } from "native-base";
 import React from "react";
 import { StyleSheet } from "react-native";
@@ -8,6 +9,18 @@ interface Props_ {}
 export const SignIn: React.FC<Props_> = () => {
   const [userName, setUserName] = React.useState("");
   const [password, setPassword] = React.useState("");
+  async function signIn() {
+    if (userName.trim() && userName.trim()) {
+      try {
+        const user = await Auth.signIn(userName, password);
+        console.log(user);
+      } catch (error) {
+        console.log("error signing in", error);
+      }
+    } else {
+      console.log("empty values");
+    }
+  }
 
   return (
     <Box style={styles.wrapper}>
@@ -49,6 +62,7 @@ export const SignIn: React.FC<Props_> = () => {
             backgroundColor="gray.200"
             paddingLeft="5"
             color="eGreen.400"
+            type="password"
           />
           <Box alignItems="flex-start" width="85%" py="2">
             <Pressable onPress={() => console.log("clicked")}>
@@ -61,7 +75,7 @@ export const SignIn: React.FC<Props_> = () => {
       </Box>
       <Box width="85%" justifyContent="flex-end" py="4">
         <Pressable
-          onPress={() => console.log("clicked")}
+          onPress={signIn}
           backgroundColor={colors.green}
           borderRadius="full"
           alignItems="center"
