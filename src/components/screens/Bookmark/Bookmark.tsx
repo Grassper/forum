@@ -1,12 +1,12 @@
 import { AntDesign } from "@expo/vector-icons";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import { DrawerActions, RouteProp } from "@react-navigation/native";
+import { RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { Box, Pressable } from "native-base";
+import { Pressable } from "native-base";
 import React from "react";
 import { Dimensions, StyleSheet, View } from "react-native";
-import { SvgUri } from "react-native-svg";
 
+import { HeaderProfileIcon } from "@/root/src/components/shared/HeaderProfileIcon";
 import { colors } from "@/root/src/constants";
 
 import { Comments } from "./Comment";
@@ -35,26 +35,7 @@ export const Bookmark: React.FC<Props_> = ({ navigation, route }) => {
     navigation.setOptions({
       headerLeft: () =>
         title === "Bookmarks" ? (
-          <Pressable
-            onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
-            ml="3"
-            alignItems="center"
-            justifyContent="center"
-          >
-            <Box
-              width="8"
-              height="8"
-              bg="amber.100"
-              borderRadius="full"
-              overflow="hidden"
-            >
-              <SvgUri
-                uri="https://avatars.dicebear.com/api/micah/asdf.svg"
-                width="100%"
-                height="100%"
-              />
-            </Box>
-          </Pressable>
+          <HeaderProfileIcon />
         ) : (
           <Pressable
             onPress={() => navigation.goBack()}

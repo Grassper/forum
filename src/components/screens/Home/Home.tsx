@@ -1,19 +1,17 @@
 import { Ionicons } from "@expo/vector-icons";
-import { DrawerActions, useNavigation } from "@react-navigation/native";
-import { Box, Icon, Image, Pressable } from "native-base";
+import { useNavigation } from "@react-navigation/native";
+import { Box, Icon, Image } from "native-base";
 import React, { useState } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
-import { SvgUri } from "react-native-svg";
 
 import { BottomSheet } from "@/root/src/components/shared/BottomSheet";
 import { PostCardRenderer } from "@/root/src/components/shared/CardRenderer";
 import { FloatingActionButton } from "@/root/src/components/shared/FabButton";
+import { HeaderProfileIcon } from "@/root/src/components/shared/HeaderProfileIcon";
 import { UserContext } from "@/root/src/context";
 import { dummyData } from "@/root/src/data/dummyData";
 
-interface Props_ {}
-
-export const Home: React.FC<Props_> = () => {
+export const Home: React.FC = () => {
   const navigation = useNavigation();
 
   const {
@@ -28,30 +26,7 @@ export const Home: React.FC<Props_> = () => {
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
-      headerLeft: () => (
-        <Box ml="3">
-          <Pressable
-            onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
-          >
-            <Box
-              width="8"
-              height="8"
-              bg="amber.100"
-              borderRadius="full"
-              overflow="hidden"
-            >
-              <SvgUri
-                uri={
-                  profileImageUrl ||
-                  "https://avatars.dicebear.com/api/micah/default.svg"
-                }
-                width="100%"
-                height="100%"
-              />
-            </Box>
-          </Pressable>
-        </Box>
-      ),
+      headerLeft: () => <HeaderProfileIcon />,
       headerRight: () => (
         <Box mr="3">
           <Icon

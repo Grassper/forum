@@ -1,13 +1,13 @@
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import { DrawerActions, RouteProp } from "@react-navigation/native";
+import { RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { Box, Button, Icon, Pressable } from "native-base";
+import { Button, Icon, Pressable } from "native-base";
 import React from "react";
 import { Dimensions, StyleSheet, View } from "react-native";
-import { SvgUri } from "react-native-svg";
 
 import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
+import { HeaderProfileIcon } from "@/root/src/components/shared/HeaderProfileIcon";
 import { colors } from "@/root/src/constants";
 import { UserContext } from "@/root/src/context";
 
@@ -56,28 +56,7 @@ export const Profile: React.FC<Props_> = ({ navigation, route }) => {
           </Button>
         ),
       headerLeft: () =>
-        userId === undefined ? (
-          <Pressable
-            onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
-            ml="3"
-            alignItems="center"
-            justifyContent="center"
-          >
-            <Box
-              width="8"
-              height="8"
-              bg="amber.100"
-              borderRadius="full"
-              overflow="hidden"
-            >
-              <SvgUri
-                uri="https://avatars.dicebear.com/api/micah/asdf.svg"
-                width="100%"
-                height="100%"
-              />
-            </Box>
-          </Pressable>
-        ) : (
+        routeUserId && routeUserId !== id ? (
           <Pressable
             onPress={() => navigation.goBack()}
             ml="3"
@@ -86,6 +65,8 @@ export const Profile: React.FC<Props_> = ({ navigation, route }) => {
           >
             <AntDesign name="arrowleft" size={24} color="#17D7A0" />
           </Pressable>
+        ) : (
+          <HeaderProfileIcon />
         ),
     });
   }, [id, navigation, routeUserId]);

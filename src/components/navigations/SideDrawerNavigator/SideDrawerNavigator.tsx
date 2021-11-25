@@ -237,7 +237,6 @@ export const SideDrawerNavigator = () => {
           component={Profile}
           options={{
             title: "",
-            // headerShown: false,
             drawerActiveTintColor: "red",
           }}
         />
@@ -246,7 +245,6 @@ export const SideDrawerNavigator = () => {
           component={Follow}
           options={{
             title: "Blocked Accounts",
-            // headerShown: false,
             headerStyle: {
               backgroundColor: colors.green,
             },

@@ -1,14 +1,14 @@
 import { AntDesign, MaterialIcons } from "@expo/vector-icons";
-import { DrawerActions, RouteProp } from "@react-navigation/native";
+import { RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { Box, HStack, Icon, Pressable, Text, VStack } from "native-base";
 import React from "react";
 import { FlatList } from "react-native";
-import { SvgUri } from "react-native-svg";
 import { SwipeListView } from "react-native-swipe-list-view";
 
 import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
 import { FollowCardRenderer } from "@/root/src/components/shared/CardRenderer";
+import { HeaderProfileIcon } from "@/root/src/components/shared/HeaderProfileIcon";
 import { SearchBar } from "@/root/src/components/shared/SearchBar";
 import { UserData } from "@/root/src/data/userData";
 
@@ -53,26 +53,7 @@ export const Follow: React.FC<Props_> = ({ navigation, route }) => {
   navigation.setOptions({
     headerLeft: () =>
       title === "Blocked Accounts" ? (
-        <Pressable
-          onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
-          ml="3"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <Box
-            width="8"
-            height="8"
-            bg="amber.100"
-            borderRadius="full"
-            overflow="hidden"
-          >
-            <SvgUri
-              uri="https://avatars.dicebear.com/api/micah/asdf.svg"
-              width="100%"
-              height="100%"
-            />
-          </Box>
-        </Pressable>
+        <HeaderProfileIcon />
       ) : (
         <Pressable
           onPress={() => navigation.goBack()}

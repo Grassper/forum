@@ -1,5 +1,5 @@
 import { AntDesign } from "@expo/vector-icons";
-import { DrawerActions, RouteProp } from "@react-navigation/native";
+import { RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import {
   Box,
@@ -11,10 +11,10 @@ import {
 } from "native-base";
 import React from "react";
 import { StyleSheet } from "react-native";
-import { SvgUri } from "react-native-svg";
 
 import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
 import { SubForumCard } from "@/root/src/components/shared/Cards";
+import { HeaderProfileIcon } from "@/root/src/components/shared/HeaderProfileIcon";
 import { colors } from "@/root/src/constants";
 
 type RouteProp_ = RouteProp<RootStackParamList, "EditAndCreateSubForum">;
@@ -52,26 +52,7 @@ export const EditAndCreateSubForum: React.FC<Props_> = ({
       ),
       headerLeft: () =>
         title === "Create Subforum" ? (
-          <Pressable
-            onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
-            ml="3"
-            alignItems="center"
-            justifyContent="center"
-          >
-            <Box
-              width="8"
-              height="8"
-              bg="amber.100"
-              borderRadius="full"
-              overflow="hidden"
-            >
-              <SvgUri
-                uri="https://avatars.dicebear.com/api/micah/asdf.svg"
-                width="100%"
-                height="100%"
-              />
-            </Box>
-          </Pressable>
+          <HeaderProfileIcon />
         ) : (
           <Pressable
             onPress={() => navigation.goBack()}
