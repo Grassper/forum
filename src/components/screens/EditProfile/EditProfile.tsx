@@ -35,38 +35,41 @@ export const EditProfile: React.FC<Props_> = ({ navigation }) => {
 
   const handleSubmit = React.useCallback(async () => {
     if (isAboutValid) {
-      const updateUserInput = {
-        id: currentUser.id,
-        about,
-        _version: currentUser._version,
-      };
-
-      /**
-       * Todo if input is same as current dont make a post call
-       */
-
-      /**
-       * update user post call
-       */
-      const userData = (await API.graphql({
-        query: updateUser,
-        variables: { input: updateUserInput },
-        authMode: "AMAZON_COGNITO_USER_POOLS",
-      })) as GraphQLResult<updateUser_>;
-
-      /** update global user context */
-      if (userData.data?.updateUser) {
-        setUser({
+      try {
+        const updateUserInput = {
           id: currentUser.id,
-          username: currentUser.username,
-          email: currentUser.email,
-          about: userData.data.updateUser.about,
-          profileImageUrl: userData.data.updateUser.profileImageUrl,
-          coins: currentUser.coins,
-          _version: userData.data.updateUser._version,
-        });
-      }
+          about,
+          _version: currentUser._version,
+        };
 
+        /**
+         * Todo if input is same as current dont make a post call
+         */
+
+        /**
+         * update user post call
+         */
+        const userData = (await API.graphql({
+          query: updateUser,
+          variables: { input: updateUserInput },
+          authMode: "AMAZON_COGNITO_USER_POOLS",
+        })) as GraphQLResult<updateUser_>;
+
+        /** update global user context */
+        if (userData.data?.updateUser) {
+          setUser({
+            id: currentUser.id,
+            username: currentUser.username,
+            email: currentUser.email,
+            about: userData.data.updateUser.about,
+            profileImageUrl: userData.data.updateUser.profileImageUrl,
+            coins: currentUser.coins,
+            _version: userData.data.updateUser._version,
+          });
+        }
+      } catch (err) {
+        console.error("Error while updating the user profile", err);
+      }
       navigation.navigate("Profile", { userId: currentUser.id }); // pass id of current user
     }
   }, [about, currentUser, isAboutValid, navigation, setUser]);
