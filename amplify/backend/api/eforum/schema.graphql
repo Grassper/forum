@@ -110,7 +110,9 @@ enum CommunityType {
   PRIVATE
 }
 
-type Community @model @auth(rules: [{ allow: owner }]) {
+type Community
+  @model
+  @auth(rules: [{ allow: owner }, { allow: private, operations: [read] }]) {
   id: ID!
   name: String!
   description: String!
@@ -128,7 +130,7 @@ type Community @model @auth(rules: [{ allow: owner }]) {
 
 type UserCommunityRelationShip
   @model
-  @auth(rules: [{ allow: owner }])
+  @auth(rules: [{ allow: owner }, { allow: private, operations: [read] }])
   @key(name: "byUser", fields: ["userId"])
   @key(name: "byCommunity", fields: ["communityId"]) {
   id: ID!
@@ -140,7 +142,7 @@ type UserCommunityRelationShip
 
 type ModeratorCommunityRelationShip
   @model(queries: null)
-  @auth(rules: [{ allow: owner }])
+  @auth(rules: [{ allow: owner }, { allow: private, operations: [read] }])
   @key(name: "byModerator", fields: ["moderatorId"])
   @key(name: "byCommunity", fields: ["communityId"]) {
   id: ID!

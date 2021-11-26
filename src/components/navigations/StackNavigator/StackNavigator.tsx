@@ -28,9 +28,13 @@ export type RootStackParamList = {
   Bookmark: undefined;
 
   // * SubForum
-  SubForum: undefined;
+  SubForum: { subForumId: string };
   SubForumMod: undefined;
-  EditAndCreateSubForum: { title: "Edit Subforum" | "Create Subforum" };
+  EditAndCreateSubForum: {
+    title: "Edit Subforum" | "Create Subforum";
+    action: "Add" | "Edit";
+    subForumId?: string; // pass only for add action which means create subforum
+  };
 
   // * Post
   Post: undefined;

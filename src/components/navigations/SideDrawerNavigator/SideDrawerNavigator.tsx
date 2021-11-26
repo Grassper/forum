@@ -28,11 +28,11 @@ import { colors } from "@/root/src/constants";
 import { UserContext } from "@/root/src/context";
 
 export type RootDrawerParamList = {
-  StackNavigator: undefined;
+  stackNavigator: undefined;
   drawerProfile: { userId: string };
   drawerBlocked_Accounts: { title: "Blocked Accounts" };
   drawerBookmarks: { title: "Bookmarks" };
-  EditAndCreateSubForum: { title: "Create Subforum" };
+  createSubForum: { title: "Create Subforum"; action: "Add" };
 };
 
 const DrawerNavigator = createDrawerNavigator<RootDrawerParamList>();
@@ -107,7 +107,7 @@ const CustomDrawerContent = () => {
               Home
             </Text>
           )}
-          onPress={() => navigation.navigate("StackNavigator")}
+          onPress={() => navigation.navigate("stackNavigator")}
           icon={({ focused }) => (
             <Icon
               as={<AntDesign name="home" />}
@@ -201,8 +201,9 @@ const CustomDrawerContent = () => {
             </Text>
           )}
           onPress={() =>
-            navigation.navigate("EditAndCreateSubForum", {
+            navigation.navigate("createSubForum", {
               title: "Create Subforum",
+              action: "Add",
             })
           }
           icon={() => (
@@ -224,7 +225,7 @@ export const SideDrawerNavigator = () => {
     <NavigationContainer>
       <DrawerNavigator.Navigator drawerContent={() => <CustomDrawerContent />}>
         <DrawerNavigator.Screen
-          name="StackNavigator"
+          name="stackNavigator"
           component={StackNavigator}
           options={{
             title: "",
@@ -263,7 +264,7 @@ export const SideDrawerNavigator = () => {
           }}
         />
         <DrawerNavigator.Screen
-          name="EditAndCreateSubForum"
+          name="createSubForum"
           component={EditAndCreateSubForum}
           options={{
             title: "Create Subforum",

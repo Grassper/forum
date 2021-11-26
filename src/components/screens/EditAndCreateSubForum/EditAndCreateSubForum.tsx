@@ -1,6 +1,8 @@
+import { GraphQLResult } from "@aws-amplify/api-graphql";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 import { RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
+import { API } from "aws-amplify";
 import {
   Avatar,
   Box,
@@ -13,12 +15,15 @@ import {
   WarningOutlineIcon,
 } from "native-base";
 import React from "react";
-import { Dimensions, StyleSheet } from "react-native";
+import { Alert, Dimensions, StyleSheet } from "react-native";
+import isLength from "validator/es/lib/isLength";
+import matches from "validator/es/lib/matches";
 
 import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
 import { HeaderProfileIcon } from "@/root/src/components/shared/HeaderProfileIcon";
 import { ImagePickerButton } from "@/root/src/components/shared/Picker";
 import { colors } from "@/root/src/constants";
+import { UserContext } from "@/root/src/context";
 import { useToggle } from "@/root/src/hooks";
 import { SignS3ImageKey } from "@/root/src/utils/helpers";
 
@@ -40,40 +45,95 @@ export const EditAndCreateSubForum: React.FC<Props_> = ({
   navigation,
   route,
 }) => {
-  const { title } = route.params;
+  const { title, action, subForumId } = route.params;
 
-  const [forum, setForum] = React.useState("");
+  const [forumName, setForumName] = React.useState("");
   const [description, setDescription] = React.useState("");
+
   const [profileImageS3Key, setProfileImageS3Key] = React.useState("");
-  const [coverImageS3Key, setCoverImageS3Key] = React.useState("");
+  const [bannerImageS3Key, setBannerImageS3Key] = React.useState("");
 
   const [signedProfile, setSignedProfile] = React.useState("");
   const [signedCover, setSignedCover] = React.useState("");
 
+  const currentUser = React.useContext(UserContext).user;
+
+  /**
+   * validation and error states
+   */
+
+  const [isforumNameValid, setForumNameValid] = React.useState(false);
+  const [forumNameErrorMsg, setForumNameErrorMsg] = React.useState("");
+
+  const [isDescriptionValid, setDescriptionValid] = React.useState(false);
+  const [descriptionErrorMsg, setDescriptionErrorMsg] = React.useState("");
+
+  /**
+   * loaders state
+   */
+
   const [coverLoader, toggleCoverLoader] = useToggle(false);
   const [profileLoader, toggleProfileLoader] = useToggle(false);
 
-  React.useEffect(() => {
-    (async () => {
-      if (profileImageS3Key) {
-        const signedImage = await SignS3ImageKey(profileImageS3Key);
-        if (signedImage) {
-          setSignedProfile(signedImage);
-        }
-      }
-    })();
-  }, [profileImageS3Key]);
+  const handleSubmit = React.useCallback(async () => {
+    if (
+      isforumNameValid &&
+      isDescriptionValid &&
+      profileImageS3Key &&
+      bannerImageS3Key
+    ) {
+      /** checking current screen for action add or edit action */
+      if (action === "Add") {
+        const newForumInput: handleForumCreationInput_ = {
+          name: forumName,
+          description,
+          bannerImageS3Key,
+          profileImageS3Key,
+          type: "PUBLIC",
+          creatorId: currentUser.id,
+        };
+        const createdForumId = await handleForumCreation(newForumInput);
 
-  React.useEffect(() => {
-    (async () => {
-      if (coverImageS3Key) {
-        const signedImage = await SignS3ImageKey(coverImageS3Key);
-        if (signedImage) {
-          setSignedCover(signedImage);
+        if (createdForumId) {
+          navigation.push("SubForum", { subForumId: createdForumId });
         }
       }
-    })();
-  }, [coverImageS3Key]);
+
+      if (action === "Edit" && subForumId) {
+        /**
+         * Todo if input is same as current dont make a post call
+         */
+        const updateForumInput: handleForumUpdationInput_ = {
+          id: subForumId,
+          name: forumName,
+          description,
+          bannerImageS3Key,
+          profileImageS3Key,
+        };
+
+        const updatedForumId = await handleForumUpdation(updateForumInput);
+
+        if (updatedForumId) {
+          navigation.push("SubForum", { subForumId: updatedForumId });
+        }
+      }
+    } else {
+      Alert.alert(
+        "You should provide all required fields including cover and subforum image to create subforum"
+      );
+    }
+  }, [
+    isforumNameValid,
+    isDescriptionValid,
+    profileImageS3Key,
+    bannerImageS3Key,
+    action,
+    subForumId,
+    forumName,
+    description,
+    currentUser,
+    navigation,
+  ]);
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -82,7 +142,7 @@ export const EditAndCreateSubForum: React.FC<Props_> = ({
           size="md"
           _text={{ fontWeight: "600", color: "white" }}
           variant="unstyled"
-          onPress={() => navigation.navigate("SubForum")}
+          onPress={handleSubmit}
         >
           {title === "Edit Subforum" ? "Save" : "Create"}
         </Button>
@@ -101,7 +161,61 @@ export const EditAndCreateSubForum: React.FC<Props_> = ({
           </Pressable>
         ),
     });
-  }, [navigation, title]);
+  }, [navigation, title, handleSubmit]);
+
+  React.useEffect(() => {
+    (async () => {
+      if (profileImageS3Key) {
+        const signedImage = await SignS3ImageKey(profileImageS3Key);
+        if (signedImage) {
+          setSignedProfile(signedImage);
+        }
+      }
+    })();
+  }, [profileImageS3Key]);
+
+  React.useEffect(() => {
+    (async () => {
+      if (bannerImageS3Key) {
+        const signedImage = await SignS3ImageKey(bannerImageS3Key);
+        if (signedImage) {
+          setSignedCover(signedImage);
+        }
+      }
+    })();
+  }, [bannerImageS3Key]);
+
+  React.useEffect(() => {
+    const validateForumName = () => {
+      if (
+        isLength(forumName, { min: 3, max: 20 }) &&
+        matches(forumName, "^[A-Za-z][A-Za-z0-9 _|.,!]{3,20}$", "m")
+      ) {
+        setForumNameValid(true);
+        setForumNameErrorMsg("");
+      } else {
+        setForumNameValid(false);
+        setForumNameErrorMsg("Alphanumeric username 3-20 chars");
+      }
+    };
+    validateForumName();
+  }, [forumName]);
+
+  React.useEffect(() => {
+    const validateDescription = () => {
+      if (
+        isLength(description, { min: 25, max: 300 }) &&
+        matches(description, "^[A-Za-z][A-Za-z0-9 _|.,!]{25,300}$", "m")
+      ) {
+        setDescriptionValid(true);
+        setDescriptionErrorMsg("");
+      } else {
+        setDescriptionValid(false);
+        setDescriptionErrorMsg("Alphanumeric description 25-300 chars");
+      }
+    };
+    validateDescription();
+  }, [description]);
 
   return (
     <Box style={styles.container}>
@@ -135,7 +249,7 @@ export const EditAndCreateSubForum: React.FC<Props_> = ({
             imageWidth={110}
             imageHeight={110}
             aspectRatio={[4, 3]}
-            setS3ImageKey={setCoverImageS3Key}
+            setS3ImageKey={setBannerImageS3Key}
             setProgressPercentage={() => {}} // percentage progress
           />
         )}
@@ -185,13 +299,13 @@ export const EditAndCreateSubForum: React.FC<Props_> = ({
       </Box>
       <Box style={styles.wrapper} bg="white">
         <Box style={styles.inputContainer}>
-          <FormControl isRequired>
+          <FormControl isRequired isInvalid={!isforumNameValid}>
             <FormControl.Label mb="3">Forum Name</FormControl.Label>
             <Input
               bg="coolGray.100"
               p="4"
-              value={forum}
-              onChangeText={setForum}
+              value={forumName}
+              onChangeText={setForumName}
               borderRadius="md"
               placeholder="Mechkeys"
               placeholderTextColor="muted.400"
@@ -201,10 +315,10 @@ export const EditAndCreateSubForum: React.FC<Props_> = ({
             <FormControl.ErrorMessage
               leftIcon={<WarningOutlineIcon size="xs" />}
             >
-              You must provide username
+              {forumNameErrorMsg}
             </FormControl.ErrorMessage>
           </FormControl>
-          <FormControl mt="4" isRequired>
+          <FormControl mt="4" isRequired isInvalid={!isDescriptionValid}>
             <FormControl.Label mb="3">Description</FormControl.Label>
             <Input
               bg="coolGray.100"
@@ -223,6 +337,11 @@ export const EditAndCreateSubForum: React.FC<Props_> = ({
               fontSize="sm"
               variant="unstyled"
             />
+            <FormControl.ErrorMessage
+              leftIcon={<WarningOutlineIcon size="xs" />}
+            >
+              {descriptionErrorMsg}
+            </FormControl.ErrorMessage>
             <FormControl.HelperText>
               Crispy introduction about forum
             </FormControl.HelperText>
@@ -247,3 +366,153 @@ const styles = StyleSheet.create({
     width: "100%",
   },
 });
+
+interface handleForumCreationInput_ {
+  name: string;
+  description: string;
+  bannerImageS3Key: string;
+  profileImageS3Key: string;
+  type: string;
+  creatorId: string;
+}
+
+const handleForumCreation = async (input: handleForumCreationInput_) => {
+  try {
+    /**
+     * create forum
+     */
+    const forumData = (await API.graphql({
+      query: createForum,
+      variables: { input: input },
+      authMode: "AMAZON_COGNITO_USER_POOLS",
+    })) as GraphQLResult<createForum>;
+
+    if (forumData.data?.createCommunity) {
+      /**
+       * create forum user relationships for author
+       */
+
+      const userForumRelationInput = {
+        userId: input.creatorId,
+        communityId: forumData.data.createCommunity.id,
+      };
+
+      await API.graphql({
+        query: createUserForumRelation,
+        variables: { input: userForumRelationInput },
+        authMode: "AMAZON_COGNITO_USER_POOLS",
+      });
+
+      /**
+       * create moderator user relationships for author
+       */
+
+      const moderatorForumRelationInput = {
+        moderatorId: input.creatorId,
+        communityId: forumData.data.createCommunity.id,
+      };
+
+      await API.graphql({
+        query: createModeratorForumRelation,
+        variables: { input: moderatorForumRelationInput },
+        authMode: "AMAZON_COGNITO_USER_POOLS",
+      });
+
+      /**
+       * return created community id to navigate
+       */
+
+      return forumData.data.createCommunity.id;
+    }
+  } catch (err) {
+    console.error("Error occured while creating forum", err);
+  }
+  // navigation to subforum screen it shouldn't come back to create screen
+};
+
+interface handleForumUpdationInput_ {
+  id: string;
+  name: string;
+  description: string;
+  bannerImageS3Key: string;
+  profileImageS3Key: string;
+}
+
+const handleForumUpdation = async (input: handleForumUpdationInput_) => {
+  try {
+    /**
+     * update forum
+     */
+    const forumData = (await API.graphql({
+      query: updateForum,
+      variables: { input: input },
+      authMode: "AMAZON_COGNITO_USER_POOLS",
+    })) as GraphQLResult<updateForum_>;
+
+    if (forumData.data?.updateCommunity) {
+      return forumData.data.updateCommunity.id;
+    }
+  } catch (err) {
+    console.error("Error occured while updating forum", err);
+  }
+  // navigation to subforum screen it shouldn't come back to create screen
+};
+
+/**
+ * graphql queries and their types
+ * types pattern {queryName}_
+ * * note dash(_) at the end of type name
+ * order 1.queryType 2.graphql query
+ */
+
+type createForum = {
+  createCommunity?: {
+    id: string;
+    _version: number;
+  };
+};
+
+const createForum = /* GraphQL */ `
+  mutation createForum($input: CreateCommunityInput!) {
+    createCommunity(input: $input) {
+      id
+      _version
+    }
+  }
+`;
+
+const createUserForumRelation = /* GraphQL */ `
+  mutation createUserForumRelation(
+    $input: CreateUserCommunityRelationShipInput!
+  ) {
+    createUserCommunityRelationShip(input: $input) {
+      id
+    }
+  }
+`;
+
+const createModeratorForumRelation = /* GraphQL */ `
+  mutation createModeratorForumRelation(
+    $input: CreateModeratorCommunityRelationShipInput!
+  ) {
+    createModeratorCommunityRelationShip(input: $input) {
+      id
+    }
+  }
+`;
+
+type updateForum_ = {
+  updateCommunity?: {
+    id: string;
+    _version: number;
+  };
+};
+
+const updateForum = /* GraphQL */ `
+  mutation updateForum($input: UpdateCommunityInput!) {
+    updateCommunity(input: $input) {
+      _version
+      id
+    }
+  }
+`;
