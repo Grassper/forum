@@ -10,7 +10,6 @@ import { NativeBaseProvider } from "native-base";
 import React from "react";
 import { enableScreens } from "react-native-screens";
 
-import { SignIn } from "@/root/src/components/screens/Authentication";
 import { NativeBaseTheme as Theme } from "@/root/src/config";
 import { UserContext, UserContextProvider } from "@/root/src/context";
 
@@ -133,8 +132,7 @@ const App: React.FC = () => {
 
   return (
     <NativeBaseProvider theme={Theme}>
-      {/* <SideDrawerNavigator /> */}
-      <SignIn />
+      <SideDrawerNavigator />
     </NativeBaseProvider>
   );
 };

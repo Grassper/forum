@@ -16,6 +16,7 @@ import { RootStackParamList } from "@/root/src/components/navigations/StackNavig
 import { SubForumCard } from "@/root/src/components/shared/Cards";
 import { HeaderProfileIcon } from "@/root/src/components/shared/HeaderProfileIcon";
 import { colors } from "@/root/src/constants";
+import { SignS3ImageKey } from "@/root/src/utils/helpers";
 
 type RouteProp_ = RouteProp<RootStackParamList, "EditAndCreateSubForum">;
 
@@ -37,6 +38,33 @@ export const EditAndCreateSubForum: React.FC<Props_> = ({
 
   const [forum, setForum] = React.useState("");
   const [description, setDescription] = React.useState("");
+  const [profileImageS3Key, setProfileImageS3Key] = React.useState("");
+  const [coverImageS3Key, setCoverImageS3Key] = React.useState("");
+
+  const [signedProfile, setSignedProfile] = React.useState("");
+  const [signedCover, setSignedCover] = React.useState("");
+
+  React.useEffect(() => {
+    (async () => {
+      if (profileImageS3Key) {
+        const signedImage = await SignS3ImageKey(profileImageS3Key);
+        if (signedImage) {
+          setSignedProfile(signedImage);
+        }
+      }
+    })();
+  }, [profileImageS3Key]);
+
+  React.useEffect(() => {
+    (async () => {
+      if (coverImageS3Key) {
+        const signedImage = await SignS3ImageKey(coverImageS3Key);
+        if (signedImage) {
+          setSignedCover(signedImage);
+        }
+      }
+    })();
+  }, [coverImageS3Key]);
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -68,7 +96,13 @@ export const EditAndCreateSubForum: React.FC<Props_> = ({
 
   return (
     <Box style={styles.container}>
-      <SubForumCard isEdit />
+      <SubForumCard
+        isEdit
+        profileImage={signedProfile}
+        coverImage={signedCover}
+        setProfileImageS3Key={setProfileImageS3Key}
+        setCoverImageS3Key={setCoverImageS3Key}
+      />
       <Box style={styles.wrapper} bg="white">
         <Box style={styles.inputContainer}>
           <FormControl isRequired>
