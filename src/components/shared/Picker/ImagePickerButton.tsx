@@ -2,9 +2,9 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { Storage } from "aws-amplify";
 import { format } from "date-fns";
 import * as ImagePicker from "expo-image-picker";
-import { Box, Icon, Pressable } from "native-base";
+import { Box, Icon } from "native-base";
 import React from "react";
-import { Alert, Platform } from "react-native";
+import { Alert, Platform, Pressable } from "react-native";
 import uuid from "react-native-uuid";
 
 import {

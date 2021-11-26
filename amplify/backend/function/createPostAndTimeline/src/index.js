@@ -43,16 +43,16 @@ exports.handler = async (event, _, callback) => {
     event.arguments.type === "VIDEO" ||
     event.arguments.type === "IMAGE"
   ) {
-    if (!event.arguments.mediaUrl) {
+    if (!event.arguments.mediaS3Key) {
       callback(
-        `post type of ${event.arguments.type} should contain mediaUrl`,
+        `post type of ${event.arguments.type} should contain mediaS3Key`,
         null
       );
     }
     postInput = {
       type: event.arguments.type,
       content: event.arguments.content,
-      mediaUrl: event.arguments.mediaUrl,
+      mediaS3Key: event.arguments.mediaS3Key,
       authorId: event.arguments.authorId,
       communityId: event.arguments.communityId,
       tags: event.arguments.tags,

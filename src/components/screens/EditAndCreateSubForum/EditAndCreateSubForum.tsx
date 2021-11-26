@@ -1,21 +1,25 @@
-import { AntDesign } from "@expo/vector-icons";
+import { AntDesign, Ionicons } from "@expo/vector-icons";
 import { RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import {
+  Avatar,
   Box,
   Button,
   FormControl,
+  Icon,
+  Image,
   Input,
   Pressable,
   WarningOutlineIcon,
 } from "native-base";
 import React from "react";
-import { StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
 
 import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
-import { SubForumCard } from "@/root/src/components/shared/Cards";
 import { HeaderProfileIcon } from "@/root/src/components/shared/HeaderProfileIcon";
+import { ImagePickerButton } from "@/root/src/components/shared/Picker";
 import { colors } from "@/root/src/constants";
+import { useToggle } from "@/root/src/hooks";
 import { SignS3ImageKey } from "@/root/src/utils/helpers";
 
 type RouteProp_ = RouteProp<RootStackParamList, "EditAndCreateSubForum">;
@@ -30,6 +34,8 @@ interface Props_ {
   route: RouteProp_;
 }
 
+const windowWidth = Dimensions.get("window").width;
+
 export const EditAndCreateSubForum: React.FC<Props_> = ({
   navigation,
   route,
@@ -43,6 +49,9 @@ export const EditAndCreateSubForum: React.FC<Props_> = ({
 
   const [signedProfile, setSignedProfile] = React.useState("");
   const [signedCover, setSignedCover] = React.useState("");
+
+  const [coverLoader, toggleCoverLoader] = useToggle(false);
+  const [profileLoader, toggleProfileLoader] = useToggle(false);
 
   React.useEffect(() => {
     (async () => {
@@ -96,13 +105,84 @@ export const EditAndCreateSubForum: React.FC<Props_> = ({
 
   return (
     <Box style={styles.container}>
-      <SubForumCard
-        isEdit
-        profileImage={signedProfile}
-        coverImage={signedCover}
-        setProfileImageS3Key={setProfileImageS3Key}
-        setCoverImageS3Key={setCoverImageS3Key}
-      />
+      <Box position="relative" height="115px">
+        {signedCover ? (
+          <Image
+            width="100%"
+            height="100%"
+            alt="Cover Image"
+            source={{
+              uri: signedCover,
+            }}
+          />
+        ) : (
+          <Box
+            width="100%"
+            alignItems="center"
+            height="100%"
+            justifyContent="center"
+          >
+            <Icon
+              as={<Ionicons name="ios-image" />}
+              size={6}
+              color="muted.700"
+            />
+          </Box>
+        )}
+        {!coverLoader && (
+          <ImagePickerButton
+            maxImageSize={15}
+            imageWidth={110}
+            imageHeight={110}
+            aspectRatio={[4, 3]}
+            setS3ImageKey={setCoverImageS3Key}
+            setProgressPercentage={() => {}} // percentage progress
+          />
+        )}
+      </Box>
+      <Box alignItems="flex-start" justifyContent="center" bg="white">
+        <Box position="relative">
+          {signedProfile ? (
+            <Avatar
+              bg="green.500"
+              mt="-20"
+              ml={windowWidth * 0.025}
+              width="100px"
+              height="100px"
+              source={{
+                uri: signedProfile,
+              }}
+            />
+          ) : (
+            <Box
+              bg="coolGray.200"
+              mt="-20"
+              ml={windowWidth * 0.025}
+              width="100px"
+              height="100px"
+              alignItems="center"
+              justifyContent="center"
+              borderRadius="full"
+            >
+              <Icon
+                as={<Ionicons name="ios-image" />}
+                size={6}
+                color="muted.700"
+              />
+            </Box>
+          )}
+          {!profileLoader && (
+            <ImagePickerButton
+              maxImageSize={5}
+              imageWidth={480}
+              imageHeight={360}
+              aspectRatio={[4, 3]}
+              setS3ImageKey={setProfileImageS3Key}
+              setProgressPercentage={() => {}} // percentage progress
+            />
+          )}
+        </Box>
+      </Box>
       <Box style={styles.wrapper} bg="white">
         <Box style={styles.inputContainer}>
           <FormControl isRequired>

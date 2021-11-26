@@ -37,7 +37,14 @@ export const SubForum: React.FC<Props_> = ({ navigation }) => {
       <FlatList
         data={dummyData}
         renderItem={PostCardRenderer}
-        ListHeaderComponent={() => <SubForumCard />}
+        ListHeaderComponent={() => (
+          <SubForumCard
+            name="e/Mechkeys"
+            description="All about mech keys"
+            profileImage=""
+            coverImage=""
+          />
+        )}
         keyExtractor={(item) => item.id}
       />
     </View>
