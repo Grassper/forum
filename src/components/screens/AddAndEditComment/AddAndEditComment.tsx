@@ -1,20 +1,23 @@
-import { RouteProp } from "@react-navigation/native";
+import { DrawerNavigationProp } from "@react-navigation/drawer";
+import { CompositeNavigationProp, RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { Box, Button, Divider, Flex, Input } from "native-base";
 import React from "react";
 import { StyleSheet } from "react-native";
 
-import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
+import {
+  DrawerParamList_,
+  StackParamList_,
+} from "@/root/src/components/navigations/Navigation";
 import { PostCard } from "@/root/src/components/shared/Cards/PostCard";
 import { dummyData } from "@/root/src/data/dummyData";
 
-type RouteProp_ = RouteProp<RootStackParamList, "AddAndEditComment">;
-
-type NavigationProp_ = StackNavigationProp<
-  RootStackParamList,
-  "AddAndEditComment"
+type NavigationProp_ = CompositeNavigationProp<
+  StackNavigationProp<StackParamList_, "AddAndEditComment">,
+  DrawerNavigationProp<DrawerParamList_>
 >;
 
+type RouteProp_ = RouteProp<StackParamList_, "AddAndEditComment">;
 interface Props_ {
   navigation: NavigationProp_;
   route: RouteProp_;

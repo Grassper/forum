@@ -1,27 +1,20 @@
 import { Entypo } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
-import { StackNavigationProp } from "@react-navigation/stack";
 import { Box, HStack, Pressable, Text } from "native-base";
 import React from "react";
 import { SvgUri } from "react-native-svg";
-
-import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
-
-type NavigationProp_ = StackNavigationProp<RootStackParamList>;
 
 interface FollowCard_ {
   id: string;
   username: string;
   avatarUrl: string;
+  onPress?: () => void;
 }
 
 export const FollowCard: React.FC<FollowCard_> = ({ username, avatarUrl }) => {
-  const navigation = useNavigation<NavigationProp_>();
-
   return (
     <Pressable
       onPress={() => {
-        navigation.push("Profile", { userId: "2" }); // pass user id here of follow card user example: 2
+        //navigate to profile
       }}
     >
       <Box alignItems="center" bg="white">

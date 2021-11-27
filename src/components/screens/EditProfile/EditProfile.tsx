@@ -1,4 +1,6 @@
 import { GraphQLResult } from "@aws-amplify/api-graphql";
+import { DrawerNavigationProp } from "@react-navigation/drawer";
+import { CompositeNavigationProp, RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { API } from "aws-amplify";
 import {
@@ -14,14 +16,23 @@ import { SvgUri } from "react-native-svg";
 import isLength from "validator/es/lib/isLength";
 import matches from "validator/es/lib/matches";
 
-import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
+import {
+  DrawerParamList_,
+  StackParamList_,
+} from "@/root/src/components/navigations/Navigation";
 import { colors } from "@/root/src/constants";
 import { UserContext } from "@/root/src/context";
 
-type NavigationProp_ = StackNavigationProp<RootStackParamList, "EditProfile">;
+type NavigationProp_ = CompositeNavigationProp<
+  StackNavigationProp<StackParamList_, "EditProfile">,
+  DrawerNavigationProp<DrawerParamList_>
+>;
+
+type RouteProp_ = RouteProp<StackParamList_, "EditProfile">;
 
 interface Props_ {
   navigation: NavigationProp_;
+  route: RouteProp_;
 }
 
 export const EditProfile: React.FC<Props_> = ({ navigation }) => {

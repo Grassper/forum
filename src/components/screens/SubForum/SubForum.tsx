@@ -1,14 +1,22 @@
+import { DrawerNavigationProp } from "@react-navigation/drawer";
+import { CompositeNavigationProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { Button } from "native-base";
 import React from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 
-import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
+import {
+  DrawerParamList_,
+  StackParamList_,
+} from "@/root/src/components/navigations/Navigation";
 import { PostCardRenderer } from "@/root/src/components/shared/CardRenderer";
 import { SubForumCard } from "@/root/src/components/shared/Cards";
 import { dummyData } from "@/root/src/data/dummyData";
 
-type NavigationProp_ = StackNavigationProp<RootStackParamList, "SubForum">;
+type NavigationProp_ = CompositeNavigationProp<
+  StackNavigationProp<StackParamList_, "SubForum">,
+  DrawerNavigationProp<DrawerParamList_>
+>;
 
 interface Props_ {
   navigation: NavigationProp_;

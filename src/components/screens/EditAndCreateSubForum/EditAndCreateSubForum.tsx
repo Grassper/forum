@@ -1,6 +1,7 @@
 import { GraphQLResult } from "@aws-amplify/api-graphql";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
-import { RouteProp } from "@react-navigation/native";
+import { DrawerNavigationProp } from "@react-navigation/drawer";
+import { CompositeNavigationProp, RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { API } from "aws-amplify";
 import {
@@ -19,7 +20,10 @@ import { Alert, Dimensions, StyleSheet } from "react-native";
 import isLength from "validator/es/lib/isLength";
 import matches from "validator/es/lib/matches";
 
-import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
+import {
+  DrawerParamList_,
+  StackParamList_,
+} from "@/root/src/components/navigations/Navigation";
 import { HeaderProfileIcon } from "@/root/src/components/shared/HeaderProfileIcon";
 import { ImagePickerButton } from "@/root/src/components/shared/Picker";
 import { colors } from "@/root/src/constants";
@@ -27,11 +31,11 @@ import { UserContext } from "@/root/src/context";
 import { useToggle } from "@/root/src/hooks";
 import { SignS3ImageKey } from "@/root/src/utils/helpers";
 
-type RouteProp_ = RouteProp<RootStackParamList, "EditAndCreateSubForum">;
+type RouteProp_ = RouteProp<StackParamList_, "EditAndCreateSubForum">;
 
-type NavigationProp_ = StackNavigationProp<
-  RootStackParamList,
-  "EditAndCreateSubForum"
+type NavigationProp_ = CompositeNavigationProp<
+  StackNavigationProp<StackParamList_, "EditAndCreateSubForum">,
+  DrawerNavigationProp<DrawerParamList_>
 >;
 
 interface Props_ {

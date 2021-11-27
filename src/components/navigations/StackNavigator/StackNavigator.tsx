@@ -2,6 +2,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
 
 import { BottomTabNavigator } from "@/root/src/components/navigations/BottomTabNavigator";
+import { StackParamList_ } from "@/root/src/components/navigations/Navigation";
 import { AddAndEditComment } from "@/root/src/components/screens/AddAndEditComment";
 import { AddAndEditPost } from "@/root/src/components/screens/AddAndEditPost";
 import { AddAndEditReplies } from "@/root/src/components/screens/AddAndEditReplies";
@@ -19,47 +20,7 @@ import { SubForum } from "@/root/src/components/screens/SubForum";
 import { SubForumMod } from "@/root/src/components/screens/SubForumMod";
 import { colors } from "@/root/src/constants";
 
-export type RootStackParamList = {
-  BottomTabNavigator: undefined;
-  // * User
-  Profile: { userId: string };
-  EditProfile: undefined;
-  Follow: { title: "Followers" | "Following" | "Blocked Accounts" };
-  Bookmark: undefined;
-
-  // * SubForum
-  SubForum: { subForumId: string };
-  SubForumMod: undefined;
-  EditAndCreateSubForum: {
-    title: "Edit Subforum" | "Create Subforum";
-    action: "Add" | "Edit";
-    subForumId?: string; // pass only for add action which means create subforum
-  };
-
-  // * Post
-  Post: undefined;
-  AddAndEditPost: {
-    postType: "Image" | "Text" | "Video" | "Audio" | "Poll";
-    action: "Add" | "Edit";
-    hideUpload?: boolean;
-  };
-  ChooseSubForum: {
-    postType: "Image" | "Text" | "Video" | "Audio" | "Poll";
-    action: "Add" | "Edit";
-    hideUpload?: boolean;
-  };
-
-  // * Comment
-  Comment: undefined;
-  AddAndEditComment: { action: "Add" | "Edit" };
-  AddAndEditReplies: { action: "Add" | "Edit" };
-
-  // * Message
-  NewChat: undefined;
-  ChatRoom: { title: string; imageUri: string };
-};
-
-const Stack = createStackNavigator<RootStackParamList>();
+const Stack = createStackNavigator<StackParamList_>();
 
 const defaultStackOptions = {
   headerBackTitleVisible: false,
@@ -73,10 +34,10 @@ export const StackNavigator = () => {
   return (
     <Stack.Navigator
       screenOptions={defaultStackOptions}
-      initialRouteName="BottomTabNavigator"
+      initialRouteName="BottomTabNav"
     >
       <Stack.Screen
-        name="BottomTabNavigator"
+        name="BottomTabNav"
         component={BottomTabNavigator}
         options={{
           title: "",

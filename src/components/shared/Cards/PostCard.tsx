@@ -1,6 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { StackNavigationProp } from "@react-navigation/stack";
 import { Video } from "expo-av";
 import { Box, Flex, HStack, Icon, Image, Pressable, Text } from "native-base";
 import React, { useState } from "react";
@@ -13,11 +12,9 @@ import {
 import { SvgUri } from "react-native-svg";
 import Tooltip from "react-native-walkthrough-tooltip";
 
-import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
+import { NavigationProp_ } from "@/root/src/components/navigations/Navigation";
 import { AudioComponent } from "@/root/src/components/shared/Audio";
 import { colors } from "@/root/src/constants";
-
-type NavigationProp_ = StackNavigationProp<RootStackParamList>;
 
 export interface Props_ {
   id: string;

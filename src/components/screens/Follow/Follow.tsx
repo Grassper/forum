@@ -1,20 +1,28 @@
 import { AntDesign, MaterialIcons } from "@expo/vector-icons";
-import { RouteProp } from "@react-navigation/native";
+import { DrawerNavigationProp } from "@react-navigation/drawer";
+import { CompositeNavigationProp, RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { Box, HStack, Icon, Pressable, Text, VStack } from "native-base";
 import React from "react";
 import { FlatList } from "react-native";
 import { SwipeListView } from "react-native-swipe-list-view";
 
-import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
+import {
+  DrawerParamList_,
+  StackParamList_,
+} from "@/root/src/components/navigations/Navigation";
 import { FollowCardRenderer } from "@/root/src/components/shared/CardRenderer";
 import { HeaderProfileIcon } from "@/root/src/components/shared/HeaderProfileIcon";
 import { SearchBar } from "@/root/src/components/shared/SearchBar";
 import { UserData } from "@/root/src/data/userData";
 
-type RouteProp_ = RouteProp<RootStackParamList, "Follow">;
+type NavigationProp_ = CompositeNavigationProp<
+  StackNavigationProp<StackParamList_, "Follow">,
+  DrawerNavigationProp<DrawerParamList_>
+>;
 
-type NavigationProp_ = StackNavigationProp<RootStackParamList, "Follow">;
+type RouteProp_ = RouteProp<StackParamList_, "Follow">;
+
 interface Props_ {
   navigation: NavigationProp_;
   route: RouteProp_;

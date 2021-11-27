@@ -1,18 +1,15 @@
 import { GraphQLResult } from "@aws-amplify/api-graphql";
 import { useNavigation } from "@react-navigation/native";
-import { StackNavigationProp } from "@react-navigation/stack";
 import { API } from "aws-amplify";
 import { format } from "date-fns";
 import { Box, Button, HStack, Pressable, Text, VStack } from "native-base";
 import React from "react";
 import { SvgUri } from "react-native-svg";
 
-import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
+import { NavigationProp_ } from "@/root/src/components/navigations/Navigation";
 import { Skeleton } from "@/root/src/components/shared/Skeleton";
 import { UserContext } from "@/root/src/context";
 import { useToggle } from "@/root/src/hooks";
-
-type NavigationProp_ = StackNavigationProp<RootStackParamList>;
 
 interface Props_ {
   routeUserId: string;

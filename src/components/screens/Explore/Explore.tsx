@@ -1,8 +1,17 @@
+import { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
+import { DrawerNavigationProp } from "@react-navigation/drawer";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+import { CompositeNavigationProp } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
 import { Box } from "native-base";
 import React from "react";
 import { Dimensions, StatusBar, StyleSheet } from "react-native";
 
+import {
+  BottomTabParamList_,
+  DrawerParamList_,
+  StackParamList_,
+} from "@/root/src/components/navigations/Navigation";
 import { SearchBar } from "@/root/src/components/shared/SearchBar";
 import { colors } from "@/root/src/constants";
 
@@ -10,7 +19,17 @@ import { CommunitySearch } from "./CommunitySearch";
 import { PostSearch } from "./PostSearch";
 import { ProfileSearch } from "./ProfileSearch";
 
-interface Props_ {}
+type NavigationProp_ = CompositeNavigationProp<
+  BottomTabNavigationProp<BottomTabParamList_, "Explore">,
+  CompositeNavigationProp<
+    StackNavigationProp<StackParamList_>,
+    DrawerNavigationProp<DrawerParamList_>
+  >
+>;
+
+interface Props_ {
+  navigation: NavigationProp_;
+}
 
 type TabParamList = {
   explorePost: undefined;

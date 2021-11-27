@@ -1,16 +1,10 @@
 import { AntDesign, Entypo, Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { StackNavigationProp } from "@react-navigation/stack";
 import { Avatar, Box, Flex, HStack, Icon, Pressable, Text } from "native-base";
 import React from "react";
 import { StyleSheet } from "react-native";
 
-import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
-
-type NavigationProp_ = StackNavigationProp<
-  RootStackParamList,
-  "AddAndEditComment"
->;
+import { NavigationProp_ } from "@/root/src/components/navigations/Navigation";
 
 interface Props_ {
   replyExists?: boolean;

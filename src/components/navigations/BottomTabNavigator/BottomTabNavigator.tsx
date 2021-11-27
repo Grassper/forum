@@ -2,11 +2,12 @@ import { FontAwesome, Foundation, Ionicons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import React from "react";
 
+import { BottomTabParamList_ } from "@/root/src/components/navigations/Navigation";
 import { ChatList } from "@/root/src/components/screens/ChatList";
 import { Explore } from "@/root/src/components/screens/Explore";
 import { Home } from "@/root/src/components/screens/Home";
 
-const Tab = createBottomTabNavigator();
+const Tab = createBottomTabNavigator<BottomTabParamList_>();
 
 /**
  * Todo change icons color when it is focused

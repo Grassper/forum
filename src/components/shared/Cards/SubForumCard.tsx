@@ -1,6 +1,5 @@
 import { Foundation, Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { StackNavigationProp } from "@react-navigation/stack";
 import {
   Avatar,
   Box,
@@ -14,10 +13,8 @@ import {
 import React from "react";
 import { Dimensions, StyleSheet } from "react-native";
 
-import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
+import { NavigationProp_ } from "@/root/src/components/navigations/Navigation";
 import { useToggle } from "@/root/src/hooks";
-
-type NavigationProp_ = StackNavigationProp<RootStackParamList>;
 
 interface Props_ {
   name: string;
@@ -113,6 +110,7 @@ export const SubForumCard: React.FC<Props_> = ({
                 onPress={() =>
                   navigation.navigate("EditAndCreateSubForum", {
                     title: "Edit Subforum",
+                    action: "Edit",
                   })
                 }
               >

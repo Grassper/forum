@@ -1,9 +1,17 @@
 import { Ionicons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
+import { DrawerNavigationProp } from "@react-navigation/drawer";
+import { CompositeNavigationProp } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
 import { Box, Icon, Image } from "native-base";
 import React, { useState } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 
+import {
+  BottomTabParamList_,
+  DrawerParamList_,
+  StackParamList_,
+} from "@/root/src/components/navigations/Navigation";
 import { BottomSheet } from "@/root/src/components/shared/BottomSheet";
 import { PostCardRenderer } from "@/root/src/components/shared/CardRenderer";
 import { FloatingActionButton } from "@/root/src/components/shared/FabButton";
@@ -11,9 +19,19 @@ import { HeaderProfileIcon } from "@/root/src/components/shared/HeaderProfileIco
 import { UserContext } from "@/root/src/context";
 import { dummyData } from "@/root/src/data/dummyData";
 
-export const Home: React.FC = () => {
-  const navigation = useNavigation();
+type NavigationProp_ = CompositeNavigationProp<
+  BottomTabNavigationProp<BottomTabParamList_, "Explore">,
+  CompositeNavigationProp<
+    StackNavigationProp<StackParamList_>,
+    DrawerNavigationProp<DrawerParamList_>
+  >
+>;
 
+interface Props_ {
+  navigation: NavigationProp_;
+}
+
+export const Home: React.FC<Props_> = ({ navigation }) => {
   const {
     user: { profileImageUrl },
   } = React.useContext(UserContext);

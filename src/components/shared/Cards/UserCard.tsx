@@ -1,13 +1,10 @@
 import { Entypo } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { StackNavigationProp } from "@react-navigation/stack";
 import { Box, HStack, Pressable, Text } from "native-base";
 import React from "react";
 import { SvgUri } from "react-native-svg";
 
-import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
-
-type NavigationProp_ = StackNavigationProp<RootStackParamList>;
+import { NavigationProp_ } from "@/root/src/components/navigations/Navigation";
 
 interface UserCard_ {
   id: string;

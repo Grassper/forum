@@ -1,7 +1,7 @@
 import { AntDesign } from "@expo/vector-icons";
-import { RouteProp } from "@react-navigation/native";
+import { DrawerNavigationProp } from "@react-navigation/drawer";
+import { CompositeNavigationProp, RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-// import { DocumentPicker, ImagePicker } from "expo";
 import * as DocumentPicker from "expo-document-picker";
 import {
   Box,
@@ -17,16 +17,18 @@ import {
 import React from "react";
 import { StyleSheet } from "react-native";
 
-import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
+import {
+  DrawerParamList_,
+  StackParamList_,
+} from "@/root/src/components/navigations/Navigation";
 import { CommunityTile } from "@/root/src/components/shared/Tile";
 
-type RouteProp_ = RouteProp<RootStackParamList, "AddAndEditPost">;
+type RouteProp_ = RouteProp<StackParamList_, "AddAndEditPost">;
 
-type NavigationProp_ = StackNavigationProp<
-  RootStackParamList,
-  "AddAndEditPost"
+type NavigationProp_ = CompositeNavigationProp<
+  StackNavigationProp<StackParamList_, "AddAndEditComment">,
+  DrawerNavigationProp<DrawerParamList_>
 >;
-
 interface Props_ {
   navigation: NavigationProp_;
   route: RouteProp_;

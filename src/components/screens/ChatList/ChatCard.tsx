@@ -1,12 +1,10 @@
 import { useNavigation } from "@react-navigation/native";
-import { StackNavigationProp } from "@react-navigation/stack";
 import { Box, HStack, Pressable, Spacer, Text, VStack } from "native-base";
 import React from "react";
 import { SvgUri } from "react-native-svg";
 
-import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
+import { NavigationProp_ } from "@/root/src/components/navigations/Navigation";
 
-type NavigationProp_ = StackNavigationProp<RootStackParamList>;
 export const ChatCard: React.FC = () => {
   const Navigation = useNavigation<NavigationProp_>();
   return (

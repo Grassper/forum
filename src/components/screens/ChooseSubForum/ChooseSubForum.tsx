@@ -1,20 +1,24 @@
-import { RouteProp } from "@react-navigation/native";
+import { DrawerNavigationProp } from "@react-navigation/drawer";
+import { CompositeNavigationProp, RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { Box, Button, Text } from "native-base";
 import React from "react";
 import { FlatList, StyleSheet } from "react-native";
 
-import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
+import {
+  DrawerParamList_,
+  StackParamList_,
+} from "@/root/src/components/navigations/Navigation";
 import { SearchBar } from "@/root/src/components/shared/SearchBar";
 import { CommunityTile } from "@/root/src/components/shared/Tile";
 import { dummyData } from "@/root/src/data/dummyData";
 
-type RouteProp_ = RouteProp<RootStackParamList, "ChooseSubForum">;
-
-type NavigationProp_ = StackNavigationProp<
-  RootStackParamList,
-  "ChooseSubForum"
+type NavigationProp_ = CompositeNavigationProp<
+  StackNavigationProp<StackParamList_, "ChooseSubForum">,
+  DrawerNavigationProp<DrawerParamList_>
 >;
+
+type RouteProp_ = RouteProp<StackParamList_, "ChooseSubForum">;
 
 interface Props_ {
   navigation: NavigationProp_;

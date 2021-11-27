@@ -1,14 +1,22 @@
+import { DrawerNavigationProp } from "@react-navigation/drawer";
+import { CompositeNavigationProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { Box } from "native-base";
 import React from "react";
 import { FlatList, ListRenderItem, StyleSheet } from "react-native";
 
-import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
+import {
+  DrawerParamList_,
+  StackParamList_,
+} from "@/root/src/components/navigations/Navigation";
 import { UserCard } from "@/root/src/components/shared/Cards/UserCard";
 import { SearchBar } from "@/root/src/components/shared/SearchBar";
 import { UserData } from "@/root/src/data";
 
-type NavigationProp_ = StackNavigationProp<RootStackParamList, "NewChat">;
+type NavigationProp_ = CompositeNavigationProp<
+  StackNavigationProp<StackParamList_, "NewChat">,
+  DrawerNavigationProp<DrawerParamList_>
+>;
 
 interface Props_ {
   Navigation: NavigationProp_;

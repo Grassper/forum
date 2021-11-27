@@ -1,5 +1,10 @@
 import { Feather, FontAwesome } from "@expo/vector-icons";
-import { RouteProp, useNavigation } from "@react-navigation/native";
+import { DrawerNavigationProp } from "@react-navigation/drawer";
+import {
+  CompositeNavigationProp,
+  RouteProp,
+  useNavigation,
+} from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { Box, Center, Flex, Icon, Input, Text } from "native-base";
 import React from "react";
@@ -12,13 +17,19 @@ import {
 } from "react-native";
 import { SvgUri } from "react-native-svg";
 
-import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
+import {
+  DrawerParamList_,
+  StackParamList_,
+} from "@/root/src/components/navigations/Navigation";
 
 import { ChatCard } from "./ChatCard";
 
-type RouteProp_ = RouteProp<RootStackParamList, "ChatRoom">;
+type NavigationProp_ = CompositeNavigationProp<
+  StackNavigationProp<StackParamList_, "ChatRoom">,
+  DrawerNavigationProp<DrawerParamList_>
+>;
 
-type NavigationProp_ = StackNavigationProp<RootStackParamList, "ChatRoom">;
+type RouteProp_ = RouteProp<StackParamList_, "ChatRoom">;
 
 interface Props_ {
   navigation: NavigationProp_;
