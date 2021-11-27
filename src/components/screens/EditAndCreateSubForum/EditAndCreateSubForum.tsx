@@ -93,7 +93,10 @@ export const EditAndCreateSubForum: React.FC<Props_> = ({
         const createdForumId = await handleForumCreation(newForumInput);
 
         if (createdForumId) {
-          // navigation.push("SubForum", { subForumId: createdForumId });
+          navigation.navigate("StackNav", {
+            screen: "SubForum",
+            params: { subForumId: createdForumId },
+          });
         }
       }
 
@@ -112,7 +115,10 @@ export const EditAndCreateSubForum: React.FC<Props_> = ({
         const updatedForumId = await handleForumUpdation(updateForumInput);
 
         if (updatedForumId) {
-          // navigation.push("SubForum", { subForumId: updatedForumId });
+          navigation.navigate("StackNav", {
+            screen: "SubForum",
+            params: { subForumId: updatedForumId },
+          });
         }
       }
     } else {
