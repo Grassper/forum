@@ -18,6 +18,7 @@ interface Props_ {
 }
 
 export const BottomSheet: React.FC<Props_> = ({ isOpen, onClose }) => {
+  const navigation = useNavigation();
   return (
     <Actionsheet isOpen={isOpen} onClose={onClose}>
       <Actionsheet.Content bg="white">
@@ -25,6 +26,10 @@ export const BottomSheet: React.FC<Props_> = ({ isOpen, onClose }) => {
           <HStack width="100%" space="4">
             <Item
               onPress={() => {
+                navigation.navigate("StackNav", {
+                  screen: "ChooseSubForum",
+                  params: { postType: "Text", action: "Add" },
+                });
                 onClose();
               }}
               iconName="ios-image"
@@ -34,10 +39,10 @@ export const BottomSheet: React.FC<Props_> = ({ isOpen, onClose }) => {
 
             <Item
               onPress={() => {
-                // navigation.push("ChooseSubForum", {
-                //   postType: "Audio",
-                //   action: "Add",
-                // })
+                navigation.navigate("StackNav", {
+                  screen: "ChooseSubForum",
+                  params: { postType: "Audio", action: "Add" },
+                });
                 onClose();
               }}
               iconName="mic"
@@ -47,10 +52,14 @@ export const BottomSheet: React.FC<Props_> = ({ isOpen, onClose }) => {
 
             <Item
               onPress={() => {
-                // navigation.push("ChooseSubForum", {
-                //   postType: "Video",
-                //   action: "Add",
-                // }),
+                navigation.navigate("StackNav", {
+                  screen: "ChooseSubForum",
+                  params: {
+                    postType: "Video",
+                    action: "Add",
+                  },
+                });
+
                 onClose();
               }}
               iconName="ios-videocam"
@@ -60,11 +69,14 @@ export const BottomSheet: React.FC<Props_> = ({ isOpen, onClose }) => {
 
             <Item
               onPress={() => {
-                // navigation.push("ChooseSubForum", {
-                //   postType: "Text",
-                //   action: "Add",
-                //   hideUpload: true,
-                // }),
+                navigation.navigate("StackNav", {
+                  screen: "ChooseSubForum",
+                  params: {
+                    postType: "Text",
+                    action: "Add",
+                    hideUpload: true,
+                  },
+                });
                 onClose();
               }}
               iconName="ios-text"
@@ -74,11 +86,14 @@ export const BottomSheet: React.FC<Props_> = ({ isOpen, onClose }) => {
 
             <Item
               onPress={() => {
-                // navigation.push("ChooseSubForum", {
-                //   postType: "Poll",
-                //   action: "Add",
-                //   hideUpload: true,
-                // }),
+                navigation.navigate("StackNav", {
+                  screen: "ChooseSubForum",
+                  params: {
+                    postType: "Poll",
+                    action: "Add",
+                    hideUpload: true,
+                  },
+                });
                 onClose();
               }}
               iconName="stats-chart"

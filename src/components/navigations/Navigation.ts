@@ -1,10 +1,4 @@
-import { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
-import { DrawerNavigationProp } from "@react-navigation/drawer";
-import {
-  CompositeNavigationProp,
-  NavigatorScreenParams,
-} from "@react-navigation/native";
-import { StackNavigationProp } from "@react-navigation/stack";
+import { NavigatorScreenParams } from "@react-navigation/native";
 /**
  * bottom tab navigator => stack navigator => tab navigator
  */
@@ -63,10 +57,8 @@ export type DrawerParamList_ = {
   };
 };
 
-export type NavigationProp_ = CompositeNavigationProp<
-  BottomTabNavigationProp<BottomTabParamList_>,
-  CompositeNavigationProp<
-    StackNavigationProp<StackParamList_>,
-    DrawerNavigationProp<DrawerParamList_>
-  >
->;
+declare global {
+  namespace ReactNavigation {
+    interface RootParamList extends DrawerParamList_ {}
+  }
+}
