@@ -1,4 +1,4 @@
-import { AntDesign, Entypo, Feather } from "@expo/vector-icons";
+import { AntDesign, Entypo, Feather, Ionicons } from "@expo/vector-icons";
 import {
   createDrawerNavigator,
   DrawerContentComponentProps,
@@ -21,7 +21,13 @@ import { StyleSheet } from "react-native";
 import { SvgUri } from "react-native-svg";
 
 import { DrawerParamList_ } from "@/root/src/components/navigations/Navigation";
-import { StackNavigator } from "@/root/src/components/navigations/StackNavigator";
+import {
+  ProfileStackNavigator,
+  StackNavigator,
+} from "@/root/src/components/navigations/StackNavigator";
+import { Bookmark } from "@/root/src/components/screens/Bookmark";
+import { EditAndCreateSubForum } from "@/root/src/components/screens/EditAndCreateSubForum";
+import { colors } from "@/root/src/constants";
 import { UserContext } from "@/root/src/context";
 
 const DrawerNavigator = createDrawerNavigator<DrawerParamList_>();
@@ -30,7 +36,7 @@ const CustomDrawerContent = (props: DrawerContentComponentProps) => {
   const [lightMode, setLightMode] = useState(true);
 
   const {
-    user: { profileImageUrl, username, id },
+    user: { profileImageUrl, username },
   } = React.useContext(UserContext);
 
   return (
@@ -91,38 +97,10 @@ const CustomDrawerContent = (props: DrawerContentComponentProps) => {
               color={color}
               ml="-4"
             >
-              My Profile
-            </Text>
-          )}
-          onPress={() => {
-            props.navigation.jumpTo("StackNav", {
-              screen: "Profile",
-              params: { userId: id }, // pass id of current user
-            });
-          }}
-          icon={({ color }) => (
-            <Icon as={<Feather name="user" />} size={5} ml="3" color={color} />
-          )}
-        />
-        <DrawerItem
-          style={styles.drawerItem}
-          label={({ color }) => (
-            <Text
-              fontSize="sm"
-              fontFamily="body"
-              fontWeight="500"
-              color={color}
-              ml="-4"
-            >
               Blocked Accounts
             </Text>
           )}
-          onPress={() => {
-            props.navigation.jumpTo("StackNav", {
-              screen: "Follow",
-              params: { title: "Blocked Accounts" },
-            });
-          }}
+          onPress={() => {}}
           icon={({ color }) => (
             <Icon
               as={<Entypo name="block" />}
@@ -142,46 +120,14 @@ const CustomDrawerContent = (props: DrawerContentComponentProps) => {
               color={color}
               ml="-4"
             >
-              Bookmarks
+              Sign Out
             </Text>
           )}
-          onPress={() => {
-            props.navigation.jumpTo("StackNav", {
-              screen: "Bookmark",
-            });
-          }}
+          onPress={() => {}}
           icon={({ color }) => (
             <Icon
-              as={<Feather name="bookmark" />}
-              size={"19px"}
-              ml="3"
-              color={color}
-            />
-          )}
-        />
-        <DrawerItem
-          style={styles.drawerItem}
-          label={({ color }) => (
-            <Text
-              fontSize="sm"
-              fontFamily="body"
-              fontWeight="500"
-              color={color}
-              ml="-4"
-            >
-              Create Subforum
-            </Text>
-          )}
-          onPress={() => {
-            props.navigation.jumpTo("StackNav", {
-              screen: "EditAndCreateSubForum",
-              params: { title: "Create Subforum", action: "Add" },
-            });
-          }}
-          icon={({ color }) => (
-            <Icon
-              as={<AntDesign name="pluscircleo" />}
-              size={"18px"}
+              as={<Ionicons name="share-outline" />}
+              size={"20px"}
               ml="3"
               color={color}
             />
@@ -199,6 +145,9 @@ const defaultDrawerOptions = {
     fontFamily: "mm",
     marginLeft: -18,
     fontSize: 14,
+  },
+  headerTitleStyle: {
+    fontFamily: "mm",
   },
 };
 
@@ -224,6 +173,63 @@ export const SideDrawerNavigator = () => {
               />
             ),
           }}
+        />
+        <DrawerNavigator.Screen
+          name="ProfileStack"
+          component={ProfileStackNavigator}
+          options={{
+            drawerLabel: "Profile",
+            title: "Profile",
+            drawerIcon: ({ color }) => (
+              <Icon
+                as={<Feather name="user" />}
+                size={5}
+                ml="3"
+                color={color}
+              />
+            ),
+          }}
+        />
+        <DrawerNavigator.Screen
+          name="Bookmark"
+          component={Bookmark}
+          options={{
+            drawerLabel: "Bookmarks",
+            title: "Bookmarks",
+            headerStyle: {
+              backgroundColor: colors.green,
+            },
+            headerTintColor: colors.white,
+            drawerIcon: ({ color }) => (
+              <Icon
+                as={<Feather name="bookmark" />}
+                size={"19px"}
+                ml="3"
+                color={color}
+              />
+            ),
+          }}
+        />
+        <DrawerNavigator.Screen
+          name="EditAndCreateSubForum"
+          component={EditAndCreateSubForum}
+          initialParams={{ title: "Create Subforum", action: "Add" }}
+          options={({ route }) => ({
+            drawerLabel: "Create Subforum",
+            title: route.params.title,
+            headerStyle: {
+              backgroundColor: colors.green,
+            },
+            headerTintColor: colors.white,
+            drawerIcon: ({ color }) => (
+              <Icon
+                as={<AntDesign name="pluscircleo" />}
+                size={"18px"}
+                ml="3"
+                color={color}
+              />
+            ),
+          })}
         />
       </DrawerNavigator.Navigator>
     </NavigationContainer>

@@ -13,7 +13,6 @@ import {
 import React from "react";
 import { Dimensions, StyleSheet } from "react-native";
 
-import { NavigationProp_ } from "@/root/src/components/navigations/Navigation";
 import { useToggle } from "@/root/src/hooks";
 
 interface Props_ {
@@ -31,7 +30,6 @@ export const SubForumCard: React.FC<Props_> = ({
   profileImage,
   coverImage,
 }) => {
-  const navigation = useNavigation<NavigationProp_>();
   const [status, setStatus] = useToggle(true);
 
   return (
@@ -106,14 +104,7 @@ export const SubForumCard: React.FC<Props_> = ({
               <Text fontSize="md" fontWeight="500">
                 {name}
               </Text>
-              <Pressable
-                onPress={() =>
-                  navigation.navigate("EditAndCreateSubForum", {
-                    title: "Edit Subforum",
-                    action: "Edit",
-                  })
-                }
-              >
+              <Pressable onPress={() => {}}>
                 <Icon
                   as={<Foundation name="pencil" />}
                   size={18}

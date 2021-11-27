@@ -1,14 +1,11 @@
 import { DrawerNavigationProp } from "@react-navigation/drawer";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import { CompositeNavigationProp, RouteProp } from "@react-navigation/native";
-import { StackNavigationProp } from "@react-navigation/stack";
+import { RouteProp } from "@react-navigation/native";
+import { Box } from "native-base";
 import React from "react";
-import { Dimensions, StyleSheet, View } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
 
-import {
-  DrawerParamList_,
-  StackParamList_,
-} from "@/root/src/components/navigations/Navigation";
+import { DrawerParamList_ } from "@/root/src/components/navigations/Navigation";
 import { colors } from "@/root/src/constants";
 
 import { Comments } from "./Comment";
@@ -18,12 +15,10 @@ type TabParamList = {
   bookmarkedPosts: undefined;
   bookmarkedComments: undefined;
 };
-type RouteProp_ = RouteProp<StackParamList_, "Bookmark">;
+type RouteProp_ = RouteProp<DrawerParamList_, "Bookmark">;
 
-type NavigationProp_ = CompositeNavigationProp<
-  StackNavigationProp<StackParamList_, "Bookmark">,
-  DrawerNavigationProp<DrawerParamList_>
->;
+type NavigationProp_ = DrawerNavigationProp<DrawerParamList_>;
+
 interface Props_ {
   navigation: NavigationProp_;
   route: RouteProp_;
@@ -34,7 +29,7 @@ const windowWidth = Dimensions.get("window").width;
 
 export const Bookmark: React.FC<Props_> = () => {
   return (
-    <View style={styles.container}>
+    <Box style={styles.container}>
       <Tab.Navigator
         initialRouteName="bookmarkedPosts"
         screenOptions={{
@@ -69,7 +64,7 @@ export const Bookmark: React.FC<Props_> = () => {
           })}
         />
       </Tab.Navigator>
-    </View>
+    </Box>
   );
 };
 

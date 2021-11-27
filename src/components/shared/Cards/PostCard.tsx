@@ -1,5 +1,4 @@
 import { Ionicons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
 import { Video } from "expo-av";
 import { Box, Flex, HStack, Icon, Image, Pressable, Text } from "native-base";
 import React, { useState } from "react";
@@ -12,7 +11,6 @@ import {
 import { SvgUri } from "react-native-svg";
 import Tooltip from "react-native-walkthrough-tooltip";
 
-import { NavigationProp_ } from "@/root/src/components/navigations/Navigation";
 import { AudioComponent } from "@/root/src/components/shared/Audio";
 import { colors } from "@/root/src/constants";
 
@@ -145,16 +143,11 @@ const PostInfo: React.FC<PostInfo_> = ({
   timeStamp,
   avatarUrl,
 }) => {
-  const navigation = useNavigation<NavigationProp_>();
   return (
     <Box width="90%">
       <HStack alignItems="center" justifyContent="space-between" mb="3">
         <HStack alignItems="center" space="3">
-          <Pressable
-            onPress={() => {
-              navigation.navigate("Profile", { userId: "1" });
-            }}
-          >
+          <Pressable onPress={() => {}}>
             {/* <Avatar
               bg="green.500"
               width="38"
@@ -306,7 +299,6 @@ interface PostUserActions_ {
 const PostUserActions: React.FC<PostUserActions_> = ({
   hidePostNavigation,
 }) => {
-  const navigation = useNavigation<NavigationProp_>();
   const [showTip, setTip] = useState(false);
   const [likeIcon, setLikeIcon] = useState("smile");
   const images = {
@@ -436,11 +428,7 @@ const PostUserActions: React.FC<PostUserActions_> = ({
               <Image source={iconemoji} alt="Alternate Text" size={"20px"} />
             </TouchableOpacity>
           </Tooltip>
-          <Pressable
-            onPress={() => {
-              navigation.navigate("AddAndEditComment", { action: "Add" });
-            }}
-          >
+          <Pressable onPress={() => {}}>
             <Icon
               as={<Ionicons name="chatbubble-outline" />}
               size={5}
@@ -449,11 +437,7 @@ const PostUserActions: React.FC<PostUserActions_> = ({
           </Pressable>
         </HStack>
         {!hidePostNavigation && (
-          <Pressable
-            onPress={() => {
-              navigation.navigate("Post");
-            }}
-          >
+          <Pressable onPress={() => {}}>
             <Box style={styles.openPostIcon}>
               <Icon
                 as={<Ionicons name="share-outline" />}

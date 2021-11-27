@@ -9,18 +9,18 @@ import { SwipeListView } from "react-native-swipe-list-view";
 
 import {
   DrawerParamList_,
-  StackParamList_,
+  ProfileStackParamList_,
 } from "@/root/src/components/navigations/Navigation";
 import { FollowCardRenderer } from "@/root/src/components/shared/CardRenderer";
 import { SearchBar } from "@/root/src/components/shared/SearchBar";
 import { UserData } from "@/root/src/data/userData";
 
 type NavigationProp_ = CompositeNavigationProp<
-  StackNavigationProp<StackParamList_, "Follow">,
+  StackNavigationProp<ProfileStackParamList_, "Follow">,
   DrawerNavigationProp<DrawerParamList_>
 >;
 
-type RouteProp_ = RouteProp<StackParamList_, "Follow">;
+type RouteProp_ = RouteProp<ProfileStackParamList_, "Follow">;
 
 interface Props_ {
   navigation: NavigationProp_;

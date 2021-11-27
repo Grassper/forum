@@ -15,22 +15,19 @@ export type BottomTabParamList_ = {
   ChatList: undefined;
 };
 
-export type StackParamList_ = {
-  BottomTabNav: NavigatorScreenParams<BottomTabParamList_>;
+export type ProfileStackParamList_ = {
   // * User
   Profile: { userId: string };
   EditProfile: undefined;
   Follow: { title: "Followers" | "Following" | "Blocked Accounts" };
-  Bookmark: undefined;
+};
+
+export type StackParamList_ = {
+  BottomTabNav: NavigatorScreenParams<BottomTabParamList_>;
 
   // * SubForum
   SubForum: { subForumId: string };
   SubForumMod: undefined;
-  EditAndCreateSubForum: {
-    title: "Edit Subforum" | "Create Subforum";
-    action: "Add" | "Edit";
-    subForumId?: string; // pass only for add action which means create subforum
-  };
 
   // * Post
   Post: undefined;
@@ -57,6 +54,13 @@ export type StackParamList_ = {
 
 export type DrawerParamList_ = {
   StackNav: NavigatorScreenParams<StackParamList_>;
+  ProfileStack: NavigatorScreenParams<ProfileStackParamList_>;
+  Bookmark: undefined;
+  EditAndCreateSubForum: {
+    title: "Edit Subforum" | "Create Subforum";
+    action: "Add" | "Edit";
+    subForumId?: string; // pass only for add action which means create subforum
+  };
 };
 
 export type NavigationProp_ = CompositeNavigationProp<

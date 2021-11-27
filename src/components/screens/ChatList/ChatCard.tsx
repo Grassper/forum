@@ -1,22 +1,10 @@
-import { useNavigation } from "@react-navigation/native";
 import { Box, HStack, Pressable, Spacer, Text, VStack } from "native-base";
 import React from "react";
 import { SvgUri } from "react-native-svg";
 
-import { NavigationProp_ } from "@/root/src/components/navigations/Navigation";
-
 export const ChatCard: React.FC = () => {
-  const Navigation = useNavigation<NavigationProp_>();
   return (
-    <Pressable
-      onPress={() => {
-        Navigation.push("ChatRoom", {
-          title: "Ferdinand",
-          imageUri:
-            "https://avatars.dicebear.com/api/micah/ram.svg?mouth=smile&baseColor=apricot",
-        });
-      }}
-    >
+    <Pressable onPress={() => {}}>
       <Box
         alignItems="center"
         bg="white"

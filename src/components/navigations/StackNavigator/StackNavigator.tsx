@@ -2,15 +2,16 @@ import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
 
 import { BottomTabNavigator } from "@/root/src/components/navigations/BottomTabNavigator";
-import { StackParamList_ } from "@/root/src/components/navigations/Navigation";
+import {
+  ProfileStackParamList_,
+  StackParamList_,
+} from "@/root/src/components/navigations/Navigation";
 import { AddAndEditComment } from "@/root/src/components/screens/AddAndEditComment";
 import { AddAndEditPost } from "@/root/src/components/screens/AddAndEditPost";
 import { AddAndEditReplies } from "@/root/src/components/screens/AddAndEditReplies";
-import { Bookmark } from "@/root/src/components/screens/Bookmark";
 import { ChatRoom } from "@/root/src/components/screens/ChatRoom";
 import { ChooseSubForum } from "@/root/src/components/screens/ChooseSubForum";
 import { Comment } from "@/root/src/components/screens/Comment";
-import { EditAndCreateSubForum } from "@/root/src/components/screens/EditAndCreateSubForum";
 import { EditProfile } from "@/root/src/components/screens/EditProfile";
 import { Follow } from "@/root/src/components/screens/Follow";
 import { NewChat } from "@/root/src/components/screens/NewChat";
@@ -19,8 +20,10 @@ import { Profile } from "@/root/src/components/screens/Profile";
 import { SubForum } from "@/root/src/components/screens/SubForum";
 import { SubForumMod } from "@/root/src/components/screens/SubForumMod";
 import { colors } from "@/root/src/constants";
+import { UserContext } from "@/root/src/context";
 
 const Stack = createStackNavigator<StackParamList_>();
+const ProfileStack = createStackNavigator<ProfileStackParamList_>();
 
 const defaultStackOptions = {
   headerBackTitleVisible: false,
@@ -28,6 +31,49 @@ const defaultStackOptions = {
   headerTitleStyle: {
     fontFamily: "mm",
   },
+};
+
+export const ProfileStackNavigator = () => {
+  const {
+    user: { id },
+  } = React.useContext(UserContext);
+  return (
+    <ProfileStack.Navigator
+      screenOptions={defaultStackOptions}
+      initialRouteName="Profile"
+    >
+      <ProfileStack.Screen
+        name="Profile"
+        component={Profile}
+        initialParams={{ userId: id }} //passing current user id
+        options={{
+          title: "",
+        }}
+      />
+      <ProfileStack.Screen
+        name="Follow"
+        component={Follow}
+        options={({ route }) => ({
+          title: route.params.title,
+          headerStyle: {
+            backgroundColor: colors.green,
+          },
+          headerTintColor: colors.white,
+        })}
+      />
+      <ProfileStack.Screen
+        name="EditProfile"
+        component={EditProfile}
+        options={() => ({
+          title: "Edit Profile",
+          headerStyle: {
+            backgroundColor: colors.green,
+          },
+          headerTintColor: colors.white,
+        })}
+      />
+    </ProfileStack.Navigator>
+  );
 };
 
 export const StackNavigator = () => {
@@ -44,62 +90,12 @@ export const StackNavigator = () => {
           headerShown: false,
         }}
       />
-      <Stack.Screen
-        name="Profile"
-        component={Profile}
-        options={{
-          title: "",
-        }}
-      />
-      <Stack.Screen
-        name="Follow"
-        component={Follow}
-        options={({ route }) => ({
-          title: route.params.title,
-          headerStyle: {
-            backgroundColor: colors.green,
-          },
-          headerTintColor: colors.white,
-        })}
-      />
-      <Stack.Screen
-        name="Bookmark"
-        component={Bookmark}
-        options={() => ({
-          title: "Bookmark",
-          headerStyle: {
-            backgroundColor: colors.green,
-          },
-          headerTintColor: colors.white,
-        })}
-      />
-      <Stack.Screen
-        name="EditProfile"
-        component={EditProfile}
-        options={() => ({
-          title: "Edit Profile",
-          headerStyle: {
-            backgroundColor: colors.green,
-          },
-          headerTintColor: colors.white,
-        })}
-      />
+
       <Stack.Screen
         name="SubForum"
         component={SubForum}
         options={() => ({
           title: "",
-        })}
-      />
-      <Stack.Screen
-        name="EditAndCreateSubForum"
-        component={EditAndCreateSubForum}
-        options={({ route }) => ({
-          title: route.params.title,
-          headerStyle: {
-            backgroundColor: colors.green,
-          },
-          headerTintColor: colors.white,
         })}
       />
       <Stack.Screen

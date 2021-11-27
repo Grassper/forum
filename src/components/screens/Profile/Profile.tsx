@@ -1,17 +1,16 @@
-import { AntDesign, Ionicons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import { DrawerNavigationProp } from "@react-navigation/drawer";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { CompositeNavigationProp, RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { Button, Icon, Pressable } from "native-base";
+import { Button, Icon } from "native-base";
 import React from "react";
 import { Dimensions, StyleSheet, View } from "react-native";
 
 import {
   DrawerParamList_,
-  StackParamList_,
+  ProfileStackParamList_,
 } from "@/root/src/components/navigations/Navigation";
-import { HeaderProfileIcon } from "@/root/src/components/shared/HeaderProfileIcon";
 import { colors } from "@/root/src/constants";
 import { UserContext } from "@/root/src/context";
 
@@ -22,11 +21,11 @@ import { Posts } from "./Post";
 import { ProfileCard } from "./ProfileCard";
 
 type NavigationProp_ = CompositeNavigationProp<
-  StackNavigationProp<StackParamList_, "Profile">,
+  StackNavigationProp<ProfileStackParamList_, "Profile">,
   DrawerNavigationProp<DrawerParamList_>
 >;
 
-type RouteProp_ = RouteProp<StackParamList_, "Profile">;
+type RouteProp_ = RouteProp<ProfileStackParamList_, "Profile">;
 
 interface Props_ {
   navigation: NavigationProp_;
