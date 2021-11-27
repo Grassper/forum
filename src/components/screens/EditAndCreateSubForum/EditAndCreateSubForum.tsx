@@ -151,19 +151,6 @@ export const EditAndCreateSubForum: React.FC<Props_> = ({
           {title === "Edit Subforum" ? "Save" : "Create"}
         </Button>
       ),
-      headerLeft: () =>
-        title === "Create Subforum" ? (
-          <HeaderProfileIcon />
-        ) : (
-          <Pressable
-            onPress={() => navigation.goBack()}
-            ml="3"
-            alignItems="center"
-            justifyContent="center"
-          >
-            <AntDesign name="arrowleft" size={24} color={colors.white} />
-          </Pressable>
-        ),
     });
   }, [navigation, title, handleSubmit]);
 

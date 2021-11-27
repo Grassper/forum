@@ -63,19 +63,6 @@ export const Profile: React.FC<Props_> = ({ navigation, route }) => {
             Edit
           </Button>
         ),
-      headerLeft: () =>
-        routeUserId && routeUserId !== id ? (
-          <Pressable
-            onPress={() => navigation.goBack()}
-            ml="3"
-            alignItems="center"
-            justifyContent="center"
-          >
-            <AntDesign name="arrowleft" size={24} color="#17D7A0" />
-          </Pressable>
-        ) : (
-          <HeaderProfileIcon />
-        ),
     });
   }, [id, navigation, routeUserId]);
 
