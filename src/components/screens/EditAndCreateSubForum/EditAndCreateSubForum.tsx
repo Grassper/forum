@@ -19,17 +19,20 @@ import { Alert, Dimensions, StyleSheet } from "react-native";
 import isLength from "validator/es/lib/isLength";
 import matches from "validator/es/lib/matches";
 
-import { DrawerParamList_ } from "@/root/src/components/navigations/Navigation";
+import {
+  DrawerParamList_,
+  SubForumStackParamList_,
+} from "@/root/src/components/navigations/Navigation";
 import { ImagePickerButton } from "@/root/src/components/shared/Picker";
 import { UserContext } from "@/root/src/context";
 import { useToggle } from "@/root/src/hooks";
 import { SignS3ImageKey } from "@/root/src/utils/helpers";
 
-type RouteProp_ = RouteProp<DrawerParamList_, "EditAndCreateSubForum">;
+type RouteProp_ = RouteProp<SubForumStackParamList_, "EditAndCreateSubForum">;
 
-type NavigationProp_ = DrawerNavigationProp<
-  DrawerParamList_,
-  "EditAndCreateSubForum"
+type NavigationProp_ = CompositeNavigationProp<
+  StackNavigationProp<SubForumStackParamList_, "EditAndCreateSubForum">,
+  DrawerNavigationProp<DrawerParamList_>
 >;
 
 interface Props_ {
@@ -93,7 +96,7 @@ export const EditAndCreateSubForum: React.FC<Props_> = ({
         const createdForumId = await handleForumCreation(newForumInput);
 
         if (createdForumId) {
-          navigation.navigate("StackNav", {
+          navigation.navigate("SubForumStack", {
             screen: "SubForum",
             params: { subForumId: createdForumId },
           });
@@ -115,7 +118,7 @@ export const EditAndCreateSubForum: React.FC<Props_> = ({
         const updatedForumId = await handleForumUpdation(updateForumInput);
 
         if (updatedForumId) {
-          navigation.navigate("StackNav", {
+          navigation.navigate("SubForumStack", {
             screen: "SubForum",
             params: { subForumId: updatedForumId },
           });

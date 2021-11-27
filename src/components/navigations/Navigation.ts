@@ -16,12 +16,20 @@ export type ProfileStackParamList_ = {
   Follow: { title: "Followers" | "Following" | "Blocked Accounts" };
 };
 
-export type StackParamList_ = {
-  BottomTabNav: NavigatorScreenParams<BottomTabParamList_>;
-
+export type SubForumStackParamList_ = {
   // * SubForum
   SubForum: { subForumId: string };
   SubForumMod: undefined;
+  JoinedSubForum: undefined;
+  EditAndCreateSubForum: {
+    title: "Edit Subforum" | "Create Subforum";
+    action: "Add" | "Edit";
+    subForumId?: string; // pass only for add action which means create subforum
+  };
+};
+
+export type StackParamList_ = {
+  BottomTabNav: NavigatorScreenParams<BottomTabParamList_>;
 
   // * Post
   Post: undefined;
@@ -50,11 +58,7 @@ export type DrawerParamList_ = {
   StackNav: NavigatorScreenParams<StackParamList_>;
   ProfileStack: NavigatorScreenParams<ProfileStackParamList_>;
   Bookmark: undefined;
-  EditAndCreateSubForum: {
-    title: "Edit Subforum" | "Create Subforum";
-    action: "Add" | "Edit";
-    subForumId?: string; // pass only for add action which means create subforum
-  };
+  SubForumStack: NavigatorScreenParams<SubForumStackParamList_>;
 };
 
 declare global {

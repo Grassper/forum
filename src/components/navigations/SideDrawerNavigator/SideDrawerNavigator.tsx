@@ -24,9 +24,9 @@ import { DrawerParamList_ } from "@/root/src/components/navigations/Navigation";
 import {
   ProfileStackNavigator,
   StackNavigator,
+  SubForumStackNavigator,
 } from "@/root/src/components/navigations/StackNavigator";
 import { Bookmark } from "@/root/src/components/screens/Bookmark";
-import { EditAndCreateSubForum } from "@/root/src/components/screens/EditAndCreateSubForum";
 import { colors } from "@/root/src/constants";
 import { UserContext } from "@/root/src/context";
 
@@ -211,12 +211,12 @@ export const SideDrawerNavigator = () => {
           }}
         />
         <DrawerNavigator.Screen
-          name="EditAndCreateSubForum"
-          component={EditAndCreateSubForum}
-          initialParams={{ title: "Create Subforum", action: "Add" }}
-          options={({ route }) => ({
-            drawerLabel: "Create Subforum",
-            title: route.params.title,
+          name="SubForumStack"
+          component={SubForumStackNavigator}
+          options={() => ({
+            drawerLabel: "Joined Forums",
+            title: "",
+            headerShown: false,
             headerStyle: {
               backgroundColor: colors.green,
             },

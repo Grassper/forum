@@ -7,14 +7,14 @@ import { FlatList, StyleSheet, View } from "react-native";
 
 import {
   DrawerParamList_,
-  StackParamList_,
+  SubForumStackParamList_,
 } from "@/root/src/components/navigations/Navigation";
 import { PostCardRenderer } from "@/root/src/components/shared/CardRenderer";
 import { SubForumCard } from "@/root/src/components/shared/Cards";
 import { dummyData } from "@/root/src/data/dummyData";
 
 type NavigationProp_ = CompositeNavigationProp<
-  StackNavigationProp<StackParamList_, "SubForum">,
+  StackNavigationProp<SubForumStackParamList_, "SubForum">,
   DrawerNavigationProp<DrawerParamList_>
 >;
 
