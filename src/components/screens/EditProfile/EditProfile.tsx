@@ -81,7 +81,11 @@ export const EditProfile: React.FC<Props_> = ({ navigation }) => {
       } catch (err) {
         console.error("Error while updating the user profile", err);
       }
-      navigation.navigate("Profile", { userId: currentUser.id }); // pass id of current user
+      navigation.navigate({
+        name: "Profile",
+        params: { userId: currentUser.id },
+        merge: true,
+      }); // pass id of current user
     }
   }, [about, currentUser, isAboutValid, navigation, setUser]);
 
