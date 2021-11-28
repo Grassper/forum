@@ -57,7 +57,7 @@ export const Home: React.FC<Props_> = ({ navigation }) => {
       ),
       headerTitle: () => (
         <Image
-          size={8}
+          size="28px"
           resizeMode={"cover"}
           borderRadius={100}
           source={require("@/root/assets/images/logo.png")}
