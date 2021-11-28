@@ -13,6 +13,7 @@ import {
 } from "@/root/src/components/navigations/Navigation";
 import { PostCardRenderer } from "@/root/src/components/shared/CardRenderer";
 import { SubForumCard } from "@/root/src/components/shared/Cards";
+import { UserContext } from "@/root/src/context";
 import { dummyData } from "@/root/src/data/dummyData";
 
 type NavigationProp_ = CompositeNavigationProp<
@@ -31,6 +32,7 @@ export const SubForum: React.FC<Props_> = ({ navigation, route }) => {
   const { subForumId } = route.params;
 
   const [subForum, getSubForum] = React.useState<Community>();
+  const currentUser = React.useContext(UserContext).user;
 
   React.useEffect(() => {
     (async () => {
@@ -44,20 +46,22 @@ export const SubForum: React.FC<Props_> = ({ navigation, route }) => {
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
-      headerRight: () => (
-        <Button
-          size="md"
-          _text={{ fontWeight: "600", color: "eGreen.400" }}
-          variant="unstyled"
-          onPress={() => {
-            navigation.navigate("SubForumMod");
-          }}
-        >
-          Manage
-        </Button>
-      ),
+      headerRight: () =>
+        subForum?.creatorId &&
+        currentUser.id === subForum.creatorId && (
+          <Button
+            size="md"
+            _text={{ fontWeight: "600", color: "eGreen.400" }}
+            variant="unstyled"
+            onPress={() => {
+              navigation.navigate("SubForumMod");
+            }}
+          >
+            Manage
+          </Button>
+        ),
     });
-  }, [navigation]);
+  }, [currentUser.id, navigation, subForum]);
 
   return (
     <View style={styles.container}>
@@ -72,6 +76,7 @@ export const SubForum: React.FC<Props_> = ({ navigation, route }) => {
             profileImageS3Key={subForum?.profileImageS3Key}
             coverImageS3Key={subForum?.bannerImageS3Key}
             _version={subForum?._version}
+            creatorId={subForum?.creatorId}
           />
         )}
         keyExtractor={(item) => item.id}
@@ -125,6 +130,7 @@ interface Community {
   name: string;
   profileImageS3Key: string;
   bannerImageS3Key: string;
+  creatorId: string;
   _version: number;
 }
 
@@ -136,6 +142,7 @@ const getCommunity = /* GraphQL */ `
       name
       profileImageS3Key
       bannerImageS3Key
+      creatorId
       _version
     }
   }

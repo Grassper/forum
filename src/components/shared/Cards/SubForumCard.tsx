@@ -14,8 +14,10 @@ import React from "react";
 import { Dimensions, StyleSheet } from "react-native";
 
 import { Skeleton } from "@/root/src/components/shared/Skeleton";
+import { UserContext } from "@/root/src/context";
 import { useToggle } from "@/root/src/hooks";
 import { SignS3ImageKey } from "@/root/src/utils/helpers";
+
 interface Props_ {
   id?: string;
   name?: string;
@@ -23,6 +25,7 @@ interface Props_ {
   profileImageS3Key?: string;
   coverImageS3Key?: string;
   _version?: number;
+  creatorId?: string;
 }
 
 const windowWidth = Dimensions.get("window").width;
@@ -33,6 +36,7 @@ export const SubForumCard: React.FC<Props_> = ({
   description,
   profileImageS3Key,
   coverImageS3Key,
+  creatorId,
   _version,
 }) => {
   const [status, setStatus] = useToggle(true);
@@ -40,6 +44,7 @@ export const SubForumCard: React.FC<Props_> = ({
   const [signedProfile, setSignedProfile] = React.useState("");
   const [signedCover, setSignedCover] = React.useState("");
 
+  const currentUser = React.useContext(UserContext).user;
   const navigation = useNavigation();
 
   React.useEffect(() => {
@@ -124,7 +129,7 @@ export const SubForumCard: React.FC<Props_> = ({
                   <Skeleton height="20px" width="150px" mt="2" />
                 )}
               </Box>
-              {id && (
+              {id && creatorId && creatorId === currentUser.id && (
                 <Pressable
                   onPress={() => {
                     navigation.navigate("SubForumStack", {
@@ -151,7 +156,7 @@ export const SubForumCard: React.FC<Props_> = ({
               )}
             </HStack>
 
-            {id && (
+            {id && creatorId && creatorId !== currentUser.id && (
               <Button
                 onPress={() => setStatus()}
                 bg={status ? "tertiary.500" : "danger.500"}
