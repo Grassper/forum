@@ -20,23 +20,13 @@ import { CommunityTile } from "@/root/src/components/shared/Tile";
 import { UserContext } from "@/root/src/context";
 
 type NavigationProp_ = CompositeNavigationProp<
-  StackNavigationProp<SubForumStackParamList_, "SubForum">,
+  StackNavigationProp<SubForumStackParamList_, "JoinedSubForum">,
   DrawerNavigationProp<DrawerParamList_>
 >;
 
 interface Props_ {
   navigation: NavigationProp_;
 }
-
-const CommunityTileRenderer: ListRenderItem<Item> = (prop) => {
-  return (
-    <CommunityTile
-      name={prop.item.community.name}
-      profileImageS3Key={prop.item.community.profileImageS3Key}
-      hideDivider
-    />
-  );
-};
 
 export const JoinedSubForum: React.FC<Props_> = ({ navigation }) => {
   const currentUser = React.useContext(UserContext).user; // this context provided current login user
@@ -107,6 +97,19 @@ export const JoinedSubForum: React.FC<Props_> = ({ navigation }) => {
     });
   }, [navigation]);
 
+  const CommunityTileRenderer: ListRenderItem<Item> = ({ item }) => {
+    return (
+      <CommunityTile
+        name={item.community.name}
+        profileImageS3Key={item.community.profileImageS3Key}
+        hideDivider
+        onPress={() =>
+          navigation.navigate("SubForum", { subForumId: item.community.id })
+        }
+      />
+    );
+  };
+
   return (
     <Box bg="white" alignItems="center" style={styles.container}>
       <Box width="90%" pt="20px">
@@ -129,10 +132,6 @@ const styles = StyleSheet.create({
 });
 
 /**
- * Todo-1: fetch subforum joined by current user
- * Todo-2: map subforum list to flatlist
- * Todo-3: while end of flatlist call pagination if next token is not null
- * Todo-4: clicking the subforum card will navigate to subforum screen
  * Todo-5: if no community joined, created or moderated by users
  */
 

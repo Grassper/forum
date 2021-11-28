@@ -1,5 +1,4 @@
 import { Entypo, Ionicons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
 import {
   Avatar,
   Box,
@@ -16,6 +15,7 @@ import React from "react";
 import { SignS3ImageKey } from "@/root/src/utils/helpers";
 
 export interface Props_ {
+  onPress: () => void;
   profileImageS3Key: string;
   name: string;
   hideDivider?: boolean;
@@ -27,11 +27,11 @@ export const CommunityTile: React.FC<Props_> = ({
   hideDivider,
   hideMembers,
   hideFavorites,
+  onPress,
   name,
   profileImageS3Key,
 }) => {
   const [signedProfileImage, setSignedProfileImage] = React.useState("");
-  const navigation = useNavigation();
 
   React.useEffect(() => {
     (async () => {
@@ -45,14 +45,7 @@ export const CommunityTile: React.FC<Props_> = ({
   }, [profileImageS3Key]);
 
   return (
-    <Pressable
-      onPress={() =>
-        navigation.navigate("SubForumStack", {
-          screen: "SubForum",
-          params: { subForumId: "1" },
-        })
-      }
-    >
+    <Pressable onPress={onPress}>
       <Box alignItems="center" bg="white" py="4">
         <Box width="90%">
           <HStack alignItems="center" space={3}>

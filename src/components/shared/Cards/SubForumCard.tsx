@@ -1,4 +1,4 @@
-import { Foundation, Ionicons } from "@expo/vector-icons";
+import { Foundation } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import {
   Avatar,
@@ -13,67 +13,83 @@ import {
 import React from "react";
 import { Dimensions, StyleSheet } from "react-native";
 
+import { Skeleton } from "@/root/src/components/shared/Skeleton";
 import { useToggle } from "@/root/src/hooks";
-
+import { SignS3ImageKey } from "@/root/src/utils/helpers";
 interface Props_ {
-  name: string;
-  description: string;
-  profileImage: string;
-  coverImage: string;
+  id?: string;
+  name?: string;
+  description?: string;
+  profileImageS3Key?: string;
+  coverImageS3Key?: string;
 }
 
 const windowWidth = Dimensions.get("window").width;
 
 export const SubForumCard: React.FC<Props_> = ({
+  id,
   name,
   description,
-  profileImage,
-  coverImage,
+  profileImageS3Key,
+  coverImageS3Key,
 }) => {
   const [status, setStatus] = useToggle(true);
+
+  const [signedProfile, setSignedProfile] = React.useState("");
+  const [signedCover, setSignedCover] = React.useState("");
+
+  React.useEffect(() => {
+    (async () => {
+      if (profileImageS3Key) {
+        const signedImage = await SignS3ImageKey(profileImageS3Key);
+        if (signedImage) {
+          setSignedProfile(signedImage);
+        }
+      }
+    })();
+  }, [profileImageS3Key]);
+
+  React.useEffect(() => {
+    (async () => {
+      if (coverImageS3Key) {
+        const signedImage = await SignS3ImageKey(coverImageS3Key);
+        if (signedImage) {
+          setSignedCover(signedImage);
+        }
+      }
+    })();
+  }, [coverImageS3Key]);
 
   return (
     <Box>
       <Box position="relative" height="115px">
-        {coverImage ? (
+        {signedCover ? (
           <Image
             width="100%"
             height="100%"
             alt="Cover Image"
             source={{
-              uri: coverImage,
+              uri: signedCover,
             }}
           />
         ) : (
-          <Box
-            width="100%"
-            alignItems="center"
-            height="100%"
-            justifyContent="center"
-          >
-            <Icon
-              as={<Ionicons name="ios-image" />}
-              size={6}
-              color="muted.700"
-            />
-          </Box>
+          <Skeleton width="100%" alignItems="center" height="100%" />
         )}
       </Box>
       <Box alignItems="flex-start" justifyContent="center" bg="white">
         <Box position="relative">
-          {profileImage ? (
+          {signedProfile ? (
             <Avatar
-              bg="green.500"
               mt="-20"
               ml={windowWidth * 0.025}
               width="100px"
               height="100px"
               source={{
-                uri: profileImage,
+                uri: signedProfile,
               }}
             />
           ) : (
-            <Box
+            <Skeleton
               bg="coolGray.200"
               mt="-20"
               ml={windowWidth * 0.025}
@@ -82,13 +98,7 @@ export const SubForumCard: React.FC<Props_> = ({
               alignItems="center"
               justifyContent="center"
               borderRadius="full"
-            >
-              <Icon
-                as={<Ionicons name="ios-image" />}
-                size={6}
-                color="muted.700"
-              />
-            </Box>
+            />
           )}
         </Box>
       </Box>
@@ -101,27 +111,37 @@ export const SubForumCard: React.FC<Props_> = ({
             mt="0"
           >
             <HStack alignItems="center" space="2.5">
-              <Text fontSize="md" fontWeight="500">
-                {name}
-              </Text>
-              <Pressable onPress={() => {}}>
-                <Icon
-                  as={<Foundation name="pencil" />}
-                  size={18}
-                  color="eGreen.400"
-                />
-              </Pressable>
+              <Box>
+                {name ? (
+                  <Text fontSize="md" fontWeight="500">
+                    {name}
+                  </Text>
+                ) : (
+                  <Skeleton height="20px" width="150px" mt="2" />
+                )}
+              </Box>
+              {id && (
+                <Pressable onPress={() => {}}>
+                  <Icon
+                    as={<Foundation name="pencil" />}
+                    size={18}
+                    color="eGreen.400"
+                  />
+                </Pressable>
+              )}
             </HStack>
 
-            <Button
-              onPress={() => setStatus()}
-              bg={status ? "tertiary.500" : "danger.500"}
-              variant="unstyled"
-              minWidth="24"
-              borderRadius="50"
-            >
-              {status ? "Join" : "Exit"}
-            </Button>
+            {id && (
+              <Button
+                onPress={() => setStatus()}
+                bg={status ? "tertiary.500" : "danger.500"}
+                variant="unstyled"
+                minWidth="24"
+                borderRadius="50"
+              >
+                {status ? "Join" : "Exit"}
+              </Button>
+            )}
           </HStack>
           <HStack alignItems="center" mb="2">
             <Text fontSize="sm" color="blueGray.500">
@@ -132,7 +152,17 @@ export const SubForumCard: React.FC<Props_> = ({
               273 Posts
             </Text>
           </HStack>
-          <Text fontSize="sm">{description}</Text>
+          <Box>
+            {description ? (
+              <Text fontSize="sm">{description}</Text>
+            ) : (
+              <>
+                <Skeleton height="20px" width="100%" mb="2" />
+                <Skeleton height="20px" width="80%" mb="2" />
+                <Skeleton height="20px" width="85%" />
+              </>
+            )}
+          </Box>
         </Box>
       </HStack>
     </Box>
