@@ -20,7 +20,9 @@
         "image": "./assets/appIcons/drawable-hdpi/splash_screen.png",
         "resizeMode": "cover",
         "backgroundColor": "#FFF47D"
-      }
+      },
+      "usesIcloudStorage": true,
+      "bundleIdentifier": "iCloud.com.grassper.eforum"
     },
     "android": {
       "splash": {
