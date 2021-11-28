@@ -88,7 +88,13 @@ export const AddAndEditPost: React.FC<Props_> = ({ navigation, route }) => {
       bg="white"
       justifyContent={postType !== "Poll" ? "space-between" : "flex-start"}
     >
-      <CommunityTile hideDivider hideMembers hideFavorites />
+      <CommunityTile
+        hideDivider
+        hideMembers
+        hideNavArrow
+        name={route.params.name}
+        profileImageS3Key={route.params.profileImageS3Key}
+      />
       {/* if poll exist */}
       {postType === "Poll" && (
         <Box bg="white" alignItems="center">

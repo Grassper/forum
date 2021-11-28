@@ -36,7 +36,6 @@ export const JoinedSubForum: React.FC<Props_> = ({ navigation }) => {
 
   const handlePagination = async () => {
     if (nextToken) {
-      console.log("calling pagination");
       const listCommunityInput: listCommunityByUserIdFetchInput_ = {
         id: currentUser.id,
         limit: 10,

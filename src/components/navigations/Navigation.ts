@@ -42,6 +42,8 @@ export type StackParamList_ = {
     postType: "Image" | "Text" | "Video" | "Audio" | "Poll";
     action: "Add" | "Edit";
     hideUpload?: boolean;
+    profileImageS3Key: string;
+    name: string;
   };
   ChooseSubForum: {
     postType: "Image" | "Text" | "Video" | "Audio" | "Poll";
