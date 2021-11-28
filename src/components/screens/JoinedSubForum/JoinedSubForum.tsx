@@ -7,8 +7,9 @@ import {
 } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { API } from "aws-amplify";
-import { Box, Icon, ScrollView } from "native-base";
+import { Box, Icon } from "native-base";
 import React from "react";
+import { FlatList, ListRenderItem, StyleSheet } from "react-native";
 
 import {
   DrawerParamList_,
@@ -27,11 +28,40 @@ interface Props_ {
   navigation: NavigationProp_;
 }
 
+const CommunityTileRenderer: ListRenderItem<Item> = (prop) => {
+  return (
+    <CommunityTile
+      name={prop.item.community.name}
+      profileImageS3Key={prop.item.community.profileImageS3Key}
+      hideDivider
+    />
+  );
+};
+
 export const JoinedSubForum: React.FC<Props_> = ({ navigation }) => {
   const currentUser = React.useContext(UserContext).user; // this context provided current login user
 
-  const [communities, setCommunities] = React.useState<Item[]>();
-  const [nextToken, setNextToken] = React.useState<string>();
+  const [communities, setCommunities] = React.useState<Item[]>([]);
+  const [nextToken, setNextToken] = React.useState<string>("");
+
+  const handlePagination = async () => {
+    if (nextToken) {
+      console.log("calling pagination");
+      const listCommunityInput: listCommunityByUserIdFetchInput_ = {
+        id: currentUser.id,
+        limit: 10,
+        sortDirection: "DESC",
+        nextToken,
+      };
+
+      const responseData = await listCommunityByUserIdFetch(listCommunityInput);
+
+      if (responseData) {
+        setCommunities((prevState) => [...prevState, ...responseData.items]);
+        setNextToken(responseData.nextToken);
+      }
+    }
+  };
 
   React.useEffect(() => {
     (async () => {
@@ -78,18 +108,25 @@ export const JoinedSubForum: React.FC<Props_> = ({ navigation }) => {
   }, [navigation]);
 
   return (
-    <Box bg="white" flex="1" alignItems="center">
+    <Box bg="white" alignItems="center" style={styles.container}>
       <Box width="90%" pt="20px">
         <SearchBar />
       </Box>
-      <Box width="100%">
-        <ScrollView>
-          <CommunityTile onPress={() => {}} hideDivider />
-        </ScrollView>
+      <Box width="100%" style={styles.container}>
+        <FlatList
+          data={communities}
+          renderItem={CommunityTileRenderer}
+          keyExtractor={(item) => item.community.id}
+          onEndReached={() => handlePagination()}
+        />
       </Box>
     </Box>
   );
 };
+
+const styles = StyleSheet.create({
+  container: { flex: 1 },
+});
 
 /**
  * Todo-1: fetch subforum joined by current user
@@ -158,8 +195,8 @@ interface Community {
 const listCommunityByUserId = /* GraphQL */ `
   query listCommunityByUserId(
     $id: ID!
-    $limit: Int = 10
-    $sortDirection: ModelSortDirection = DESC
+    $limit: Int
+    $sortDirection: ModelSortDirection
     $nextToken: String
   ) {
     getUser(id: $id) {
