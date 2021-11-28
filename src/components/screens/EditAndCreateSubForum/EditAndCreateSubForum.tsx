@@ -96,9 +96,12 @@ export const EditAndCreateSubForum: React.FC<Props_> = ({
         const createdForumId = await handleForumCreation(newForumInput);
 
         if (createdForumId) {
-          navigation.navigate("SubForumStack", {
-            screen: "SubForum",
-            params: { subForumId: createdForumId },
+          navigation.navigate({
+            name: "SubForumStack",
+            params: {
+              screen: "JoinedSubForum",
+            },
+            merge: true,
           });
         }
       }
@@ -118,9 +121,12 @@ export const EditAndCreateSubForum: React.FC<Props_> = ({
         const updatedForumId = await handleForumUpdation(updateForumInput);
 
         if (updatedForumId) {
-          navigation.navigate("SubForumStack", {
-            screen: "SubForum",
-            params: { subForumId: updatedForumId },
+          navigation.navigate({
+            name: "SubForumStack",
+            params: {
+              screen: "JoinedSubForum",
+            },
+            merge: true,
           });
         }
       }
