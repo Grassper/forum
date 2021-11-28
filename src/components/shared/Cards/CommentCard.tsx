@@ -1,16 +1,7 @@
 import { AntDesign, Entypo, Ionicons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
-import { StackNavigationProp } from "@react-navigation/stack";
 import { Avatar, Box, Flex, HStack, Icon, Pressable, Text } from "native-base";
 import React from "react";
 import { StyleSheet } from "react-native";
-
-import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
-
-type NavigationProp_ = StackNavigationProp<
-  RootStackParamList,
-  "AddAndEditComment"
->;
 
 interface Props_ {
   replyExists?: boolean;
@@ -23,8 +14,6 @@ export const CommentCard: React.FC<Props_> = ({
   hideReplyButton,
   hideCommentUserActions,
 }) => {
-  const Navigation = useNavigation<NavigationProp_>();
-
   const [action, setAction] = React.useState<
     "Upvoted" | "Downvoted" | "Notvoted"
   >("Notvoted");
@@ -123,7 +112,7 @@ export const CommentCard: React.FC<Props_> = ({
                 {!hideReplyButton && (
                   <Pressable
                     onPress={() => {
-                      Navigation.push("AddAndEditReplies", { action: "Add" });
+                      // Navigation.push("AddAndEditReplies", { action: "Add" });
                     }}
                   >
                     <Flex flexDirection="row" alignItems="flex-end">
@@ -141,7 +130,7 @@ export const CommentCard: React.FC<Props_> = ({
               {replyExists && (
                 <Pressable
                   onPress={() => {
-                    Navigation.push("Comment");
+                    // Navigation.push("Comment");
                   }}
                 >
                   {/**

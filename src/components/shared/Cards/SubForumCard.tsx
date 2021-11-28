@@ -1,7 +1,5 @@
-import { Foundation, MaterialIcons } from "@expo/vector-icons";
+import { Foundation } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { StackNavigationProp } from "@react-navigation/stack";
-import * as ImagePicker from "expo-image-picker";
 import {
   Avatar,
   Box,
@@ -12,153 +10,142 @@ import {
   Pressable,
   Text,
 } from "native-base";
-import React, { useState } from "react";
+import React from "react";
 import { Dimensions, StyleSheet } from "react-native";
 
-import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
+import { Skeleton } from "@/root/src/components/shared/Skeleton";
+import { UserContext } from "@/root/src/context";
 import { useToggle } from "@/root/src/hooks";
-
-type NavigationProp_ = StackNavigationProp<RootStackParamList>;
+import { SignS3ImageKey } from "@/root/src/utils/helpers";
 
 interface Props_ {
-  isEdit?: boolean;
+  id?: string;
   name?: string;
   description?: string;
+  profileImageS3Key?: string;
+  coverImageS3Key?: string;
+  _version?: number;
+  creatorId?: string;
 }
 
 const windowWidth = Dimensions.get("window").width;
 
 export const SubForumCard: React.FC<Props_> = ({
-  isEdit,
-  name = "e/Mechkeys",
-  description = `Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et ma`,
+  id,
+  name,
+  description,
+  profileImageS3Key,
+  coverImageS3Key,
+  creatorId,
+  _version,
 }) => {
-  const navigation = useNavigation<NavigationProp_>();
-  const [value, toggleValue] = useToggle(true);
-  const [image, setImage] = useState(
-    "https://randomuser.me/api/portraits/women/49.jpg"
-  );
-  const [wallPaper, setWallPaper] = useState(
-    "https://images.pexels.com/photos/735911/pexels-photo-735911.jpeg?cs=srgb&dl=pexels-soumil-kumar-735911.jpg&fm=jpg"
-  );
-  const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
+  const [status, setStatus] = useToggle(true);
 
-    console.log(result);
+  const [signedProfile, setSignedProfile] = React.useState("");
+  const [signedCover, setSignedCover] = React.useState("");
 
-    if (!result.cancelled) {
-      setImage(result.uri);
-    }
-  };
-  const pickWallPaperImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
+  const currentUser = React.useContext(UserContext).user;
+  const navigation = useNavigation();
 
-    if (!result.cancelled) {
-      setWallPaper(result.uri);
-    }
-  };
+  React.useEffect(() => {
+    (async () => {
+      if (profileImageS3Key) {
+        const signedImage = await SignS3ImageKey(profileImageS3Key);
+        if (signedImage) {
+          setSignedProfile(signedImage);
+        }
+      }
+    })();
+  }, [profileImageS3Key]);
+
+  React.useEffect(() => {
+    (async () => {
+      if (coverImageS3Key) {
+        const signedImage = await SignS3ImageKey(coverImageS3Key);
+        if (signedImage) {
+          setSignedCover(signedImage);
+        }
+      }
+    })();
+  }, [coverImageS3Key]);
+
   return (
     <Box>
-      <Box position="relative">
-        <Image
-          width="100%"
-          height="115"
-          alt="fallback text"
-          source={{
-            uri: wallPaper,
-          }}
-          fallbackSource={{
-            uri: wallPaper,
-          }}
-        />
-        {isEdit && (
-          <Pressable onPress={pickWallPaperImage}>
-            <Box
-              bg="eGreen.400"
-              p="2"
-              borderRadius="full"
-              position="absolute"
-              bottom="72.5"
-              right="2.5"
-            >
-              <Icon
-                as={<MaterialIcons name="motion-photos-on" />}
-                size={18}
-                color="white"
-              />
-            </Box>
-          </Pressable>
+      <Box position="relative" height="115px">
+        {signedCover ? (
+          <Image
+            width="100%"
+            height="100%"
+            alt="Cover Image"
+            source={{
+              uri: signedCover,
+            }}
+          />
+        ) : (
+          <Skeleton width="100%" alignItems="center" height="100%" />
         )}
       </Box>
       <Box alignItems="flex-start" justifyContent="center" bg="white">
         <Box position="relative">
-          <Avatar
-            bg="green.500"
-            mt="-20"
-            ml={windowWidth * 0.025}
-            size="xl"
-            source={{
-              uri: image,
-            }}
-          >
-            <Text
-              fontSize="md"
-              fontFamily="body"
-              fontWeight="600"
-              color="white"
-            >
-              Dk
-            </Text>
-          </Avatar>
-          {isEdit && (
-            <Pressable onPress={pickImage} zIndex="999">
-              <Box
-                bg="eGreen.400"
-                p="2"
-                borderRadius="full"
-                position="absolute"
-                bottom="0"
-                right="0"
-              >
-                <Icon
-                  as={<MaterialIcons name="motion-photos-on" />}
-                  size={18}
-                  color="white"
-                />
-              </Box>
-            </Pressable>
+          {signedProfile ? (
+            <Avatar
+              mt="-20"
+              ml={windowWidth * 0.025}
+              width="100px"
+              height="100px"
+              source={{
+                uri: signedProfile,
+              }}
+            />
+          ) : (
+            <Skeleton
+              bg="coolGray.200"
+              mt="-20"
+              ml={windowWidth * 0.025}
+              width="100px"
+              height="100px"
+              alignItems="center"
+              justifyContent="center"
+              borderRadius="full"
+            />
           )}
         </Box>
       </Box>
-      {!isEdit && (
-        <HStack bg="white" justifyContent="center" pb="4">
-          <Box width="90%">
-            <HStack
-              mb="2"
-              alignItems="flex-end"
-              justifyContent="space-between"
-              mt={isEdit ? "2" : "0"}
-            >
-              <HStack alignItems="center" space="2.5">
-                <Text fontSize="md" fontWeight="500">
-                  {name}
-                </Text>
+      <HStack bg="white" justifyContent="center" pb="4">
+        <Box width="90%">
+          <HStack
+            mb="2"
+            alignItems="flex-end"
+            justifyContent="space-between"
+            mt="0"
+          >
+            <HStack alignItems="center" space="2.5">
+              <Box>
+                {name ? (
+                  <Text fontSize="md" fontWeight="500">
+                    e/{name}
+                  </Text>
+                ) : (
+                  <Skeleton height="20px" width="150px" mt="2" />
+                )}
+              </Box>
+              {id && creatorId && creatorId === currentUser.id && (
                 <Pressable
-                  onPress={() =>
-                    navigation.navigate("EditAndCreateSubForum", {
-                      title: "Edit Subforum",
-                    })
-                  }
+                  onPress={() => {
+                    navigation.navigate("SubForumStack", {
+                      screen: "EditAndCreateSubForum",
+                      params: {
+                        title: "Edit Subforum",
+                        action: "Edit",
+                        subForumId: id,
+                        name,
+                        description,
+                        profileImageS3Key,
+                        bannerImageS3Key: coverImageS3Key,
+                        _version,
+                      },
+                    });
+                  }}
                 >
                   <Icon
                     as={<Foundation name="pencil" />}
@@ -166,31 +153,43 @@ export const SubForumCard: React.FC<Props_> = ({
                     color="eGreen.400"
                   />
                 </Pressable>
-              </HStack>
+              )}
+            </HStack>
 
+            {id && creatorId && creatorId !== currentUser.id && (
               <Button
-                onPress={() => toggleValue()}
-                bg={value ? "tertiary.500" : "danger.500"}
+                onPress={() => setStatus()}
+                bg={status ? "tertiary.500" : "danger.500"}
                 variant="unstyled"
                 minWidth="24"
                 borderRadius="50"
               >
-                {value ? "Join" : "Exit"}
+                {status ? "Join" : "Exit"}
               </Button>
-            </HStack>
-            <HStack alignItems="center" mb="2">
-              <Text fontSize="sm" color="blueGray.500">
-                7,629 Members
-              </Text>
-              <Box bg="blueGray.500" style={styles.separatorDot} />
-              <Text fontSize="sm" color="blueGray.500">
-                273 Posts
-              </Text>
-            </HStack>
-            <Text fontSize="sm">{description}</Text>
+            )}
+          </HStack>
+          <HStack alignItems="center" mb="2">
+            <Text fontSize="sm" color="blueGray.500">
+              7,629 Members
+            </Text>
+            <Box bg="blueGray.500" style={styles.separatorDot} />
+            <Text fontSize="sm" color="blueGray.500">
+              273 Posts
+            </Text>
+          </HStack>
+          <Box>
+            {description ? (
+              <Text fontSize="sm">{description}</Text>
+            ) : (
+              <>
+                <Skeleton height="20px" width="100%" mb="2" />
+                <Skeleton height="20px" width="80%" mb="2" />
+                <Skeleton height="20px" width="85%" />
+              </>
+            )}
           </Box>
-        </HStack>
-      )}
+        </Box>
+      </HStack>
     </Box>
   );
 };

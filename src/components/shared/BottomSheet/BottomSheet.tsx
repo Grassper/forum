@@ -1,6 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { StackNavigationProp } from "@react-navigation/stack";
 import {
   Actionsheet,
   Box,
@@ -13,17 +12,13 @@ import {
 import React from "react";
 import { StyleSheet } from "react-native";
 
-import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
-
-type NavigationProp_ = StackNavigationProp<RootStackParamList>;
-
 interface Props_ {
   isOpen: boolean;
   onClose: () => void;
 }
 
 export const BottomSheet: React.FC<Props_> = ({ isOpen, onClose }) => {
-  const navigation = useNavigation<NavigationProp_>();
+  const navigation = useNavigation();
   return (
     <Actionsheet isOpen={isOpen} onClose={onClose}>
       <Actionsheet.Content bg="white">
@@ -31,11 +26,11 @@ export const BottomSheet: React.FC<Props_> = ({ isOpen, onClose }) => {
           <HStack width="100%" space="4">
             <Item
               onPress={() => {
-                onClose(),
-                  navigation.push("ChooseSubForum", {
-                    postType: "Image",
-                    action: "Add",
-                  });
+                navigation.navigate("StackNav", {
+                  screen: "ChooseSubForum",
+                  params: { postType: "Text", action: "Add" },
+                });
+                onClose();
               }}
               iconName="ios-image"
               iconSize="20px"
@@ -44,11 +39,11 @@ export const BottomSheet: React.FC<Props_> = ({ isOpen, onClose }) => {
 
             <Item
               onPress={() => {
-                navigation.push("ChooseSubForum", {
-                  postType: "Audio",
-                  action: "Add",
-                }),
-                  onClose();
+                navigation.navigate("StackNav", {
+                  screen: "ChooseSubForum",
+                  params: { postType: "Audio", action: "Add" },
+                });
+                onClose();
               }}
               iconName="mic"
               iconSize="22px"
@@ -57,11 +52,15 @@ export const BottomSheet: React.FC<Props_> = ({ isOpen, onClose }) => {
 
             <Item
               onPress={() => {
-                navigation.push("ChooseSubForum", {
-                  postType: "Video",
-                  action: "Add",
-                }),
-                  onClose();
+                navigation.navigate("StackNav", {
+                  screen: "ChooseSubForum",
+                  params: {
+                    postType: "Video",
+                    action: "Add",
+                  },
+                });
+
+                onClose();
               }}
               iconName="ios-videocam"
               iconSize="20px"
@@ -70,12 +69,15 @@ export const BottomSheet: React.FC<Props_> = ({ isOpen, onClose }) => {
 
             <Item
               onPress={() => {
-                navigation.push("ChooseSubForum", {
-                  postType: "Text",
-                  action: "Add",
-                  hideUpload: true,
-                }),
-                  onClose();
+                navigation.navigate("StackNav", {
+                  screen: "ChooseSubForum",
+                  params: {
+                    postType: "Text",
+                    action: "Add",
+                    hideUpload: true,
+                  },
+                });
+                onClose();
               }}
               iconName="ios-text"
               iconSize="20px"
@@ -84,12 +86,15 @@ export const BottomSheet: React.FC<Props_> = ({ isOpen, onClose }) => {
 
             <Item
               onPress={() => {
-                navigation.push("ChooseSubForum", {
-                  postType: "Poll",
-                  action: "Add",
-                  hideUpload: true,
-                }),
-                  onClose();
+                navigation.navigate("StackNav", {
+                  screen: "ChooseSubForum",
+                  params: {
+                    postType: "Poll",
+                    action: "Add",
+                    hideUpload: true,
+                  },
+                });
+                onClose();
               }}
               iconName="stats-chart"
               iconSize="20px"

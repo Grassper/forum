@@ -1,18 +1,13 @@
 import { GraphQLResult } from "@aws-amplify/api-graphql";
-import { useNavigation } from "@react-navigation/native";
-import { StackNavigationProp } from "@react-navigation/stack";
 import { API } from "aws-amplify";
 import { format } from "date-fns";
 import { Box, Button, HStack, Pressable, Text, VStack } from "native-base";
 import React from "react";
 import { SvgUri } from "react-native-svg";
 
-import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
 import { Skeleton } from "@/root/src/components/shared/Skeleton";
 import { UserContext } from "@/root/src/context";
 import { useToggle } from "@/root/src/hooks";
-
-type NavigationProp_ = StackNavigationProp<RootStackParamList>;
 
 interface Props_ {
   routeUserId: string;
@@ -30,7 +25,6 @@ interface State_ {
 }
 
 export const ProfileCard: React.FC<Props_> = ({ routeUserId }) => {
-  const navigation = useNavigation<NavigationProp_>();
   const [value, toggleValue] = useToggle(true);
 
   const {
@@ -111,9 +105,7 @@ export const ProfileCard: React.FC<Props_> = ({ routeUserId }) => {
       <HStack alignItems="center" justifyContent="center" mb="15px">
         {profile?.userMetrics && profile.userMetrics.followers >= 0 ? (
           <StatsCard
-            onPress={() => {
-              navigation.navigate("Follow", { title: "Followers" });
-            }}
+            onPress={() => {}}
             count={profile.userMetrics.followers}
             countName="Followers"
           />
@@ -123,9 +115,7 @@ export const ProfileCard: React.FC<Props_> = ({ routeUserId }) => {
 
         {profile?.userMetrics && profile.userMetrics.following >= 0 ? (
           <StatsCard
-            onPress={() => {
-              navigation.navigate("Follow", { title: "Following" });
-            }}
+            onPress={() => {}}
             count={profile.userMetrics.following}
             countName="Following"
           />

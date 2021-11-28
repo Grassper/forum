@@ -1,14 +1,22 @@
+import { DrawerNavigationProp } from "@react-navigation/drawer";
+import { CompositeNavigationProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { Box, Flex, Text } from "native-base";
 import React from "react";
 import { FlatList, StyleSheet } from "react-native";
 
-import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
+import {
+  DrawerParamList_,
+  StackParamList_,
+} from "@/root/src/components/navigations/Navigation";
 import { CommentCard } from "@/root/src/components/shared/Cards/CommentCard";
 import { PostCard } from "@/root/src/components/shared/Cards/PostCard";
 import { dummyData } from "@/root/src/data/dummyData";
 
-type NavigationProp_ = StackNavigationProp<RootStackParamList, "Post">;
+type NavigationProp_ = CompositeNavigationProp<
+  StackNavigationProp<StackParamList_, "Post">,
+  DrawerNavigationProp<DrawerParamList_>
+>;
 
 interface Props_ {
   navigation: NavigationProp_;

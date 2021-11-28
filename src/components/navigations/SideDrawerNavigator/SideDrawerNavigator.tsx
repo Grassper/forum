@@ -1,11 +1,12 @@
-import { AntDesign, Entypo, Feather } from "@expo/vector-icons";
+import { AntDesign, Entypo, Feather, Ionicons } from "@expo/vector-icons";
 import {
   createDrawerNavigator,
+  DrawerContentComponentProps,
   DrawerContentScrollView,
   DrawerItem,
-  DrawerNavigationProp,
+  DrawerItemList,
 } from "@react-navigation/drawer";
-import { NavigationContainer, useNavigation } from "@react-navigation/native";
+import { NavigationContainer } from "@react-navigation/native";
 import {
   Box,
   Flex,
@@ -19,34 +20,25 @@ import React, { useState } from "react";
 import { StyleSheet } from "react-native";
 import { SvgUri } from "react-native-svg";
 
-import { StackNavigator } from "@/root/src/components/navigations/StackNavigator";
+import { DrawerParamList_ } from "@/root/src/components/navigations/Navigation";
+import {
+  ProfileStackNavigator,
+  StackNavigator,
+  SubForumStackNavigator,
+} from "@/root/src/components/navigations/StackNavigator";
 import { Bookmark } from "@/root/src/components/screens/Bookmark";
-import { EditAndCreateSubForum } from "@/root/src/components/screens/EditAndCreateSubForum";
-import { Follow } from "@/root/src/components/screens/Follow";
-import { Profile } from "@/root/src/components/screens/Profile";
 import { colors } from "@/root/src/constants";
 import { UserContext } from "@/root/src/context";
 
-export type RootDrawerParamList = {
-  StackNavigator: undefined;
-  drawerProfile: { userId: string };
-  drawerBlocked_Accounts: { title: "Blocked Accounts" };
-  drawerBookmarks: { title: "Bookmarks" };
-  EditAndCreateSubForum: { title: "Create Subforum" };
-};
+const DrawerNavigator = createDrawerNavigator<DrawerParamList_>();
 
-const DrawerNavigator = createDrawerNavigator<RootDrawerParamList>();
-
-type NavigationProp_ = DrawerNavigationProp<RootDrawerParamList>;
-
-const CustomDrawerContent = () => {
+const CustomDrawerContent = (props: DrawerContentComponentProps) => {
   const [lightMode, setLightMode] = useState(true);
 
   const {
-    user: { profileImageUrl, username, id },
+    user: { profileImageUrl, username },
   } = React.useContext(UserContext);
 
-  const navigation = useNavigation<NavigationProp_>();
   return (
     <DrawerContentScrollView style={styles.container}>
       <Box alignItems="center" justifyContent="center">
@@ -94,123 +86,50 @@ const CustomDrawerContent = () => {
       </Box>
 
       <Box mt="8">
+        <DrawerItemList {...props} />
         <DrawerItem
           style={styles.drawerItem}
-          label={() => (
+          label={({ color }) => (
             <Text
               fontSize="sm"
               fontFamily="body"
               fontWeight="500"
-              color="black"
-              ml="-4"
-            >
-              Home
-            </Text>
-          )}
-          onPress={() => navigation.navigate("StackNavigator")}
-          icon={({ focused }) => (
-            <Icon
-              as={<AntDesign name="home" />}
-              size={5}
-              ml="3"
-              color={focused ? "red" : "black"}
-            />
-          )}
-        />
-        <DrawerItem
-          style={styles.drawerItem}
-          label={() => (
-            <Text
-              fontSize="sm"
-              fontFamily="body"
-              fontWeight="500"
-              color="black"
-              ml="-4"
-            >
-              My Profile
-            </Text>
-          )}
-          onPress={() => navigation.navigate("drawerProfile", { userId: id })} // pass id of current user
-          icon={() => (
-            <Icon as={<Feather name="user" />} size={5} ml="3" color="black" />
-          )}
-        />
-        <DrawerItem
-          style={styles.drawerItem}
-          label={() => (
-            <Text
-              fontSize="sm"
-              fontFamily="body"
-              fontWeight="500"
-              color="black"
+              color={color}
               ml="-4"
             >
               Blocked Accounts
             </Text>
           )}
-          onPress={() =>
-            navigation.navigate("drawerBlocked_Accounts", {
-              title: "Blocked Accounts",
-            })
-          }
-          icon={() => (
+          onPress={() => {}}
+          icon={({ color }) => (
             <Icon
               as={<Entypo name="block" />}
               size={"18px"}
               ml="3"
-              color="black"
+              color={color}
             />
           )}
         />
         <DrawerItem
           style={styles.drawerItem}
-          label={() => (
+          label={({ color }) => (
             <Text
               fontSize="sm"
               fontFamily="body"
               fontWeight="500"
-              color="black"
+              color={color}
               ml="-4"
             >
-              Bookmarks
+              Sign Out
             </Text>
           )}
-          onPress={() =>
-            navigation.navigate("drawerBookmarks", { title: "Bookmarks" })
-          }
-          icon={() => (
+          onPress={() => {}}
+          icon={({ color }) => (
             <Icon
-              as={<Feather name="bookmark" />}
-              size={"19px"}
+              as={<Ionicons name="share-outline" />}
+              size={"20px"}
               ml="3"
-              color="black"
-            />
-          )}
-        />
-        <DrawerItem
-          style={styles.drawerItem}
-          label={() => (
-            <Text
-              fontSize="sm"
-              fontFamily="body"
-              fontWeight="500"
-              color="black"
-              ml="-4"
-            >
-              Create Subforum
-            </Text>
-          )}
-          onPress={() =>
-            navigation.navigate("EditAndCreateSubForum", {
-              title: "Create Subforum",
-            })
-          }
-          icon={() => (
-            <Icon
-              as={<AntDesign name="pluscircleo" />}
-              size={"18px"}
-              ml="3"
-              color="black"
+              color={color}
             />
           )}
         />
@@ -219,59 +138,98 @@ const CustomDrawerContent = () => {
   );
 };
 
+const defaultDrawerOptions = {
+  drawerActiveBackgroundColor: "#fef3c760",
+  drawerActiveTintColor: "#18181b",
+  drawerLabelStyle: {
+    fontFamily: "mm",
+    marginLeft: -18,
+    fontSize: 14,
+  },
+  headerTitleStyle: {
+    fontFamily: "mm",
+  },
+};
+
 export const SideDrawerNavigator = () => {
   return (
     <NavigationContainer>
-      <DrawerNavigator.Navigator drawerContent={() => <CustomDrawerContent />}>
+      <DrawerNavigator.Navigator
+        screenOptions={defaultDrawerOptions}
+        drawerContent={(props) => <CustomDrawerContent {...props} />}
+      >
         <DrawerNavigator.Screen
-          name="StackNavigator"
+          name="StackNav"
           component={StackNavigator}
           options={{
-            title: "",
+            drawerLabel: "Home",
             headerShown: false,
-            drawerActiveTintColor: "red",
+            drawerIcon: ({ color }) => (
+              <Icon
+                as={<AntDesign name="home" />}
+                size={5}
+                ml="3"
+                color={color}
+              />
+            ),
           }}
         />
         <DrawerNavigator.Screen
-          name="drawerProfile"
-          component={Profile}
+          name="ProfileStack"
+          component={ProfileStackNavigator}
           options={{
-            title: "",
-            drawerActiveTintColor: "red",
+            drawerLabel: "Profile",
+            title: "Profile",
+            drawerIcon: ({ color }) => (
+              <Icon
+                as={<Feather name="user" />}
+                size={5}
+                ml="3"
+                color={color}
+              />
+            ),
           }}
         />
         <DrawerNavigator.Screen
-          name="drawerBlocked_Accounts"
-          component={Follow}
-          options={{
-            title: "Blocked Accounts",
-            headerStyle: {
-              backgroundColor: colors.green,
-            },
-            headerTintColor: colors.white,
-          }}
-        />
-        <DrawerNavigator.Screen
-          name="drawerBookmarks"
+          name="Bookmark"
           component={Bookmark}
           options={{
+            drawerLabel: "Bookmarks",
             title: "Bookmarks",
             headerStyle: {
               backgroundColor: colors.green,
             },
             headerTintColor: colors.white,
+            drawerIcon: ({ color }) => (
+              <Icon
+                as={<Feather name="bookmark" />}
+                size={"19px"}
+                ml="3"
+                color={color}
+              />
+            ),
           }}
         />
         <DrawerNavigator.Screen
-          name="EditAndCreateSubForum"
-          component={EditAndCreateSubForum}
-          options={{
-            title: "Create Subforum",
+          name="SubForumStack"
+          component={SubForumStackNavigator}
+          options={() => ({
+            drawerLabel: "Joined Forums",
+            title: "",
+            headerShown: false,
             headerStyle: {
               backgroundColor: colors.green,
             },
             headerTintColor: colors.white,
-          }}
+            drawerIcon: ({ color }) => (
+              <Icon
+                as={<AntDesign name="pluscircleo" />}
+                size={"18px"}
+                ml="3"
+                color={color}
+              />
+            ),
+          })}
         />
       </DrawerNavigator.Navigator>
     </NavigationContainer>

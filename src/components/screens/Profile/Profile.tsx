@@ -1,13 +1,16 @@
-import { AntDesign, Ionicons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
+import { DrawerNavigationProp } from "@react-navigation/drawer";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import { RouteProp } from "@react-navigation/native";
+import { CompositeNavigationProp, RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { Button, Icon, Pressable } from "native-base";
+import { Button, Icon } from "native-base";
 import React from "react";
 import { Dimensions, StyleSheet, View } from "react-native";
 
-import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
-import { HeaderProfileIcon } from "@/root/src/components/shared/HeaderProfileIcon";
+import {
+  DrawerParamList_,
+  ProfileStackParamList_,
+} from "@/root/src/components/navigations/Navigation";
 import { colors } from "@/root/src/constants";
 import { UserContext } from "@/root/src/context";
 
@@ -17,8 +20,12 @@ import { TabNavigatorUserContext } from "./Context";
 import { Posts } from "./Post";
 import { ProfileCard } from "./ProfileCard";
 
-type RouteProp_ = RouteProp<RootStackParamList, "Profile">;
-type NavigationProp_ = StackNavigationProp<RootStackParamList, "Profile">;
+type NavigationProp_ = CompositeNavigationProp<
+  StackNavigationProp<ProfileStackParamList_, "Profile">,
+  DrawerNavigationProp<DrawerParamList_>
+>;
+
+type RouteProp_ = RouteProp<ProfileStackParamList_, "Profile">;
 
 interface Props_ {
   navigation: NavigationProp_;
@@ -54,19 +61,6 @@ export const Profile: React.FC<Props_> = ({ navigation, route }) => {
           >
             Edit
           </Button>
-        ),
-      headerLeft: () =>
-        routeUserId && routeUserId !== id ? (
-          <Pressable
-            onPress={() => navigation.goBack()}
-            ml="3"
-            alignItems="center"
-            justifyContent="center"
-          >
-            <AntDesign name="arrowleft" size={24} color="#17D7A0" />
-          </Pressable>
-        ) : (
-          <HeaderProfileIcon />
         ),
     });
   }, [id, navigation, routeUserId]);

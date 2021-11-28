@@ -1,20 +1,27 @@
-import { AntDesign, MaterialIcons } from "@expo/vector-icons";
-import { RouteProp } from "@react-navigation/native";
+import { MaterialIcons } from "@expo/vector-icons";
+import { DrawerNavigationProp } from "@react-navigation/drawer";
+import { CompositeNavigationProp, RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { Box, HStack, Icon, Pressable, Text, VStack } from "native-base";
 import React from "react";
 import { FlatList } from "react-native";
 import { SwipeListView } from "react-native-swipe-list-view";
 
-import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
+import {
+  DrawerParamList_,
+  ProfileStackParamList_,
+} from "@/root/src/components/navigations/Navigation";
 import { FollowCardRenderer } from "@/root/src/components/shared/CardRenderer";
-import { HeaderProfileIcon } from "@/root/src/components/shared/HeaderProfileIcon";
 import { SearchBar } from "@/root/src/components/shared/SearchBar";
 import { UserData } from "@/root/src/data/userData";
 
-type RouteProp_ = RouteProp<RootStackParamList, "Follow">;
+type NavigationProp_ = CompositeNavigationProp<
+  StackNavigationProp<ProfileStackParamList_, "Follow">,
+  DrawerNavigationProp<DrawerParamList_>
+>;
 
-type NavigationProp_ = StackNavigationProp<RootStackParamList, "Follow">;
+type RouteProp_ = RouteProp<ProfileStackParamList_, "Follow">;
+
 interface Props_ {
   navigation: NavigationProp_;
   route: RouteProp_;
@@ -47,48 +54,18 @@ const RenderHiddenItem = () => {
   );
 };
 
-export const Follow: React.FC<Props_> = ({ navigation, route }) => {
-  const { title } = route.params;
-
-  navigation.setOptions({
-    headerLeft: () =>
-      title === "Blocked Accounts" ? (
-        <HeaderProfileIcon />
-      ) : (
-        <Pressable
-          onPress={() => navigation.goBack()}
-          ml="3"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <AntDesign name="arrowleft" size={24} color="#17D7A0" />
-        </Pressable>
-      ),
-  });
+export const Follow: React.FC<Props_> = () => {
   return (
     <Box bg="white" flex="1" alignItems="center">
       <Box width="90%" pt="20px">
         <SearchBar />
       </Box>
       <Box mt="4" width="100%" flex="1">
-        {title !== "Blocked Accounts" ? (
-          <FlatList
-            data={UserData}
-            renderItem={FollowCardRenderer}
-            keyExtractor={(item) => item.id}
-          />
-        ) : (
-          <SwipeListView
-            data={UserData}
-            renderItem={FollowCardRenderer}
-            keyExtractor={(item) => item.id}
-            renderHiddenItem={RenderHiddenItem}
-            rightOpenValue={-70}
-            previewRowKey={"0"}
-            previewOpenValue={-40}
-            previewOpenDelay={3000}
-          />
-        )}
+        <FlatList
+          data={UserData}
+          renderItem={FollowCardRenderer}
+          keyExtractor={(item) => item.id}
+        />
       </Box>
     </Box>
   );

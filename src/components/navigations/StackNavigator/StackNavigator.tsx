@@ -2,60 +2,32 @@ import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
 
 import { BottomTabNavigator } from "@/root/src/components/navigations/BottomTabNavigator";
+import {
+  ProfileStackParamList_,
+  StackParamList_,
+  SubForumStackParamList_,
+} from "@/root/src/components/navigations/Navigation";
 import { AddAndEditComment } from "@/root/src/components/screens/AddAndEditComment";
 import { AddAndEditPost } from "@/root/src/components/screens/AddAndEditPost";
 import { AddAndEditReplies } from "@/root/src/components/screens/AddAndEditReplies";
-import { Bookmark } from "@/root/src/components/screens/Bookmark";
 import { ChatRoom } from "@/root/src/components/screens/ChatRoom";
 import { ChooseSubForum } from "@/root/src/components/screens/ChooseSubForum";
 import { Comment } from "@/root/src/components/screens/Comment";
 import { EditAndCreateSubForum } from "@/root/src/components/screens/EditAndCreateSubForum";
 import { EditProfile } from "@/root/src/components/screens/EditProfile";
 import { Follow } from "@/root/src/components/screens/Follow";
+import { JoinedSubForum } from "@/root/src/components/screens/JoinedSubForum";
 import { NewChat } from "@/root/src/components/screens/NewChat";
 import { Post } from "@/root/src/components/screens/Post";
 import { Profile } from "@/root/src/components/screens/Profile";
 import { SubForum } from "@/root/src/components/screens/SubForum";
 import { SubForumMod } from "@/root/src/components/screens/SubForumMod";
 import { colors } from "@/root/src/constants";
+import { UserContext } from "@/root/src/context";
 
-export type RootStackParamList = {
-  BottomTabNavigator: undefined;
-  // * User
-  Profile: { userId: string };
-  EditProfile: undefined;
-  Follow: { title: "Followers" | "Following" | "Blocked Accounts" };
-  Bookmark: undefined;
-
-  // * SubForum
-  SubForum: undefined;
-  SubForumMod: undefined;
-  EditAndCreateSubForum: { title: "Edit Subforum" | "Create Subforum" };
-
-  // * Post
-  Post: undefined;
-  AddAndEditPost: {
-    postType: "Image" | "Text" | "Video" | "Audio" | "Poll";
-    action: "Add" | "Edit";
-    hideUpload?: boolean;
-  };
-  ChooseSubForum: {
-    postType: "Image" | "Text" | "Video" | "Audio" | "Poll";
-    action: "Add" | "Edit";
-    hideUpload?: boolean;
-  };
-
-  // * Comment
-  Comment: undefined;
-  AddAndEditComment: { action: "Add" | "Edit" };
-  AddAndEditReplies: { action: "Add" | "Edit" };
-
-  // * Message
-  NewChat: undefined;
-  ChatRoom: { title: string; imageUri: string };
-};
-
-const Stack = createStackNavigator<RootStackParamList>();
+const Stack = createStackNavigator<StackParamList_>();
+const ProfileStack = createStackNavigator<ProfileStackParamList_>();
+const SubForumStack = createStackNavigator<SubForumStackParamList_>();
 
 const defaultStackOptions = {
   headerBackTitleVisible: false,
@@ -65,28 +37,75 @@ const defaultStackOptions = {
   },
 };
 
-export const StackNavigator = () => {
+export const SubForumStackNavigator = () => {
   return (
-    <Stack.Navigator
+    <SubForumStack.Navigator
       screenOptions={defaultStackOptions}
-      initialRouteName="BottomTabNavigator"
+      initialRouteName="JoinedSubForum"
     >
-      <Stack.Screen
-        name="BottomTabNavigator"
-        component={BottomTabNavigator}
-        options={{
-          title: "",
-          headerShown: false,
-        }}
+      <SubForumStack.Screen
+        name="JoinedSubForum"
+        component={JoinedSubForum}
+        options={() => ({
+          title: "Joined Forums",
+          headerStyle: {
+            backgroundColor: colors.green,
+          },
+          headerTintColor: colors.white,
+        })}
       />
-      <Stack.Screen
+      <SubForumStack.Screen
+        name="SubForum"
+        component={SubForum}
+        options={() => ({
+          title: "",
+        })}
+      />
+      <SubForumStack.Screen
+        name="SubForumMod"
+        component={SubForumMod}
+        options={() => ({
+          title: "Manage",
+          headerStyle: {
+            backgroundColor: colors.green,
+          },
+          headerTintColor: colors.white,
+        })}
+      />
+      <SubForumStack.Screen
+        name="EditAndCreateSubForum"
+        component={EditAndCreateSubForum}
+        initialParams={{ title: "Create Subforum", action: "Add" }}
+        options={({ route }) => ({
+          title: route.params.title,
+          headerStyle: {
+            backgroundColor: colors.green,
+          },
+          headerTintColor: colors.white,
+        })}
+      />
+    </SubForumStack.Navigator>
+  );
+};
+
+export const ProfileStackNavigator = () => {
+  const {
+    user: { id },
+  } = React.useContext(UserContext);
+  return (
+    <ProfileStack.Navigator
+      screenOptions={defaultStackOptions}
+      initialRouteName="Profile"
+    >
+      <ProfileStack.Screen
         name="Profile"
         component={Profile}
+        initialParams={{ userId: id }} //passing current user id
         options={{
           title: "",
         }}
       />
-      <Stack.Screen
+      <ProfileStack.Screen
         name="Follow"
         component={Follow}
         options={({ route }) => ({
@@ -97,18 +116,7 @@ export const StackNavigator = () => {
           headerTintColor: colors.white,
         })}
       />
-      <Stack.Screen
-        name="Bookmark"
-        component={Bookmark}
-        options={() => ({
-          title: "Bookmark",
-          headerStyle: {
-            backgroundColor: colors.green,
-          },
-          headerTintColor: colors.white,
-        })}
-      />
-      <Stack.Screen
+      <ProfileStack.Screen
         name="EditProfile"
         component={EditProfile}
         options={() => ({
@@ -119,34 +127,23 @@ export const StackNavigator = () => {
           headerTintColor: colors.white,
         })}
       />
+    </ProfileStack.Navigator>
+  );
+};
+
+export const StackNavigator = () => {
+  return (
+    <Stack.Navigator
+      screenOptions={defaultStackOptions}
+      initialRouteName="BottomTabNav"
+    >
       <Stack.Screen
-        name="SubForum"
-        component={SubForum}
-        options={() => ({
+        name="BottomTabNav"
+        component={BottomTabNavigator}
+        options={{
           title: "",
-        })}
-      />
-      <Stack.Screen
-        name="EditAndCreateSubForum"
-        component={EditAndCreateSubForum}
-        options={({ route }) => ({
-          title: route.params.title,
-          headerStyle: {
-            backgroundColor: colors.green,
-          },
-          headerTintColor: colors.white,
-        })}
-      />
-      <Stack.Screen
-        name="SubForumMod"
-        component={SubForumMod}
-        options={() => ({
-          title: "Manage",
-          headerStyle: {
-            backgroundColor: colors.green,
-          },
-          headerTintColor: colors.white,
-        })}
+          headerShown: false,
+        }}
       />
 
       <Stack.Screen

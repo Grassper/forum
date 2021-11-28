@@ -1,4 +1,6 @@
 import { GraphQLResult } from "@aws-amplify/api-graphql";
+import { DrawerNavigationProp } from "@react-navigation/drawer";
+import { CompositeNavigationProp, RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { API } from "aws-amplify";
 import {
@@ -14,14 +16,23 @@ import { SvgUri } from "react-native-svg";
 import isLength from "validator/es/lib/isLength";
 import matches from "validator/es/lib/matches";
 
-import { RootStackParamList } from "@/root/src/components/navigations/StackNavigator";
+import {
+  DrawerParamList_,
+  ProfileStackParamList_,
+} from "@/root/src/components/navigations/Navigation";
 import { colors } from "@/root/src/constants";
 import { UserContext } from "@/root/src/context";
 
-type NavigationProp_ = StackNavigationProp<RootStackParamList, "EditProfile">;
+type NavigationProp_ = CompositeNavigationProp<
+  StackNavigationProp<ProfileStackParamList_, "EditProfile">,
+  DrawerNavigationProp<DrawerParamList_>
+>;
+
+type RouteProp_ = RouteProp<ProfileStackParamList_, "EditProfile">;
 
 interface Props_ {
   navigation: NavigationProp_;
+  route: RouteProp_;
 }
 
 export const EditProfile: React.FC<Props_> = ({ navigation }) => {
@@ -70,7 +81,11 @@ export const EditProfile: React.FC<Props_> = ({ navigation }) => {
       } catch (err) {
         console.error("Error while updating the user profile", err);
       }
-      navigation.navigate("Profile", { userId: currentUser.id }); // pass id of current user
+      navigation.navigate({
+        name: "Profile",
+        params: { userId: currentUser.id },
+        merge: true,
+      }); // pass id of current user
     }
   }, [about, currentUser, isAboutValid, navigation, setUser]);
 
@@ -78,7 +93,7 @@ export const EditProfile: React.FC<Props_> = ({ navigation }) => {
     const validateAbout = () => {
       if (
         isLength(about, { min: 0, max: 300 }) &&
-        matches(about, "^[A-Za-z][A-Za-z0-9 _|.,]{0,300}$", "m")
+        matches(about, "^[A-Za-z][A-Za-z0-9 _|.,!]{0,300}$", "m")
       ) {
         setAboutValid(true);
         setAboutErrorMsg("");
