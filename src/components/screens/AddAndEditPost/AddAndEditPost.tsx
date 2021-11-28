@@ -15,7 +15,9 @@ import {
   VStack,
 } from "native-base";
 import React from "react";
-import { StyleSheet } from "react-native";
+import { Alert, StyleSheet } from "react-native";
+import isLength from "validator/es/lib/isLength";
+import matches from "validator/es/lib/matches";
 
 import {
   DrawerParamList_,
@@ -43,7 +45,33 @@ export const AddAndEditPost: React.FC<Props_> = ({ navigation, route }) => {
   const [PollTitle, setPollTitle] = React.useState("");
   const [Option, setOption] = React.useState(""); // poll option input
   const [Polls, setPoll] = React.useState<PollType_[]>([]); // poll options
-  const [singleFile, setSingleFile] = React.useState("");
+
+  const [isContentValid, setContentValid] = React.useState(false);
+  const [contentErrorMsg, setContentErrorMsg] = React.useState("");
+
+  const handleSubmit = React.useCallback(() => {
+    if (isContentValid) {
+      console.log("input valid");
+    } else {
+      Alert.alert(contentErrorMsg);
+    }
+  }, [contentErrorMsg, isContentValid]);
+
+  React.useEffect(() => {
+    const validateAbout = () => {
+      if (
+        isLength(Content, { min: 1, max: 2200 }) &&
+        matches(Content, "^[A-Za-z][A-Za-z0-9 _|.,!]{1,2200}$", "m")
+      ) {
+        setContentValid(true);
+        setContentErrorMsg("");
+      } else {
+        setContentValid(false);
+        setContentErrorMsg("Post Content Shouldn't be empty");
+      }
+    };
+    validateAbout();
+  }, [Content]);
 
   const { hideUpload, postType } = route.params;
 
@@ -54,34 +82,28 @@ export const AddAndEditPost: React.FC<Props_> = ({ navigation, route }) => {
           size="md"
           _text={{ fontWeight: "600", color: "white" }}
           variant="unstyled"
-          onPress={() => {}}
+          onPress={handleSubmit}
         >
-          Next
+          Post
         </Button>
       ),
     });
-  }, [navigation]);
-  const imagePicker = async () => {
-    //Opening Document Picker for selection of one file
-    let result = await DocumentPicker.getDocumentAsync({ type: "image/*" });
-    console.log(result, "result");
-    console.log(result);
+  }, [handleSubmit, navigation]);
+
+  const handlePicker = async () => {
+    const pickerType = {
+      Image: "image/*",
+      Audio: "audio/*",
+      Video: "video/*",
+    };
+    if (postType !== "Poll" && postType !== "Text") {
+      let pickerResult = await DocumentPicker.getDocumentAsync({
+        type: pickerType[postType],
+      });
+      console.log(pickerResult);
+    }
   };
-  const audioPicker = async () => {
-    let audioResult = await DocumentPicker.getDocumentAsync({
-      type: "audio/*",
-    });
-    console.log(audioResult, "result");
-    console.log(audioResult);
-  };
-  const videoPicker = async () => {
-    let videoResult = await DocumentPicker.getDocumentAsync({
-      type: "video/*",
-    });
-    console.log(videoResult, "result");
-    console.log(videoResult);
-  };
-  console.log(singleFile, "singleFile");
+
   return (
     <VStack
       style={styles.container}
@@ -200,9 +222,9 @@ export const AddAndEditPost: React.FC<Props_> = ({ navigation, route }) => {
       {postType !== "Poll" && (
         <Box bg="white" alignItems="center" height={hideUpload ? "90%" : "75%"}>
           <Input
-            width="90%"
             multiline
             value={Content}
+            width="90%"
             onChangeText={setContent}
             borderRadius="md"
             placeholder="Craft your post!"
@@ -227,15 +249,7 @@ export const AddAndEditPost: React.FC<Props_> = ({ navigation, route }) => {
               height="60"
               alignItems="center"
               justifyContent="center"
-              onPress={() =>
-                postType === "Audio"
-                  ? audioPicker
-                  : postType === "Video"
-                  ? videoPicker
-                  : postType === "Image"
-                  ? imagePicker
-                  : console.log("wrong")
-              }
+              onPress={handlePicker}
             >
               <Icon
                 as={<AntDesign name="plus" />}
@@ -256,3 +270,18 @@ const styles = StyleSheet.create({
   },
   container: { flex: 1 },
 });
+
+/**
+ * Todo-1: validate the content
+ * Todo-2: fixing the document picker and upload document to cloud
+ * Todo-3: complete the post
+ * Todo-4: poll post schema check
+ * Todo-5: complete the poll
+ * Todo-6: tags section maximum 5
+ * Todo-7: complete the post screen
+ * Todo-8: navigate to the timeline
+ */
+
+/**
+ * api calls
+ */
