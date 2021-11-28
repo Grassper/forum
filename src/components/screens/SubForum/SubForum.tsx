@@ -71,6 +71,7 @@ export const SubForum: React.FC<Props_> = ({ navigation, route }) => {
             description={subForum?.description}
             profileImageS3Key={subForum?.profileImageS3Key}
             coverImageS3Key={subForum?.bannerImageS3Key}
+            _version={subForum?._version}
           />
         )}
         keyExtractor={(item) => item.id}
@@ -124,6 +125,7 @@ interface Community {
   name: string;
   profileImageS3Key: string;
   bannerImageS3Key: string;
+  _version: number;
 }
 
 const getCommunity = /* GraphQL */ `
@@ -134,6 +136,7 @@ const getCommunity = /* GraphQL */ `
       name
       profileImageS3Key
       bannerImageS3Key
+      _version
     }
   }
 `;

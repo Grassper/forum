@@ -25,6 +25,11 @@ export type SubForumStackParamList_ = {
     title: "Edit Subforum" | "Create Subforum";
     action: "Add" | "Edit";
     subForumId?: string; // pass only for add action which means create subforum
+    name?: string;
+    description?: string;
+    profileImageS3Key?: string;
+    bannerImageS3Key?: string;
+    _version?: number;
   };
 };
 

@@ -22,6 +22,7 @@ interface Props_ {
   description?: string;
   profileImageS3Key?: string;
   coverImageS3Key?: string;
+  _version?: number;
 }
 
 const windowWidth = Dimensions.get("window").width;
@@ -32,11 +33,14 @@ export const SubForumCard: React.FC<Props_> = ({
   description,
   profileImageS3Key,
   coverImageS3Key,
+  _version,
 }) => {
   const [status, setStatus] = useToggle(true);
 
   const [signedProfile, setSignedProfile] = React.useState("");
   const [signedCover, setSignedCover] = React.useState("");
+
+  const navigation = useNavigation();
 
   React.useEffect(() => {
     (async () => {
@@ -114,14 +118,30 @@ export const SubForumCard: React.FC<Props_> = ({
               <Box>
                 {name ? (
                   <Text fontSize="md" fontWeight="500">
-                    {name}
+                    e/{name}
                   </Text>
                 ) : (
                   <Skeleton height="20px" width="150px" mt="2" />
                 )}
               </Box>
               {id && (
-                <Pressable onPress={() => {}}>
+                <Pressable
+                  onPress={() => {
+                    navigation.navigate("SubForumStack", {
+                      screen: "EditAndCreateSubForum",
+                      params: {
+                        title: "Edit Subforum",
+                        action: "Edit",
+                        subForumId: id,
+                        name,
+                        description,
+                        profileImageS3Key,
+                        bannerImageS3Key: coverImageS3Key,
+                        _version,
+                      },
+                    });
+                  }}
+                >
                   <Icon
                     as={<Foundation name="pencil" />}
                     size={18}

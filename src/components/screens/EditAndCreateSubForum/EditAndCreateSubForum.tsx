@@ -1,5 +1,5 @@
 import { GraphQLResult } from "@aws-amplify/api-graphql";
-import { AntDesign, Ionicons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import { DrawerNavigationProp } from "@react-navigation/drawer";
 import { CompositeNavigationProp, RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
@@ -46,7 +46,7 @@ export const EditAndCreateSubForum: React.FC<Props_> = ({
   navigation,
   route,
 }) => {
-  const { title, action, subForumId } = route.params;
+  const { title, action, subForumId, _version } = route.params;
 
   const [forumName, setForumName] = React.useState("");
   const [description, setDescription] = React.useState("");
@@ -75,6 +75,25 @@ export const EditAndCreateSubForum: React.FC<Props_> = ({
 
   const [coverLoader, toggleCoverLoader] = useToggle(false);
   const [profileLoader, toggleProfileLoader] = useToggle(false);
+
+  /**
+   * Hydrating the field for edit subforum screen
+   */
+
+  React.useEffect(() => {
+    if (route.params.name) {
+      setForumName(route.params.name);
+    }
+    if (route.params.description) {
+      setDescription(route.params.description);
+    }
+    if (route.params.profileImageS3Key) {
+      setProfileImageS3Key(route.params.profileImageS3Key);
+    }
+    if (route.params.bannerImageS3Key) {
+      setBannerImageS3Key(route.params.bannerImageS3Key);
+    }
+  }, [route.params]);
 
   const handleSubmit = React.useCallback(async () => {
     if (
@@ -106,7 +125,7 @@ export const EditAndCreateSubForum: React.FC<Props_> = ({
         }
       }
 
-      if (action === "Edit" && subForumId) {
+      if (action === "Edit" && subForumId && _version) {
         /**
          * Todo if input is same as current dont make a post call
          */
@@ -116,6 +135,7 @@ export const EditAndCreateSubForum: React.FC<Props_> = ({
           description,
           bannerImageS3Key,
           profileImageS3Key,
+          _version,
         };
 
         const updatedForumId = await handleForumUpdation(updateForumInput);
@@ -144,8 +164,9 @@ export const EditAndCreateSubForum: React.FC<Props_> = ({
     subForumId,
     forumName,
     description,
-    currentUser,
+    currentUser.id,
     navigation,
+    _version,
   ]);
 
   React.useLayoutEffect(() => {
@@ -436,6 +457,7 @@ interface handleForumUpdationInput_ {
   description: string;
   bannerImageS3Key: string;
   profileImageS3Key: string;
+  _version: number;
 }
 
 const handleForumUpdation = async (input: handleForumUpdationInput_) => {
