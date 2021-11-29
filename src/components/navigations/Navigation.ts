@@ -44,6 +44,7 @@ export type StackParamList_ = {
     hideUpload?: boolean;
     profileImageS3Key: string;
     name: string;
+    communityId: string;
   };
   ChooseSubForum: {
     postType: "Image" | "Text" | "Video" | "Audio" | "Poll";

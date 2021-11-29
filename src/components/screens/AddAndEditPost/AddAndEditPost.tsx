@@ -1,7 +1,9 @@
+import { GraphQLResult } from "@aws-amplify/api-graphql";
 import { AntDesign } from "@expo/vector-icons";
 import { DrawerNavigationProp } from "@react-navigation/drawer";
 import { CompositeNavigationProp, RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
+import { API } from "aws-amplify";
 import {
   Box,
   Button,
@@ -23,11 +25,12 @@ import {
 } from "@/root/src/components/navigations/Navigation";
 import { DocumentPickerButton } from "@/root/src/components/shared/Picker";
 import { CommunityTile } from "@/root/src/components/shared/Tile";
+import { UserContext } from "@/root/src/context";
 
 type RouteProp_ = RouteProp<StackParamList_, "AddAndEditPost">;
 
 type NavigationProp_ = CompositeNavigationProp<
-  StackNavigationProp<StackParamList_, "AddAndEditComment">,
+  StackNavigationProp<StackParamList_, "AddAndEditPost">,
   DrawerNavigationProp<DrawerParamList_>
 >;
 interface Props_ {
@@ -49,13 +52,69 @@ export const AddAndEditPost: React.FC<Props_> = ({ navigation, route }) => {
   const [isContentValid, setContentValid] = React.useState(false);
   const [contentErrorMsg, setContentErrorMsg] = React.useState("");
 
-  const handleSubmit = React.useCallback(() => {
+  const currentUser = React.useContext(UserContext).user;
+
+  const { hideUpload, postType } = route.params;
+
+  const handleSubmit = React.useCallback(async () => {
     if (isContentValid) {
-      console.log("input valid");
+      let postInput: createPostAndTimelineFetchInput_ = {
+        authorId: currentUser.id,
+        communityId: route.params.communityId,
+        content: Content,
+        postedDate: new Date(),
+        tags: ["Testing tags"],
+        type: route.params.postType.toUpperCase() as createPostAndTimelineFetchInput_["type"],
+      };
+      if (route.params.postType === "Text") {
+        const createdPostId = await createPostAndTimelineFetch(postInput);
+
+        if (createdPostId) {
+          navigation.navigate({
+            name: "BottomTabNav",
+            params: {
+              screen: "Home",
+            },
+            merge: true,
+          });
+        }
+      } else {
+        if (mediaS3Key) {
+          postInput = {
+            ...postInput,
+            mediaS3Key,
+          };
+
+          const createdPostId = await createPostAndTimelineFetch(postInput);
+
+          if (createdPostId) {
+            navigation.navigate({
+              name: "BottomTabNav",
+              params: {
+                screen: "Home",
+              },
+              merge: true,
+            });
+          }
+        } else {
+          Alert.alert(
+            `Attachment is required for ${route.params.postType} post`
+          );
+        }
+      }
     } else {
       Alert.alert(contentErrorMsg);
     }
-  }, [contentErrorMsg, isContentValid]);
+  }, [
+    Content,
+    contentErrorMsg,
+    currentUser.id,
+    isContentValid,
+    mediaS3Key,
+    navigation,
+    route.params.communityId,
+    route.params.postType,
+  ]);
 
   React.useEffect(() => {
     const validateAbout = () => {
@@ -72,8 +131,6 @@ export const AddAndEditPost: React.FC<Props_> = ({ navigation, route }) => {
     };
     validateAbout();
   }, [Content]);
-
-  const { hideUpload, postType } = route.params;
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -252,6 +309,35 @@ const styles = StyleSheet.create({
 /**
  * api calls
  */
+
+interface createPostAndTimelineFetchInput_ {
+  authorId: string;
+  communityId: string;
+  content: string;
+  postedDate: Date;
+  tags: [string];
+  type: "IMAGE" | "TEXT" | "VIDEO" | "AUDIO" | "POLL";
+  mediaS3Key?: String;
+}
+
+const createPostAndTimelineFetch = async (
+  input: createPostAndTimelineFetchInput_
+) => {
+  try {
+    const listCommunityData = (await API.graphql({
+      query: createPostAndTimeline,
+      variables: input,
+      authMode: "AMAZON_COGNITO_USER_POOLS",
+    })) as GraphQLResult<createPostAndTimeline_>;
+
+    if (listCommunityData.data?.createPostAndTimeline) {
+      const postId = listCommunityData.data.createPostAndTimeline;
+      return postId;
+    }
+  } catch (err) {
+    console.error("Error occured while creating a post", err);
+  }
+};
 
 /**
  * graphql queries and their types

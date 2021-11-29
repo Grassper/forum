@@ -78,6 +78,7 @@ export const ChooseSubForum: React.FC<Props_> = ({ navigation, route }) => {
             ...route.params,
             name: item.community.name,
             profileImageS3Key: item.community.profileImageS3Key,
+            communityId: item.community.id,
           });
         }}
       />
