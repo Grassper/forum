@@ -5,7 +5,7 @@ export const ImageCompressor = async (
   width: number,
   height: number
 ) => {
-  const blob = await fetchImageFromUri(imageUri);
+  const blob = await fetchAssetFromUri(imageUri);
 
   const compress = compressSizer(blob.size);
 
@@ -30,7 +30,7 @@ export const ImageCompressor = async (
   return compressedPhoto.uri;
 };
 
-export const fetchImageFromUri = async (uri: string) => {
+export const fetchAssetFromUri = async (uri: string) => {
   const response = await fetch(uri);
   const blob = await response.blob();
   return blob;

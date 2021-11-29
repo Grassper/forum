@@ -2,11 +2,9 @@ import { AntDesign } from "@expo/vector-icons";
 import { DrawerNavigationProp } from "@react-navigation/drawer";
 import { CompositeNavigationProp, RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import * as DocumentPicker from "expo-document-picker";
 import {
   Box,
   Button,
-  Center,
   Flex,
   Icon,
   Input,
@@ -23,6 +21,7 @@ import {
   DrawerParamList_,
   StackParamList_,
 } from "@/root/src/components/navigations/Navigation";
+import { DocumentPickerButton } from "@/root/src/components/shared/Picker";
 import { CommunityTile } from "@/root/src/components/shared/Tile";
 
 type RouteProp_ = RouteProp<StackParamList_, "AddAndEditPost">;
@@ -45,6 +44,7 @@ export const AddAndEditPost: React.FC<Props_> = ({ navigation, route }) => {
   const [PollTitle, setPollTitle] = React.useState("");
   const [Option, setOption] = React.useState(""); // poll option input
   const [Polls, setPoll] = React.useState<PollType_[]>([]); // poll options
+  const [mediaS3Key, setMediaS3Key] = React.useState("");
 
   const [isContentValid, setContentValid] = React.useState(false);
   const [contentErrorMsg, setContentErrorMsg] = React.useState("");
@@ -89,20 +89,6 @@ export const AddAndEditPost: React.FC<Props_> = ({ navigation, route }) => {
       ),
     });
   }, [handleSubmit, navigation]);
-
-  const handlePicker = async () => {
-    const pickerType = {
-      Image: "image/*",
-      Audio: "audio/*",
-      Video: "video/*",
-    };
-    if (postType !== "Poll" && postType !== "Text") {
-      let pickerResult = await DocumentPicker.getDocumentAsync({
-        type: pickerType[postType],
-      });
-      console.log(pickerResult);
-    }
-  };
 
   return (
     <VStack
@@ -220,7 +206,7 @@ export const AddAndEditPost: React.FC<Props_> = ({ navigation, route }) => {
         </Box>
       )}
       {postType !== "Poll" && (
-        <Box bg="white" alignItems="center" height={hideUpload ? "90%" : "75%"}>
+        <Box bg="white" alignItems="center" height={"90%"}>
           <Input
             multiline
             value={Content}
@@ -235,30 +221,10 @@ export const AddAndEditPost: React.FC<Props_> = ({ navigation, route }) => {
         </Box>
       )}
       {!hideUpload && (
-        <Center height="15%">
-          <Box width="90%">
-            <Pressable
-              p="8"
-              bg="white"
-              borderWidth="1"
-              borderColor="eGreen.400"
-              borderStyle="dotted"
-              borderRadius="sm"
-              width="60"
-              alignSelf="flex-start"
-              height="60"
-              alignItems="center"
-              justifyContent="center"
-              onPress={handlePicker}
-            >
-              <Icon
-                as={<AntDesign name="plus" />}
-                size="sm"
-                color="green.500"
-              />
-            </Pressable>
-          </Box>
-        </Center>
+        <DocumentPickerButton
+          postType={postType}
+          setMediaS3Key={setMediaS3Key}
+        />
       )}
     </VStack>
   );
@@ -273,6 +239,7 @@ const styles = StyleSheet.create({
 
 /**
  * Todo-1: validate the content
+ * Todo-2: Complete text only post
  * Todo-2: fixing the document picker and upload document to cloud
  * Todo-3: complete the post
  * Todo-4: poll post schema check
@@ -285,3 +252,40 @@ const styles = StyleSheet.create({
 /**
  * api calls
  */
+
+/**
+ * graphql queries and their types
+ * types pattern {queryName}_
+ * * note dash(_) at the end of type name
+ * order 1.queryType 2.graphql query
+ */
+
+type createPostAndTimeline_ = {
+  createPostAndTimeline?: {
+    id: string;
+  };
+};
+
+const createPostAndTimeline = /* GraphQL */ `
+  mutation createPost(
+    $authorId: ID!
+    $communityId: ID!
+    $content: String!
+    $postedDate: AWSDateTime!
+    $tags: [String!]!
+    $type: PostType!
+    $mediaS3Key: String
+  ) {
+    createPostAndTimeline(
+      authorId: $authorId
+      communityId: $communityId
+      content: $content
+      tags: $tags
+      type: $type
+      postedDate: $postedDate
+      mediaS3Key: $mediaS3Key
+    ) {
+      id
+    }
+  }
+`;

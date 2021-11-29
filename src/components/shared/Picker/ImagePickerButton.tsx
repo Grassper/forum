@@ -8,7 +8,7 @@ import { Alert, Platform, Pressable } from "react-native";
 import uuid from "react-native-uuid";
 
 import {
-  fetchImageFromUri,
+  fetchAssetFromUri,
   FileSizeChecker,
   ImageCompressor,
 } from "@/root/src/utils/helpers";
@@ -96,7 +96,7 @@ export const ImagePickerButton: React.FC<Props_> = ({
     try {
       setProgressPercentage(0);
 
-      const img = await fetchImageFromUri(imageUri);
+      const img = await fetchAssetFromUri(imageUri);
 
       /**
        * Filenaming convention - IMG-20211125-UUID.jpg

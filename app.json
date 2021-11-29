@@ -7,8 +7,7 @@
     "icon": "./assets/appIcons/drawable-hdpi/logo.png",
     "splash": {
       "image": "./assets/appIcons/ios/splash_screen@1x.png",
-      "resizeMode": "cover",
-      "backgroundColor": "#B4FE98"
+      "resizeMode": "cover"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
