@@ -78,7 +78,7 @@ export const AddAndEditPost: React.FC<Props_> = ({ navigation, route }) => {
             merge: true,
           });
         }
-      } else {
+      } else if (route.params.postType !== "Poll") {
         if (mediaS3Key) {
           postInput = {
             ...postInput,
@@ -295,15 +295,10 @@ const styles = StyleSheet.create({
 });
 
 /**
- * Todo-1: validate the content
- * Todo-2: Complete text only post
- * Todo-2: fixing the document picker and upload document to cloud
- * Todo-3: complete the post
- * Todo-4: poll post schema check
- * Todo-5: complete the poll
- * Todo-6: tags section maximum 5
- * Todo-7: complete the post screen
- * Todo-8: navigate to the timeline
+ * Todo-1: poll post schema check
+ * Todo-2: complete the poll
+ * Todo-3: tags section maximum 5
+ * Todo-4: complete the post screen
  */
 
 /**
