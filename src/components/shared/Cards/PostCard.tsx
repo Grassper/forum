@@ -1,4 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
+import { format } from "date-fns";
 import { Video } from "expo-av";
 import { Box, Flex, HStack, Icon, Image, Pressable, Text } from "native-base";
 import React, { useState } from "react";
@@ -13,6 +14,7 @@ import Tooltip from "react-native-walkthrough-tooltip";
 
 import { AudioComponent } from "@/root/src/components/shared/Audio";
 import { colors } from "@/root/src/constants";
+import { SignS3ImageKey } from "@/root/src/utils/helpers";
 
 export interface Props_ {
   id: string;
@@ -20,10 +22,9 @@ export interface Props_ {
   username: string;
   avatarUrl: string;
   subForum: string;
-  timeStamp: string;
+  timeStamp: Date;
   contentText: string;
-  mediaUrl?: string;
-  audioUrl?: string;
+  mediaS3Key?: string;
   poll?: {
     title: string;
     totalVotes: string;
@@ -44,12 +45,12 @@ interface Poll_ {
 
 export const PostCard: React.FC<Props_> = ({
   username,
+  id,
   subForum,
   timeStamp,
   avatarUrl,
   type,
-  mediaUrl,
-  audioUrl,
+  mediaS3Key,
   contentText,
   poll,
   postPage,
@@ -57,6 +58,19 @@ export const PostCard: React.FC<Props_> = ({
   hidePostUserActions,
 }) => {
   const videoRef = React.useRef(null);
+
+  const [signedMediaUrl, setSignedMediaUrl] = React.useState("");
+
+  React.useEffect(() => {
+    (async () => {
+      if (mediaS3Key) {
+        const signedImage = await SignS3ImageKey(mediaS3Key);
+        if (signedImage) {
+          setSignedMediaUrl(signedImage);
+        }
+      }
+    })();
+  }, [mediaS3Key]);
 
   return (
     <Box bg="white" alignItems="center" py="4" mt={`${postPage ? "0" : "2"}`}>
@@ -69,13 +83,13 @@ export const PostCard: React.FC<Props_> = ({
       {/**
        * video post
        */}
-      {type === "Video" && mediaUrl && (
+      {type === "Video" && signedMediaUrl && (
         <Box mb="4" width="100%">
           <Video
             ref={videoRef}
             style={styles.video}
             source={{
-              uri: mediaUrl,
+              uri: signedMediaUrl,
             }}
             useNativeControls
             resizeMode="cover"
@@ -85,21 +99,21 @@ export const PostCard: React.FC<Props_> = ({
       {/**
        * audio post
        */}
-      {type === "Audio" && mediaUrl && audioUrl && (
+      {type === "Audio" && signedMediaUrl && (
         <Box mb="4" width="100%">
-          <AudioComponent audioUri={audioUrl} />
+          <AudioComponent audioUri={signedMediaUrl} />
         </Box>
       )}
       {/**
        * image post
        */}
-      {type === "Image" && mediaUrl && (
+      {type === "Image" && signedMediaUrl && (
         <Image
           width="100%"
           height="350"
           alt="fallback text"
           source={{
-            uri: mediaUrl,
+            uri: signedMediaUrl,
           }}
           mb="4"
         />
@@ -134,7 +148,7 @@ interface PostInfo_ {
   username: string;
   avatarUrl: string;
   subForum: string;
-  timeStamp: string;
+  timeStamp: Date;
 }
 
 const PostInfo: React.FC<PostInfo_> = ({
@@ -148,23 +162,6 @@ const PostInfo: React.FC<PostInfo_> = ({
       <HStack alignItems="center" justifyContent="space-between" mb="3">
         <HStack alignItems="center" space="3">
           <Pressable onPress={() => {}}>
-            {/* <Avatar
-              bg="green.500"
-              width="38"
-              height="38"
-              source={{
-                uri: avatarUrl,
-              }}
-            >
-              <Text
-                fontSize="sm"
-                fontFamily="body"
-                fontWeight="600"
-                color="white"
-              >
-                {username.charAt(0).toUpperCase() || "Ef"}
-              </Text>
-            </Avatar> */}
             <Box
               width="40px"
               height="40px"
@@ -183,7 +180,7 @@ const PostInfo: React.FC<PostInfo_> = ({
               </Text>
               <Box bg="blueGray.500" style={styles.separatorDot} />
               <Text fontSize="xs" color="blueGray.500">
-                {timeStamp}
+                {format(new Date(timeStamp), "MMM dd")}
               </Text>
             </HStack>
           </Box>

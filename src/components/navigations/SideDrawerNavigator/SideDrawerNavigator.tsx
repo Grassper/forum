@@ -180,6 +180,7 @@ export const SideDrawerNavigator = () => {
           options={{
             drawerLabel: "Profile",
             title: "Profile",
+            headerShown: false,
             drawerIcon: ({ color }) => (
               <Icon
                 as={<Feather name="user" />}

@@ -83,3 +83,10 @@ export const Home: React.FC<Props_> = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: { flex: 1 },
 });
+
+/**
+ * graphql queries and their types
+ * types pattern {queryName}_
+ * * note dash(_) at the end of type name
+ * order 1.queryType 2.graphql query
+ */
