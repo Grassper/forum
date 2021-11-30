@@ -1,4 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 import { format } from "date-fns";
 import { Video } from "expo-av";
 import { Box, Flex, HStack, Icon, Image, Pressable, Text } from "native-base";
@@ -13,18 +14,19 @@ import { SvgUri } from "react-native-svg";
 import Tooltip from "react-native-walkthrough-tooltip";
 
 import { AudioComponent } from "@/root/src/components/shared/Audio";
+import { Skeleton } from "@/root/src/components/shared/Skeleton";
 import { colors } from "@/root/src/constants";
 import { SignS3ImageKey } from "@/root/src/utils/helpers";
 
 export interface Props_ {
-  id: string;
-  type: "Image" | "Text" | "Video" | "Audio" | "Poll";
-  username: string;
-  avatarUrl: string;
-  subForum: string;
-  timeStamp: Date;
-  contentText: string;
-  mediaS3Key: null | string;
+  id?: string;
+  type?: "Image" | "Text" | "Video" | "Audio" | "Poll";
+  username?: string;
+  avatarUrl?: string;
+  subForum?: string;
+  timeStamp?: Date;
+  contentText?: string;
+  mediaS3Key?: null | string;
   poll?: {
     title: string;
     totalVotes: string;
@@ -53,6 +55,7 @@ export const PostCard: React.FC<Props_> = ({
   contentText,
   poll,
   postPage,
+  id,
   hidePostNavigation,
   hidePostUserActions,
 }) => {
@@ -78,45 +81,56 @@ export const PostCard: React.FC<Props_> = ({
         subForum={subForum}
         timeStamp={timeStamp}
         avatarUrl={avatarUrl}
+        postId={id}
       />
       {/**
        * video post
        */}
-      {type === "Video" && signedMediaUrl && (
-        <Box mb="4" width="100%">
-          <Video
-            ref={videoRef}
-            style={styles.video}
-            source={{
-              uri: signedMediaUrl,
-            }}
-            useNativeControls
-            resizeMode="cover"
-          />
-        </Box>
-      )}
+      {type === "Video" &&
+        (signedMediaUrl ? (
+          <Box mb="4" width="100%">
+            <Video
+              ref={videoRef}
+              style={styles.video}
+              source={{
+                uri: signedMediaUrl,
+              }}
+              useNativeControls
+              resizeMode="cover"
+            />
+          </Box>
+        ) : (
+          <Skeleton height="350px" width="100%" mb="2" />
+        ))}
       {/**
        * audio post
        */}
-      {type === "Audio" && signedMediaUrl && (
-        <Box mb="4" width="100%">
-          <AudioComponent audioUri={signedMediaUrl} />
-        </Box>
-      )}
+      {type === "Audio" &&
+        (signedMediaUrl ? (
+          <Box mb="4" width="100%">
+            <AudioComponent audioUri={signedMediaUrl} />
+          </Box>
+        ) : (
+          <Skeleton height="100px" width="100%" mb="2" />
+        ))}
       {/**
        * image post
        */}
-      {type === "Image" && signedMediaUrl && (
-        <Image
-          width="100%"
-          height="350"
-          alt="fallback text"
-          source={{
-            uri: signedMediaUrl,
-          }}
-          mb="4"
-        />
-      )}
+      {type === "Image" &&
+        (signedMediaUrl ? (
+          <Image
+            width="100%"
+            height="350"
+            alt="fallback text"
+            source={{
+              uri: signedMediaUrl,
+            }}
+            mb="4"
+          />
+        ) : (
+          <Skeleton height="350px" width="100%" mb="2" />
+        ))}
+
       <Box width="90%">
         {/**
          * poll post
@@ -134,9 +148,20 @@ export const PostCard: React.FC<Props_> = ({
         {/**
          * text only post
          */}
-        <Text mb="4">{contentText}</Text>
-        {!hidePostUserActions && (
-          <PostUserActions hidePostNavigation={hidePostNavigation} />
+        {contentText ? (
+          <Text mb="4">{contentText}</Text>
+        ) : (
+          <>
+            <Skeleton height="20px" width="100%" mb="2" />
+            <Skeleton height="20px" width="85%" mb="2" />
+            <Skeleton height="20px" width="100%" mb="4" />
+          </>
+        )}
+        {!hidePostUserActions && id && (
+          <PostUserActions
+            hidePostNavigation={hidePostNavigation}
+            postId={id}
+          />
         )}
       </Box>
     </Box>
@@ -144,10 +169,11 @@ export const PostCard: React.FC<Props_> = ({
 };
 
 interface PostInfo_ {
-  username: string;
-  avatarUrl: string;
-  subForum: string;
-  timeStamp: Date;
+  postId?: string;
+  username?: string;
+  avatarUrl?: string;
+  subForum?: string;
+  timeStamp?: Date;
 }
 
 const PostInfo: React.FC<PostInfo_> = ({
@@ -155,12 +181,25 @@ const PostInfo: React.FC<PostInfo_> = ({
   subForum,
   timeStamp,
   avatarUrl,
+  postId,
 }) => {
   return (
     <Box width="90%">
       <HStack alignItems="center" justifyContent="space-between" mb="3">
         <HStack alignItems="center" space="3">
-          <Pressable onPress={() => {}}>
+          {avatarUrl ? (
+            <Pressable onPress={() => {}}>
+              <Box
+                width="40px"
+                height="40px"
+                bg="amber.100"
+                borderRadius="full"
+                overflow="hidden"
+              >
+                <SvgUri uri={avatarUrl} width="100%" height="100%" />
+              </Box>
+            </Pressable>
+          ) : (
             <Box
               width="40px"
               height="40px"
@@ -168,27 +207,44 @@ const PostInfo: React.FC<PostInfo_> = ({
               borderRadius="full"
               overflow="hidden"
             >
-              <SvgUri uri={avatarUrl} width="100%" height="100%" />
+              <Skeleton width="100%" height="100%" />
             </Box>
-          </Pressable>
+          )}
           <Box>
-            <Text fontWeight="500">{username}</Text>
+            {username ? (
+              <Text fontWeight="500">{username}</Text>
+            ) : (
+              <Skeleton height="20px" width="250px" mb="5px" />
+            )}
             <HStack alignItems="center">
-              <Text fontSize="xs" color="blueGray.500">
-                in e/{subForum}
-              </Text>
-              <Box bg="blueGray.500" style={styles.separatorDot} />
-              <Text fontSize="xs" color="blueGray.500">
-                {format(new Date(timeStamp), "MMM dd")}
-              </Text>
+              {subForum ? (
+                <>
+                  <Text fontSize="xs" color="blueGray.500">
+                    in e/{subForum}
+                  </Text>
+                  <Box bg="blueGray.500" style={styles.separatorDot} />
+                </>
+              ) : (
+                <Skeleton height="20px" width="75px" mb="5px" mr="2" />
+              )}
+
+              {timeStamp ? (
+                <Text fontSize="xs" color="blueGray.500">
+                  {format(new Date(timeStamp), "MMM dd")}
+                </Text>
+              ) : (
+                <Skeleton height="20px" width="75px" mb="5px" />
+              )}
             </HStack>
           </Box>
         </HStack>
-        <Icon
-          as={<Ionicons name="ellipsis-vertical" />}
-          size={5}
-          color="muted.500"
-        />
+        {postId && (
+          <Icon
+            as={<Ionicons name="ellipsis-vertical" />}
+            size={5}
+            color="muted.500"
+          />
+        )}
       </HStack>
     </Box>
   );
@@ -290,10 +346,12 @@ const Poll: React.FC<Props_["poll"]> = ({ title, pollArr, totalVotes }) => {
 
 interface PostUserActions_ {
   hidePostNavigation?: boolean;
+  postId?: string;
 }
 
 const PostUserActions: React.FC<PostUserActions_> = ({
   hidePostNavigation,
+  postId,
 }) => {
   const [showTip, setTip] = useState(false);
   const [likeIcon, setLikeIcon] = useState("smile");
@@ -305,13 +363,10 @@ const PostUserActions: React.FC<PostUserActions_> = ({
   };
   var [iconemoji, setIcon] = useState(images.smile);
   var iconName = images.smile;
-  // useEffect(() => {
-  //   // console.log("useEffect");
-  //   setIcon(images.sad);
-  // }, [likeIcon]);
+
+  const navigation = useNavigation();
 
   function chooseIcon() {
-    // console.log("called");
     iconName = images.angry;
     return iconName;
   }
@@ -432,8 +487,15 @@ const PostUserActions: React.FC<PostUserActions_> = ({
             />
           </Pressable>
         </HStack>
-        {!hidePostNavigation && (
-          <Pressable onPress={() => {}}>
+        {!hidePostNavigation && postId && (
+          <Pressable
+            onPress={() =>
+              navigation.navigate("StackNav", {
+                screen: "Post",
+                params: { postId },
+              })
+            }
+          >
             <Box style={styles.openPostIcon}>
               <Icon
                 as={<Ionicons name="share-outline" />}

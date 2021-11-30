@@ -37,7 +37,7 @@ export type StackParamList_ = {
   BottomTabNav: NavigatorScreenParams<BottomTabParamList_>;
 
   // * Post
-  Post: undefined;
+  Post: { postId: string };
   AddAndEditPost: {
     postType: "Image" | "Text" | "Video" | "Audio" | "Poll";
     action: "Add" | "Edit";
