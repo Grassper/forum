@@ -90,3 +90,18 @@ const styles = StyleSheet.create({
  * * note dash(_) at the end of type name
  * order 1.queryType 2.graphql query
  */
+
+//  query listTimeline {
+//   getUser(id: "be7cb66a-9a35-4581-b570-a791cb1c3e0b") {
+//     profileImageUrl
+//     timeLine {
+//       items {
+//         createdAt
+//         post {
+//           id
+//           content
+//         }
+//       }
+//     }
+//   }
+// }

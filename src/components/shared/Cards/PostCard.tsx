@@ -45,7 +45,6 @@ interface Poll_ {
 
 export const PostCard: React.FC<Props_> = ({
   username,
-  id,
   subForum,
   timeStamp,
   avatarUrl,
