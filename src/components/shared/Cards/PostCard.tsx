@@ -24,7 +24,7 @@ export interface Props_ {
   subForum: string;
   timeStamp: Date;
   contentText: string;
-  mediaS3Key?: string;
+  mediaS3Key: null | string;
   poll?: {
     title: string;
     totalVotes: string;

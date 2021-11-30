@@ -125,7 +125,7 @@ interface Item {
   id: string;
   type: string;
   content: string;
-  mediaS3Key?: string;
+  mediaS3Key: null | string;
   postedDate: Date;
   author: {
     username: string;
