@@ -63,6 +63,7 @@ type User
   chatRooms: [UserChatRoomRelationship]
     @connection(keyName: "byUser", fields: ["id"])
   userMetrics: UserMetrics @connection(fields: ["id"])
+  timeLine: [Timeline] @connection(keyName: "byUser", fields: ["id"])
 }
 
 type UserMetrics
@@ -329,7 +330,8 @@ type Timeline
       { allow: private, operations: [read] }
       { allow: private, provider: iam, operations: [create] }
     ]
-  ) {
+  )
+  @key(name: "byUser", fields: ["userId"]) {
   id: ID!
   userId: ID!
   postId: ID!
