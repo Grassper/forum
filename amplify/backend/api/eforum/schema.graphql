@@ -230,7 +230,7 @@ type UserPostMetricsRelationShip
 
 type Comment
   @model
-  @auth(rules: [{ allow: owner }])
+  @auth(rules: [{ allow: owner }, { allow: private, operations: [read] }])
   @key(name: "byPost", fields: ["postId", "commentedDate"])
   @key(name: "byAuthor", fields: ["authorId", "commentedDate"])
   @key(name: "byCommunity", fields: ["communityId", "commentedDate"]) {
@@ -251,22 +251,25 @@ type Comment
 
 type ParentChildCommentRelationship
   @model
-  @auth(rules: [{ allow: owner }])
+  @auth(rules: [{ allow: owner }, { allow: private, operations: [read] }])
   @key(
     name: "byParentComment"
     fields: ["parentCommentId"]
-    queryField: "getChildCommentsByParentCommentId"
+    queryField: "childCommentsByParentCommentId"
   )
   @key(
     name: "byChildComment"
     fields: ["childCommentId"]
-    queryField: "getParentCommentByChildCommentId"
-  ) {
+    queryField: "parentCommentByChildCommentId"
+  )
+  @key(name: "byPost", fields: ["postId"], queryField: "commentByPostId") {
   id: ID!
-  parentCommentId: ID!
+  parentCommentId: ID
   childCommentId: ID!
-  parentComment: Comment! @connection(fields: ["parentCommentId"])
+  postId: ID!
+  parentComment: Comment @connection(fields: ["parentCommentId"])
   childComment: Comment! @connection(fields: ["childCommentId"])
+  post: Post @connection(fields: ["postId"])
 }
 
 type UserCommentMetricsRelationShip

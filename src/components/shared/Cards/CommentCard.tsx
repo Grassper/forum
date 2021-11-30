@@ -1,17 +1,33 @@
 import { AntDesign, Entypo, Ionicons } from "@expo/vector-icons";
+import { format } from "date-fns";
 import { Avatar, Box, Flex, HStack, Icon, Pressable, Text } from "native-base";
 import React from "react";
 import { StyleSheet } from "react-native";
+import { SvgUri } from "react-native-svg";
+
+import { Skeleton } from "@/root/src/components/shared/Skeleton";
 
 interface Props_ {
   replyExists?: boolean;
   hideReplyButton?: boolean;
   hideCommentUserActions?: boolean;
+  username?: string;
+  avatarUrl?: string;
+  subForum?: string;
+  contentText?: string;
+  commentId?: string;
+  timeStamp?: Date;
 }
 
 export const CommentCard: React.FC<Props_> = ({
   replyExists,
   hideReplyButton,
+  subForum,
+  username,
+  avatarUrl,
+  timeStamp,
+  contentText,
+  commentId,
   hideCommentUserActions,
 }) => {
   const [action, setAction] = React.useState<
@@ -29,49 +45,75 @@ export const CommentCard: React.FC<Props_> = ({
       <Box width="90%">
         <HStack alignItems="center" justifyContent="space-between" mb="3">
           <HStack alignItems="center" space="3">
-            <Pressable onPress={() => {}}>
-              <Avatar
-                bg="green.500"
-                width="38"
-                height="38"
-                source={{
-                  uri: "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-                }}
-              >
-                <Text
-                  fontSize="sm"
-                  fontFamily="body"
-                  fontWeight="600"
-                  color="white"
+            {avatarUrl ? (
+              <Pressable onPress={() => {}}>
+                <Box
+                  width="40px"
+                  height="40px"
+                  bg="amber.100"
+                  borderRadius="full"
+                  overflow="hidden"
                 >
-                  {"sujitha".charAt(0).toUpperCase() || "Ef"}
-                </Text>
-              </Avatar>
-            </Pressable>
+                  <SvgUri uri={avatarUrl} width="100%" height="100%" />
+                </Box>
+              </Pressable>
+            ) : (
+              <Box
+                width="40px"
+                height="40px"
+                bg="amber.100"
+                borderRadius="full"
+                overflow="hidden"
+              >
+                <Skeleton width="100%" height="100%" />
+              </Box>
+            )}
             <Box>
-              <Text fontWeight="500">Anthony</Text>
+              {username ? (
+                <Text fontWeight="500">{username}</Text>
+              ) : (
+                <Skeleton height="20px" width="250px" mb="5px" />
+              )}
               <HStack alignItems="center">
-                <Text fontSize="xs" color="blueGray.500">
-                  in e/Mechkeys
-                </Text>
-                <Box bg="blueGray.500" style={styles.separatorDot} />
-                <Text fontSize="xs" color="blueGray.500">
-                  Nov 14
-                </Text>
+                {subForum ? (
+                  <>
+                    <Text fontSize="xs" color="blueGray.500">
+                      in e/{subForum}
+                    </Text>
+                    <Box bg="blueGray.500" style={styles.separatorDot} />
+                  </>
+                ) : (
+                  <Skeleton height="20px" width="75px" mb="5px" mr="2" />
+                )}
+
+                {timeStamp ? (
+                  <Text fontSize="xs" color="blueGray.500">
+                    {format(new Date(timeStamp), "MMM dd")}
+                  </Text>
+                ) : (
+                  <Skeleton height="20px" width="75px" mb="5px" />
+                )}
               </HStack>
             </Box>
           </HStack>
-          <Icon
-            as={<Ionicons name="ellipsis-vertical" />}
-            size={5}
-            color="muted.500"
-          />
+          {commentId && (
+            <Icon
+              as={<Ionicons name="ellipsis-vertical" />}
+              size={5}
+              color="muted.500"
+            />
+          )}
         </HStack>
-        <Text mb="4">
-          You know you're in love when you cant't fall asleep because reality is
-          finally better than your dreams
-        </Text>
-        {!hideCommentUserActions && (
+        {contentText ? (
+          <Text mb="4">{contentText}</Text>
+        ) : (
+          <>
+            <Skeleton height="20px" width="100%" mb="2" />
+            <Skeleton height="20px" width="85%" mb="2" />
+            <Skeleton height="20px" width="100%" mb="4" />
+          </>
+        )}
+        {!hideCommentUserActions && commentId && (
           <Box>
             <HStack alignItems="center" justifyContent="space-between">
               <HStack space="3" alignItems="center">
