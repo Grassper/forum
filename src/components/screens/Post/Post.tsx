@@ -5,7 +5,7 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { API } from "aws-amplify";
 import { Box, Flex, Text } from "native-base";
 import React from "react";
-import { FlatList, StyleSheet } from "react-native";
+import { FlatList, ListRenderItem, StyleSheet } from "react-native";
 
 import {
   DrawerParamList_,
@@ -76,34 +76,74 @@ const PostHeader: React.FC<PostHeader_> = (post) => {
 };
 
 export const Post: React.FC<Props_> = ({ route }) => {
-  const Data = [
-    { key: 1, replyExists: true },
-    { key: 2, replyExists: false },
-    { key: 3, replyExists: true },
-  ];
-
   const { postId } = route.params;
 
   const [post, setPost] = React.useState<Post_>();
+
+  const [comments, setComments] = React.useState<Item[]>([]);
+  const [nextToken, setNextToken] = React.useState<string>("");
 
   React.useEffect(() => {
     (async () => {
       if (postId) {
         const postData = await getPostByPostIdFetch({ id: postId });
+
         if (postData) {
           setPost(postData);
+        }
+
+        const listCommentInput: listCommentsByPostIdFetch_ = {
+          postId,
+          limit: 10,
+        };
+        const commentData = await listCommentsByPostIdFetch(listCommentInput);
+
+        if (commentData) {
+          setComments((prevState) => [...prevState, ...commentData.items]);
+          setNextToken(commentData.nextToken);
         }
       }
     })();
   }, [postId]);
 
+  const handlePagination = async () => {
+    if (nextToken && postId) {
+      const listPostInput: listCommentsByPostIdFetch_ = {
+        postId,
+        limit: 10,
+        nextToken,
+      };
+
+      const commentData = await listCommentsByPostIdFetch(listPostInput);
+
+      if (commentData) {
+        setComments((prevState) => [...prevState, ...commentData.items]);
+        setNextToken(commentData.nextToken);
+      }
+    }
+  };
+
+  const CommentCardRenderer: ListRenderItem<Item> = ({ item }) => {
+    const comment = item.childComment;
+    return (
+      <CommentCard
+        username={comment.author.username}
+        avatarUrl={comment.author.profileImageUrl}
+        subForum={comment.community.name}
+        contentText={comment.content}
+        commentId={comment.id}
+        timeStamp={comment.commentedDate}
+      />
+    );
+  };
+
   return (
     <Box style={styles.container}>
       <FlatList
-        data={Data}
-        renderItem={(item) => (
-          <CommentCard replyExists={item.item.replyExists} />
-        )}
+        data={comments}
+        renderItem={CommentCardRenderer}
+        keyExtractor={(item) => item.childComment.id}
+        onEndReached={() => handlePagination()}
         ListHeaderComponent={() => <PostHeader {...post} />}
       />
     </Box>
@@ -138,6 +178,30 @@ const getPostByPostIdFetch = async (input: getPostByPostIdFetchInput_) => {
       "Error occured while fetching post using post id in post screen",
       err
     );
+  }
+};
+
+interface listCommentsByPostIdFetch_ {
+  postId: string;
+  limit: number;
+  nextToken?: string;
+}
+
+const listCommentsByPostIdFetch = async (input: listCommentsByPostIdFetch_) => {
+  try {
+    const listCommentsData = (await API.graphql({
+      query: listCommentsByPostId,
+      variables: input,
+      authMode: "AMAZON_COGNITO_USER_POOLS",
+    })) as GraphQLResult<listCommentsByPostId_>;
+
+    if (listCommentsData.data?.listParentChildCommentRelationships) {
+      const comments =
+        listCommentsData.data?.listParentChildCommentRelationships;
+      return comments;
+    }
+  } catch (err) {
+    console.error("Error occured while listing comment using post id", err);
   }
 };
 
@@ -192,4 +256,70 @@ const getPostByPostId = /* GraphQL */ `
   }
 `;
 
-const listCommentsByPostId = /* GraphQL */ ``;
+interface listCommentsByPostId_ {
+  listParentChildCommentRelationships?: ListParentChildCommentRelationships;
+}
+
+interface ListParentChildCommentRelationships {
+  items: Item[];
+  nextToken: string;
+}
+
+interface Item {
+  childComment: ChildComment;
+}
+
+interface ChildComment {
+  id: string;
+  content: string;
+  author: Author;
+  commentedDate: Date;
+  community: Community;
+}
+
+interface Author {
+  id: string;
+  username: string;
+  profileImageUrl: string;
+}
+
+interface Community {
+  id: string;
+  name: string;
+}
+
+const listCommentsByPostId = /* GraphQL */ `
+  query ListParentChildCommentRelationship(
+    $postId: ID!
+    $nextToken: String
+    $limit: Int
+  ) {
+    listParentChildCommentRelationships(
+      filter: {
+        postId: { eq: $postId }
+        parentCommentId: { attributeExists: false }
+      }
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        childComment {
+          id
+          content
+          author {
+            id
+            username
+            profileImageUrl
+          }
+          commentedDate
+          community {
+            id
+            name
+          }
+        }
+      }
+      nextToken
+    }
+  }
+`;

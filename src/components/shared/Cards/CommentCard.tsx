@@ -216,30 +216,6 @@ const styles = StyleSheet.create({
 
 // {
 //   "input": {
-//     "content": "first Comment in eforum",
-//     "postId":"df",
-//     "communityId":"communityId",
-//     "authorId":"author",
-//     "upvote":0,
-//     "downvote":0,
-//     "commentedDate":"2021-11-30T19:02:00.057Z"
-//   }
-// }
-
-// {
-//   "input": {
-//     "content": "first Comment in eforum",
-//     "postId":"4ac5a448-52b3-4766-ada9-5799dc7da180",
-//     "communityId":"313aae11-45f9-4a90-99ae-97ecc68b4c52",
-//     "authorId":"be7cb66a-9a35-4581-b570-a791cb1c3e0b",
-//     "upvote":0,
-//     "downvote":0,
-//     "commentedDate":"2021-11-30T19:02:00.057Z"
-//   }
-// }
-
-// {
-//   "input": {
 // 			"childCommentId": "ad0afd24-4457-46cc-b52d-e8bbf0f7d1ba",
 //     "postId":"4ac5a448-52b3-4766-ada9-5799dc7da180"
 //   }
