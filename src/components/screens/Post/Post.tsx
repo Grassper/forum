@@ -78,20 +78,12 @@ const PostHeader: React.FC<PostHeader_> = (post) => {
 export const Post: React.FC<Props_> = ({ route }) => {
   const { postId } = route.params;
 
-  const [post, setPost] = React.useState<Post_>();
-
   const [comments, setComments] = React.useState<Item[]>([]);
   const [nextToken, setNextToken] = React.useState<string>("");
 
   React.useEffect(() => {
     (async () => {
       if (postId) {
-        const postData = await getPostByPostIdFetch({ id: postId });
-
-        if (postData) {
-          setPost(postData);
-        }
-
         const listCommentInput: listCommentsByPostIdFetch_ = {
           postId,
           limit: 10,
@@ -146,7 +138,7 @@ export const Post: React.FC<Props_> = ({ route }) => {
         renderItem={CommentCardRenderer}
         keyExtractor={(item) => item.childComment.id}
         onEndReached={() => handlePagination()}
-        ListHeaderComponent={() => <PostHeader {...post} />}
+        ListHeaderComponent={() => <PostHeader />}
       />
     </Box>
   );
@@ -159,29 +151,6 @@ const styles = StyleSheet.create({
 /**
  * api calls
  */
-interface getPostByPostIdFetchInput_ {
-  id: string;
-}
-
-const getPostByPostIdFetch = async (input: getPostByPostIdFetchInput_) => {
-  try {
-    const listCommunityData = (await API.graphql({
-      query: getPostByPostId,
-      variables: input,
-      authMode: "AMAZON_COGNITO_USER_POOLS",
-    })) as GraphQLResult<getPostByPostId_>;
-
-    if (listCommunityData.data?.getPost) {
-      const post = listCommunityData.data.getPost;
-      return post;
-    }
-  } catch (err) {
-    console.error(
-      "Error occured while fetching post using post id in post screen",
-      err
-    );
-  }
-};
 
 interface listCommentsByPostIdFetch_ {
   postId: string;
