@@ -494,7 +494,7 @@ const PostUserActions: React.FC<PostUserActions_> = ({
             onPress={() =>
               navigation.navigate("StackNav", {
                 screen: "Post",
-                params: { postId: id },
+                params: { ...post },
               })
             }
           >

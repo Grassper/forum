@@ -12,10 +12,7 @@ import {
   StackParamList_,
 } from "@/root/src/components/navigations/Navigation";
 import { CommentCard } from "@/root/src/components/shared/Cards/CommentCard";
-import {
-  PostCard,
-  Props_ as PostCardProps_,
-} from "@/root/src/components/shared/Cards/PostCard";
+import { PostCard } from "@/root/src/components/shared/Cards/PostCard";
 
 type NavigationProp_ = CompositeNavigationProp<
   StackNavigationProp<StackParamList_, "Post">,
@@ -31,31 +28,28 @@ interface Props_ {
 
 interface PostHeader_ {
   id?: string;
-  type?: string;
-  content?: string;
-  mediaS3Key?: string;
-  postedDate?: Date;
-  author?: Author_;
-  community?: Community_;
-  communityId?: string;
+  type?: "Image" | "Text" | "Video" | "Audio" | "Poll";
+  username?: string;
+  avatarUrl?: string;
+  subForum?: string;
+  subForumId?: string;
+  timeStamp?: Date;
+  contentText?: string;
+  mediaS3Key?: null | string;
 }
 
 const PostHeader: React.FC<PostHeader_> = (post) => {
-  const Type = post.type
-    ? post.type?.charAt(0) + post.type?.slice(1).toLowerCase()
-    : undefined;
-
   return (
     <Box>
       <PostCard
         id={post.id}
-        subForum={post.community?.name}
-        subForumId={post.communityId}
-        type={Type as PostCardProps_["type"]}
-        username={post.author?.username}
-        contentText={post.content}
-        avatarUrl={post.author?.profileImageUrl}
-        timeStamp={post.postedDate}
+        subForum={post.subForum}
+        subForumId={post.subForumId}
+        type={post.type}
+        username={post.username}
+        contentText={post.contentText}
+        avatarUrl={post.avatarUrl}
+        timeStamp={post.timeStamp}
         mediaS3Key={post.mediaS3Key}
         postPage
         hidePostNavigation
@@ -76,24 +70,16 @@ const PostHeader: React.FC<PostHeader_> = (post) => {
 };
 
 export const Post: React.FC<Props_> = ({ route }) => {
-  const { postId } = route.params;
-
-  const [post, setPost] = React.useState<Post_>();
+  const postData = route.params;
 
   const [comments, setComments] = React.useState<Item[]>([]);
   const [nextToken, setNextToken] = React.useState<string>("");
 
   React.useEffect(() => {
     (async () => {
-      if (postId) {
-        const postData = await getPostByPostIdFetch({ id: postId });
-
-        if (postData) {
-          setPost(postData);
-        }
-
+      if (postData.id) {
         const listCommentInput: listCommentsByPostIdFetch_ = {
-          postId,
+          postId: postData.id,
           limit: 10,
         };
         const commentData = await listCommentsByPostIdFetch(listCommentInput);
@@ -104,12 +90,12 @@ export const Post: React.FC<Props_> = ({ route }) => {
         }
       }
     })();
-  }, [postId]);
+  }, [postData.id]);
 
   const handlePagination = async () => {
-    if (nextToken && postId) {
+    if (nextToken && postData.id) {
       const listPostInput: listCommentsByPostIdFetch_ = {
-        postId,
+        postId: postData.id,
         limit: 10,
         nextToken,
       };
@@ -146,7 +132,7 @@ export const Post: React.FC<Props_> = ({ route }) => {
         renderItem={CommentCardRenderer}
         keyExtractor={(item) => item.childComment.id}
         onEndReached={() => handlePagination()}
-        ListHeaderComponent={() => <PostHeader {...post} />}
+        ListHeaderComponent={() => <PostHeader {...postData} />}
       />
     </Box>
   );
@@ -159,30 +145,6 @@ const styles = StyleSheet.create({
 /**
  * api calls
  */
-interface getPostByPostIdFetchInput_ {
-  id: string;
-}
-
-const getPostByPostIdFetch = async (input: getPostByPostIdFetchInput_) => {
-  try {
-    const listCommunityData = (await API.graphql({
-      query: getPostByPostId,
-      variables: input,
-      authMode: "AMAZON_COGNITO_USER_POOLS",
-    })) as GraphQLResult<getPostByPostId_>;
-
-    if (listCommunityData.data?.getPost) {
-      const post = listCommunityData.data.getPost;
-      return post;
-    }
-  } catch (err) {
-    console.error(
-      "Error occured while fetching post using post id in post screen",
-      err
-    );
-  }
-};
-
 interface listCommentsByPostIdFetch_ {
   postId: string;
   limit: number;
@@ -213,50 +175,6 @@ const listCommentsByPostIdFetch = async (input: listCommentsByPostIdFetch_) => {
  * * note dash(_) at the end of type name
  * order 1.queryType 2.graphql query
  */
-
-interface getPostByPostId_ {
-  getPost?: Post_;
-}
-
-interface Post_ {
-  id: string;
-  type: string;
-  content: string;
-  mediaS3Key: string;
-  postedDate: Date;
-  author: Author_;
-  community: Community_;
-  communityId: string;
-}
-
-interface Author_ {
-  username: string;
-  profileImageUrl: string;
-}
-
-interface Community_ {
-  name: string;
-}
-
-const getPostByPostId = /* GraphQL */ `
-  query getPostByPostId($id: ID!) {
-    getPost(id: $id) {
-      id
-      type
-      content
-      mediaS3Key
-      postedDate
-      author {
-        username
-        profileImageUrl
-      }
-      communityId
-      community {
-        name
-      }
-    }
-  }
-`;
 
 interface listCommentsByPostId_ {
   listParentChildCommentRelationships?: ListParentChildCommentRelationships;
