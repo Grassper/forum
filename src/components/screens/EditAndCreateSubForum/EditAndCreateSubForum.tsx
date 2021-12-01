@@ -184,27 +184,24 @@ export const EditAndCreateSubForum: React.FC<Props_> = ({
     });
   }, [navigation, title, handleSubmit]);
 
-  React.useEffect(() => {
-    (async () => {
-      if (profileImageS3Key) {
-        const signedImage = await SignS3ImageKey(profileImageS3Key);
-        if (signedImage) {
-          setSignedProfile(signedImage);
-        }
+  const signImage = React.useCallback(async () => {
+    if (profileImageS3Key) {
+      const signedImage = await SignS3ImageKey(profileImageS3Key);
+      if (signedImage) {
+        setSignedProfile(signedImage);
       }
-    })();
-  }, [profileImageS3Key]);
+    }
+    if (bannerImageS3Key) {
+      const signedImage = await SignS3ImageKey(bannerImageS3Key);
+      if (signedImage) {
+        setSignedCover(signedImage);
+      }
+    }
+  }, [profileImageS3Key, bannerImageS3Key]);
 
   React.useEffect(() => {
-    (async () => {
-      if (bannerImageS3Key) {
-        const signedImage = await SignS3ImageKey(bannerImageS3Key);
-        if (signedImage) {
-          setSignedCover(signedImage);
-        }
-      }
-    })();
-  }, [bannerImageS3Key]);
+    signImage();
+  }, [signImage]);
 
   React.useEffect(() => {
     const validateForumName = () => {

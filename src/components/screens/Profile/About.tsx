@@ -30,28 +30,29 @@ export const About: React.FC = () => {
    * todo update about from global state
    */
 
-  React.useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        // check user data for user id passed using route params
-        const userData = (await API.graphql({
-          query: getUser,
-          variables: { id: routeUserId },
-          authMode: "AMAZON_COGNITO_USER_POOLS",
-        })) as GraphQLResult<getUser_>;
+  const populateContent = React.useCallback(async () => {
+    try {
+      // check user data for user id passed using route params
+      const userData = (await API.graphql({
+        query: getUser,
+        variables: { id: routeUserId },
+        authMode: "AMAZON_COGNITO_USER_POOLS",
+      })) as GraphQLResult<getUser_>;
 
-        if (userData.data?.getUser) {
-          setAbout(userData.data.getUser);
-        }
-      } catch (err) {
-        console.error(
-          "error while fetching user about data in about tab in profile page",
-          err
-        );
+      if (userData.data?.getUser) {
+        setAbout(userData.data.getUser);
       }
-    };
-    fetchUserData();
-  }, [routeUserId, setAbout]);
+    } catch (err) {
+      console.error(
+        "error while fetching user about data in about tab in profile page",
+        err
+      );
+    }
+  }, [routeUserId]);
+
+  React.useEffect(() => {
+    populateContent();
+  }, [populateContent]);
 
   return (
     <Box style={styles.wrapper} alignItems="center" bg="white">

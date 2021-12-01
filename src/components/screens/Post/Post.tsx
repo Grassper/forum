@@ -75,24 +75,26 @@ export const Post: React.FC<Props_> = ({ route }) => {
   const [comments, setComments] = React.useState<Item[]>([]);
   const [nextToken, setNextToken] = React.useState<string>("");
 
-  React.useEffect(() => {
-    (async () => {
-      if (postData.id) {
-        const listCommentInput: listCommentsByPostIdFetch_ = {
-          postId: postData.id,
-          limit: 10,
-        };
-        const commentData = await listCommentsByPostIdFetch(listCommentInput);
+  const populateContent = React.useCallback(async () => {
+    if (postData.id) {
+      const listCommentInput: listCommentsByPostIdFetch_ = {
+        postId: postData.id,
+        limit: 10,
+      };
+      const commentData = await listCommentsByPostIdFetch(listCommentInput);
 
-        if (commentData) {
-          setComments((prevState) => [...prevState, ...commentData.items]);
-          setNextToken(commentData.nextToken);
-        }
+      if (commentData) {
+        setComments((prevState) => [...prevState, ...commentData.items]);
+        setNextToken(commentData.nextToken);
       }
-    })();
+    }
   }, [postData.id]);
 
-  const handlePagination = async () => {
+  React.useEffect(() => {
+    populateContent();
+  }, [populateContent]);
+
+  const handlePagination = React.useCallback(async () => {
     if (nextToken && postData.id) {
       const listPostInput: listCommentsByPostIdFetch_ = {
         postId: postData.id,
@@ -107,7 +109,7 @@ export const Post: React.FC<Props_> = ({ route }) => {
         setNextToken(commentData.nextToken);
       }
     }
-  };
+  }, [nextToken, postData.id]);
 
   const CommentCardRenderer: ListRenderItem<Item> = ({ item }) => {
     const comment = item.childComment;

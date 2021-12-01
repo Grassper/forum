@@ -52,11 +52,7 @@ export const AddAndEditComment: React.FC<Props_> = ({ navigation, route }) => {
       const createCommentResponse = await createCommentHandler(commentInput);
 
       if (createCommentResponse) {
-        navigation.navigate({
-          name: "Post",
-          params: { postId: post.id },
-          merge: true,
-        });
+        navigation.goBack();
       }
     } else {
       Alert.alert(commentErrorMsg);

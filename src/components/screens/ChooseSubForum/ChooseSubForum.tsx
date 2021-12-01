@@ -51,21 +51,23 @@ export const ChooseSubForum: React.FC<Props_> = ({ navigation, route }) => {
     }
   };
 
-  React.useEffect(() => {
-    (async () => {
-      const listCommunityInput: listCommunityByUserIdFetchInput_ = {
-        id: currentUser.id,
-        limit: 10,
-        sortDirection: "DESC",
-      };
+  const populateContent = React.useCallback(async () => {
+    const listCommunityInput: listCommunityByUserIdFetchInput_ = {
+      id: currentUser.id,
+      limit: 10,
+      sortDirection: "DESC",
+    };
 
-      const responseData = await listCommunityByUserIdFetch(listCommunityInput);
-      if (responseData) {
-        setCommunities(responseData.items);
-        setNextToken(responseData.nextToken);
-      }
-    })();
+    const responseData = await listCommunityByUserIdFetch(listCommunityInput);
+    if (responseData) {
+      setCommunities(responseData.items);
+      setNextToken(responseData.nextToken);
+    }
   }, [currentUser]);
+
+  React.useEffect(() => {
+    populateContent();
+  }, [populateContent]);
 
   const CommunityTileRenderer: ListRenderItem<Item> = ({ item }) => {
     return (

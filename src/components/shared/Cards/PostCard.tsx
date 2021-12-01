@@ -65,16 +65,18 @@ export const PostCard: React.FC<Props_> = ({
 
   const [signedMediaUrl, setSignedMediaUrl] = React.useState("");
 
-  React.useEffect(() => {
-    (async () => {
-      if (mediaS3Key) {
-        const signedImage = await SignS3ImageKey(mediaS3Key);
-        if (signedImage) {
-          setSignedMediaUrl(signedImage);
-        }
+  const signImage = React.useCallback(async () => {
+    if (mediaS3Key) {
+      const signedImage = await SignS3ImageKey(mediaS3Key);
+      if (signedImage) {
+        setSignedMediaUrl(signedImage);
       }
-    })();
+    }
   }, [mediaS3Key]);
+
+  React.useEffect(() => {
+    signImage();
+  }, [signImage]);
 
   return (
     <Box bg="white" alignItems="center" py="4" mt={`${postPage ? "0" : "2"}`}>

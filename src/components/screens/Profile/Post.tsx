@@ -16,23 +16,25 @@ export const Posts: React.FC = () => {
   const [posts, setPosts] = React.useState<Item[]>([]);
   const [nextToken, setNextToken] = React.useState<string>("");
 
-  React.useEffect(() => {
-    (async () => {
-      const listPostInput: listPostByUserIdFetchInput_ = {
-        id: routeUserId,
-        limit: 10,
-        sortDirection: "DESC",
-      };
+  const populateContent = React.useCallback(async () => {
+    const listPostInput: listPostByUserIdFetchInput_ = {
+      id: routeUserId,
+      limit: 10,
+      sortDirection: "DESC",
+    };
 
-      const responseData = await listPostByUserIdFetch(listPostInput);
-      if (responseData) {
-        setPosts((prevState) => [...prevState, ...responseData.items]);
-        setNextToken(responseData.nextToken);
-      }
-    })();
+    const responseData = await listPostByUserIdFetch(listPostInput);
+    if (responseData) {
+      setPosts((prevState) => [...prevState, ...responseData.items]);
+      setNextToken(responseData.nextToken);
+    }
   }, [routeUserId]);
 
-  const handlePagination = async () => {
+  React.useEffect(() => {
+    populateContent();
+  }, [populateContent]);
+
+  const handlePagination = React.useCallback(async () => {
     if (nextToken) {
       const listPostInput: listPostByUserIdFetchInput_ = {
         id: routeUserId,
@@ -48,7 +50,7 @@ export const Posts: React.FC = () => {
         setNextToken(responseData.nextToken);
       }
     }
-  };
+  }, [nextToken, routeUserId]);
 
   const PostCardRenderer: ListRenderItem<Item> = ({ item }) => {
     return (

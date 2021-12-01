@@ -40,29 +40,31 @@ export const SubForum: React.FC<Props_> = ({ navigation, route }) => {
 
   const currentUser = React.useContext(UserContext).user;
 
-  React.useEffect(() => {
-    (async () => {
-      const listPostInput: listPostByCommunityIdFetchInput_ = {
-        id: subForumId,
-        limit: 10,
-        sortDirection: "DESC",
-      };
+  const populateContent = React.useCallback(async () => {
+    const listPostInput: listPostByCommunityIdFetchInput_ = {
+      id: subForumId,
+      limit: 10,
+      sortDirection: "DESC",
+    };
 
-      const getCommunityData = await getCommunityFetch(subForumId);
-      const listPostData = await listPostByCommunityIdFetch(listPostInput);
+    const getCommunityData = await getCommunityFetch(subForumId);
+    const listPostData = await listPostByCommunityIdFetch(listPostInput);
 
-      if (getCommunityData) {
-        getSubForum(getCommunityData);
-      }
+    if (getCommunityData) {
+      getSubForum(getCommunityData);
+    }
 
-      if (listPostData) {
-        setPosts((prevState) => [...prevState, ...listPostData.items]);
-        setNextToken(listPostData.nextToken);
-      }
-    })();
+    if (listPostData) {
+      setPosts((prevState) => [...prevState, ...listPostData.items]);
+      setNextToken(listPostData.nextToken);
+    }
   }, [subForumId]);
 
-  const handlePagination = async () => {
+  React.useEffect(() => {
+    populateContent();
+  }, [populateContent]);
+
+  const handlePagination = React.useCallback(async () => {
     if (nextToken) {
       const listPostInput: listPostByCommunityIdFetchInput_ = {
         id: subForumId,
@@ -78,7 +80,7 @@ export const SubForum: React.FC<Props_> = ({ navigation, route }) => {
         setNextToken(responseData.nextToken);
       }
     }
-  };
+  }, [nextToken, subForumId]);
 
   React.useLayoutEffect(() => {
     navigation.setOptions({

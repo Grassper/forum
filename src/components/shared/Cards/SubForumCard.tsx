@@ -47,27 +47,24 @@ export const SubForumCard: React.FC<Props_> = ({
   const currentUser = React.useContext(UserContext).user;
   const navigation = useNavigation();
 
-  React.useEffect(() => {
-    (async () => {
-      if (profileImageS3Key) {
-        const signedImage = await SignS3ImageKey(profileImageS3Key);
-        if (signedImage) {
-          setSignedProfile(signedImage);
-        }
+  const signImage = React.useCallback(async () => {
+    if (profileImageS3Key) {
+      const signedImage = await SignS3ImageKey(profileImageS3Key);
+      if (signedImage) {
+        setSignedProfile(signedImage);
       }
-    })();
-  }, [profileImageS3Key]);
+    }
+    if (coverImageS3Key) {
+      const signedImage = await SignS3ImageKey(coverImageS3Key);
+      if (signedImage) {
+        setSignedCover(signedImage);
+      }
+    }
+  }, [profileImageS3Key, coverImageS3Key]);
 
   React.useEffect(() => {
-    (async () => {
-      if (coverImageS3Key) {
-        const signedImage = await SignS3ImageKey(coverImageS3Key);
-        if (signedImage) {
-          setSignedCover(signedImage);
-        }
-      }
-    })();
-  }, [coverImageS3Key]);
+    signImage();
+  }, [signImage]);
 
   return (
     <Box>

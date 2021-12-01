@@ -45,23 +45,25 @@ export const Home: React.FC<Props_> = ({ navigation }) => {
   const [posts, setPosts] = React.useState<Item[]>([]);
   const [nextToken, setNextToken] = React.useState<string>("");
 
-  React.useEffect(() => {
-    (async () => {
-      if (id) {
-        const listPostInput: listTimelineByUserIdFetchInput_ = {
-          id: id,
-          limit: 10,
-          sortDirection: "DESC",
-        };
+  const populateContent = React.useCallback(async () => {
+    if (id) {
+      const listPostInput: listTimelineByUserIdFetchInput_ = {
+        id: id,
+        limit: 10,
+        sortDirection: "DESC",
+      };
 
-        const responseData = await listTimelineByUserIdFetch(listPostInput);
-        if (responseData) {
-          setPosts((prevState) => [...prevState, ...responseData.items]);
-          setNextToken(responseData.nextToken);
-        }
+      const responseData = await listTimelineByUserIdFetch(listPostInput);
+      if (responseData) {
+        setPosts((prevState) => [...prevState, ...responseData.items]);
+        setNextToken(responseData.nextToken);
       }
-    })();
+    }
   }, [id]);
+
+  React.useEffect(() => {
+    populateContent();
+  }, [populateContent]);
 
   const handlePagination = async () => {
     if (nextToken && id) {
