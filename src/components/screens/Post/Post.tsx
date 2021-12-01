@@ -130,7 +130,9 @@ export const Post: React.FC<Props_> = ({ route }) => {
         username={comment.author.username}
         avatarUrl={comment.author.profileImageUrl}
         subForum={comment.community.name}
+        subForumId={comment.community.id}
         contentText={comment.content}
+        postId={comment.postId}
         commentId={comment.id}
         timeStamp={comment.commentedDate}
       />
@@ -272,6 +274,7 @@ interface Item {
 interface ChildComment {
   id: string;
   content: string;
+  postId: string;
   author: Author;
   commentedDate: Date;
   community: Community;
@@ -303,10 +306,10 @@ const listCommentsByPostId = /* GraphQL */ `
       nextToken: $nextToken
     ) {
       items {
-        id
         childComment {
           id
           content
+          postId
           author {
             id
             username

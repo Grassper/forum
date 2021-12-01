@@ -66,7 +66,17 @@ export type StackParamList_ = {
     mediaS3Key?: null | string;
     action: "Add" | "Edit";
   };
-  AddAndEditReplies: { action: "Add" | "Edit" };
+  AddAndEditReplies: {
+    username?: string;
+    avatarUrl?: string;
+    subForum?: string;
+    subForumId?: string;
+    postId?: string;
+    contentText?: string;
+    commentId?: string;
+    timeStamp?: Date;
+    action: "Add" | "Edit";
+  };
 
   // * Message
   NewChat: undefined;

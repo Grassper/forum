@@ -1,4 +1,5 @@
 import { AntDesign, Entypo, Ionicons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 import { format } from "date-fns";
 import { Box, Flex, HStack, Icon, Pressable, Text } from "native-base";
 import React from "react";
@@ -14,6 +15,8 @@ interface Props_ {
   username?: string;
   avatarUrl?: string;
   subForum?: string;
+  subForumId?: string;
+  postId?: string;
   contentText?: string;
   commentId?: string;
   timeStamp?: Date;
@@ -24,6 +27,8 @@ export const CommentCard: React.FC<Props_> = ({
   hideReplyButton,
   subForum,
   username,
+  postId,
+  subForumId,
   avatarUrl,
   timeStamp,
   contentText,
@@ -33,6 +38,8 @@ export const CommentCard: React.FC<Props_> = ({
   const [action, setAction] = React.useState<
     "Upvoted" | "Downvoted" | "Notvoted"
   >("Notvoted");
+
+  const navigation = useNavigation();
 
   return (
     <Box
@@ -154,7 +161,20 @@ export const CommentCard: React.FC<Props_> = ({
                 {!hideReplyButton && (
                   <Pressable
                     onPress={() => {
-                      // Navigation.push("AddAndEditReplies", { action: "Add" });
+                      navigation.navigate("StackNav", {
+                        screen: "AddAndEditReplies",
+                        params: {
+                          username,
+                          avatarUrl,
+                          subForum,
+                          postId,
+                          subForumId,
+                          contentText,
+                          commentId,
+                          timeStamp,
+                          action: "Add",
+                        },
+                      });
                     }}
                   >
                     <Flex flexDirection="row" alignItems="flex-end">
@@ -203,28 +223,3 @@ const styles = StyleSheet.create({
     width: 2.5,
   },
 });
-
-// query ListParentChildCommentRelationship {
-//   listParentChildCommentRelationships(filter: {postId: {eq: "4ac5a448-52b3-4766-ada9-5799dc7da180"}, parentCommentId: {attributeExists: false}}) {
-//     items {
-//       id
-//       childCommentId
-//       parentCommentId
-//     }
-//   }
-// }
-
-// {
-//   "input": {
-// 			"childCommentId": "ad0afd24-4457-46cc-b52d-e8bbf0f7d1ba",
-//     "postId":"4ac5a448-52b3-4766-ada9-5799dc7da180"
-//   }
-// }
-
-// {
-//   "input": {
-// 			"parentCommentId": "ad0afd24-4457-46cc-b52d-e8bbf0f7d1ba",
-// "childCommentId": "8fbcd353-3ded-4580-860b-8a5038c1a8c8",
-//     "postId":"4ac5a448-52b3-4766-ada9-5799dc7da180"
-//   }
-// }
