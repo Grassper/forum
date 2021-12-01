@@ -117,6 +117,7 @@ export const Home: React.FC<Props_> = ({ navigation }) => {
       <PostCard
         id={item.post.id}
         subForum={item.post.community.name}
+        subForumId={item.post.community.id}
         type={
           (item.post.type.charAt(0) +
             item.post.type.slice(1).toLowerCase()) as PostCardProps_["type"]
@@ -208,6 +209,7 @@ interface Post {
     profileImageUrl: string;
   };
   community: {
+    id: string;
     name: string;
   };
 }
@@ -238,6 +240,7 @@ const listTimelineByUserId = /* GraphQL */ `
             }
             community {
               name
+              id
             }
           }
         }

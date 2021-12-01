@@ -57,6 +57,7 @@ export const Posts: React.FC = () => {
       <PostCard
         id={item.id}
         subForum={item.community.name}
+        subForumId={item.community.id}
         type={
           (item.type.charAt(0) +
             item.type.slice(1).toLowerCase()) as PostCardProps_["type"]
@@ -134,6 +135,7 @@ interface Item {
     profileImageUrl: string;
   };
   community: {
+    id: string;
     name: string;
   };
 }
@@ -163,6 +165,7 @@ const listPostByUserId = /* GraphQL */ `
           }
           community {
             name
+            id
           }
         }
         nextToken
