@@ -242,7 +242,7 @@ type Comment
   upvote: Int!
   downvote: Int!
   commentedDate: AWSDateTime!
-  post: Post @connection(fields: ["postId"])
+  post: Post! @connection(fields: ["postId"])
   author: User! @connection(fields: ["authorId"])
   community: Community! @connection(fields: ["communityId"])
   userCommentMetric: [UserCommentMetricsRelationShip]

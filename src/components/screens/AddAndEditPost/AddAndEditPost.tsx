@@ -117,7 +117,7 @@ export const AddAndEditPost: React.FC<Props_> = ({ navigation, route }) => {
   ]);
 
   React.useEffect(() => {
-    const validateAbout = () => {
+    const validateContent = () => {
       if (
         isLength(Content, { min: 1, max: 2200 }) &&
         matches(Content, "^[A-Za-z][A-Za-z0-9 _|.,!]{1,2200}$", "m")
@@ -129,7 +129,7 @@ export const AddAndEditPost: React.FC<Props_> = ({ navigation, route }) => {
         setContentErrorMsg("Post Content Shouldn't be empty");
       }
     };
-    validateAbout();
+    validateContent();
   }, [Content]);
 
   React.useLayoutEffect(() => {

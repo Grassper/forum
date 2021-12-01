@@ -54,7 +54,18 @@ export type StackParamList_ = {
 
   // * Comment
   Comment: undefined;
-  AddAndEditComment: { action: "Add" | "Edit" };
+  AddAndEditComment: {
+    id?: string;
+    type?: "Image" | "Text" | "Video" | "Audio" | "Poll";
+    username?: string;
+    avatarUrl?: string;
+    subForum?: string;
+    subForumId?: string;
+    timeStamp?: Date;
+    contentText?: string;
+    mediaS3Key?: null | string;
+    action: "Add" | "Edit";
+  };
   AddAndEditReplies: { action: "Add" | "Edit" };
 
   // * Message

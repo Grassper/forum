@@ -37,6 +37,7 @@ interface PostHeader_ {
   postedDate?: Date;
   author?: Author_;
   community?: Community_;
+  communityId?: string;
 }
 
 const PostHeader: React.FC<PostHeader_> = (post) => {
@@ -47,8 +48,9 @@ const PostHeader: React.FC<PostHeader_> = (post) => {
   return (
     <Box>
       <PostCard
-        id={post?.id}
+        id={post.id}
         subForum={post.community?.name}
+        subForumId={post.communityId}
         type={Type as PostCardProps_["type"]}
         username={post.author?.username}
         contentText={post.content}
@@ -158,6 +160,7 @@ interface Post_ {
   postedDate: Date;
   author: Author_;
   community: Community_;
+  communityId: string;
 }
 
 interface Author_ {
@@ -181,6 +184,7 @@ const getPostByPostId = /* GraphQL */ `
         username
         profileImageUrl
       }
+      communityId
       community {
         name
       }

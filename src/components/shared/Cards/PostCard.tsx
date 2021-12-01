@@ -24,6 +24,7 @@ export interface Props_ {
   username?: string;
   avatarUrl?: string;
   subForum?: string;
+  subForumId?: string;
   timeStamp?: Date;
   contentText?: string;
   mediaS3Key?: null | string;
@@ -48,6 +49,7 @@ interface Poll_ {
 export const PostCard: React.FC<Props_> = ({
   username,
   subForum,
+  subForumId,
   timeStamp,
   avatarUrl,
   type,
@@ -160,7 +162,15 @@ export const PostCard: React.FC<Props_> = ({
         {!hidePostUserActions && id && (
           <PostUserActions
             hidePostNavigation={hidePostNavigation}
-            postId={id}
+            id={id}
+            type={type}
+            username={username}
+            avatarUrl={avatarUrl}
+            subForum={subForum}
+            subForumId={subForumId}
+            timeStamp={timeStamp}
+            contentText={contentText}
+            mediaS3Key={mediaS3Key}
           />
         )}
       </Box>
@@ -346,12 +356,20 @@ const Poll: React.FC<Props_["poll"]> = ({ title, pollArr, totalVotes }) => {
 
 interface PostUserActions_ {
   hidePostNavigation?: boolean;
-  postId?: string;
+  id?: string;
+  type?: "Image" | "Text" | "Video" | "Audio" | "Poll";
+  username?: string;
+  avatarUrl?: string;
+  subForum?: string;
+  subForumId?: string;
+  timeStamp?: Date;
+  contentText?: string;
+  mediaS3Key?: null | string;
 }
 
 const PostUserActions: React.FC<PostUserActions_> = ({
   hidePostNavigation,
-  postId,
+  ...post
 }) => {
   const [showTip, setTip] = useState(false);
   const [likeIcon, setLikeIcon] = useState("smile");
@@ -371,31 +389,8 @@ const PostUserActions: React.FC<PostUserActions_> = ({
     return iconName;
   }
 
-  // function chooseIcon() {
-  // console.log("called");
-  // switch (likeIcon) {
-  //   case "angry":
-  //     setIcon(images.angry);
-  //     // return (iconName = require("@/root/assets/faces/angry.png"));
-  //     break;
-  //   case "wow":
-  //     setIcon(require("@/root/assets/faces/wow.png"));
-  //     break;
-  //   case "smile":
-  //     setIcon(require("@/root/assets/faces/smile.png"));
-  //     break;
-  //   case "sad":
-  //     setIcon(require("@/root/assets/faces/sad.png"));
-  //     break;
+  const { id } = post;
 
-  //   default:
-  //     setIcon(require("@/root/assets/faces/smile.png"));
-
-  //     break;
-  // }
-  // }
-
-  // console.log(iconemoji, "icon");
   return (
     <Box>
       <HStack alignItems="center" justifyContent="space-between">
@@ -479,7 +474,14 @@ const PostUserActions: React.FC<PostUserActions_> = ({
               <Image source={iconemoji} alt="Alternate Text" size={"20px"} />
             </TouchableOpacity>
           </Tooltip>
-          <Pressable onPress={() => {}}>
+          <Pressable
+            onPress={() =>
+              navigation.navigate("StackNav", {
+                screen: "AddAndEditComment",
+                params: { ...post, action: "Add" },
+              })
+            }
+          >
             <Icon
               as={<Ionicons name="chatbubble-outline" />}
               size={5}
@@ -487,12 +489,12 @@ const PostUserActions: React.FC<PostUserActions_> = ({
             />
           </Pressable>
         </HStack>
-        {!hidePostNavigation && postId && (
+        {!hidePostNavigation && id && (
           <Pressable
             onPress={() =>
               navigation.navigate("StackNav", {
                 screen: "Post",
-                params: { postId },
+                params: { postId: id },
               })
             }
           >
