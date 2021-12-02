@@ -1,20 +1,26 @@
 type Mutation {
-  incrementLikePostUserMetrics(id: ID!): UserMetrics
-  decrementLikePostUserMetrics(id: ID!): UserMetrics
-  incrementLovePostUserMetrics(id: ID!): UserMetrics
-  decrementLovePostUserMetrics(id: ID!): UserMetrics
-  incrementSupportPostUserMetrics(id: ID!): UserMetrics
-  decrementSupportPostUserMetrics(id: ID!): UserMetrics
-  incrementDislikePostUserMetrics(id: ID!): UserMetrics
-  decrementDislikePostUserMetrics(id: ID!): UserMetrics
-  incrementProfileViewUserMetrics(id: ID!): UserMetrics
-  decrementProfileViewUserMetrics(id: ID!): UserMetrics
+  incrementLikePostUserMetrics(id: ID!): UserMetrics @aws_cognito_user_pools
+  decrementLikePostUserMetrics(id: ID!): UserMetrics @aws_cognito_user_pools
+  incrementLovePostUserMetrics(id: ID!): UserMetrics @aws_cognito_user_pools
+  decrementLovePostUserMetrics(id: ID!): UserMetrics @aws_cognito_user_pools
+  incrementSupportPostUserMetrics(id: ID!): UserMetrics @aws_cognito_user_pools
+  decrementSupportPostUserMetrics(id: ID!): UserMetrics @aws_cognito_user_pools
+  incrementDislikePostUserMetrics(id: ID!): UserMetrics @aws_cognito_user_pools
+  decrementDislikePostUserMetrics(id: ID!): UserMetrics @aws_cognito_user_pools
+  incrementProfileViewUserMetrics(id: ID!): UserMetrics @aws_cognito_user_pools
+  decrementProfileViewUserMetrics(id: ID!): UserMetrics @aws_cognito_user_pools
   incrementCommentUpvoteUserMetrics(id: ID!): UserMetrics
+    @aws_cognito_user_pools
   decrementCommentUpvoteUserMetrics(id: ID!): UserMetrics
+    @aws_cognito_user_pools
   incrementCommentDownvoteUserMetrics(id: ID!): UserMetrics
+    @aws_cognito_user_pools
   decrementCommentDownvoteUserMetrics(id: ID!): UserMetrics
-  incrementActiveDayUserMetrics(id: ID!): UserMetrics
-  decrementActiveDayUserMetrics(id: ID!): UserMetrics
+    @aws_cognito_user_pools
+  incrementActiveDayUserMetrics(id: ID!): UserMetrics @aws_cognito_user_pools
+  decrementActiveDayUserMetrics(id: ID!): UserMetrics @aws_cognito_user_pools
+  incrementRepliesCount(id: ID!): Comment @aws_cognito_user_pools
+  decrementRepliesCount(id: ID!): Comment @aws_cognito_user_pools
   createPostAndTimeline(
     type: PostType!
     content: String!
@@ -241,6 +247,7 @@ type Comment
   authorId: ID!
   upvote: Int!
   downvote: Int!
+  repliesCount: Int!
   commentedDate: AWSDateTime!
   post: Post! @connection(fields: ["postId"])
   author: User! @connection(fields: ["authorId"])
