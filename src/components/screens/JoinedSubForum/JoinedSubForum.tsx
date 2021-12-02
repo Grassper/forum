@@ -4,6 +4,7 @@ import { DrawerNavigationProp } from "@react-navigation/drawer";
 import {
   CompositeNavigationProp,
   DrawerActions,
+  useFocusEffect,
 } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { API } from "aws-amplify";
@@ -34,7 +35,7 @@ export const JoinedSubForum: React.FC<Props_> = ({ navigation }) => {
   const [communities, setCommunities] = React.useState<Item[]>([]);
   const [nextToken, setNextToken] = React.useState<string>("");
 
-  const handlePagination = React.useCallback(async () => {
+  const handlePagination = async () => {
     if (nextToken) {
       const listCommunityInput: listCommunityByUserIdFetchInput_ = {
         id: currentUser.id,
@@ -50,25 +51,32 @@ export const JoinedSubForum: React.FC<Props_> = ({ navigation }) => {
         setNextToken(responseData.nextToken);
       }
     }
-  }, [currentUser.id, nextToken]);
+  };
 
-  const populateContent = React.useCallback(async () => {
-    const listCommunityInput: listCommunityByUserIdFetchInput_ = {
-      id: currentUser.id,
-      limit: 10,
-      sortDirection: "DESC",
+  const populateContent = React.useCallback(() => {
+    let isActive = true;
+
+    const fetchCall = async () => {
+      const listCommunityInput: listCommunityByUserIdFetchInput_ = {
+        id: currentUser.id,
+        limit: 10,
+        sortDirection: "DESC",
+      };
+
+      const responseData = await listCommunityByUserIdFetch(listCommunityInput);
+      if (responseData && isActive) {
+        setCommunities(responseData.items);
+        setNextToken(responseData.nextToken);
+      }
     };
+    fetchCall();
 
-    const responseData = await listCommunityByUserIdFetch(listCommunityInput);
-    if (responseData) {
-      setCommunities(responseData.items);
-      setNextToken(responseData.nextToken);
-    }
+    return () => {
+      isActive = false;
+    };
   }, [currentUser]);
 
-  React.useEffect(() => {
-    populateContent();
-  }, [populateContent]);
+  useFocusEffect(populateContent);
 
   React.useLayoutEffect(() => {
     navigation.setOptions({

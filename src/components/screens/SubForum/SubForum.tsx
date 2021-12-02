@@ -1,6 +1,10 @@
 import { GraphQLResult } from "@aws-amplify/api-graphql";
 import { DrawerNavigationProp } from "@react-navigation/drawer";
-import { CompositeNavigationProp, RouteProp } from "@react-navigation/native";
+import {
+  CompositeNavigationProp,
+  RouteProp,
+  useFocusEffect,
+} from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { API } from "aws-amplify";
 import { Button } from "native-base";
@@ -40,31 +44,38 @@ export const SubForum: React.FC<Props_> = ({ navigation, route }) => {
 
   const currentUser = React.useContext(UserContext).user;
 
-  const populateContent = React.useCallback(async () => {
-    const listPostInput: listPostByCommunityIdFetchInput_ = {
-      id: subForumId,
-      limit: 10,
-      sortDirection: "DESC",
+  const populateContent = React.useCallback(() => {
+    let isActive = true;
+
+    const fetchCall = async () => {
+      const listPostInput: listPostByCommunityIdFetchInput_ = {
+        id: subForumId,
+        limit: 10,
+        sortDirection: "DESC",
+      };
+
+      const getCommunityData = await getCommunityFetch(subForumId);
+      const listPostData = await listPostByCommunityIdFetch(listPostInput);
+
+      if (getCommunityData && isActive) {
+        getSubForum(getCommunityData);
+      }
+
+      if (listPostData && isActive) {
+        setPosts(listPostData.items);
+        setNextToken(listPostData.nextToken);
+      }
     };
+    fetchCall();
 
-    const getCommunityData = await getCommunityFetch(subForumId);
-    const listPostData = await listPostByCommunityIdFetch(listPostInput);
-
-    if (getCommunityData) {
-      getSubForum(getCommunityData);
-    }
-
-    if (listPostData) {
-      setPosts((prevState) => [...prevState, ...listPostData.items]);
-      setNextToken(listPostData.nextToken);
-    }
+    return () => {
+      isActive = false;
+    };
   }, [subForumId]);
 
-  React.useEffect(() => {
-    populateContent();
-  }, [populateContent]);
+  useFocusEffect(populateContent);
 
-  const handlePagination = React.useCallback(async () => {
+  const handlePagination = async () => {
     if (nextToken) {
       const listPostInput: listPostByCommunityIdFetchInput_ = {
         id: subForumId,
@@ -80,7 +91,7 @@ export const SubForum: React.FC<Props_> = ({ navigation, route }) => {
         setNextToken(responseData.nextToken);
       }
     }
-  }, [nextToken, subForumId]);
+  };
 
   React.useLayoutEffect(() => {
     navigation.setOptions({

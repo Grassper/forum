@@ -1,6 +1,10 @@
 import { GraphQLResult } from "@aws-amplify/api-graphql";
 import { DrawerNavigationProp } from "@react-navigation/drawer";
-import { CompositeNavigationProp, RouteProp } from "@react-navigation/native";
+import {
+  CompositeNavigationProp,
+  RouteProp,
+  useFocusEffect,
+} from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { API } from "aws-amplify";
 import { Box, Flex, Text } from "native-base";
@@ -75,24 +79,32 @@ export const Post: React.FC<Props_> = ({ route }) => {
   const [comments, setComments] = React.useState<Item[]>([]);
   const [nextToken, setNextToken] = React.useState<string>("");
 
-  const populateContent = React.useCallback(async () => {
-    if (postData.id) {
-      const listCommentInput: listCommentsByPostIdFetch_ = {
-        postId: postData.id,
-        limit: 10,
-      };
-      const commentData = await listCommentsByPostIdFetch(listCommentInput);
+  const populateContent = React.useCallback(() => {
+    let isActive = true;
 
-      if (commentData) {
-        setComments(commentData.items);
-        setNextToken(commentData.nextToken);
+    const fetchCall = async () => {
+      if (postData.id) {
+        const listCommentInput: listCommentsByPostIdFetch_ = {
+          postId: postData.id,
+          limit: 10,
+        };
+        const commentData = await listCommentsByPostIdFetch(listCommentInput);
+
+        if (commentData && isActive) {
+          setComments(commentData.items);
+          setNextToken(commentData.nextToken);
+        }
       }
-    }
+    };
+
+    fetchCall();
+
+    return () => {
+      isActive = false;
+    };
   }, [postData.id]);
 
-  React.useEffect(() => {
-    populateContent();
-  }, [populateContent]);
+  useFocusEffect(populateContent);
 
   const handlePagination = async () => {
     if (nextToken && postData.id) {

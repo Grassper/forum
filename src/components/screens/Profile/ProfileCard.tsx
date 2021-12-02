@@ -1,4 +1,5 @@
 import { GraphQLResult } from "@aws-amplify/api-graphql";
+import { useFocusEffect } from "@react-navigation/native";
 import { API } from "aws-amplify";
 import { format } from "date-fns";
 import { Box, Button, HStack, Pressable, Text, VStack } from "native-base";
@@ -32,26 +33,34 @@ export const ProfileCard: React.FC<Props_> = ({ routeUserId }) => {
   } = React.useContext(UserContext);
   const [profile, setProfile] = React.useState<State_>();
 
-  const populateContent = React.useCallback(async () => {
-    try {
-      // check user data for user id passed using route params
-      const userData = (await API.graphql({
-        query: getUser,
-        variables: { id: routeUserId },
-        authMode: "AMAZON_COGNITO_USER_POOLS",
-      })) as GraphQLResult<getUser_>;
+  const populateContent = React.useCallback(() => {
+    let isActive = true;
 
-      if (userData.data?.getUser) {
-        setProfile(userData.data.getUser);
+    const fetchCall = async () => {
+      try {
+        // check user data for user id passed using route params
+        const userData = (await API.graphql({
+          query: getUser,
+          variables: { id: routeUserId },
+          authMode: "AMAZON_COGNITO_USER_POOLS",
+        })) as GraphQLResult<getUser_>;
+
+        if (userData.data?.getUser && isActive) {
+          setProfile(userData.data.getUser);
+        }
+      } catch (err) {
+        console.error("error while fetching user data in profile page", err);
       }
-    } catch (err) {
-      console.error("error while fetching user data in profile page", err);
-    }
+    };
+
+    fetchCall();
+
+    return () => {
+      isActive = false;
+    };
   }, [routeUserId]);
 
-  React.useEffect(() => {
-    populateContent();
-  }, [populateContent]);
+  useFocusEffect(populateContent);
 
   return (
     <Box alignItems="center" mt="5">

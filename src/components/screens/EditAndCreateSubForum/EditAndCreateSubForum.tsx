@@ -1,7 +1,11 @@
 import { GraphQLResult } from "@aws-amplify/api-graphql";
 import { Ionicons } from "@expo/vector-icons";
 import { DrawerNavigationProp } from "@react-navigation/drawer";
-import { CompositeNavigationProp, RouteProp } from "@react-navigation/native";
+import {
+  CompositeNavigationProp,
+  RouteProp,
+  useFocusEffect,
+} from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { API } from "aws-amplify";
 import {
@@ -184,24 +188,32 @@ export const EditAndCreateSubForum: React.FC<Props_> = ({
     });
   }, [navigation, title, handleSubmit]);
 
-  const signImage = React.useCallback(async () => {
-    if (profileImageS3Key) {
-      const signedImage = await SignS3ImageKey(profileImageS3Key);
-      if (signedImage) {
-        setSignedProfile(signedImage);
+  const signImage = React.useCallback(() => {
+    let isActive = true;
+
+    const signing = async () => {
+      if (profileImageS3Key) {
+        const signedImage = await SignS3ImageKey(profileImageS3Key);
+        if (signedImage && isActive) {
+          setSignedProfile(signedImage);
+        }
       }
-    }
-    if (bannerImageS3Key) {
-      const signedImage = await SignS3ImageKey(bannerImageS3Key);
-      if (signedImage) {
-        setSignedCover(signedImage);
+      if (bannerImageS3Key) {
+        const signedImage = await SignS3ImageKey(bannerImageS3Key);
+        if (signedImage && isActive) {
+          setSignedCover(signedImage);
+        }
       }
-    }
+    };
+
+    signing();
+
+    return () => {
+      isActive = false;
+    };
   }, [profileImageS3Key, bannerImageS3Key]);
 
-  React.useEffect(() => {
-    signImage();
-  }, [signImage]);
+  useFocusEffect(signImage);
 
   React.useEffect(() => {
     const validateForumName = () => {

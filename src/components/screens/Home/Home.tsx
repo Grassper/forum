@@ -2,7 +2,10 @@ import { GraphQLResult } from "@aws-amplify/api-graphql";
 import { Ionicons } from "@expo/vector-icons";
 import { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
 import { DrawerNavigationProp } from "@react-navigation/drawer";
-import { CompositeNavigationProp } from "@react-navigation/native";
+import {
+  CompositeNavigationProp,
+  useFocusEffect,
+} from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { API } from "aws-amplify";
 import { Box, Icon, Image } from "native-base";
@@ -45,25 +48,32 @@ export const Home: React.FC<Props_> = ({ navigation }) => {
   const [posts, setPosts] = React.useState<Item[]>([]);
   const [nextToken, setNextToken] = React.useState<string>("");
 
-  const populateContent = React.useCallback(async () => {
-    if (id) {
-      const listPostInput: listTimelineByUserIdFetchInput_ = {
-        id: id,
-        limit: 10,
-        sortDirection: "DESC",
-      };
+  const populateContent = React.useCallback(() => {
+    let isActive = true;
 
-      const responseData = await listTimelineByUserIdFetch(listPostInput);
-      if (responseData) {
-        setPosts((prevState) => [...prevState, ...responseData.items]);
-        setNextToken(responseData.nextToken);
+    const fetchCall = async () => {
+      if (id) {
+        const listPostInput: listTimelineByUserIdFetchInput_ = {
+          id: id,
+          limit: 10,
+          sortDirection: "DESC",
+        };
+
+        const responseData = await listTimelineByUserIdFetch(listPostInput);
+        if (responseData && isActive) {
+          setPosts(responseData.items);
+          setNextToken(responseData.nextToken);
+        }
       }
-    }
+    };
+    fetchCall();
+
+    return () => {
+      isActive = false;
+    };
   }, [id]);
 
-  React.useEffect(() => {
-    populateContent();
-  }, [populateContent]);
+  useFocusEffect(populateContent);
 
   const handlePagination = async () => {
     if (nextToken && id) {

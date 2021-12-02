@@ -1,6 +1,10 @@
 import { GraphQLResult } from "@aws-amplify/api-graphql";
 import { DrawerNavigationProp } from "@react-navigation/drawer";
-import { CompositeNavigationProp, RouteProp } from "@react-navigation/native";
+import {
+  CompositeNavigationProp,
+  RouteProp,
+  useFocusEffect,
+} from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { API } from "aws-amplify";
 import { Box, Text } from "native-base";
@@ -51,23 +55,30 @@ export const ChooseSubForum: React.FC<Props_> = ({ navigation, route }) => {
     }
   };
 
-  const populateContent = React.useCallback(async () => {
-    const listCommunityInput: listCommunityByUserIdFetchInput_ = {
-      id: currentUser.id,
-      limit: 10,
-      sortDirection: "DESC",
+  const populateContent = React.useCallback(() => {
+    let isActive = true;
+
+    const fetchCall = async () => {
+      const listCommunityInput: listCommunityByUserIdFetchInput_ = {
+        id: currentUser.id,
+        limit: 10,
+        sortDirection: "DESC",
+      };
+
+      const responseData = await listCommunityByUserIdFetch(listCommunityInput);
+      if (responseData && isActive) {
+        setCommunities(responseData.items);
+        setNextToken(responseData.nextToken);
+      }
     };
 
-    const responseData = await listCommunityByUserIdFetch(listCommunityInput);
-    if (responseData) {
-      setCommunities(responseData.items);
-      setNextToken(responseData.nextToken);
-    }
+    fetchCall();
+    return () => {
+      isActive = false;
+    };
   }, [currentUser]);
 
-  React.useEffect(() => {
-    populateContent();
-  }, [populateContent]);
+  useFocusEffect(populateContent);
 
   const CommunityTileRenderer: ListRenderItem<Item> = ({ item }) => {
     return (

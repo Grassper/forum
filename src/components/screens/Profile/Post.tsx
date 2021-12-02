@@ -1,4 +1,5 @@
 import { GraphQLResult } from "@aws-amplify/api-graphql";
+import { useFocusEffect } from "@react-navigation/native";
 import { API } from "aws-amplify";
 import React from "react";
 import { FlatList, ListRenderItem } from "react-native";
@@ -16,23 +17,30 @@ export const Posts: React.FC = () => {
   const [posts, setPosts] = React.useState<Item[]>([]);
   const [nextToken, setNextToken] = React.useState<string>("");
 
-  const populateContent = React.useCallback(async () => {
-    const listPostInput: listPostByUserIdFetchInput_ = {
-      id: routeUserId,
-      limit: 10,
-      sortDirection: "DESC",
-    };
+  const populateContent = React.useCallback(() => {
+    let isActive = true;
 
-    const responseData = await listPostByUserIdFetch(listPostInput);
-    if (responseData) {
-      setPosts((prevState) => [...prevState, ...responseData.items]);
-      setNextToken(responseData.nextToken);
-    }
+    const fetchCall = async () => {
+      const listPostInput: listPostByUserIdFetchInput_ = {
+        id: routeUserId,
+        limit: 10,
+        sortDirection: "DESC",
+      };
+
+      const responseData = await listPostByUserIdFetch(listPostInput);
+      if (responseData && isActive) {
+        setPosts(responseData.items);
+        setNextToken(responseData.nextToken);
+      }
+    };
+    fetchCall();
+
+    return () => {
+      isActive = false;
+    };
   }, [routeUserId]);
 
-  React.useEffect(() => {
-    populateContent();
-  }, [populateContent]);
+  useFocusEffect(populateContent);
 
   const handlePagination = React.useCallback(async () => {
     if (nextToken) {

@@ -1,6 +1,10 @@
 import { GraphQLResult } from "@aws-amplify/api-graphql";
 import { DrawerNavigationProp } from "@react-navigation/drawer";
-import { CompositeNavigationProp, RouteProp } from "@react-navigation/native";
+import {
+  CompositeNavigationProp,
+  RouteProp,
+  useFocusEffect,
+} from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { API } from "aws-amplify";
 import { Box, Flex, Text } from "native-base";
@@ -62,26 +66,33 @@ export const Comment: React.FC<Props_> = ({ route }) => {
   const [childComments, setChildComments] = React.useState<Item[]>([]);
   const [nextToken, setNextToken] = React.useState<string>("");
 
-  const populateContent = React.useCallback(async () => {
-    if (comment.commentId) {
-      const listCommentInput: listChildCommentsByParentCommentIdFetch_ = {
-        parentCommentId: comment.commentId,
-        limit: 10,
-      };
-      const commentData = await listChildCommentsByParentCommentIdFetch(
-        listCommentInput
-      );
+  const populateContent = React.useCallback(() => {
+    let isActive = true;
 
-      if (commentData) {
-        setChildComments(commentData.items);
-        setNextToken(commentData.nextToken);
+    const fetchCall = async () => {
+      if (comment.commentId) {
+        const listCommentInput: listChildCommentsByParentCommentIdFetch_ = {
+          parentCommentId: comment.commentId,
+          limit: 10,
+        };
+        const commentData = await listChildCommentsByParentCommentIdFetch(
+          listCommentInput
+        );
+
+        if (commentData && isActive) {
+          setChildComments(commentData.items);
+          setNextToken(commentData.nextToken);
+        }
       }
-    }
+    };
+    fetchCall();
+
+    return () => {
+      isActive = false;
+    };
   }, [comment.commentId]);
 
-  React.useEffect(() => {
-    populateContent();
-  }, [populateContent]);
+  useFocusEffect(populateContent);
 
   const handlePagination = async () => {
     if (nextToken && comment.commentId) {
