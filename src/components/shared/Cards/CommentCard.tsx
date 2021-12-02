@@ -9,7 +9,7 @@ import { SvgUri } from "react-native-svg";
 import { Skeleton } from "@/root/src/components/shared/Skeleton";
 
 interface Props_ {
-  replyExists?: boolean;
+  repliesCount?: number;
   hideReplyButton?: boolean;
   hideCommentUserActions?: boolean;
   username?: string;
@@ -23,7 +23,7 @@ interface Props_ {
 }
 
 export const CommentCard: React.FC<Props_> = ({
-  replyExists,
+  repliesCount,
   hideReplyButton,
   subForum,
   username,
@@ -189,17 +189,30 @@ export const CommentCard: React.FC<Props_> = ({
                   </Pressable>
                 )}
               </HStack>
-              {replyExists && (
+              {!!repliesCount && (
                 <Pressable
                   onPress={() => {
-                    // Navigation.push("Comment");
+                    navigation.navigate("StackNav", {
+                      screen: "Comment",
+                      params: {
+                        username,
+                        avatarUrl,
+                        subForum,
+                        postId,
+                        subForumId,
+                        contentText,
+                        commentId,
+                        timeStamp,
+                        repliesCount,
+                      },
+                    });
                   }}
                 >
                   {/**
                    * show replies only if replies exist */}
                   <Box>
                     <Text fontWeight="500" fontSize="xs" color="info.600">
-                      24 Replies
+                      {repliesCount} Reply
                     </Text>
                   </Box>
                 </Pressable>

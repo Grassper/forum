@@ -47,10 +47,11 @@ export const AddAndEditReplies: React.FC<Props_> = ({ navigation, route }) => {
       const commentInput: createCommentHandlerInput_ = {
         content: reply,
         postId: comment.postId,
-        communityId: comment.postId,
+        communityId: comment.subForumId,
         authorId: currentUser.id,
         upvote: 0,
         downvote: 0,
+        repliesCount: 0,
         commentedDate: new Date(),
         parentCommentId: comment.commentId,
       };
@@ -149,6 +150,7 @@ interface createCommentHandlerInput_ {
   upvote: number;
   downvote: number;
   commentedDate: Date;
+  repliesCount: number;
   parentCommentId: string;
 }
 
@@ -164,7 +166,7 @@ const createCommentHandler = async (args: createCommentHandlerInput_) => {
     if (createCommentData.data?.createComment) {
       const createRelationInput = {
         parentCommentId: parentCommentId,
-        childCommentId: createCommentData.data?.createComment.id,
+        childCommentId: createCommentData.data.createComment.id,
         postId: input.postId,
       };
       const createRelationship = (await API.graphql({
@@ -173,13 +175,19 @@ const createCommentHandler = async (args: createCommentHandlerInput_) => {
         authMode: "AMAZON_COGNITO_USER_POOLS",
       })) as GraphQLResult<createParentChildCommentRelationship_>;
 
+      await API.graphql({
+        query: incrementCommentRepliesCount,
+        variables: { id: parentCommentId },
+        authMode: "AMAZON_COGNITO_USER_POOLS",
+      });
+
       if (createRelationship.data?.createParentChildCommentRelationship) {
         return createRelationship.data.createParentChildCommentRelationship.id;
       }
     }
   } catch (err) {
     console.error(
-      "Error occured while creating comment in add and edit comment page",
+      "Error occured while creating comment in add and edit replies page",
       err
     );
   }
@@ -217,6 +225,14 @@ const createParentChildCommentRelationship = /* GraphQL */ `
     $input: CreateParentChildCommentRelationshipInput!
   ) {
     createParentChildCommentRelationship(input: $input) {
+      id
+    }
+  }
+`;
+
+const incrementCommentRepliesCount = /* GraphQL */ `
+  mutation incrementCommentRepliesCount($id: ID!) {
+    incrementRepliesCount(id: $id) {
       id
     }
   }

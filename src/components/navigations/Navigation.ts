@@ -63,7 +63,17 @@ export type StackParamList_ = {
   };
 
   // * Comment
-  Comment: undefined;
+  Comment: {
+    username?: string;
+    avatarUrl?: string;
+    subForum?: string;
+    subForumId?: string;
+    postId?: string;
+    contentText?: string;
+    commentId?: string;
+    timeStamp?: Date;
+    repliesCount?: number;
+  };
   AddAndEditComment: {
     id?: string;
     type?: "Image" | "Text" | "Video" | "Audio" | "Poll";

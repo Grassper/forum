@@ -46,6 +46,7 @@ export const AddAndEditComment: React.FC<Props_> = ({ navigation, route }) => {
         authorId: currentUser.id,
         upvote: 0,
         downvote: 0,
+        repliesCount: 0,
         commentedDate: new Date(),
       };
 
@@ -144,6 +145,7 @@ interface createCommentHandlerInput_ {
   authorId: string;
   upvote: number;
   downvote: number;
+  repliesCount: number;
   commentedDate: Date;
 }
 

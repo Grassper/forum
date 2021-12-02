@@ -84,7 +84,7 @@ export const Post: React.FC<Props_> = ({ route }) => {
       const commentData = await listCommentsByPostIdFetch(listCommentInput);
 
       if (commentData) {
-        setComments((prevState) => [...prevState, ...commentData.items]);
+        setComments(commentData.items);
         setNextToken(commentData.nextToken);
       }
     }
@@ -94,22 +94,22 @@ export const Post: React.FC<Props_> = ({ route }) => {
     populateContent();
   }, [populateContent]);
 
-  const handlePagination = React.useCallback(async () => {
+  const handlePagination = async () => {
     if (nextToken && postData.id) {
-      const listPostInput: listCommentsByPostIdFetch_ = {
+      const listCommentInput: listCommentsByPostIdFetch_ = {
         postId: postData.id,
         limit: 10,
         nextToken,
       };
 
-      const commentData = await listCommentsByPostIdFetch(listPostInput);
+      const commentData = await listCommentsByPostIdFetch(listCommentInput);
 
       if (commentData) {
         setComments((prevState) => [...prevState, ...commentData.items]);
         setNextToken(commentData.nextToken);
       }
     }
-  }, [nextToken, postData.id]);
+  };
 
   const CommentCardRenderer: ListRenderItem<Item> = ({ item }) => {
     const comment = item.childComment;
@@ -123,6 +123,7 @@ export const Post: React.FC<Props_> = ({ route }) => {
         postId={comment.postId}
         commentId={comment.id}
         timeStamp={comment.commentedDate}
+        repliesCount={comment.repliesCount}
       />
     );
   };
@@ -198,6 +199,7 @@ interface ChildComment {
   author: Author;
   commentedDate: Date;
   community: Community;
+  repliesCount: number;
 }
 
 interface Author {
@@ -240,6 +242,7 @@ const listCommentsByPostId = /* GraphQL */ `
             id
             name
           }
+          repliesCount
         }
       }
       nextToken
