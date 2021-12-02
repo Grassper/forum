@@ -1,10 +1,10 @@
 import { MaterialIcons } from "@expo/vector-icons";
 import { Storage } from "aws-amplify";
 import { format } from "date-fns";
-import * as ImagePicker from "expo-image-picker";
-import { Box, Icon } from "native-base";
+import * as DocumentPicker from "expo-document-picker";
+import { Box, Button, Icon, Pressable } from "native-base";
 import React from "react";
-import { Alert, Platform, Pressable } from "react-native";
+import { Alert } from "react-native";
 import uuid from "react-native-uuid";
 
 import {
@@ -28,37 +28,17 @@ export const ImagePickerButton: React.FC<Props_> = ({
   setS3ImageKey,
   imageWidth,
   imageHeight,
-  aspectRatio,
 }) => {
-  const verifyPermissions = async () => {
-    if (Platform.OS !== "web") {
-      const { status } =
-        await ImagePicker.requestMediaLibraryPermissionsAsync();
-      if (status !== "granted") {
-        Alert.alert(
-          "Insufficient Permissions!",
-          "Sorry, we need these permissions to make this work!'",
-          [{ text: "Okay" }]
-        );
-        return false;
-      }
-    }
-    return true;
-  };
+  /**
+   * Todo implement permission
+   */
 
   const pickImage = async () => {
-    const hasPermission = await verifyPermissions();
-    if (!hasPermission) {
-      return;
-    }
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: aspectRatio,
-      quality: 0.85,
+    let result = await DocumentPicker.getDocumentAsync({
+      type: "image/jpeg",
     });
 
-    if (!result.cancelled) {
+    if (result.type !== "cancel") {
       /**
        * checking allowed file size
        */
@@ -140,21 +120,20 @@ export const ImagePickerButton: React.FC<Props_> = ({
   };
 
   return (
-    <Pressable onPress={pickImage}>
-      <Box
-        bg="eGreen.400"
-        p="2"
-        borderRadius="full"
-        position="absolute"
-        bottom="72.5"
-        right="2.5"
-      >
-        <Icon
-          as={<MaterialIcons name="motion-photos-on" />}
-          size={18}
-          color="white"
-        />
-      </Box>
+    <Pressable
+      bg="eGreen.400"
+      p="2"
+      borderRadius="full"
+      position="absolute"
+      bottom="72.5"
+      right="2.5"
+      onPress={pickImage}
+    >
+      <Icon
+        as={<MaterialIcons name="motion-photos-on" />}
+        size={18}
+        color="white"
+      />
     </Pressable>
   );
 };

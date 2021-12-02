@@ -272,15 +272,13 @@ export const EditAndCreateSubForum: React.FC<Props_> = ({
           />
         )}
       </Box>
-      <Box alignItems="flex-start" justifyContent="center" bg="white">
-        <Box position="relative">
+      <Box bg="white">
+        <Box width="100px" height="100px" position="relative">
           {signedProfile ? (
             <Avatar
               bg="green.500"
-              mt="-20"
-              ml={windowWidth * 0.025}
-              width="100px"
-              height="100px"
+              width="100%"
+              height="100%"
               source={{
                 uri: signedProfile,
               }}
@@ -288,10 +286,8 @@ export const EditAndCreateSubForum: React.FC<Props_> = ({
           ) : (
             <Box
               bg="coolGray.200"
-              mt="-20"
-              ml={windowWidth * 0.025}
-              width="100px"
-              height="100px"
+              width="100%"
+              height="100%"
               alignItems="center"
               justifyContent="center"
               borderRadius="full"

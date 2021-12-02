@@ -27,6 +27,10 @@ export const DocumentPickerButton: React.FC<Props_> = ({
   const [uploadingError, setUploadingError] = React.useState(false);
 
   const handlePicker = async () => {
+    /**
+     * Todo implement permission
+     */
+
     const pickerType = {
       Image: "image/jpeg",
       Audio: "audio/mpeg",
