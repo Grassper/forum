@@ -1,23 +1,23 @@
 import { GraphQLResult } from "@aws-amplify/api-graphql";
 import { useFocusEffect } from "@react-navigation/native";
 import { API } from "aws-amplify";
-import { Box, Text } from "native-base";
+import { Box } from "native-base";
 import React from "react";
 import { FlatList, ListRenderItem } from "react-native";
 
-// import { PostCardRenderer } from "@/root/src/components/shared/CardRenderer";
 import {
   PostCard,
   Props_ as PostCardProps_,
 } from "@/root/src/components/shared/Cards/PostCard";
-import { dummyData } from "@/root/src/data/dummyData";
 
 import { TabNavigatorExploreContext } from "./context";
 
 export const PostSearch: React.FC = () => {
   const searchValue = React.useContext(TabNavigatorExploreContext);
+
   const [posts, setPosts] = React.useState<Item[]>([]);
   const [nextToken, setNextToken] = React.useState<string>("");
+
   const populateContent = React.useCallback(() => {
     let isActive = true;
 
@@ -43,6 +43,7 @@ export const PostSearch: React.FC = () => {
   }, [searchValue]);
 
   useFocusEffect(populateContent);
+
   const handlePagination = async () => {
     if (nextToken && searchValue) {
       const listPostInput: searchPostsFetchInput_ = {
@@ -59,6 +60,7 @@ export const PostSearch: React.FC = () => {
       }
     }
   };
+
   const PostCardRenderer: ListRenderItem<Item> = ({ item }) => {
     return (
       <PostCard
@@ -88,6 +90,7 @@ export const PostSearch: React.FC = () => {
     </Box>
   );
 };
+
 /**
  * api calls
  */
@@ -96,6 +99,7 @@ interface searchPostsFetchInput_ {
   limit: number;
   nextToken?: string;
 }
+
 const searchPostsFetch = async (input: searchPostsFetchInput_) => {
   try {
     const listSearchUserData = (await API.graphql({
@@ -109,7 +113,7 @@ const searchPostsFetch = async (input: searchPostsFetchInput_) => {
       return postSearchData;
     }
   } catch (err) {
-    console.error("Error occured while fetching posts in explore screen", err);
+    console.error("Error occured while search posts in explore screen", err);
   }
 };
 
