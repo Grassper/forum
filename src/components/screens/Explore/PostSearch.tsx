@@ -1,4 +1,4 @@
-import { Box } from "native-base";
+import { Box, Text } from "native-base";
 import React from "react";
 import { FlatList } from "react-native";
 
@@ -12,11 +12,12 @@ export const PostSearch: React.FC = () => {
 
   return (
     <Box>
-      <FlatList
+      {/*  <FlatList
         data={dummyData}
         renderItem={PostCardRenderer}
         keyExtractor={(item) => item.id}
-      />
+    />*/}
+      <Text>hi</Text>
     </Box>
   );
 };

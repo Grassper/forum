@@ -1,3 +1,6 @@
+import { GraphQLResult } from "@aws-amplify/api-graphql";
+import { useFocusEffect } from "@react-navigation/native";
+import { API } from "aws-amplify";
 import { Box } from "native-base";
 import React from "react";
 import { FlatList, StyleSheet } from "react-native";
@@ -10,6 +13,36 @@ import { TabNavigatorExploreContext } from "./context";
 
 export const ProfileSearch: React.FC = () => {
   const searchValue = React.useContext(TabNavigatorExploreContext);
+
+  const [profiles, setProfiles] = React.useState<Item[]>([]);
+  const [nextToken, setNextToken] = React.useState<string>("");
+  console.log("calling", searchValue);
+
+  const populateContent = React.useCallback(() => {
+    let isActive = true;
+
+    const fetchCall = async () => {
+      if (searchValue) {
+        const searchUsersInput: searchUsersFetchInput_ = {
+          limit: 10,
+          username: searchValue,
+        };
+
+        const responseData = await searchUsersFetch(searchUsersInput);
+        if (responseData && isActive) {
+          setProfiles(responseData.items);
+          setNextToken(responseData.nextToken);
+        }
+      }
+    };
+    fetchCall();
+
+    return () => {
+      isActive = false;
+    };
+  }, [searchValue]);
+
+  useFocusEffect(populateContent);
 
   return (
     <Box style={styles.container} bg={colors.white} pt="4">
@@ -26,7 +59,28 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 });
+/**api calls */
+interface searchUsersFetchInput_ {
+  limit: number;
+  nextToken?: string;
+  username: string;
+}
+const searchUsersFetch = async (input: searchUsersFetchInput_) => {
+  try {
+    const listSearchUserData = (await API.graphql({
+      query: searchUsers,
+      variables: input,
+      authMode: "AMAZON_COGNITO_USER_POOLS",
+    })) as GraphQLResult<searchUsers_>;
+    if (listSearchUserData.data?.listUsers) {
+      const userSearchData = listSearchUserData.data.listUsers;
 
+      return userSearchData;
+    }
+  } catch (err) {
+    console.error("Error occured while searching users in explore screen", err);
+  }
+};
 /**
  * graphql queries and their types
  * types pattern {queryName}_
@@ -40,7 +94,7 @@ interface searchUsers_ {
 
 interface ListUsers {
   items: Item[];
-  nextToken: null;
+  nextToken: string;
 }
 
 interface Item {
