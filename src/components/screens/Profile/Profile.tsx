@@ -1,7 +1,11 @@
-import { Ionicons } from "@expo/vector-icons";
+import { AntDesign, Ionicons } from "@expo/vector-icons";
 import { DrawerNavigationProp } from "@react-navigation/drawer";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import { CompositeNavigationProp, RouteProp } from "@react-navigation/native";
+import {
+  CompositeNavigationProp,
+  DrawerActions,
+  RouteProp,
+} from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { Button, Icon } from "native-base";
 import React from "react";
@@ -44,6 +48,15 @@ export const Profile: React.FC<Props_> = ({ navigation, route }) => {
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
+      headerLeft: () => (
+        <Icon
+          as={<AntDesign name="menuunfold" />}
+          size={5}
+          ml="4"
+          onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
+          color="eGreen.400"
+        />
+      ),
       headerRight: () =>
         routeUserId && routeUserId !== id ? ( // checking our user id with incoming user id
           <Icon

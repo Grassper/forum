@@ -1,5 +1,5 @@
 import { Foundation } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import {
   Avatar,
   Box,
@@ -47,27 +47,32 @@ export const SubForumCard: React.FC<Props_> = ({
   const currentUser = React.useContext(UserContext).user;
   const navigation = useNavigation();
 
-  React.useEffect(() => {
-    (async () => {
+  const signImage = React.useCallback(() => {
+    let isActive = true;
+
+    const signing = async () => {
       if (profileImageS3Key) {
         const signedImage = await SignS3ImageKey(profileImageS3Key);
-        if (signedImage) {
+        if (signedImage && isActive) {
           setSignedProfile(signedImage);
         }
       }
-    })();
-  }, [profileImageS3Key]);
-
-  React.useEffect(() => {
-    (async () => {
       if (coverImageS3Key) {
         const signedImage = await SignS3ImageKey(coverImageS3Key);
-        if (signedImage) {
+        if (signedImage && isActive) {
           setSignedCover(signedImage);
         }
       }
-    })();
-  }, [coverImageS3Key]);
+    };
+
+    signing();
+
+    return () => {
+      isActive = false;
+    };
+  }, [profileImageS3Key, coverImageS3Key]);
+
+  useFocusEffect(signImage);
 
   return (
     <Box>

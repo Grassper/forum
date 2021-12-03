@@ -1,4 +1,5 @@
 import { GraphQLResult } from "@aws-amplify/api-graphql";
+import { useFocusEffect } from "@react-navigation/native";
 import { API } from "aws-amplify";
 import { Box, HStack, Text, VStack } from "native-base";
 import React from "react";
@@ -30,8 +31,10 @@ export const About: React.FC = () => {
    * todo update about from global state
    */
 
-  React.useEffect(() => {
-    const fetchUserData = async () => {
+  const populateContent = React.useCallback(() => {
+    let isActive = true;
+
+    const fetchCall = async () => {
       try {
         // check user data for user id passed using route params
         const userData = (await API.graphql({
@@ -40,7 +43,7 @@ export const About: React.FC = () => {
           authMode: "AMAZON_COGNITO_USER_POOLS",
         })) as GraphQLResult<getUser_>;
 
-        if (userData.data?.getUser) {
+        if (userData.data?.getUser && isActive) {
           setAbout(userData.data.getUser);
         }
       } catch (err) {
@@ -50,8 +53,15 @@ export const About: React.FC = () => {
         );
       }
     };
-    fetchUserData();
-  }, [routeUserId, setAbout]);
+
+    fetchCall();
+
+    return () => {
+      isActive = false;
+    };
+  }, [routeUserId]);
+
+  useFocusEffect(populateContent);
 
   return (
     <Box style={styles.wrapper} alignItems="center" bg="white">

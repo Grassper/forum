@@ -1,7 +1,11 @@
 import { GraphQLResult } from "@aws-amplify/api-graphql";
 import { Ionicons } from "@expo/vector-icons";
 import { DrawerNavigationProp } from "@react-navigation/drawer";
-import { CompositeNavigationProp, RouteProp } from "@react-navigation/native";
+import {
+  CompositeNavigationProp,
+  RouteProp,
+  useFocusEffect,
+} from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { API } from "aws-amplify";
 import {
@@ -184,27 +188,32 @@ export const EditAndCreateSubForum: React.FC<Props_> = ({
     });
   }, [navigation, title, handleSubmit]);
 
-  React.useEffect(() => {
-    (async () => {
+  const signImage = React.useCallback(() => {
+    let isActive = true;
+
+    const signing = async () => {
       if (profileImageS3Key) {
         const signedImage = await SignS3ImageKey(profileImageS3Key);
-        if (signedImage) {
+        if (signedImage && isActive) {
           setSignedProfile(signedImage);
         }
       }
-    })();
-  }, [profileImageS3Key]);
-
-  React.useEffect(() => {
-    (async () => {
       if (bannerImageS3Key) {
         const signedImage = await SignS3ImageKey(bannerImageS3Key);
-        if (signedImage) {
+        if (signedImage && isActive) {
           setSignedCover(signedImage);
         }
       }
-    })();
-  }, [bannerImageS3Key]);
+    };
+
+    signing();
+
+    return () => {
+      isActive = false;
+    };
+  }, [profileImageS3Key, bannerImageS3Key]);
+
+  useFocusEffect(signImage);
 
   React.useEffect(() => {
     const validateForumName = () => {
@@ -275,15 +284,13 @@ export const EditAndCreateSubForum: React.FC<Props_> = ({
           />
         )}
       </Box>
-      <Box alignItems="flex-start" justifyContent="center" bg="white">
-        <Box position="relative">
+      <Box bg="white">
+        <Box width="100px" height="100px" position="relative">
           {signedProfile ? (
             <Avatar
               bg="green.500"
-              mt="-20"
-              ml={windowWidth * 0.025}
-              width="100px"
-              height="100px"
+              width="100%"
+              height="100%"
               source={{
                 uri: signedProfile,
               }}
@@ -291,10 +298,8 @@ export const EditAndCreateSubForum: React.FC<Props_> = ({
           ) : (
             <Box
               bg="coolGray.200"
-              mt="-20"
-              ml={windowWidth * 0.025}
-              width="100px"
-              height="100px"
+              width="100%"
+              height="100%"
               alignItems="center"
               justifyContent="center"
               borderRadius="full"

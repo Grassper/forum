@@ -1,12 +1,12 @@
+import { GraphQLResult } from "@aws-amplify/api-graphql";
 import { AntDesign } from "@expo/vector-icons";
 import { DrawerNavigationProp } from "@react-navigation/drawer";
 import { CompositeNavigationProp, RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import * as DocumentPicker from "expo-document-picker";
+import { API } from "aws-amplify";
 import {
   Box,
   Button,
-  Center,
   Flex,
   Icon,
   Input,
@@ -15,18 +15,22 @@ import {
   VStack,
 } from "native-base";
 import React from "react";
-import { StyleSheet } from "react-native";
+import { Alert, StyleSheet } from "react-native";
+import isLength from "validator/es/lib/isLength";
+import matches from "validator/es/lib/matches";
 
 import {
   DrawerParamList_,
   StackParamList_,
 } from "@/root/src/components/navigations/Navigation";
+import { DocumentPickerButton } from "@/root/src/components/shared/Picker";
 import { CommunityTile } from "@/root/src/components/shared/Tile";
+import { UserContext } from "@/root/src/context";
 
 type RouteProp_ = RouteProp<StackParamList_, "AddAndEditPost">;
 
 type NavigationProp_ = CompositeNavigationProp<
-  StackNavigationProp<StackParamList_, "AddAndEditComment">,
+  StackNavigationProp<StackParamList_, "AddAndEditPost">,
   DrawerNavigationProp<DrawerParamList_>
 >;
 interface Props_ {
@@ -43,9 +47,90 @@ export const AddAndEditPost: React.FC<Props_> = ({ navigation, route }) => {
   const [PollTitle, setPollTitle] = React.useState("");
   const [Option, setOption] = React.useState(""); // poll option input
   const [Polls, setPoll] = React.useState<PollType_[]>([]); // poll options
-  const [singleFile, setSingleFile] = React.useState("");
+  const [mediaS3Key, setMediaS3Key] = React.useState("");
+
+  const [isContentValid, setContentValid] = React.useState(false);
+  const [contentErrorMsg, setContentErrorMsg] = React.useState("");
+
+  const currentUser = React.useContext(UserContext).user;
 
   const { hideUpload, postType } = route.params;
+
+  const handleSubmit = React.useCallback(async () => {
+    if (isContentValid) {
+      let postInput: createPostAndTimelineFetchInput_ = {
+        authorId: currentUser.id,
+        communityId: route.params.communityId,
+        content: Content,
+        postedDate: new Date(),
+        tags: ["Testing tags"],
+        type: route.params.postType.toUpperCase() as createPostAndTimelineFetchInput_["type"],
+      };
+      if (route.params.postType === "Text") {
+        const createdPostId = await createPostAndTimelineFetch(postInput);
+
+        if (createdPostId) {
+          navigation.navigate({
+            name: "BottomTabNav",
+            params: {
+              screen: "Home",
+            },
+            merge: true,
+          });
+        }
+      } else if (route.params.postType !== "Poll") {
+        if (mediaS3Key) {
+          postInput = {
+            ...postInput,
+            mediaS3Key,
+          };
+
+          const createdPostId = await createPostAndTimelineFetch(postInput);
+
+          if (createdPostId) {
+            navigation.navigate({
+              name: "BottomTabNav",
+              params: {
+                screen: "Home",
+              },
+              merge: true,
+            });
+          }
+        } else {
+          Alert.alert(
+            `Attachment is required for ${route.params.postType} post`
+          );
+        }
+      }
+    } else {
+      Alert.alert(contentErrorMsg);
+    }
+  }, [
+    Content,
+    contentErrorMsg,
+    currentUser.id,
+    isContentValid,
+    mediaS3Key,
+    navigation,
+    route.params.communityId,
+    route.params.postType,
+  ]);
+
+  React.useEffect(() => {
+    const validateContent = () => {
+      if (
+        isLength(Content, { min: 1, max: 2200 }) &&
+        matches(Content, "^[A-Za-z][A-Za-z0-9 _|.,!]{1,2200}$", "m")
+      ) {
+        setContentValid(true);
+        setContentErrorMsg("");
+      } else {
+        setContentValid(false);
+        setContentErrorMsg("Post Content Shouldn't be empty");
+      }
+    };
+    validateContent();
+  }, [Content]);
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -54,41 +139,27 @@ export const AddAndEditPost: React.FC<Props_> = ({ navigation, route }) => {
           size="md"
           _text={{ fontWeight: "600", color: "white" }}
           variant="unstyled"
-          onPress={() => {}}
+          onPress={handleSubmit}
         >
-          Next
+          Post
         </Button>
       ),
     });
-  }, [navigation]);
-  const imagePicker = async () => {
-    //Opening Document Picker for selection of one file
-    let result = await DocumentPicker.getDocumentAsync({ type: "image/*" });
-    console.log(result, "result");
-    console.log(result);
-  };
-  const audioPicker = async () => {
-    let audioResult = await DocumentPicker.getDocumentAsync({
-      type: "audio/*",
-    });
-    console.log(audioResult, "result");
-    console.log(audioResult);
-  };
-  const videoPicker = async () => {
-    let videoResult = await DocumentPicker.getDocumentAsync({
-      type: "video/*",
-    });
-    console.log(videoResult, "result");
-    console.log(videoResult);
-  };
-  console.log(singleFile, "singleFile");
+  }, [handleSubmit, navigation]);
+
   return (
     <VStack
       style={styles.container}
       bg="white"
       justifyContent={postType !== "Poll" ? "space-between" : "flex-start"}
     >
-      <CommunityTile hideDivider hideMembers hideFavorites />
+      <CommunityTile
+        hideDivider
+        hideMembers
+        hideNavArrow
+        name={route.params.name}
+        profileImageS3Key={route.params.profileImageS3Key}
+      />
       {/* if poll exist */}
       {postType === "Poll" && (
         <Box bg="white" alignItems="center">
@@ -192,11 +263,11 @@ export const AddAndEditPost: React.FC<Props_> = ({ navigation, route }) => {
         </Box>
       )}
       {postType !== "Poll" && (
-        <Box bg="white" alignItems="center" height={hideUpload ? "90%" : "75%"}>
+        <Box bg="white" alignItems="center" height={"90%"}>
           <Input
-            width="90%"
             multiline
             value={Content}
+            width="90%"
             onChangeText={setContent}
             borderRadius="md"
             placeholder="Craft your post!"
@@ -207,38 +278,10 @@ export const AddAndEditPost: React.FC<Props_> = ({ navigation, route }) => {
         </Box>
       )}
       {!hideUpload && (
-        <Center height="15%">
-          <Box width="90%">
-            <Pressable
-              p="8"
-              bg="white"
-              borderWidth="1"
-              borderColor="eGreen.400"
-              borderStyle="dotted"
-              borderRadius="sm"
-              width="60"
-              alignSelf="flex-start"
-              height="60"
-              alignItems="center"
-              justifyContent="center"
-              onPress={() =>
-                postType === "Audio"
-                  ? audioPicker
-                  : postType === "Video"
-                  ? videoPicker
-                  : postType === "Image"
-                  ? imagePicker
-                  : console.log("wrong")
-              }
-            >
-              <Icon
-                as={<AntDesign name="plus" />}
-                size="sm"
-                color="green.500"
-              />
-            </Pressable>
-          </Box>
-        </Center>
+        <DocumentPickerButton
+          postType={postType}
+          setMediaS3Key={setMediaS3Key}
+        />
       )}
     </VStack>
   );
@@ -250,3 +293,80 @@ const styles = StyleSheet.create({
   },
   container: { flex: 1 },
 });
+
+/**
+ * Todo-1: poll post schema check
+ * Todo-2: complete the poll
+ * Todo-3: tags section maximum 5
+ * Todo-4: complete the post screen
+ */
+
+/**
+ * api calls
+ */
+
+interface createPostAndTimelineFetchInput_ {
+  authorId: string;
+  communityId: string;
+  content: string;
+  postedDate: Date;
+  tags: [string];
+  type: "IMAGE" | "TEXT" | "VIDEO" | "AUDIO" | "POLL";
+  mediaS3Key?: String;
+}
+
+const createPostAndTimelineFetch = async (
+  input: createPostAndTimelineFetchInput_
+) => {
+  try {
+    const listCommunityData = (await API.graphql({
+      query: createPostAndTimeline,
+      variables: input,
+      authMode: "AMAZON_COGNITO_USER_POOLS",
+    })) as GraphQLResult<createPostAndTimeline_>;
+
+    if (listCommunityData.data?.createPostAndTimeline) {
+      const postId = listCommunityData.data.createPostAndTimeline;
+      return postId;
+    }
+  } catch (err) {
+    console.error("Error occured while creating a post", err);
+  }
+};
+
+/**
+ * graphql queries and their types
+ * types pattern {queryName}_
+ * * note dash(_) at the end of type name
+ * order 1.queryType 2.graphql query
+ */
+
+type createPostAndTimeline_ = {
+  createPostAndTimeline?: {
+    id: string;
+  };
+};
+
+const createPostAndTimeline = /* GraphQL */ `
+  mutation createPost(
+    $authorId: ID!
+    $communityId: ID!
+    $content: String!
+    $postedDate: AWSDateTime!
+    $tags: [String!]!
+    $type: PostType!
+    $mediaS3Key: String
+  ) {
+    createPostAndTimeline(
+      authorId: $authorId
+      communityId: $communityId
+      content: $content
+      tags: $tags
+      type: $type
+      postedDate: $postedDate
+      mediaS3Key: $mediaS3Key
+    ) {
+      id
+    }
+  }
+`;

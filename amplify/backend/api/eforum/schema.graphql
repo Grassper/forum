@@ -1,29 +1,38 @@
 type Mutation {
-  incrementLikePostUserMetrics(id: ID!): UserMetrics
-  decrementLikePostUserMetrics(id: ID!): UserMetrics
-  incrementLovePostUserMetrics(id: ID!): UserMetrics
-  decrementLovePostUserMetrics(id: ID!): UserMetrics
-  incrementSupportPostUserMetrics(id: ID!): UserMetrics
-  decrementSupportPostUserMetrics(id: ID!): UserMetrics
-  incrementDislikePostUserMetrics(id: ID!): UserMetrics
-  decrementDislikePostUserMetrics(id: ID!): UserMetrics
-  incrementProfileViewUserMetrics(id: ID!): UserMetrics
-  decrementProfileViewUserMetrics(id: ID!): UserMetrics
+  incrementLikePostUserMetrics(id: ID!): UserMetrics @aws_cognito_user_pools
+  decrementLikePostUserMetrics(id: ID!): UserMetrics @aws_cognito_user_pools
+  incrementLovePostUserMetrics(id: ID!): UserMetrics @aws_cognito_user_pools
+  decrementLovePostUserMetrics(id: ID!): UserMetrics @aws_cognito_user_pools
+  incrementSupportPostUserMetrics(id: ID!): UserMetrics @aws_cognito_user_pools
+  decrementSupportPostUserMetrics(id: ID!): UserMetrics @aws_cognito_user_pools
+  incrementDislikePostUserMetrics(id: ID!): UserMetrics @aws_cognito_user_pools
+  decrementDislikePostUserMetrics(id: ID!): UserMetrics @aws_cognito_user_pools
+  incrementProfileViewUserMetrics(id: ID!): UserMetrics @aws_cognito_user_pools
+  decrementProfileViewUserMetrics(id: ID!): UserMetrics @aws_cognito_user_pools
   incrementCommentUpvoteUserMetrics(id: ID!): UserMetrics
+    @aws_cognito_user_pools
   decrementCommentUpvoteUserMetrics(id: ID!): UserMetrics
+    @aws_cognito_user_pools
   incrementCommentDownvoteUserMetrics(id: ID!): UserMetrics
+    @aws_cognito_user_pools
   decrementCommentDownvoteUserMetrics(id: ID!): UserMetrics
-  incrementActiveDayUserMetrics(id: ID!): UserMetrics
-  decrementActiveDayUserMetrics(id: ID!): UserMetrics
+    @aws_cognito_user_pools
+  incrementActiveDayUserMetrics(id: ID!): UserMetrics @aws_cognito_user_pools
+  decrementActiveDayUserMetrics(id: ID!): UserMetrics @aws_cognito_user_pools
+  incrementRepliesCount(id: ID!): Comment @aws_cognito_user_pools
+  decrementRepliesCount(id: ID!): Comment @aws_cognito_user_pools
   createPostAndTimeline(
     type: PostType!
     content: String!
+    mediaS3Key: String
+    poll: [PollInput]
+    tags: [String!]!
     authorId: ID!
     communityId: ID!
-    tags: [String!]!
-    mediaS3Key: String!
-    poll: [PollInput]
-  ): Post @function(name: "createPostAndTimeline-${env}")
+    postedDate: AWSDateTime!
+  ): Post
+    @function(name: "createPostAndTimeline-${env}")
+    @auth(rules: [{ allow: private, provider: userPools }])
 }
 
 type User
@@ -60,6 +69,7 @@ type User
   chatRooms: [UserChatRoomRelationship]
     @connection(keyName: "byUser", fields: ["id"])
   userMetrics: UserMetrics @connection(fields: ["id"])
+  timeLine: [Timeline] @connection(keyName: "byUser", fields: ["id"])
 }
 
 type UserMetrics
@@ -130,7 +140,13 @@ type Community
 
 type UserCommunityRelationShip
   @model
-  @auth(rules: [{ allow: owner }, { allow: private, operations: [read] }])
+  @auth(
+    rules: [
+      { allow: owner }
+      { allow: private, operations: [read] }
+      { allow: private, provider: iam, operations: [read] }
+    ]
+  )
   @key(name: "byUser", fields: ["userId"])
   @key(name: "byCommunity", fields: ["communityId"]) {
   id: ID!
@@ -178,7 +194,7 @@ type Post
     rules: [
       { allow: owner }
       { allow: private, operations: [read] }
-      { allow: private, provider: iam, operations: [create] }
+      { allow: private, provider: iam, operations: [create, read] }
     ]
   )
   @key(name: "byAuthor", fields: ["authorId", "postedDate"])
@@ -220,7 +236,7 @@ type UserPostMetricsRelationShip
 
 type Comment
   @model
-  @auth(rules: [{ allow: owner }])
+  @auth(rules: [{ allow: owner }, { allow: private, operations: [read] }])
   @key(name: "byPost", fields: ["postId", "commentedDate"])
   @key(name: "byAuthor", fields: ["authorId", "commentedDate"])
   @key(name: "byCommunity", fields: ["communityId", "commentedDate"]) {
@@ -231,8 +247,9 @@ type Comment
   authorId: ID!
   upvote: Int!
   downvote: Int!
+  repliesCount: Int!
   commentedDate: AWSDateTime!
-  post: Post @connection(fields: ["postId"])
+  post: Post! @connection(fields: ["postId"])
   author: User! @connection(fields: ["authorId"])
   community: Community! @connection(fields: ["communityId"])
   userCommentMetric: [UserCommentMetricsRelationShip]
@@ -241,22 +258,25 @@ type Comment
 
 type ParentChildCommentRelationship
   @model
-  @auth(rules: [{ allow: owner }])
+  @auth(rules: [{ allow: owner }, { allow: private, operations: [read] }])
   @key(
     name: "byParentComment"
     fields: ["parentCommentId"]
-    queryField: "getChildCommentsByParentCommentId"
+    queryField: "childCommentsByParentCommentId"
   )
   @key(
     name: "byChildComment"
     fields: ["childCommentId"]
-    queryField: "getParentCommentByChildCommentId"
-  ) {
+    queryField: "parentCommentByChildCommentId"
+  )
+  @key(name: "byPost", fields: ["postId"], queryField: "commentByPostId") {
   id: ID!
-  parentCommentId: ID!
+  parentCommentId: ID
   childCommentId: ID!
-  parentComment: Comment! @connection(fields: ["parentCommentId"])
+  postId: ID!
+  parentComment: Comment @connection(fields: ["parentCommentId"])
   childComment: Comment! @connection(fields: ["childCommentId"])
+  post: Post @connection(fields: ["postId"])
 }
 
 type UserCommentMetricsRelationShip
@@ -317,10 +337,11 @@ type Timeline
   @model
   @auth(
     rules: [
-      { allow: owner }
+      { allow: private, operations: [read] }
       { allow: private, provider: iam, operations: [create] }
     ]
-  ) {
+  )
+  @key(name: "byUser", fields: ["userId"]) {
   id: ID!
   userId: ID!
   postId: ID!

@@ -1,15 +1,20 @@
+import { GraphQLResult } from "@aws-amplify/api-graphql";
 import { DrawerNavigationProp } from "@react-navigation/drawer";
 import { CompositeNavigationProp, RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
+import { API } from "aws-amplify";
 import { Box, Button, Divider, Flex, Input } from "native-base";
 import React from "react";
-import { StyleSheet } from "react-native";
+import { Alert, StyleSheet } from "react-native";
+import isLength from "validator/es/lib/isLength";
+import matches from "validator/es/lib/matches";
 
 import {
   DrawerParamList_,
   StackParamList_,
 } from "@/root/src/components/navigations/Navigation";
 import { CommentCard } from "@/root/src/components/shared/Cards/CommentCard";
+import { UserContext } from "@/root/src/context";
 
 type NavigationProp_ = CompositeNavigationProp<
   StackNavigationProp<StackParamList_, "AddAndEditReplies">,
@@ -23,9 +28,68 @@ interface Props_ {
 }
 
 export const AddAndEditReplies: React.FC<Props_> = ({ navigation, route }) => {
-  const [Reply, setReply] = React.useState("");
+  const [reply, setReply] = React.useState("");
 
-  const { action } = route.params;
+  const [isReplyValid, setReplyValid] = React.useState(false);
+  const [replyErrorMsg, setReplyErrorMsg] = React.useState("");
+
+  const { action, ...comment } = route.params;
+  const currentUser = React.useContext(UserContext).user;
+
+  const handleSubmit = React.useCallback(async () => {
+    if (
+      isReplyValid &&
+      currentUser.id &&
+      comment.postId &&
+      comment.subForumId &&
+      comment.commentId
+    ) {
+      const commentInput: createCommentHandlerInput_ = {
+        content: reply,
+        postId: comment.postId,
+        communityId: comment.subForumId,
+        authorId: currentUser.id,
+        upvote: 0,
+        downvote: 0,
+        repliesCount: 0,
+        commentedDate: new Date(),
+        parentCommentId: comment.commentId,
+      };
+
+      const createCommentResponse = await createCommentHandler(commentInput);
+
+      if (createCommentResponse) {
+        navigation.goBack();
+      }
+    } else {
+      Alert.alert(replyErrorMsg);
+    }
+  }, [
+    comment.commentId,
+    comment.postId,
+    comment.subForumId,
+    currentUser.id,
+    isReplyValid,
+    navigation,
+    reply,
+    replyErrorMsg,
+  ]);
+
+  React.useEffect(() => {
+    const validateReply = () => {
+      if (
+        isLength(reply, { min: 1, max: 2200 }) &&
+        matches(reply, "^[A-Za-z][A-Za-z0-9 _|.,!]{1,2200}$", "m")
+      ) {
+        setReplyValid(true);
+        setReplyErrorMsg("");
+      } else {
+        setReplyValid(false);
+        setReplyErrorMsg("Reply Content Shouldn't be empty");
+      }
+    };
+    validateReply();
+  }, [reply]);
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -34,18 +98,18 @@ export const AddAndEditReplies: React.FC<Props_> = ({ navigation, route }) => {
           size="md"
           _text={{ fontWeight: "600", color: "white" }}
           variant="unstyled"
-          onPress={() => {}}
+          onPress={handleSubmit}
         >
           {action === "Add" ? "Post" : "Update"}
         </Button>
       ),
     });
-  }, [action, navigation]);
+  }, [action, handleSubmit, navigation]);
 
   return (
     <Box style={styles.container} bg="white">
       <Box>
-        <CommentCard hideReplyButton hideCommentUserActions />
+        <CommentCard hideReplyButton hideCommentUserActions {...comment} />
         <Divider />
       </Box>
       <Box bg="white" py="4" mt="2">
@@ -57,7 +121,7 @@ export const AddAndEditReplies: React.FC<Props_> = ({ navigation, route }) => {
           <Input
             width="90%"
             multiline
-            value={Reply}
+            value={reply}
             onChangeText={setReply}
             borderRadius="md"
             placeholder="Type some goods!"
@@ -74,3 +138,102 @@ export const AddAndEditReplies: React.FC<Props_> = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   container: { flex: 1 },
 });
+
+/**
+ * api
+ */
+interface createCommentHandlerInput_ {
+  content: string;
+  postId: string;
+  communityId: string;
+  authorId: string;
+  upvote: number;
+  downvote: number;
+  commentedDate: Date;
+  repliesCount: number;
+  parentCommentId: string;
+}
+
+const createCommentHandler = async (args: createCommentHandlerInput_) => {
+  try {
+    const { parentCommentId, ...input } = args;
+    const createCommentData = (await API.graphql({
+      query: createComment,
+      variables: { input },
+      authMode: "AMAZON_COGNITO_USER_POOLS",
+    })) as GraphQLResult<createComment_>;
+
+    if (createCommentData.data?.createComment) {
+      const createRelationInput = {
+        parentCommentId: parentCommentId,
+        childCommentId: createCommentData.data.createComment.id,
+        postId: input.postId,
+      };
+      const createRelationship = (await API.graphql({
+        query: createParentChildCommentRelationship,
+        variables: { input: createRelationInput },
+        authMode: "AMAZON_COGNITO_USER_POOLS",
+      })) as GraphQLResult<createParentChildCommentRelationship_>;
+
+      await API.graphql({
+        query: incrementCommentRepliesCount,
+        variables: { id: parentCommentId },
+        authMode: "AMAZON_COGNITO_USER_POOLS",
+      });
+
+      if (createRelationship.data?.createParentChildCommentRelationship) {
+        return createRelationship.data.createParentChildCommentRelationship.id;
+      }
+    }
+  } catch (err) {
+    console.error(
+      "Error occured while creating comment in add and edit replies page",
+      err
+    );
+  }
+};
+
+/**
+ * graphql queries and their types
+ * types pattern {queryName}_
+ * * note dash(_) at the end of type name
+ * order 1.queryType 2.graphql query
+ */
+
+type createComment_ = {
+  createComment?: {
+    id: string;
+  };
+};
+
+const createComment = /* GraphQL */ `
+  mutation createComment($input: CreateCommentInput!) {
+    createComment(input: $input) {
+      id
+    }
+  }
+`;
+
+type createParentChildCommentRelationship_ = {
+  createParentChildCommentRelationship?: {
+    id: string;
+  };
+};
+
+const createParentChildCommentRelationship = /* GraphQL */ `
+  mutation createParentChildCommentRelationship(
+    $input: CreateParentChildCommentRelationshipInput!
+  ) {
+    createParentChildCommentRelationship(input: $input) {
+      id
+    }
+  }
+`;
+
+const incrementCommentRepliesCount = /* GraphQL */ `
+  mutation incrementCommentRepliesCount($id: ID!) {
+    incrementRepliesCount(id: $id) {
+      id
+    }
+  }
+`;

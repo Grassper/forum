@@ -1,20 +1,26 @@
 import { GraphQLResult } from "@aws-amplify/api-graphql";
 import { DrawerNavigationProp } from "@react-navigation/drawer";
-import { CompositeNavigationProp, RouteProp } from "@react-navigation/native";
+import {
+  CompositeNavigationProp,
+  RouteProp,
+  useFocusEffect,
+} from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { API } from "aws-amplify";
 import { Button } from "native-base";
 import React from "react";
-import { FlatList, StyleSheet, View } from "react-native";
+import { FlatList, ListRenderItem, StyleSheet, View } from "react-native";
 
 import {
   DrawerParamList_,
   SubForumStackParamList_,
 } from "@/root/src/components/navigations/Navigation";
-import { PostCardRenderer } from "@/root/src/components/shared/CardRenderer";
 import { SubForumCard } from "@/root/src/components/shared/Cards";
+import {
+  PostCard,
+  Props_ as PostCardProps_,
+} from "@/root/src/components/shared/Cards/PostCard";
 import { UserContext } from "@/root/src/context";
-import { dummyData } from "@/root/src/data/dummyData";
 
 type NavigationProp_ = CompositeNavigationProp<
   StackNavigationProp<SubForumStackParamList_, "SubForum">,
@@ -32,17 +38,60 @@ export const SubForum: React.FC<Props_> = ({ navigation, route }) => {
   const { subForumId } = route.params;
 
   const [subForum, getSubForum] = React.useState<Community>();
+
+  const [posts, setPosts] = React.useState<Item[]>([]);
+  const [nextToken, setNextToken] = React.useState<string>("");
+
   const currentUser = React.useContext(UserContext).user;
 
-  React.useEffect(() => {
-    (async () => {
-      const getCommunityData = await getCommunityFetch(subForumId);
+  const populateContent = React.useCallback(() => {
+    let isActive = true;
 
-      if (getCommunityData) {
+    const fetchCall = async () => {
+      const listPostInput: listPostByCommunityIdFetchInput_ = {
+        id: subForumId,
+        limit: 10,
+        sortDirection: "DESC",
+      };
+
+      const getCommunityData = await getCommunityFetch(subForumId);
+      const listPostData = await listPostByCommunityIdFetch(listPostInput);
+
+      if (getCommunityData && isActive) {
         getSubForum(getCommunityData);
       }
-    })();
+
+      if (listPostData && isActive) {
+        setPosts(listPostData.items);
+        setNextToken(listPostData.nextToken);
+      }
+    };
+    fetchCall();
+
+    return () => {
+      isActive = false;
+    };
   }, [subForumId]);
+
+  useFocusEffect(populateContent);
+
+  const handlePagination = async () => {
+    if (nextToken) {
+      const listPostInput: listPostByCommunityIdFetchInput_ = {
+        id: subForumId,
+        limit: 10,
+        sortDirection: "DESC",
+        nextToken,
+      };
+
+      const responseData = await listPostByCommunityIdFetch(listPostInput);
+
+      if (responseData) {
+        setPosts((prevState) => [...prevState, ...responseData.items]);
+        setNextToken(responseData.nextToken);
+      }
+    }
+  };
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -63,10 +112,29 @@ export const SubForum: React.FC<Props_> = ({ navigation, route }) => {
     });
   }, [currentUser.id, navigation, subForum]);
 
+  const PostCardRenderer: ListRenderItem<Item> = ({ item }) => {
+    return (
+      <PostCard
+        id={item.id}
+        subForum={item.community.name}
+        subForumId={item.community.id}
+        type={
+          (item.type.charAt(0) +
+            item.type.slice(1).toLowerCase()) as PostCardProps_["type"]
+        }
+        username={item.author.username}
+        contentText={item.content}
+        avatarUrl={item.author.profileImageUrl}
+        timeStamp={item.postedDate}
+        mediaS3Key={item.mediaS3Key}
+      />
+    );
+  };
+
   return (
     <View style={styles.container}>
       <FlatList
-        data={dummyData}
+        data={posts}
         renderItem={PostCardRenderer}
         ListHeaderComponent={() => (
           <SubForumCard
@@ -80,6 +148,7 @@ export const SubForum: React.FC<Props_> = ({ navigation, route }) => {
           />
         )}
         keyExtractor={(item) => item.id}
+        onEndReached={() => handlePagination()}
       />
     </View>
   );
@@ -88,10 +157,6 @@ export const SubForum: React.FC<Props_> = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   container: { flex: 1 },
 });
-
-/**
- * Todo-1: fetch community and post using community id
- */
 
 const getCommunityFetch = async (id: string) => {
   try {
@@ -110,6 +175,32 @@ const getCommunityFetch = async (id: string) => {
       "Error occured while fetching community in subforum screen",
       err
     );
+  }
+};
+
+interface listPostByCommunityIdFetchInput_ {
+  id: string;
+  limit: number;
+  sortDirection: "ASC" | "DESC";
+  nextToken?: string;
+}
+
+const listPostByCommunityIdFetch = async (
+  input: listPostByCommunityIdFetchInput_
+) => {
+  try {
+    const listCommunityData = (await API.graphql({
+      query: listPostByCommunityId,
+      variables: input,
+      authMode: "AMAZON_COGNITO_USER_POOLS",
+    })) as GraphQLResult<listPostByCommunityId_>;
+
+    if (listCommunityData.data?.getCommunity) {
+      const { posts } = listCommunityData.data.getCommunity;
+      return posts;
+    }
+  } catch (err) {
+    console.error("Error occured while listing community in joined forum", err);
   }
 };
 
@@ -144,6 +235,65 @@ const getCommunity = /* GraphQL */ `
       bannerImageS3Key
       creatorId
       _version
+    }
+  }
+`;
+
+interface listPostByCommunityId_ {
+  getCommunity?: {
+    posts: {
+      items: Item[];
+      nextToken: string;
+    };
+  };
+}
+
+interface Item {
+  id: string;
+  type: string;
+  content: string;
+  mediaS3Key: null | string;
+  postedDate: Date;
+  author: {
+    username: string;
+    profileImageUrl: string;
+  };
+  community: {
+    id: string;
+    name: string;
+  };
+}
+
+const listPostByCommunityId = /* GraphQL */ `
+  query ListPostByCommunityId(
+    $id: ID!
+    $nextToken: String
+    $sortDirection: ModelSortDirection
+    $limit: Int
+  ) {
+    getCommunity(id: $id) {
+      posts(
+        limit: $limit
+        nextToken: $nextToken
+        sortDirection: $sortDirection
+      ) {
+        items {
+          id
+          type
+          content
+          mediaS3Key
+          postedDate
+          author {
+            username
+            profileImageUrl
+          }
+          community {
+            name
+            id
+          }
+        }
+        nextToken
+      }
     }
   }
 `;

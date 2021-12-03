@@ -4,6 +4,7 @@ import { DrawerNavigationProp } from "@react-navigation/drawer";
 import {
   CompositeNavigationProp,
   DrawerActions,
+  useFocusEffect,
 } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { API } from "aws-amplify";
@@ -36,7 +37,6 @@ export const JoinedSubForum: React.FC<Props_> = ({ navigation }) => {
 
   const handlePagination = async () => {
     if (nextToken) {
-      console.log("calling pagination");
       const listCommunityInput: listCommunityByUserIdFetchInput_ = {
         id: currentUser.id,
         limit: 10,
@@ -53,8 +53,10 @@ export const JoinedSubForum: React.FC<Props_> = ({ navigation }) => {
     }
   };
 
-  React.useEffect(() => {
-    (async () => {
+  const populateContent = React.useCallback(() => {
+    let isActive = true;
+
+    const fetchCall = async () => {
       const listCommunityInput: listCommunityByUserIdFetchInput_ = {
         id: currentUser.id,
         limit: 10,
@@ -62,12 +64,19 @@ export const JoinedSubForum: React.FC<Props_> = ({ navigation }) => {
       };
 
       const responseData = await listCommunityByUserIdFetch(listCommunityInput);
-      if (responseData) {
+      if (responseData && isActive) {
         setCommunities(responseData.items);
         setNextToken(responseData.nextToken);
       }
-    })();
+    };
+    fetchCall();
+
+    return () => {
+      isActive = false;
+    };
   }, [currentUser]);
+
+  useFocusEffect(populateContent);
 
   React.useLayoutEffect(() => {
     navigation.setOptions({

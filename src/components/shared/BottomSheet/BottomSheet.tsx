@@ -28,7 +28,7 @@ export const BottomSheet: React.FC<Props_> = ({ isOpen, onClose }) => {
               onPress={() => {
                 navigation.navigate("StackNav", {
                   screen: "ChooseSubForum",
-                  params: { postType: "Text", action: "Add" },
+                  params: { postType: "Image", action: "Add" },
                 });
                 onClose();
               }}

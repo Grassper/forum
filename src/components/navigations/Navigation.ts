@@ -37,11 +37,24 @@ export type StackParamList_ = {
   BottomTabNav: NavigatorScreenParams<BottomTabParamList_>;
 
   // * Post
-  Post: undefined;
+  Post: {
+    id?: string;
+    type?: "Image" | "Text" | "Video" | "Audio" | "Poll";
+    username?: string;
+    avatarUrl?: string;
+    subForum?: string;
+    subForumId?: string;
+    timeStamp?: Date;
+    contentText?: string;
+    mediaS3Key?: null | string;
+  };
   AddAndEditPost: {
     postType: "Image" | "Text" | "Video" | "Audio" | "Poll";
     action: "Add" | "Edit";
     hideUpload?: boolean;
+    profileImageS3Key: string;
+    name: string;
+    communityId: string;
   };
   ChooseSubForum: {
     postType: "Image" | "Text" | "Video" | "Audio" | "Poll";
@@ -50,9 +63,40 @@ export type StackParamList_ = {
   };
 
   // * Comment
-  Comment: undefined;
-  AddAndEditComment: { action: "Add" | "Edit" };
-  AddAndEditReplies: { action: "Add" | "Edit" };
+  Comment: {
+    username?: string;
+    avatarUrl?: string;
+    subForum?: string;
+    subForumId?: string;
+    postId?: string;
+    contentText?: string;
+    commentId?: string;
+    timeStamp?: Date;
+    repliesCount?: number;
+  };
+  AddAndEditComment: {
+    id?: string;
+    type?: "Image" | "Text" | "Video" | "Audio" | "Poll";
+    username?: string;
+    avatarUrl?: string;
+    subForum?: string;
+    subForumId?: string;
+    timeStamp?: Date;
+    contentText?: string;
+    mediaS3Key?: null | string;
+    action: "Add" | "Edit";
+  };
+  AddAndEditReplies: {
+    username?: string;
+    avatarUrl?: string;
+    subForum?: string;
+    subForumId?: string;
+    postId?: string;
+    contentText?: string;
+    commentId?: string;
+    timeStamp?: Date;
+    action: "Add" | "Edit";
+  };
 
   // * Message
   NewChat: undefined;

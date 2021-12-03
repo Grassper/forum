@@ -1,4 +1,5 @@
 import { GraphQLResult } from "@aws-amplify/api-graphql";
+import { useFocusEffect } from "@react-navigation/native";
 import { API } from "aws-amplify";
 import { format } from "date-fns";
 import { Box, Button, HStack, Pressable, Text, VStack } from "native-base";
@@ -32,8 +33,10 @@ export const ProfileCard: React.FC<Props_> = ({ routeUserId }) => {
   } = React.useContext(UserContext);
   const [profile, setProfile] = React.useState<State_>();
 
-  React.useEffect(() => {
-    const fetchUserData = async () => {
+  const populateContent = React.useCallback(() => {
+    let isActive = true;
+
+    const fetchCall = async () => {
       try {
         // check user data for user id passed using route params
         const userData = (await API.graphql({
@@ -42,15 +45,22 @@ export const ProfileCard: React.FC<Props_> = ({ routeUserId }) => {
           authMode: "AMAZON_COGNITO_USER_POOLS",
         })) as GraphQLResult<getUser_>;
 
-        if (userData.data?.getUser) {
+        if (userData.data?.getUser && isActive) {
           setProfile(userData.data.getUser);
         }
       } catch (err) {
         console.error("error while fetching user data in profile page", err);
       }
     };
-    fetchUserData();
-  }, [routeUserId, setProfile]);
+
+    fetchCall();
+
+    return () => {
+      isActive = false;
+    };
+  }, [routeUserId]);
+
+  useFocusEffect(populateContent);
 
   return (
     <Box alignItems="center" mt="5">

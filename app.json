@@ -7,8 +7,7 @@
     "icon": "./assets/appIcons/drawable-hdpi/logo.png",
     "splash": {
       "image": "./assets/appIcons/ios/splash_screen@1x.png",
-      "resizeMode": "cover",
-      "backgroundColor": "#B4FE98"
+      "resizeMode": "cover"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -20,7 +19,9 @@
         "image": "./assets/appIcons/drawable-hdpi/splash_screen.png",
         "resizeMode": "cover",
         "backgroundColor": "#FFF47D"
-      }
+      },
+      "usesIcloudStorage": true,
+      "bundleIdentifier": "iCloud.com.grassper.eforum"
     },
     "android": {
       "splash": {

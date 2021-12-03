@@ -14,7 +14,7 @@ const appsyncUrl = process.env.API_EFORUM_GRAPHQLAPIENDPOINTOUTPUT;
 const region = process.env.REGION;
 const endpoint = new urlParse(appsyncUrl).hostname.toString();
 
-exports.handler = async (event, _, callback) => {
+exports.handler = async (event, context, callback) => {
   // check user making request id and passed ids are equal and it exist in db
 
   // check communityId exist in db
@@ -33,9 +33,10 @@ exports.handler = async (event, _, callback) => {
     postInput = {
       type: event.arguments.type,
       content: event.arguments.content,
+      tags: event.arguments.tags,
       authorId: event.arguments.authorId,
       communityId: event.arguments.communityId,
-      tags: event.arguments.tags,
+      postedDate: event.arguments.postedDate,
       ...postStats,
     };
   } else if (
@@ -49,13 +50,15 @@ exports.handler = async (event, _, callback) => {
         null
       );
     }
+
     postInput = {
       type: event.arguments.type,
       content: event.arguments.content,
       mediaS3Key: event.arguments.mediaS3Key,
+      tags: event.arguments.tags,
       authorId: event.arguments.authorId,
       communityId: event.arguments.communityId,
-      tags: event.arguments.tags,
+      postedDate: event.arguments.postedDate,
       ...postStats,
     };
   } else if (event.arguments.type === "POLL") {
@@ -69,9 +72,10 @@ exports.handler = async (event, _, callback) => {
       type: event.arguments.type,
       content: event.arguments.content,
       poll: event.arguments.poll,
+      tags: event.arguments.tags,
       authorId: event.arguments.authorId,
       communityId: event.arguments.communityId,
-      tags: event.arguments.tags,
+      postedDate: event.arguments.postedDate,
       ...postStats,
     };
   } else {
@@ -86,25 +90,29 @@ exports.handler = async (event, _, callback) => {
       { input: postInput },
       createPost
     );
-    const post = postResponse.data.createPost;
+    const post = postResponse.data?.createPost;
 
-    // list members for communityId
+    if (post) {
+      // list members for communityId
 
-    const listMembersResponse = await makeAppSyncRequest(
-      { communityId: post.communityId, limit: 100000 },
-      listMembersOfCommunity
-    );
+      const listMembersResponse = await makeAppSyncRequest(
+        { communityId: post.communityId, limit: 100000 },
+        listMembersOfCommunity
+      );
 
-    const members =
-      listMembersResponse.data.listUserCommunityRelationShips.items;
+      if (listMembersResponse.data?.listUserCommunityRelationShips) {
+        const members =
+          listMembersResponse.data.listUserCommunityRelationShips.items;
 
-    // creating timeline for users
+        // creating timeline for users
 
-    await Promise.all(
-      members.map((entry) =>
-        createTimelineForAUser({ userId: entry.userId, postId: post.id })
-      )
-    );
+        await Promise.all(
+          members.map((entry) =>
+            createTimelineForAUser({ userId: entry.userId, postId: post.id })
+          )
+        );
+      }
+    }
 
     return post;
   } catch (err) {

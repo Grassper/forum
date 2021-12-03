@@ -15,18 +15,18 @@ import React from "react";
 import { SignS3ImageKey } from "@/root/src/utils/helpers";
 
 export interface Props_ {
-  onPress: () => void;
+  onPress?: () => void;
   profileImageS3Key: string;
   name: string;
   hideDivider?: boolean;
   hideMembers?: boolean;
-  hideFavorites?: boolean;
+  hideNavArrow?: boolean;
 }
 
 export const CommunityTile: React.FC<Props_> = ({
   hideDivider,
   hideMembers,
-  hideFavorites,
+  hideNavArrow,
   onPress,
   name,
   profileImageS3Key,
@@ -101,7 +101,7 @@ export const CommunityTile: React.FC<Props_> = ({
               )}
             </VStack>
             <Spacer />
-            {!hideFavorites && (
+            {!hideNavArrow && (
               <HStack space="4">
                 <Icon
                   as={<Entypo name="chevron-small-right" />}
