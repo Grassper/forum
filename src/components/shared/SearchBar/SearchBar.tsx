@@ -22,6 +22,7 @@ export const SearchBar: React.FC<Props_> = ({ value, setValue }) => {
         placeholderTextColor="muted.400"
         fontSize="sm"
         variant="unstyled"
+        textTransform="lowercase"
         InputLeftElement={
           <Icon
             as={<Ionicons name="search-outline" />}
