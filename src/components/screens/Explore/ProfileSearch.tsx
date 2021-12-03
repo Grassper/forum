@@ -3,9 +3,10 @@ import { useFocusEffect } from "@react-navigation/native";
 import { API } from "aws-amplify";
 import { Box } from "native-base";
 import React from "react";
-import { FlatList, StyleSheet } from "react-native";
+import { FlatList, ListRenderItem, StyleSheet } from "react-native";
 
 import { FollowCardRenderer } from "@/root/src/components/shared/CardRenderer";
+import { FollowCard } from "@/root/src/components/shared/Cards";
 import { colors } from "@/root/src/constants";
 import { UserData } from "@/root/src/data/userData";
 
@@ -16,7 +17,6 @@ export const ProfileSearch: React.FC = () => {
 
   const [profiles, setProfiles] = React.useState<Item[]>([]);
   const [nextToken, setNextToken] = React.useState<string>("");
-  console.log("calling", searchValue);
 
   const populateContent = React.useCallback(() => {
     let isActive = true;
@@ -44,12 +44,38 @@ export const ProfileSearch: React.FC = () => {
 
   useFocusEffect(populateContent);
 
+  const handlePagination = async () => {
+    if (nextToken && searchValue) {
+      const searchUsersInput: searchUsersFetchInput_ = {
+        limit: 10,
+        username: searchValue,
+        nextToken,
+      };
+
+      const responseData = await searchUsersFetch(searchUsersInput);
+
+      if (responseData) {
+        setProfiles((prevState) => [...prevState, ...responseData.items]);
+        setNextToken(responseData.nextToken);
+      }
+    }
+  };
+  const ProfileCardRenderer: ListRenderItem<Item> = ({ item }) => {
+    return (
+      <FollowCard
+        id={item.id}
+        username={item.username}
+        avatarUrl={item.profileImageUrl}
+      />
+    );
+  };
   return (
     <Box style={styles.container} bg={colors.white} pt="4">
       <FlatList
-        data={UserData}
-        renderItem={FollowCardRenderer}
+        data={profiles}
+        renderItem={ProfileCardRenderer}
         keyExtractor={(item) => item.id}
+        onEndReached={() => handlePagination()}
       />
     </Box>
   );
