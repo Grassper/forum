@@ -1,8 +1,12 @@
-import { ScrollView } from "native-base";
+import { GraphQLResult } from "@aws-amplify/api-graphql";
+import { useFocusEffect } from "@react-navigation/native";
+import { API } from "aws-amplify";
+import { Box, ScrollView } from "native-base";
 import React from "react";
-import { StyleSheet } from "react-native";
+import { FlatList, ListRenderItem, StyleSheet } from "react-native";
 
 import { CommunityTile } from "@/root/src/components/shared/Tile";
+import { colors } from "@/root/src/constants";
 
 import { TabNavigatorExploreContext } from "./context";
 
@@ -10,14 +14,145 @@ interface Props_ {}
 
 export const CommunitySearch: React.FC<Props_> = () => {
   const searchValue = React.useContext(TabNavigatorExploreContext);
+  const [community, setCommunity] = React.useState<Item[]>([]);
+  const [nextToken, setNextToken] = React.useState<string>("");
+  const populateContent = React.useCallback(() => {
+    let isActive = true;
+
+    const fetchCall = async () => {
+      if (searchValue) {
+        const searchUsersInput: searchCommunityFetchInput_ = {
+          limit: 10,
+          searchcommunityvalue: searchValue,
+        };
+
+        const responseData = await searchCommunityFetch(searchUsersInput);
+        if (responseData && isActive) {
+          setCommunity(responseData.items);
+          setNextToken(responseData.nextToken);
+        }
+      }
+    };
+    fetchCall();
+
+    return () => {
+      isActive = false;
+    };
+  }, [searchValue]);
+
+  useFocusEffect(populateContent);
+  const handlePagination = async () => {
+    if (nextToken && searchValue) {
+      const searchUsersInput: searchCommunityFetchInput_ = {
+        limit: 10,
+        searchcommunityvalue: searchValue,
+        nextToken,
+      };
+
+      const responseData = await searchCommunityFetch(searchUsersInput);
+
+      if (responseData) {
+        setCommunity((prevState) => [...prevState, ...responseData.items]);
+        setNextToken(responseData.nextToken);
+      }
+    }
+  };
+  const CommunityCardRenderer: ListRenderItem<Item> = ({ item }) => {
+    return (
+      <CommunityTile
+        onPress={() => {
+          console.log("called");
+        }}
+        hideDivider
+        profileImageS3Key={item.profileImageS3Key}
+        name={item.name}
+      />
+    );
+  };
 
   return (
-    <ScrollView style={styles.container}>
-      <CommunityTile onPress={() => {}} hideDivider />
-    </ScrollView>
+    <Box style={styles.container} bg={colors.white} pt="4">
+      <FlatList
+        data={community}
+        renderItem={CommunityCardRenderer}
+        keyExtractor={(item) => item.id}
+        onEndReached={() => handlePagination()}
+      />
+    </Box>
   );
 };
 
 const styles = StyleSheet.create({
   container: { flex: 1, position: "relative" },
 });
+
+/**api calls */
+interface searchCommunityFetchInput_ {
+  limit: number;
+  nextToken?: string;
+  searchcommunityvalue: string;
+}
+const searchCommunityFetch = async (input: searchCommunityFetchInput_) => {
+  try {
+    const listSearchCommunityData = (await API.graphql({
+      query: searchCommunity,
+      variables: input,
+      authMode: "AMAZON_COGNITO_USER_POOLS",
+    })) as GraphQLResult<searchCommunity_>;
+    if (listSearchCommunityData.data?.listCommunitys) {
+      const communitySearchData = listSearchCommunityData.data.listCommunitys;
+
+      return communitySearchData;
+    }
+  } catch (err) {
+    console.error(
+      "Error occured while searching community in explore screen",
+      err
+    );
+  }
+};
+
+/**
+ * graphql queries and their types
+ * types pattern {queryName}_
+ * * note dash(_) at the end of type name
+ * order 1.queryType 2.graphql query
+ */
+
+interface searchCommunity_ {
+  listCommunitys?: ListCommunitys;
+}
+
+interface ListCommunitys {
+  items: Item[];
+  nextToken: string;
+}
+
+interface Item {
+  id: string;
+  profileImageS3Key: string;
+  name: string;
+  owner: string;
+}
+
+const searchCommunity = /* GraphQL */ `
+  query searchCommunity(
+    $searchcommunityvalue: String
+    $nextToken: String
+    $limit: Int
+  ) {
+    listCommunitys(
+      limit: $limit
+      filter: { name: { contains: $searchcommunityvalue } }
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        profileImageS3Key
+        name
+        owner
+      }
+      nextToken
+    }
+  }
+`;
