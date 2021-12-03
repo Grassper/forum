@@ -14,8 +14,10 @@ import { SvgUri } from "react-native-svg";
 import Tooltip from "react-native-walkthrough-tooltip";
 
 import { AudioComponent } from "@/root/src/components/shared/Audio";
+import * as ActionIcons from "@/root/src/components/shared/Icons";
 import { Skeleton } from "@/root/src/components/shared/Skeleton";
 import { colors } from "@/root/src/constants";
+import { useToggle } from "@/root/src/hooks";
 import { SignS3ImageKey } from "@/root/src/utils/helpers";
 
 export interface Props_ {
@@ -378,58 +380,27 @@ interface PostUserActions_ {
  * down vote
  */
 
+type IconsPicker_ = {
+  Like: () => React.FC;
+  Love: () => React.FC;
+  Charge: () => React.FC;
+  Dislike: () => React.FC;
+  ChargeOutline: () => React.FC;
+};
+
 const IconsPicker = {
-  Like: (
-    <Image
-      source={require("@/root/assets/faces/like.png")}
-      alt="Alternate Text"
-      size={35}
-    />
-  ),
-  Love: (
-    <Image
-      source={require("@/root/assets/faces/heart.png")}
-      alt="Alternate Text"
-      size={35}
-    />
-  ),
-  Support: (
-    <Image
-      source={require("@/root/assets/faces/support.png")}
-      alt="Alternate Text"
-      size={35}
-    />
-  ),
-  Dislike: (
-    <Image
-      source={require("@/root/assets/faces/block.png")}
-      alt="Alternate Text"
-      size={35}
-    />
-  ),
+  Like: ActionIcons.LikeIcon,
+  Love: ActionIcons.LoveIcon,
+  Charge: ActionIcons.ChargeIcon,
+  Dislike: ActionIcons.DislikeIcon,
+  ChargeOutline: ActionIcons.ChargeIconOutline,
 };
 
 const PostUserActions: React.FC<PostUserActions_> = ({
   hidePostNavigation,
   ...post
 }) => {
-  const [showTip, setTip] = useState(false);
-  const [likeIcon, setLikeIcon] = useState("smile");
-  const images = {
-    smile: require("@/root/assets/faces/smile.png"),
-    angry: require("@/root/assets/faces/angry.png"),
-    sad: require("@/root/assets/faces/sad.png"),
-    wow: require("@/root/assets/faces/wow.png"),
-  };
-  var [iconemoji, setIcon] = useState(images.smile);
-  var iconName = images.smile;
-
   const navigation = useNavigation();
-
-  function chooseIcon() {
-    iconName = images.angry;
-    return iconName;
-  }
 
   const { id } = post;
 
@@ -437,85 +408,7 @@ const PostUserActions: React.FC<PostUserActions_> = ({
     <Box>
       <HStack alignItems="center" justifyContent="space-between">
         <HStack space="3" alignItems="center">
-          <Tooltip
-            isVisible={showTip}
-            content={
-              <Box style={styles.roottooltip}>
-                <Pressable
-                  onPress={() => {
-                    setLikeIcon("smile"), setIcon(images.smile), setTip(false);
-                  }}
-                  style={styles.icons}
-                >
-                  <Image
-                    source={require("@/root/assets/faces/smile.png")}
-                    alt="Alternate Text"
-                    size={35}
-                  />
-                </Pressable>
-
-                <Pressable
-                  onPress={() => {
-                    setLikeIcon("wow"), setTip(false), setIcon(images.wow);
-                  }}
-                  style={styles.icons}
-                >
-                  <Image
-                    source={require("@/root/assets/faces/wow.png")}
-                    alt="Alternate Text"
-                    size={8}
-                  />
-                </Pressable>
-                <Pressable
-                  onPress={() => {
-                    setLikeIcon("sad");
-                    setTip(false);
-                  }}
-                  style={styles.icons}
-                >
-                  <Image
-                    source={require("@/root/assets/faces/sad.png")}
-                    alt="Alternate Text"
-                    size={9}
-                  />
-                </Pressable>
-
-                <Pressable
-                  onPress={() => {
-                    chooseIcon(), setTip(false);
-                  }}
-                >
-                  <Image
-                    source={require("@/root/assets/faces/angry.png")}
-                    alt="Alternate Text"
-                    size={30}
-                  />
-                </Pressable>
-              </Box>
-            }
-            onClose={() => {
-              setTip(false);
-            }}
-            placement="top"
-            topAdjustment={
-              Platform.OS === "android" ? -StatusBar.currentHeight + 23 : 0
-            }
-            arrowSize={{ width: 0, height: 0 }}
-            contentStyle={styles.tooltipContainer}
-            backgroundColor="transparent"
-            displayInsets={{
-              top: 24,
-              bottom: 34,
-              left: 14,
-              right: 14,
-            }}
-            allowChildInteraction={false}
-            childContentSpacing={0}
-          >
-            <TouchableOpacity onPress={() => setTip(true)}>
-              <Image source={iconemoji} alt="Alternate Text" size={"20px"} />
-            </TouchableOpacity>
-          </Tooltip>
+          <UserActionToolTip />
           <Pressable
             onPress={() =>
               navigation.navigate("StackNav", {
@@ -554,21 +447,95 @@ const PostUserActions: React.FC<PostUserActions_> = ({
   );
 };
 
+const UserActionToolTip: React.FC = () => {
+  const [showTip, setTip] = useToggle(false);
+
+  const [selectedIcon, setSelectedIcon] =
+    useState<keyof IconsPicker_>("ChargeOutline");
+
+  const PickedIcon = IconsPicker[selectedIcon];
+
+  const PickIconHandler = (value: keyof IconsPicker_) => {
+    setSelectedIcon(value);
+    setTip();
+  };
+
+  return (
+    <Tooltip
+      isVisible={showTip}
+      content={
+        <HStack space="1" alignItems="center">
+          <Pressable
+            onPress={() => {
+              PickIconHandler("Charge");
+            }}
+          >
+            <Box width="30px" height="30px">
+              <ActionIcons.ChargeIcon />
+            </Box>
+          </Pressable>
+          <Pressable
+            onPress={() => {
+              PickIconHandler("Like");
+            }}
+          >
+            <Box width="30px" height="30px">
+              <ActionIcons.LikeIcon />
+            </Box>
+          </Pressable>
+          <Pressable
+            onPress={() => {
+              PickIconHandler("Love");
+            }}
+          >
+            <Box width="30px" height="30px">
+              <ActionIcons.LoveIcon />
+            </Box>
+          </Pressable>
+          <Pressable
+            onPress={() => {
+              PickIconHandler("Dislike");
+            }}
+          >
+            <Box width="30px" height="30px">
+              <ActionIcons.DislikeIcon />
+            </Box>
+          </Pressable>
+        </HStack>
+      }
+      onClose={() => {
+        setTip(false);
+      }}
+      placement="top"
+      topAdjustment={
+        Platform.OS === "android" ? -StatusBar.currentHeight + 23 : 0
+      }
+      arrowSize={{ width: 0, height: 0 }}
+      contentStyle={styles.tooltipContainer}
+      backgroundColor="transparent"
+      displayInsets={{
+        top: 24,
+        bottom: 34,
+        left: 14,
+        right: 14,
+      }}
+      allowChildInteraction={false}
+      childContentSpacing={0}
+    >
+      <TouchableOpacity onPress={() => setTip(true)}>
+        <Box width="20px" height="20px">
+          <PickedIcon />
+        </Box>
+      </TouchableOpacity>
+    </Tooltip>
+  );
+};
+
 const styles = StyleSheet.create({
-  icons: {
-    marginRight: 4,
-  },
   openPostIcon: {
     transform: [{ rotate: "90deg" }],
   },
-  roottooltip: {
-    alignItems: "center",
-    backgroundColor: colors.white,
-    flex: 1,
-    flexDirection: "row",
-    height: "100%",
-    width: "100%",
-  },
+
   separatorDot: {
     borderRadius: 50,
     height: 2.5,
