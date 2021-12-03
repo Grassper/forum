@@ -2,8 +2,13 @@ import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { Icon, Input, Pressable } from "native-base";
 import React from "react";
 
-export const SearchBar: React.FC = () => {
-  const [value, setValue] = React.useState("");
+interface Props_ {
+  value: string;
+  setValue: (value: string) => void;
+}
+
+export const SearchBar: React.FC<Props_> = ({ value, setValue }) => {
+  // const [value, setValue] = React.useState("");
 
   return (
     <>

@@ -10,7 +10,6 @@ import {
   Text,
 } from "native-base";
 import React from "react";
-import { StyleSheet } from "react-native";
 
 import { colors } from "@/root/src/constants";
 
@@ -18,22 +17,30 @@ interface Props_ {
   Login: boolean;
   setLogin: (value: boolean) => void;
 }
-export const SignIn: React.FC<Props_> = ({ Login, setLogin }) => {
+export const SignUp: React.FC<Props_> = ({ Login, setLogin }) => {
   const [userName, setUserName] = React.useState("");
   const [password, setPassword] = React.useState("");
-  async function signIn() {
-    if (userName.trim() && userName.trim()) {
+  const [emailId, setEmailId] = React.useState("");
+  async function signUp() {
+    if (userName && password && emailId) {
       try {
-        const user = await Auth.signIn(userName, password);
-        console.log(user);
+        const { user } = await Auth.signUp({
+          username: userName,
+          password,
+          attributes: {
+            email: emailId, // optional
+            // phone_number, // optional - E.164 number convention
+            // other custom attributes
+          },
+        });
+        console.log("signUp", user);
       } catch (error) {
-        console.log("error signing in", error);
+        console.log("error signing up:", error);
       }
     } else {
-      console.log("empty values");
+      console.log("user values missing");
     }
   }
-
   return (
     <Box flex="1">
       <StatusBar />
@@ -43,7 +50,7 @@ export const SignIn: React.FC<Props_> = ({ Login, setLogin }) => {
             <Box alignItems="flex-end" pt="3">
               <Pressable onPress={() => setLogin(!Login)}>
                 <Text fontSize="sm" fontWeight="bold" color="eGreen.400">
-                  Sign up
+                  Sign in
                 </Text>
               </Pressable>
             </Box>
@@ -55,7 +62,7 @@ export const SignIn: React.FC<Props_> = ({ Login, setLogin }) => {
               pt="5"
               pb="3"
             >
-              Sign in
+              Sign up
             </Text>
             <Text pt="2" pb="8" fontSize="sm" color={colors.gray}>
               By continuing you agree to our{" "}
@@ -67,7 +74,21 @@ export const SignIn: React.FC<Props_> = ({ Login, setLogin }) => {
                 Privacy Policy
               </Text>
             </Text>
-
+            <Input
+              width="100%"
+              multiline
+              value={emailId}
+              onChangeText={setEmailId}
+              borderRadius="full"
+              placeholder="email"
+              placeholderTextColor="muted.400"
+              fontSize="sm"
+              variant="unstyled"
+              backgroundColor="gray.200"
+              paddingLeft="5"
+              marginBottom="4"
+              color="eGreen.400"
+            />
             <Input
               width="100%"
               multiline
@@ -111,7 +132,7 @@ export const SignIn: React.FC<Props_> = ({ Login, setLogin }) => {
           </Box>
           <Box width="100%" justifyContent="flex-end" py="4">
             <Pressable
-              onPress={signIn}
+              onPress={signUp}
               backgroundColor={colors.green}
               borderRadius="full"
               alignItems="center"
@@ -126,13 +147,3 @@ export const SignIn: React.FC<Props_> = ({ Login, setLogin }) => {
     </Box>
   );
 };
-const styles = StyleSheet.create({
-  wrapper: {
-    alignItems: "center",
-    backgroundColor: colors.white,
-    flex: 1,
-    justifyContent: "center",
-
-    width: "100%",
-  },
-});
