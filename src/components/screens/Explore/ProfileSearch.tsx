@@ -5,10 +5,8 @@ import { Box } from "native-base";
 import React from "react";
 import { FlatList, ListRenderItem, StyleSheet } from "react-native";
 
-import { FollowCardRenderer } from "@/root/src/components/shared/CardRenderer";
 import { FollowCard } from "@/root/src/components/shared/Cards";
 import { colors } from "@/root/src/constants";
-import { UserData } from "@/root/src/data/userData";
 
 import { TabNavigatorExploreContext } from "./context";
 
