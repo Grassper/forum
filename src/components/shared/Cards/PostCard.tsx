@@ -369,6 +369,46 @@ interface PostUserActions_ {
   mediaS3Key?: null | string;
 }
 
+/**
+ * like
+ * love
+ * support
+ * dislike
+ * up post
+ * down vote
+ */
+
+const IconsPicker = {
+  Like: (
+    <Image
+      source={require("@/root/assets/faces/like.png")}
+      alt="Alternate Text"
+      size={35}
+    />
+  ),
+  Love: (
+    <Image
+      source={require("@/root/assets/faces/heart.png")}
+      alt="Alternate Text"
+      size={35}
+    />
+  ),
+  Support: (
+    <Image
+      source={require("@/root/assets/faces/support.png")}
+      alt="Alternate Text"
+      size={35}
+    />
+  ),
+  Dislike: (
+    <Image
+      source={require("@/root/assets/faces/block.png")}
+      alt="Alternate Text"
+      size={35}
+    />
+  ),
+};
+
 const PostUserActions: React.FC<PostUserActions_> = ({
   hidePostNavigation,
   ...post
