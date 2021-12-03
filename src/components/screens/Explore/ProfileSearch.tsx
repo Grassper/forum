@@ -26,3 +26,42 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 });
+
+/**
+ * graphql queries and their types
+ * types pattern {queryName}_
+ * * note dash(_) at the end of type name
+ * order 1.queryType 2.graphql query
+ */
+
+interface searchUsers_ {
+  listUsers?: ListUsers;
+}
+
+interface ListUsers {
+  items: Item[];
+  nextToken: null;
+}
+
+interface Item {
+  profileImageUrl: string;
+  username: string;
+  id: string;
+}
+
+const searchUsers = /* GraphQL */ `
+  query searchUsers($limit: Int, $nextToken: String, $username: String) {
+    listUsers(
+      limit: $limit
+      nextToken: $nextToken
+      filter: { username: { contains: $username } }
+    ) {
+      items {
+        profileImageUrl
+        username
+        id
+      }
+      nextToken
+    }
+  }
+`;
