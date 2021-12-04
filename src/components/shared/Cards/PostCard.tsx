@@ -1,15 +1,12 @@
+import { GraphQLResult } from "@aws-amplify/api-graphql";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { API } from "aws-amplify";
 import { format } from "date-fns";
 import { Video } from "expo-av";
 import { Box, Flex, HStack, Icon, Image, Pressable, Text } from "native-base";
 import React, { useState } from "react";
-import {
-  Platform,
-  StatusBar,
-  StyleSheet,
-  TouchableOpacity,
-} from "react-native";
+import { Platform, StatusBar, StyleSheet } from "react-native";
 import { SvgUri } from "react-native-svg";
 import Tooltip from "react-native-walkthrough-tooltip";
 
@@ -19,7 +16,7 @@ import { Skeleton } from "@/root/src/components/shared/Skeleton";
 import { colors } from "@/root/src/constants";
 import { useToggle } from "@/root/src/hooks";
 import { SignS3ImageKey } from "@/root/src/utils/helpers";
-
+import { UserContext } from "@/root/src/context";
 export interface Props_ {
   id?: string;
   type?: "Image" | "Text" | "Video" | "Audio" | "Poll";
@@ -381,19 +378,19 @@ interface PostUserActions_ {
  */
 
 type IconsPicker_ = {
-  Like: () => React.FC;
-  Love: () => React.FC;
-  Charge: () => React.FC;
-  Dislike: () => React.FC;
-  ChargeOutline: () => React.FC;
+  LIKE: () => React.FC;
+  LOVE: () => React.FC;
+  SUPPORT: () => React.FC;
+  DISLIKE: () => React.FC;
+  SUPPORTOUTLINE: () => React.FC;
 };
 
 const IconsPicker = {
-  Like: ActionIcons.LikeIcon,
-  Love: ActionIcons.LoveIcon,
-  Charge: ActionIcons.ChargeIcon,
-  Dislike: ActionIcons.DislikeIcon,
-  ChargeOutline: ActionIcons.ChargeIconOutline,
+  LIKE: ActionIcons.LikeIcon,
+  LOVE: ActionIcons.LoveIcon,
+  SUPPORT: ActionIcons.ChargeIcon,
+  DISLIKE: ActionIcons.DislikeIcon,
+  SUPPORTOUTLINE: ActionIcons.ChargeIconOutline,
 };
 
 const PostUserActions: React.FC<PostUserActions_> = ({
@@ -408,7 +405,7 @@ const PostUserActions: React.FC<PostUserActions_> = ({
     <Box>
       <HStack alignItems="center" justifyContent="space-between">
         <HStack space="3" alignItems="center">
-          <UserActionToolTip />
+          <UserActionToolTip postId={post.id} communityId={post.subForumId} />
           <Pressable
             onPress={() =>
               navigation.navigate("StackNav", {
@@ -447,17 +444,50 @@ const PostUserActions: React.FC<PostUserActions_> = ({
   );
 };
 
-const UserActionToolTip: React.FC = () => {
+interface UserActionToolTip_ {
+  postId?: string;
+  communityId?: string;
+}
+
+const UserActionToolTip: React.FC<UserActionToolTip_> = ({
+  postId,
+  communityId,
+}) => {
   const [showTip, setTip] = useToggle(false);
 
+  const currentUser = React.useContext(UserContext).user;
+
   const [selectedIcon, setSelectedIcon] =
-    useState<keyof IconsPicker_>("ChargeOutline");
+    useState<keyof IconsPicker_>("SUPPORTOUTLINE");
 
   const PickedIcon = IconsPicker[selectedIcon];
+
+  const UserActionHandler = (type: UserActionCreationFetchInput_["type"]) => {
+    if (postId && communityId) {
+      const UserActionCreationInput: UserActionCreationFetchInput_ = {
+        postId,
+        communityId,
+        type,
+        userId: currentUser.id,
+      };
+
+      UserActionCreationFetch(UserActionCreationInput);
+    }
+  };
 
   const PickIconHandler = (value: keyof IconsPicker_) => {
     setSelectedIcon(value);
     setTip();
+
+    // call user action creation fetch with icon action type
+    UserActionHandler(value as UserActionCreationFetchInput_["type"]);
+  };
+
+  const ResetPickedIcon = () => {
+    if (selectedIcon !== "SUPPORTOUTLINE") {
+      setSelectedIcon("SUPPORTOUTLINE");
+      // delete created user action using use action id
+    }
   };
 
   return (
@@ -467,7 +497,7 @@ const UserActionToolTip: React.FC = () => {
         <HStack space="1" alignItems="center">
           <Pressable
             onPress={() => {
-              PickIconHandler("Charge");
+              PickIconHandler("SUPPORT");
             }}
           >
             <Box width="30px" height="30px">
@@ -476,7 +506,7 @@ const UserActionToolTip: React.FC = () => {
           </Pressable>
           <Pressable
             onPress={() => {
-              PickIconHandler("Like");
+              PickIconHandler("LIKE");
             }}
           >
             <Box width="30px" height="30px">
@@ -485,7 +515,7 @@ const UserActionToolTip: React.FC = () => {
           </Pressable>
           <Pressable
             onPress={() => {
-              PickIconHandler("Love");
+              PickIconHandler("LOVE");
             }}
           >
             <Box width="30px" height="30px">
@@ -494,7 +524,7 @@ const UserActionToolTip: React.FC = () => {
           </Pressable>
           <Pressable
             onPress={() => {
-              PickIconHandler("Dislike");
+              PickIconHandler("DISLIKE");
             }}
           >
             <Box width="30px" height="30px">
@@ -522,11 +552,15 @@ const UserActionToolTip: React.FC = () => {
       allowChildInteraction={false}
       childContentSpacing={0}
     >
-      <TouchableOpacity onPress={() => setTip(true)}>
+      <Pressable
+        delayLongPress={500}
+        onLongPress={() => setTip(true)}
+        onPress={ResetPickedIcon}
+      >
         <Box width="20px" height="20px">
           <PickedIcon />
         </Box>
-      </TouchableOpacity>
+      </Pressable>
     </Tooltip>
   );
 };
@@ -559,3 +593,179 @@ const styles = StyleSheet.create({
     height: 200,
   },
 });
+
+/**
+ * Todo-1: alter the schema in user post metric relationship type to like, love, support, dislike
+ * Todo-2: onlong press release the tooltip and onpress deactive the user actions
+ * Todo-2: create the user post metric relationships for like, love, support, dislike
+ * Todo-3: check if the user made action for the post if else create the user action
+ * Todo-4: if user already made an action get the action and update the action
+ * Todo-5: if user deactive the action remove the action relationship
+ */
+
+/**
+ * api
+ */
+
+interface UserActionCreationFetchInput_ {
+  postId: string;
+  userId: string;
+  communityId: string;
+  type: "LIKE" | "LOVE" | "SUPPORT" | "DISLIKE";
+}
+
+interface UserActionCheckFetchInput_ {
+  postId: string;
+  userId: string;
+}
+
+interface UpdateUserActionFetchInput_ {
+  id: string;
+  postId: string;
+  userId: string;
+  communityId: string;
+  type: "LIKE" | "LOVE" | "SUPPORT" | "DISLIKE";
+  _version: number;
+}
+
+const UserActionCreationFetch = async (
+  input: UserActionCreationFetchInput_
+) => {
+  try {
+    // check if user already made an action
+
+    const isUserActionExistInput: UserActionCheckFetchInput_ = {
+      userId: input.userId,
+      postId: input.postId,
+    };
+
+    const isUserActionExist = (await API.graphql({
+      query: CheckUserAction,
+      variables: isUserActionExistInput,
+      authMode: "AMAZON_COGNITO_USER_POOLS",
+    })) as GraphQLResult<CheckUserAction_>;
+
+    // if user action already exist update the existing one
+    if (
+      isUserActionExist.data?.listUserPostMetricsRelationShips &&
+      isUserActionExist.data.listUserPostMetricsRelationShips.items.length === 1
+    ) {
+      const existingUserAction =
+        isUserActionExist.data.listUserPostMetricsRelationShips.items[0];
+
+      const updateUserActionInput: UpdateUserActionFetchInput_ = {
+        id: existingUserAction.id,
+        postId: input.postId,
+        userId: input.userId,
+        communityId: input.communityId,
+        type: input.type,
+        _version: existingUserAction._version,
+      };
+
+      const updateUserAction = (await API.graphql({
+        query: UpdateUserPostMetricsRelationship,
+        variables: { input: updateUserActionInput },
+        authMode: "AMAZON_COGNITO_USER_POOLS",
+      })) as GraphQLResult<UpdateUserPostMetricsRelationship_>;
+
+      if (updateUserAction.data?.updateUserPostMetricsRelationShip) {
+        return updateUserAction.data.updateUserPostMetricsRelationShip.id;
+      }
+    } else {
+      // if user action doesnt exist create new
+      const createUserAction = (await API.graphql({
+        query: CreateUserPostMetricsRelationship,
+        variables: { input },
+        authMode: "AMAZON_COGNITO_USER_POOLS",
+      })) as GraphQLResult<CreateUserPostMetricsRelationship_>;
+
+      if (createUserAction.data?.createUserPostMetricsRelationShip) {
+        return createUserAction.data?.createUserPostMetricsRelationShip.id;
+      }
+    }
+  } catch (err) {
+    console.error("Error occured creating user action for post", err);
+  }
+};
+
+/**
+ * graphql queries and their types
+ * types pattern {queryName}_
+ * * note dash(_) at the end of type name
+ * order 1.queryType 2.graphql query
+ */
+
+interface CheckUserAction_ {
+  listUserPostMetricsRelationShips?: ListUserPostMetricsRelationShips;
+}
+
+interface ListUserPostMetricsRelationShips {
+  items: Item[];
+}
+
+interface Item {
+  id: string;
+  type: "LIKE" | "LOVE" | "SUPPORT" | "DISLIKE";
+  postId: string;
+  _version: number;
+}
+
+const CheckUserAction = /* GraphQL */ `
+  query CheckUserAction($postId: ID!, $userId: ID!) {
+    listUserPostMetricsRelationShips(
+      filter: { postId: { eq: $postId }, userId: { eq: $userId } }
+      limit: 1
+    ) {
+      items {
+        id
+        type
+        postId
+        _version
+      }
+    }
+  }
+`;
+
+interface CreateUserPostMetricsRelationship_ {
+  createUserPostMetricsRelationShip?: CreateUserPostMetricsRelationShip;
+}
+
+interface CreateUserPostMetricsRelationShip {
+  id: string;
+  type: string;
+  postId: string;
+}
+
+const CreateUserPostMetricsRelationship = /* GraphQL */ `
+  mutation CreateUserPostMetricsRelationship(
+    $input: CreateUserPostMetricsRelationShipInput!
+  ) {
+    createUserPostMetricsRelationShip(input: $input) {
+      id
+      type
+      postId
+    }
+  }
+`;
+
+interface UpdateUserPostMetricsRelationship_ {
+  updateUserPostMetricsRelationShip?: UpdateUserPostMetricsRelationShip;
+}
+
+interface UpdateUserPostMetricsRelationShip {
+  id: string;
+  type: string;
+  postId: string;
+}
+
+const UpdateUserPostMetricsRelationship = /* GraphQL */ `
+  mutation UpdateUserPostMetricRelationship(
+    $input: UpdateUserPostMetricsRelationShipInput!
+  ) {
+    updateUserPostMetricsRelationShip(input: $input) {
+      id
+      type
+      postId
+    }
+  }
+`;
