@@ -236,6 +236,7 @@ type UserPostMetricsRelationShip
   type: UserActionType!
   communityId: ID!
   userId: ID!
+  isDeleted: Boolean
   community: Community! @connection(fields: ["communityId"])
   post: Post! @connection(fields: ["postId"])
   user: User! @connection(fields: ["userId"])
