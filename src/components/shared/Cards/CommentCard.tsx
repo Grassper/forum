@@ -232,13 +232,6 @@ export const CommentCard: React.FC<Props_> = ({
   );
 };
 
-/**
- * Todo-3: graphql comment metrics update
- * Todo-4: comment metrics custom resolvers
- * Todo-5: comment user action graphql schemas and types
- * Todo-6: comment user action handlers
- */
-
 const styles = StyleSheet.create({
   downVoteIcon: {
     transform: [{ rotate: "180deg" }],
@@ -250,3 +243,110 @@ const styles = StyleSheet.create({
     width: 2.5,
   },
 });
+
+/**
+ * Todo-5: comment user action graphql schemas and types
+ * Todo-6: comment user action handlers
+ */
+
+/**
+ * graphql queries and their types
+ * types pattern {queryName}_
+ * * note dash(_) at the end of type name
+ * order 1.queryType 2.graphql query
+ */
+
+/**
+ * comment metrics graphql calls
+ */
+
+const IncrementCommentUpvote = /* GraphQL */ `
+  mutation incrementCommentUpvote($id: ID!) {
+    incrementCommentUpvote(id: $id) {
+      id
+    }
+  }
+`;
+
+const DecrementCommentUpvote = /* GraphQL */ `
+  mutation decrementCommentUpvote($id: ID!) {
+    decrementCommentUpvote(id: $id) {
+      id
+    }
+  }
+`;
+
+const IncrementCommentDownvote = /* GraphQL */ `
+  mutation incrementCommentDownvote($id: ID!) {
+    incrementCommentDownvote(id: $id) {
+      id
+    }
+  }
+`;
+
+const DecrementCommentDownvote = /* GraphQL */ `
+  mutation decrementCommentDownvote($id: ID!) {
+    decrementCommentDownvote(id: $id) {
+      id
+    }
+  }
+`;
+
+/**
+ * user metrics graphql calls
+ */
+
+const IncrementCommentUpvoteUserMetrics = /* GraphQL */ `
+  mutation incrementCommentUpvoteUserMetrics($id: ID!) {
+    incrementCommentUpvoteUserMetrics(id: $id) {
+      id
+    }
+  }
+`;
+
+const DecrementCommentUpvoteUserMetrics = /* GraphQL */ `
+  mutation decrementCommentUpvoteUserMetrics($id: ID!) {
+    decrementCommentUpvoteUserMetrics(id: $id) {
+      id
+    }
+  }
+`;
+
+const IncrementCommentDownvoteUserMetrics = /* GraphQL */ `
+  mutation incrementCommentDownvoteUserMetrics($id: ID!) {
+    incrementCommentDownvoteUserMetrics(id: $id) {
+      id
+    }
+  }
+`;
+
+const DecrementCommentDownvoteUserMetrics = /* GraphQL */ `
+  mutation decrementCommentDownvoteUserMetrics($id: ID!) {
+    decrementCommentDownvoteUserMetrics(id: $id) {
+      id
+    }
+  }
+`;
+
+const MetricsQueryPicker = {
+  UPVOTE: {
+    COMMENT: {
+      INCREMENT: IncrementCommentUpvote,
+      DECREMENT: DecrementCommentUpvote,
+    },
+    USERMETRICS: {
+      INCREMENT: IncrementCommentUpvoteUserMetrics,
+      DECREMENT: DecrementCommentUpvoteUserMetrics,
+    },
+  },
+  DOWNVOTE: {
+    COMMENT: {
+      INCREMENT: IncrementCommentDownvote,
+      DECREMENT: DecrementCommentDownvote,
+    },
+    USERMETRICS: {
+      INCREMENT: IncrementCommentDownvoteUserMetrics,
+      DECREMENT: DecrementCommentDownvoteUserMetrics,
+    },
+  },
+};

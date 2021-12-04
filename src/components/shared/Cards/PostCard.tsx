@@ -1051,17 +1051,6 @@ const DecrementDislikePostUserMetrics = /* GraphQL */ `
   }
 `;
 
-/**
-
- * Todo-1: create custom resolvers for increment and decrement in post
- * Todo-2: check authorization in user metrics and post metrics
- * Todo-3: create the switch function
- * Todo-4: if user made an action increment that action in post and user metrics
- * Todo-5: if user update an action decrement the current action in post
- * and user metrics and increment in update action in user and post metrics
- * Todo-6: if user deactive the action decrement the current action in post and users
- */
-
 const MetricsQueryPicker = {
   LIKE: {
     POST: {
