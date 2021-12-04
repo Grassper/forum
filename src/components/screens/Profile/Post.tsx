@@ -72,6 +72,7 @@ export const Posts: React.FC = () => {
         }
         username={item.author.username}
         contentText={item.content}
+        authorId={item.author.id}
         avatarUrl={item.author.profileImageUrl}
         timeStamp={item.postedDate}
         mediaS3Key={item.mediaS3Key}
@@ -139,6 +140,7 @@ interface Item {
   mediaS3Key: null | string;
   postedDate: Date;
   author: {
+    id: string;
     username: string;
     profileImageUrl: string;
   };
@@ -168,6 +170,7 @@ const listPostByUserId = /* GraphQL */ `
           mediaS3Key
           postedDate
           author {
+            id
             username
             profileImageUrl
           }

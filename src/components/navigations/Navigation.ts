@@ -40,6 +40,7 @@ export type StackParamList_ = {
   Post: {
     id?: string;
     type?: "Image" | "Text" | "Video" | "Audio" | "Poll";
+    authorId?: string;
     username?: string;
     avatarUrl?: string;
     subForum?: string;
@@ -79,6 +80,7 @@ export type StackParamList_ = {
     type?: "Image" | "Text" | "Video" | "Audio" | "Poll";
     username?: string;
     avatarUrl?: string;
+    authorId?: string;
     subForum?: string;
     subForumId?: string;
     timeStamp?: Date;

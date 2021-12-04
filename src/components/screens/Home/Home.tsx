@@ -133,6 +133,7 @@ export const Home: React.FC<Props_> = ({ navigation }) => {
             item.post.type.slice(1).toLowerCase()) as PostCardProps_["type"]
         }
         username={item.post.author.username}
+        authorId={item.post.author.id}
         contentText={item.post.content}
         avatarUrl={item.post.author.profileImageUrl}
         timeStamp={item.post.postedDate}
@@ -215,6 +216,7 @@ interface Post {
   mediaS3Key: null | string;
   postedDate: Date;
   author: {
+    id: string;
     username: string;
     profileImageUrl: string;
   };
@@ -245,6 +247,7 @@ const listTimelineByUserId = /* GraphQL */ `
             mediaS3Key
             postedDate
             author {
+              id
               username
               profileImageUrl
             }

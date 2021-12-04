@@ -36,6 +36,7 @@ interface PostHeader_ {
   username?: string;
   avatarUrl?: string;
   subForum?: string;
+  authorId?: string;
   subForumId?: string;
   timeStamp?: Date;
   contentText?: string;
@@ -51,6 +52,7 @@ const PostHeader: React.FC<PostHeader_> = (post) => {
         subForumId={post.subForumId}
         type={post.type}
         username={post.username}
+        authorId={post.authorId}
         contentText={post.contentText}
         avatarUrl={post.avatarUrl}
         timeStamp={post.timeStamp}

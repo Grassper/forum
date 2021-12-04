@@ -23,6 +23,7 @@ export interface Props_ {
   type?: "Image" | "Text" | "Video" | "Audio" | "Poll";
   username?: string;
   avatarUrl?: string;
+  authorId?: string;
   subForum?: string;
   subForumId?: string;
   timeStamp?: Date;
@@ -57,6 +58,7 @@ export const PostCard: React.FC<Props_> = ({
   contentText,
   poll,
   postPage,
+  authorId,
   id,
   hidePostNavigation,
   hidePostUserActions,
@@ -171,6 +173,7 @@ export const PostCard: React.FC<Props_> = ({
             subForum={subForum}
             subForumId={subForumId}
             timeStamp={timeStamp}
+            authorId={authorId}
             contentText={contentText}
             mediaS3Key={mediaS3Key}
           />
@@ -361,6 +364,7 @@ interface PostUserActions_ {
   id?: string;
   type?: "Image" | "Text" | "Video" | "Audio" | "Poll";
   username?: string;
+  authorId?: string;
   avatarUrl?: string;
   subForum?: string;
   subForumId?: string;
@@ -406,7 +410,11 @@ const PostUserActions: React.FC<PostUserActions_> = ({
     <Box>
       <HStack alignItems="center" justifyContent="space-between">
         <HStack space="3" alignItems="center">
-          <UserActionToolTip postId={post.id} communityId={post.subForumId} />
+          <UserActionToolTip
+            postId={post.id}
+            communityId={post.subForumId}
+            postAuthorId={post.authorId}
+          />
           <Pressable
             onPress={() =>
               navigation.navigate("StackNav", {
@@ -448,11 +456,13 @@ const PostUserActions: React.FC<PostUserActions_> = ({
 interface UserActionToolTip_ {
   postId?: string;
   communityId?: string;
+  postAuthorId?: string;
 }
 
 const UserActionToolTip: React.FC<UserActionToolTip_> = ({
   postId,
   communityId,
+  postAuthorId,
 }) => {
   const [showTip, setTip] = useToggle(false);
 
@@ -466,10 +476,11 @@ const UserActionToolTip: React.FC<UserActionToolTip_> = ({
   const UserActionCreationHandler = (
     type: UserActionCreationFetchInput_["type"]
   ) => {
-    if (postId && communityId) {
+    if (postId && communityId && postAuthorId) {
       const UserActionCreationInput: UserActionCreationFetchInput_ = {
         postId,
         communityId,
+        postAuthorId,
         type,
         userId: currentUser.id,
       };
@@ -479,10 +490,11 @@ const UserActionToolTip: React.FC<UserActionToolTip_> = ({
   };
 
   const UserActionDeletionHandler = () => {
-    if (postId && communityId) {
+    if (postId && communityId && postAuthorId) {
       const UserActionCreationInput: UserActionDeletionFetchInput_ = {
         postId,
         communityId,
+        postAuthorId,
         userId: currentUser.id,
       };
 
@@ -626,6 +638,7 @@ interface UserActionCreationFetchInput_ {
   userId: string;
   communityId: string;
   type: "LIKE" | "LOVE" | "SUPPORT" | "DISLIKE";
+  postAuthorId: string;
 }
 
 interface UserActionCheckFetchInput_ {
@@ -642,11 +655,10 @@ interface UpdateUserActionFetchInput_ {
   _version: number;
 }
 
-const UserActionCreationFetch = async (
-  input: UserActionCreationFetchInput_
-) => {
+const UserActionCreationFetch = async (args: UserActionCreationFetchInput_) => {
   try {
     // check if user already made an action
+    const { postAuthorId, ...input } = args;
 
     const isUserActionExistInput: UserActionCheckFetchInput_ = {
       userId: input.userId,
@@ -683,6 +695,33 @@ const UserActionCreationFetch = async (
       })) as GraphQLResult<UpdateUserPostMetricsRelationship_>;
 
       if (updateUserAction.data?.updateUserPostMetricsRelationShip) {
+        // decrement existing user and post metrics and increment latest user and post metrics
+
+        await API.graphql({
+          query: MetricsQueryPicker[existingUserAction.type].POST.DECREMENT,
+          variables: { id: input.postId },
+          authMode: "AMAZON_COGNITO_USER_POOLS",
+        });
+
+        await API.graphql({
+          query:
+            MetricsQueryPicker[existingUserAction.type].USERMETRICS.DECREMENT,
+          variables: { id: postAuthorId },
+          authMode: "AMAZON_COGNITO_USER_POOLS",
+        });
+
+        await API.graphql({
+          query: MetricsQueryPicker[input.type].POST.INCREMENT,
+          variables: { id: input.postId },
+          authMode: "AMAZON_COGNITO_USER_POOLS",
+        });
+
+        await API.graphql({
+          query: MetricsQueryPicker[input.type].USERMETRICS.INCREMENT,
+          variables: { id: postAuthorId },
+          authMode: "AMAZON_COGNITO_USER_POOLS",
+        });
+
         return updateUserAction.data.updateUserPostMetricsRelationShip.id;
       }
     } else {
@@ -694,6 +733,18 @@ const UserActionCreationFetch = async (
       })) as GraphQLResult<CreateUserPostMetricsRelationship_>;
 
       if (createUserAction.data?.createUserPostMetricsRelationShip) {
+        // increment user and post metrics
+        await API.graphql({
+          query: MetricsQueryPicker[input.type].POST.INCREMENT,
+          variables: { id: input.postId },
+          authMode: "AMAZON_COGNITO_USER_POOLS",
+        });
+
+        await API.graphql({
+          query: MetricsQueryPicker[input.type].USERMETRICS.INCREMENT,
+          variables: { id: postAuthorId },
+          authMode: "AMAZON_COGNITO_USER_POOLS",
+        });
         return createUserAction.data?.createUserPostMetricsRelationShip.id;
       }
     }
@@ -716,12 +767,12 @@ interface UserActionDeletionFetchInput_ {
   userId: string;
   postId: string;
   communityId: string;
+  postAuthorId: string;
 }
 
-const UserActionDeletionFetch = async (
-  input: UserActionDeletionFetchInput_
-) => {
+const UserActionDeletionFetch = async (args: UserActionDeletionFetchInput_) => {
   try {
+    const { postAuthorId, ...input } = args;
     // check if user already made an action
 
     const isUserActionExistInput: UserActionCheckFetchInput_ = {
@@ -760,6 +811,19 @@ const UserActionDeletionFetch = async (
       })) as GraphQLResult<UpdateUserPostMetricsRelationship_>;
 
       if (deletedUserAction.data?.updateUserPostMetricsRelationShip) {
+        // decrement user and post metrics
+        await API.graphql({
+          query: MetricsQueryPicker[existingUserAction.type].POST.DECREMENT,
+          variables: { id: input.postId },
+          authMode: "AMAZON_COGNITO_USER_POOLS",
+        });
+
+        await API.graphql({
+          query:
+            MetricsQueryPicker[existingUserAction.type].USERMETRICS.DECREMENT,
+          variables: { id: postAuthorId },
+          authMode: "AMAZON_COGNITO_USER_POOLS",
+        });
         return deletedUserAction.data.updateUserPostMetricsRelationShip.id;
       }
     }
@@ -999,3 +1063,46 @@ const DecrementDislikePostUserMetrics = /* GraphQL */ `
  * and user metrics and increment in update action in user and post metrics
  * Todo-6: if user deactive the action decrement the current action in post and users
  */
+
+const MetricsQueryPicker = {
+  LIKE: {
+    POST: {
+      INCREMENT: IncrementPostLikes,
+      DECREMENT: DecrementPostLikes,
+    },
+    USERMETRICS: {
+      INCREMENT: IncrementLikePostUserMetrics,
+      DECREMENT: DecrementLikePostUserMetrics,
+    },
+  },
+  LOVE: {
+    POST: {
+      INCREMENT: IncrementPostLoves,
+      DECREMENT: DecrementPostLoves,
+    },
+    USERMETRICS: {
+      INCREMENT: IncrementLovePostUserMetrics,
+      DECREMENT: DecrementLovePostUserMetrics,
+    },
+  },
+  SUPPORT: {
+    POST: {
+      INCREMENT: IncrementPostSupports,
+      DECREMENT: DecrementPostSupports,
+    },
+    USERMETRICS: {
+      INCREMENT: IncrementSupportPostUserMetrics,
+      DECREMENT: DecrementSupportPostUserMetrics,
+    },
+  },
+  DISLIKE: {
+    POST: {
+      INCREMENT: IncrementPostDislikes,
+      DECREMENT: DecrementPostDislikes,
+    },
+    USERMETRICS: {
+      INCREMENT: IncrementDislikePostUserMetrics,
+      DECREMENT: DecrementDislikePostUserMetrics,
+    },
+  },
+};

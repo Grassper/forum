@@ -123,6 +123,7 @@ export const SubForum: React.FC<Props_> = ({ navigation, route }) => {
             item.type.slice(1).toLowerCase()) as PostCardProps_["type"]
         }
         username={item.author.username}
+        authorId={item.author.id}
         contentText={item.content}
         avatarUrl={item.author.profileImageUrl}
         timeStamp={item.postedDate}
@@ -255,6 +256,7 @@ interface Item {
   mediaS3Key: null | string;
   postedDate: Date;
   author: {
+    id: string;
     username: string;
     profileImageUrl: string;
   };
@@ -284,6 +286,7 @@ const listPostByCommunityId = /* GraphQL */ `
           mediaS3Key
           postedDate
           author {
+            id
             username
             profileImageUrl
           }

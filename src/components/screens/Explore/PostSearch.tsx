@@ -64,6 +64,7 @@ export const PostSearch: React.FC = () => {
   const PostCardRenderer: ListRenderItem<Item> = ({ item }) => {
     return (
       <PostCard
+        authorId={item.author.id}
         id={item.id}
         subForum={item.community.name}
         subForumId={item.community.id}
@@ -144,6 +145,7 @@ interface Item {
 }
 
 interface Author {
+  id: string;
   username: string;
   profileImageUrl: string;
 }
@@ -171,6 +173,7 @@ const listPostByContent = /* GraphQL */ `
         mediaS3Key
         postedDate
         author {
+          id
           username
           profileImageUrl
         }
