@@ -299,13 +299,18 @@ type ParentChildCommentRelationship
   post: Post @connection(fields: ["postId"])
 }
 
+enum CommentUserActionType {
+  UPVOTE
+  DOWNVOTE
+}
+
 type UserCommentMetricsRelationShip
   @model
   @auth(rules: [{ allow: owner }, { allow: private, operations: [read] }])
-  @key(name: "byUser", fields: ["userId", "type"])
-  @key(name: "byComment", fields: ["commentId", "type"]) {
+  @key(name: "byUser", fields: ["userId", "type", "commentId"])
+  @key(name: "byComment", fields: ["commentId", "type", "userId"]) {
   id: ID!
-  type: String!
+  type: CommentUserActionType!
   userId: ID!
   postId: ID!
   commentId: ID!
