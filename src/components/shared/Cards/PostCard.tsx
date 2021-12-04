@@ -14,9 +14,10 @@ import { AudioComponent } from "@/root/src/components/shared/Audio";
 import * as ActionIcons from "@/root/src/components/shared/Icons";
 import { Skeleton } from "@/root/src/components/shared/Skeleton";
 import { colors } from "@/root/src/constants";
+import { UserContext } from "@/root/src/context";
 import { useToggle } from "@/root/src/hooks";
 import { SignS3ImageKey } from "@/root/src/utils/helpers";
-import { UserContext } from "@/root/src/context";
+
 export interface Props_ {
   id?: string;
   type?: "Image" | "Text" | "Video" | "Audio" | "Poll";
@@ -462,7 +463,9 @@ const UserActionToolTip: React.FC<UserActionToolTip_> = ({
 
   const PickedIcon = IconsPicker[selectedIcon];
 
-  const UserActionHandler = (type: UserActionCreationFetchInput_["type"]) => {
+  const UserActionCreationHandler = (
+    type: UserActionCreationFetchInput_["type"]
+  ) => {
     if (postId && communityId) {
       const UserActionCreationInput: UserActionCreationFetchInput_ = {
         postId,
@@ -475,18 +478,32 @@ const UserActionToolTip: React.FC<UserActionToolTip_> = ({
     }
   };
 
+  const UserActionDeletionHandler = () => {
+    if (postId && communityId) {
+      const UserActionCreationInput: UserActionDeletionFetchInput_ = {
+        postId,
+        communityId,
+        userId: currentUser.id,
+      };
+
+      UserActionDeletionFetch(UserActionCreationInput);
+    }
+  };
+
   const PickIconHandler = (value: keyof IconsPicker_) => {
     setSelectedIcon(value);
     setTip();
 
     // call user action creation fetch with icon action type
-    UserActionHandler(value as UserActionCreationFetchInput_["type"]);
+    UserActionCreationHandler(value as UserActionCreationFetchInput_["type"]);
   };
 
   const ResetPickedIcon = () => {
     if (selectedIcon !== "SUPPORTOUTLINE") {
       setSelectedIcon("SUPPORTOUTLINE");
-      // delete created user action using use action id
+
+      // call delete user action fetch
+      UserActionDeletionHandler();
     }
   };
 
@@ -595,12 +612,10 @@ const styles = StyleSheet.create({
 });
 
 /**
- * Todo-1: alter the schema in user post metric relationship type to like, love, support, dislike
- * Todo-2: onlong press release the tooltip and onpress deactive the user actions
- * Todo-2: create the user post metric relationships for like, love, support, dislike
- * Todo-3: check if the user made action for the post if else create the user action
- * Todo-4: if user already made an action get the action and update the action
- * Todo-5: if user deactive the action remove the action relationship
+ * Todo-1: if user deactive the action remove the action relationship
+ * Todo-2: update the post metrics count
+ * Todo-3: update the user metrics count
+ * Todo-4: alter post fetch in timeline subforum search profile with metrics
  */
 
 /**
@@ -688,6 +703,72 @@ const UserActionCreationFetch = async (
   }
 };
 
+interface DeleteUserActionInput_ {
+  id: string;
+  userId: string;
+  postId: string;
+  communityId: string;
+  _version: number;
+  type: "LIKE" | "LOVE" | "SUPPORT" | "DISLIKE";
+  isDeleted: boolean;
+}
+
+interface UserActionDeletionFetchInput_ {
+  userId: string;
+  postId: string;
+  communityId: string;
+}
+
+const UserActionDeletionFetch = async (
+  input: UserActionDeletionFetchInput_
+) => {
+  try {
+    // check if user already made an action
+
+    const isUserActionExistInput: UserActionCheckFetchInput_ = {
+      userId: input.userId,
+      postId: input.postId,
+    };
+
+    const isUserActionExist = (await API.graphql({
+      query: CheckUserAction,
+      variables: isUserActionExistInput,
+      authMode: "AMAZON_COGNITO_USER_POOLS",
+    })) as GraphQLResult<CheckUserAction_>;
+
+    // if user action already exist delete the existing one
+    if (
+      isUserActionExist.data?.listUserPostMetricsRelationShips &&
+      isUserActionExist.data.listUserPostMetricsRelationShips.items.length === 1
+    ) {
+      const existingUserAction =
+        isUserActionExist.data.listUserPostMetricsRelationShips.items[0];
+
+      const deleteUserActionInput: DeleteUserActionInput_ = {
+        id: existingUserAction.id,
+        postId: input.postId,
+        userId: input.userId,
+        type: existingUserAction.type,
+        communityId: input.communityId,
+        _version: existingUserAction._version,
+        isDeleted: true,
+      };
+
+      const deletedUserAction = (await API.graphql({
+        query: UpdateUserPostMetricsRelationship,
+        variables: { input: deleteUserActionInput },
+        authMode: "AMAZON_COGNITO_USER_POOLS",
+      })) as GraphQLResult<UpdateUserPostMetricsRelationship_>;
+
+      if (deletedUserAction.data?.updateUserPostMetricsRelationShip) {
+        return deletedUserAction.data.updateUserPostMetricsRelationShip.id;
+      }
+    }
+  } catch (err) {
+    console.error("Error occured deleting user action for post", err);
+  }
+};
+
 /**
  * graphql queries and their types
  * types pattern {queryName}_
@@ -713,8 +794,11 @@ interface Item {
 const CheckUserAction = /* GraphQL */ `
   query CheckUserAction($postId: ID!, $userId: ID!) {
     listUserPostMetricsRelationShips(
-      filter: { postId: { eq: $postId }, userId: { eq: $userId } }
-      limit: 1
+      filter: {
+        postId: { eq: $postId }
+        userId: { eq: $userId }
+        isDeleted: { attributeExists: false }
+      }
     ) {
       items {
         id
@@ -769,3 +853,7 @@ const UpdateUserPostMetricsRelationship = /* GraphQL */ `
     }
   }
 `;
+
+/**
+ * user and post metrics handling
+ */
