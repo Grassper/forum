@@ -624,8 +624,6 @@ const styles = StyleSheet.create({
 });
 
 /**
- * Todo-2: update the post metrics count
- * Todo-3: update the user metrics count
  * Todo-4: alter post fetch in timeline subforum search profile with metrics
  */
 

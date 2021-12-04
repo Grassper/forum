@@ -7,7 +7,6 @@ import { StyleSheet } from "react-native";
 import { SvgUri } from "react-native-svg";
 
 import { Skeleton } from "@/root/src/components/shared/Skeleton";
-
 interface Props_ {
   repliesCount?: number;
   hideReplyButton?: boolean;
@@ -40,6 +39,14 @@ export const CommentCard: React.FC<Props_> = ({
   >("Notvoted");
 
   const navigation = useNavigation();
+
+  const voteHandler = (vote: "Upvoted" | "Downvoted") => {
+    if (action === vote) {
+      setAction("Notvoted");
+    } else {
+      setAction(vote);
+    }
+  };
 
   return (
     <Box
@@ -126,7 +133,7 @@ export const CommentCard: React.FC<Props_> = ({
               <HStack space="3" alignItems="center">
                 <Pressable
                   onPress={() => {
-                    setAction("Upvoted");
+                    voteHandler("Upvoted");
                   }}
                 >
                   <Flex flexDirection="row" alignItems="flex-end">
@@ -142,7 +149,7 @@ export const CommentCard: React.FC<Props_> = ({
                 </Pressable>
                 <Pressable
                   onPress={() => {
-                    setAction("Downvoted");
+                    voteHandler("Downvoted");
                   }}
                 >
                   <Flex flexDirection="row" alignItems="flex-end">
@@ -224,6 +231,13 @@ export const CommentCard: React.FC<Props_> = ({
     </Box>
   );
 };
+
+/**
+ * Todo-3: graphql comment metrics update
+ * Todo-4: comment metrics custom resolvers
+ * Todo-5: comment user action graphql schemas and types
+ * Todo-6: comment user action handlers
+ */
 
 const styles = StyleSheet.create({
   downVoteIcon: {
