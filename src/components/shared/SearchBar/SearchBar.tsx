@@ -8,8 +8,6 @@ interface Props_ {
 }
 
 export const SearchBar: React.FC<Props_> = ({ value, setValue }) => {
-  // const [value, setValue] = React.useState("");
-
   return (
     <>
       <Input
@@ -22,7 +20,7 @@ export const SearchBar: React.FC<Props_> = ({ value, setValue }) => {
         placeholderTextColor="muted.400"
         fontSize="sm"
         variant="unstyled"
-        textTransform="lowercase"
+        textTransform="none"
         InputLeftElement={
           <Icon
             as={<Ionicons name="search-outline" />}

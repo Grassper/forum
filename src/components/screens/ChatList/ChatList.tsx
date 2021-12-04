@@ -16,6 +16,12 @@ import { dummyData } from "@/root/src/data/dummyData";
 
 import { ChatCard } from "./ChatCard";
 
+/***
+ * todo 1: fetch chatrooms joined by users and fetch latest messages in the room
+ * todo 2: populate the content in the flatlist
+ *
+ */
+
 type NavigationProp_ = CompositeNavigationProp<
   BottomTabNavigationProp<BottomTabParamList_, "ChatList">,
   CompositeNavigationProp<

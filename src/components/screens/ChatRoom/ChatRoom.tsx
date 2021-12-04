@@ -24,6 +24,9 @@ import {
 
 import { ChatCard } from "./ChatCard";
 
+/**
+ * todo 1: create the chatroom
+ */
 type NavigationProp_ = CompositeNavigationProp<
   StackNavigationProp<StackParamList_, "ChatRoom">,
   DrawerNavigationProp<DrawerParamList_>

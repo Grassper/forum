@@ -1,36 +1,48 @@
 import { Entypo } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { API } from "aws-amplify";
 import { Box, HStack, Pressable, Text } from "native-base";
 import React from "react";
 import { SvgUri } from "react-native-svg";
+
+import { StackParamList_ } from "@/root/src/components/navigations/Navigation";
+
+type NavigationProp_ = StackNavigationProp<StackParamList_, "ChatRoom">;
 
 interface UserCard_ {
   id: string;
   username: string;
   avatarUrl: string;
 }
-
-export const UserCard: React.FC<UserCard_> = ({ username, avatarUrl }) => {
+interface Props_ {
+  navigation: NavigationProp_;
+}
+export const UserCard: React.FC<UserCard_> = ({ id, username, avatarUrl }) => {
+  console.log("id", id);
+  const navigation = useNavigation();
+  const createChatRoomFunc = async () => {
+    try {
+      await API.graphql({
+        query: createChatRoom,
+        variables: { input: { id: id } },
+        authMode: "AMAZON_COGNITO_USER_POOLS",
+      });
+      console.log("chatroom created");
+      navigation.navigate("ChatRoom", {
+        title: username,
+        imageUri: avatarUrl,
+        roomId: id,
+      });
+    } catch (err) {
+      console.error("error while creating chatroom", err);
+    }
+  };
   return (
     <Box>
-      <Pressable onPress={() => {}} bg="white">
+      <Pressable onPress={createChatRoomFunc} bg="white">
         <HStack alignItems="center" justifyContent="space-between" mb="4">
           <HStack space={3} alignItems="center">
-            {/* <Avatar
-              bg="green.500"
-              size="md"
-              source={{
-                uri: avatarUrl,
-              }}
-            >
-              <Text
-                fontSize="md"
-                fontFamily="body"
-                fontWeight="600"
-                color="white"
-              >
-                {username.charAt(0).toUpperCase() || "Ef"}
-              </Text>
-            </Avatar> */}
             <Box
               width="40px"
               height="40px"
@@ -55,3 +67,28 @@ export const UserCard: React.FC<UserCard_> = ({ username, avatarUrl }) => {
     </Box>
   );
 };
+
+/**
+ * graphql queries and their types
+ * types pattern {queryName}_
+ * * note dash(_) at the end of type name
+ * order 1.queryType 2.graphql query
+ */
+
+interface createChatRoom_ {
+  createChatRoom: CreateChatRoom;
+}
+
+interface CreateChatRoom {
+  id: string;
+  owner: string;
+}
+
+const createChatRoom = /* GraphQL */ `
+  mutation createChatRoom($condition: ModelChatRoomConditionInput, $id: ID) {
+    createChatRoom(input: { id: $id }, condition: $condition) {
+      id
+      owner
+    }
+  }
+`;

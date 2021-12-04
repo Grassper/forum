@@ -100,7 +100,7 @@ export type StackParamList_ = {
 
   // * Message
   NewChat: undefined;
-  ChatRoom: { title: string; imageUri: string };
+  ChatRoom: { title: string; imageUri: string; roomId: string };
 };
 
 export type DrawerParamList_ = {
