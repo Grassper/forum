@@ -612,7 +612,6 @@ const styles = StyleSheet.create({
 });
 
 /**
- * Todo-1: if user deactive the action remove the action relationship
  * Todo-2: update the post metrics count
  * Todo-3: update the user metrics count
  * Todo-4: alter post fetch in timeline subforum search profile with metrics
@@ -855,5 +854,148 @@ const UpdateUserPostMetricsRelationship = /* GraphQL */ `
 `;
 
 /**
- * user and post metrics handling
+ * post metrics graphql calls
+ */
+
+const IncrementPostLikes = /* GraphQL */ `
+  mutation incrementPostLikes($id: ID!) {
+    incrementPostLikes(id: $id) {
+      id
+    }
+  }
+`;
+
+const DecrementPostLikes = /* GraphQL */ `
+  mutation decrementPostLikes($id: ID!) {
+    decrementPostLikes(id: $id) {
+      id
+    }
+  }
+`;
+
+const IncrementPostLoves = /* GraphQL */ `
+  mutation incrementPostLoves($id: ID!) {
+    incrementPostLoves(id: $id) {
+      id
+    }
+  }
+`;
+
+const DecrementPostLoves = /* GraphQL */ `
+  mutation decrementPostLoves($id: ID!) {
+    decrementPostLoves(id: $id) {
+      id
+    }
+  }
+`;
+
+const IncrementPostSupports = /* GraphQL */ `
+  mutation incrementPostSupports($id: ID!) {
+    incrementPostSupports(id: $id) {
+      id
+    }
+  }
+`;
+
+const DecrementPostSupports = /* GraphQL */ `
+  mutation decrementPostSupports($id: ID!) {
+    decrementPostSupports(id: $id) {
+      id
+    }
+  }
+`;
+
+const IncrementPostDislikes = /* GraphQL */ `
+  mutation incrementPostDislikes($id: ID!) {
+    incrementPostDislikes(id: $id) {
+      id
+    }
+  }
+`;
+
+const DecrementPostDislikes = /* GraphQL */ `
+  mutation decrementPostDislikes($id: ID!) {
+    decrementPostDislikes(id: $id) {
+      id
+    }
+  }
+`;
+
+/**
+ * user metrics graphql calls
+ */
+
+const IncrementLikePostUserMetrics = /* GraphQL */ `
+  mutation incrementLikePostUserMetrics($id: ID!) {
+    incrementLikePostUserMetrics(id: $id) {
+      id
+    }
+  }
+`;
+
+const DecrementLikePostUserMetrics = /* GraphQL */ `
+  mutation decrementLikePostUserMetrics($id: ID!) {
+    decrementLikePostUserMetrics(id: $id) {
+      id
+    }
+  }
+`;
+
+const IncrementLovePostUserMetrics = /* GraphQL */ `
+  mutation incrementLovePostUserMetrics($id: ID!) {
+    incrementLovePostUserMetrics(id: $id) {
+      id
+    }
+  }
+`;
+
+const DecrementLovePostUserMetrics = /* GraphQL */ `
+  mutation decrementLovePostUserMetrics($id: ID!) {
+    decrementLovePostUserMetrics(id: $id) {
+      id
+    }
+  }
+`;
+
+const IncrementSupportPostUserMetrics = /* GraphQL */ `
+  mutation incrementSupportPostUserMetrics($id: ID!) {
+    incrementSupportPostUserMetrics(id: $id) {
+      id
+    }
+  }
+`;
+
+const DecrementSupportPostUserMetrics = /* GraphQL */ `
+  mutation decrementSupportPostUserMetrics($id: ID!) {
+    decrementSupportPostUserMetrics(id: $id) {
+      id
+    }
+  }
+`;
+
+const IncrementDislikePostUserMetrics = /* GraphQL */ `
+  mutation incrementDislikePostUserMetrics($id: ID!) {
+    incrementDislikePostUserMetrics(id: $id) {
+      id
+    }
+  }
+`;
+
+const DecrementDislikePostUserMetrics = /* GraphQL */ `
+  mutation decrementDislikePostUserMetrics($id: ID!) {
+    decrementDislikePostUserMetrics(id: $id) {
+      id
+    }
+  }
+`;
+
+/**
+
+ * Todo-1: create custom resolvers for increment and decrement in post
+ * Todo-2: check authorization in user metrics and post metrics
+ * Todo-3: create the switch function
+ * Todo-4: if user made an action increment that action in post and user metrics
+ * Todo-5: if user update an action decrement the current action in post
+ * and user metrics and increment in update action in user and post metrics
+ * Todo-6: if user deactive the action decrement the current action in post and users
  */
