@@ -227,7 +227,7 @@ type Post
     @connection(keyName: "byPost", fields: ["id"])
 }
 
-enum UserActionType {
+enum PostUserActionType {
   LIKE
   LOVE
   SUPPORT
@@ -241,7 +241,7 @@ type UserPostMetricsRelationShip
   @key(name: "byUser", fields: ["userId", "type", "postId"]) {
   id: ID!
   postId: ID!
-  type: UserActionType!
+  type: PostUserActionType!
   communityId: ID!
   userId: ID!
   isDeleted: Boolean
@@ -295,18 +295,24 @@ type ParentChildCommentRelationship
   post: Post @connection(fields: ["postId"])
 }
 
+enum CommentUserActionType {
+  UPVOTE
+  DOWNVOTE
+}
+
 type UserCommentMetricsRelationShip
   @model
-  @auth(rules: [{ allow: owner }])
+  @auth(rules: [{ allow: owner }, { allow: private, operations: [read] }])
   @key(name: "byUser", fields: ["userId", "type"])
   @key(name: "byComment", fields: ["commentId", "type"]) {
   id: ID!
-  type: String!
+  type: CommentUserActionType!
   userId: ID!
   postId: ID!
   commentId: ID!
   communityId: ID!
-  post: Post @connection(fields: ["postId"])
+  isDeleted: Boolean
+  post: Post! @connection(fields: ["postId"])
   user: User! @connection(fields: ["userId"])
   comment: Comment! @connection(fields: ["commentId"])
   community: Community! @connection(fields: ["communityId"])
