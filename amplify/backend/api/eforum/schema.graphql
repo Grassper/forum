@@ -29,6 +29,10 @@ type Mutation {
   decrementPostSupports(id: ID!): Post @aws_cognito_user_pools
   incrementPostDislikes(id: ID!): Post @aws_cognito_user_pools
   decrementPostDislikes(id: ID!): Post @aws_cognito_user_pools
+  incrementCommentUpvote(id: ID!): Comment @aws_cognito_user_pools
+  decrementCommentUpvote(id: ID!): Comment @aws_cognito_user_pools
+  incrementCommentDownvote(id: ID!): Comment @aws_cognito_user_pools
+  decrementCommentDownvote(id: ID!): Comment @aws_cognito_user_pools
   createPostAndTimeline(
     type: PostType!
     content: String!
@@ -295,18 +299,13 @@ type ParentChildCommentRelationship
   post: Post @connection(fields: ["postId"])
 }
 
-enum CommentUserActionType {
-  UPVOTE
-  DOWNVOTE
-}
-
 type UserCommentMetricsRelationShip
   @model
   @auth(rules: [{ allow: owner }, { allow: private, operations: [read] }])
   @key(name: "byUser", fields: ["userId", "type"])
   @key(name: "byComment", fields: ["commentId", "type"]) {
   id: ID!
-  type: CommentUserActionType!
+  type: String!
   userId: ID!
   postId: ID!
   commentId: ID!
