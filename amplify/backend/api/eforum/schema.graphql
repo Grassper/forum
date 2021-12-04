@@ -219,18 +219,25 @@ type Post
     @connection(keyName: "byPost", fields: ["id"])
 }
 
+enum UserActionType {
+  LIKE
+  LOVE
+  SUPPORT
+  DISLIKE
+}
+
 type UserPostMetricsRelationShip
   @model
-  @auth(rules: [{ allow: owner }])
+  @auth(rules: [{ allow: owner }, { allow: private, operations: [read] }])
   @key(name: "byPost", fields: ["postId", "type", "userId"])
   @key(name: "byUser", fields: ["userId", "type", "postId"]) {
   id: ID!
   postId: ID!
-  type: String!
+  type: UserActionType!
   communityId: ID!
   userId: ID!
   community: Community! @connection(fields: ["communityId"])
-  post: Post @connection(fields: ["postId"])
+  post: Post! @connection(fields: ["postId"])
   user: User! @connection(fields: ["userId"])
 }
 
