@@ -21,6 +21,14 @@ type Mutation {
   decrementActiveDayUserMetrics(id: ID!): UserMetrics @aws_cognito_user_pools
   incrementRepliesCount(id: ID!): Comment @aws_cognito_user_pools
   decrementRepliesCount(id: ID!): Comment @aws_cognito_user_pools
+  incrementPostLikes(id: ID!): Post @aws_cognito_user_pools
+  decrementPostLikes(id: ID!): Post @aws_cognito_user_pools
+  incrementPostLoves(id: ID!): Post @aws_cognito_user_pools
+  decrementPostLoves(id: ID!): Post @aws_cognito_user_pools
+  incrementPostSupports(id: ID!): Post @aws_cognito_user_pools
+  decrementPostSupports(id: ID!): Post @aws_cognito_user_pools
+  incrementPostDislikes(id: ID!): Post @aws_cognito_user_pools
+  decrementPostDislikes(id: ID!): Post @aws_cognito_user_pools
   createPostAndTimeline(
     type: PostType!
     content: String!
@@ -205,10 +213,10 @@ type Post
   mediaS3Key: String
   poll: [Poll]
   tags: [String!]!
-  likes: Int
-  loves: Int
-  supports: Int
-  disLikes: Int
+  likes: Int!
+  loves: Int!
+  supports: Int!
+  disLikes: Int!
   authorId: ID!
   communityId: ID!
   postedDate: AWSDateTime!
