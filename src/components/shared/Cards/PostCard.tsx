@@ -4,7 +4,16 @@ import { useNavigation } from "@react-navigation/native";
 import { API } from "aws-amplify";
 import { format } from "date-fns";
 import { Video } from "expo-av";
-import { Box, Flex, HStack, Icon, Image, Pressable, Text } from "native-base";
+import {
+  Box,
+  Flex,
+  HStack,
+  Icon,
+  Image,
+  Menu,
+  Pressable,
+  Text,
+} from "native-base";
 import React, { useState } from "react";
 import { Platform, StatusBar, StyleSheet } from "react-native";
 import { SvgUri } from "react-native-svg";
@@ -12,6 +21,7 @@ import Tooltip from "react-native-walkthrough-tooltip";
 
 import { AudioComponent } from "@/root/src/components/shared/Audio";
 import * as ActionIcons from "@/root/src/components/shared/Icons";
+import { ReportPost } from "@/root/src/components/shared/Report";
 import { Skeleton } from "@/root/src/components/shared/Skeleton";
 import { colors } from "@/root/src/constants";
 import { UserContext } from "@/root/src/context";
@@ -198,6 +208,8 @@ const PostInfo: React.FC<PostInfo_> = ({
   avatarUrl,
   postId,
 }) => {
+  const [reportModal, setReportModal] = React.useState(false);
+
   return (
     <Box width="90%">
       <HStack alignItems="center" justifyContent="space-between" mb="3">
@@ -254,11 +266,30 @@ const PostInfo: React.FC<PostInfo_> = ({
           </Box>
         </HStack>
         {postId && (
-          <Icon
-            as={<Ionicons name="ellipsis-vertical" />}
-            size={5}
-            color="muted.500"
-          />
+          <>
+            <Menu
+              trigger={(triggerProps) => {
+                return (
+                  <Pressable {...triggerProps}>
+                    <Icon
+                      as={<Ionicons name="ellipsis-vertical" />}
+                      size={5}
+                      mr="2"
+                      color="black"
+                    />
+                  </Pressable>
+                );
+              }}
+            >
+              <Menu.Item>Block</Menu.Item>
+              <Menu.Item onPress={() => setReportModal(true)}>Report</Menu.Item>
+            </Menu>
+            <ReportPost
+              postId={postId}
+              reportModal={reportModal}
+              setReportModal={setReportModal}
+            />
+          </>
         )}
       </HStack>
     </Box>
