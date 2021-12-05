@@ -252,6 +252,7 @@ export const EditAndCreateSubForum: React.FC<Props_> = ({
       <Box position="relative" height="115px">
         {signedCover ? (
           <Image
+            key={signedCover}
             width="100%"
             height="100%"
             alt="Cover Image"
@@ -299,6 +300,7 @@ export const EditAndCreateSubForum: React.FC<Props_> = ({
               bg="green.500"
               width="100%"
               height="100%"
+              key={signedProfile}
               source={{
                 uri: signedProfile,
               }}

@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "e-forum",
-    "slug": "e-forum",
+    "name": "eforum",
+    "slug": "eforum",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/appIcons/drawable-hdpi/logo.png",
