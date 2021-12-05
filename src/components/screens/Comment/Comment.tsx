@@ -39,6 +39,7 @@ interface CommentHeader_ {
   commentId?: string;
   timeStamp?: Date;
   repliesCount?: number;
+  commentAuthorId?: string;
 }
 
 const CommentHeader: React.FC<CommentHeader_> = (comment) => {
@@ -117,6 +118,7 @@ export const Comment: React.FC<Props_> = ({ route }) => {
     const commentData = item.childComment;
     return (
       <CommentCard
+        commentAuthorId={commentData.author.id}
         username={commentData.author.username}
         avatarUrl={commentData.author.profileImageUrl}
         subForum={commentData.community.name}

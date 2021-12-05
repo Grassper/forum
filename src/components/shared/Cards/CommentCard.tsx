@@ -1,5 +1,7 @@
+import { GraphQLResult } from "@aws-amplify/api-graphql";
 import { AntDesign, Entypo, Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { API } from "aws-amplify";
 import { format } from "date-fns";
 import { Box, Flex, HStack, Icon, Pressable, Text } from "native-base";
 import React from "react";
@@ -7,6 +9,8 @@ import { StyleSheet } from "react-native";
 import { SvgUri } from "react-native-svg";
 
 import { Skeleton } from "@/root/src/components/shared/Skeleton";
+import { UserContext } from "@/root/src/context";
+
 interface Props_ {
   repliesCount?: number;
   hideReplyButton?: boolean;
@@ -15,6 +19,7 @@ interface Props_ {
   avatarUrl?: string;
   subForum?: string;
   subForumId?: string;
+  commentAuthorId?: string;
   postId?: string;
   contentText?: string;
   commentId?: string;
@@ -30,21 +35,55 @@ export const CommentCard: React.FC<Props_> = ({
   subForumId,
   avatarUrl,
   timeStamp,
+  commentAuthorId,
   contentText,
   commentId,
   hideCommentUserActions,
 }) => {
   const [action, setAction] = React.useState<
-    "Upvoted" | "Downvoted" | "Notvoted"
-  >("Notvoted");
+    "UPVOTE" | "DOWNVOTE" | "NOTVOTED"
+  >("NOTVOTED");
 
   const navigation = useNavigation();
 
-  const voteHandler = (vote: "Upvoted" | "Downvoted") => {
+  const currentUser = React.useContext(UserContext).user;
+
+  const CommentUserActionHandler = (
+    value: "UPVOTE" | "DOWNVOTE" | "NOTVOTED"
+  ) => {
+    if (postId && currentUser && commentId && subForumId && commentAuthorId) {
+      if (value !== "NOTVOTED") {
+        const CommentUserActionCreationInput: CommentUserActionCreationFetchInput_ =
+          {
+            type: value,
+            userId: currentUser.id,
+            postId,
+            commentId,
+            communityId: subForumId,
+            commentAuthorId,
+          };
+        CommentUserActionCreationFetch(CommentUserActionCreationInput);
+      } else {
+        const CommentUserActionDeletionInput: DeleteCommentUserActionFetchInput_ =
+          {
+            userId: currentUser.id,
+            postId,
+            commentId,
+            communityId: subForumId,
+            commentAuthorId,
+          };
+        CommentUserActionDeletionFetch(CommentUserActionDeletionInput);
+      }
+    }
+  };
+
+  const voteHandler = (vote: "UPVOTE" | "DOWNVOTE") => {
     if (action === vote) {
-      setAction("Notvoted");
+      setAction("NOTVOTED");
+      CommentUserActionHandler("NOTVOTED");
     } else {
       setAction(vote);
+      CommentUserActionHandler(vote);
     }
   };
 
@@ -133,14 +172,14 @@ export const CommentCard: React.FC<Props_> = ({
               <HStack space="3" alignItems="center">
                 <Pressable
                   onPress={() => {
-                    voteHandler("Upvoted");
+                    voteHandler("UPVOTE");
                   }}
                 >
                   <Flex flexDirection="row" alignItems="flex-end">
                     <Icon
                       as={<AntDesign name="caretcircleoup" />}
                       size={5}
-                      color={action === "Upvoted" ? "green.500" : "muted.500"}
+                      color={action === "UPVOTE" ? "green.500" : "muted.500"}
                     />
                     <Text ml="1" fontSize="xs">
                       1.5k
@@ -149,7 +188,7 @@ export const CommentCard: React.FC<Props_> = ({
                 </Pressable>
                 <Pressable
                   onPress={() => {
-                    voteHandler("Downvoted");
+                    voteHandler("DOWNVOTE");
                   }}
                 >
                   <Flex flexDirection="row" alignItems="flex-end">
@@ -157,7 +196,7 @@ export const CommentCard: React.FC<Props_> = ({
                       <Icon
                         as={<AntDesign name="caretcircleoup" />}
                         size={5}
-                        color={action === "Downvoted" ? "red.500" : "muted.500"}
+                        color={action === "DOWNVOTE" ? "red.500" : "muted.500"}
                       />
                     </Box>
                     <Text ml="1" fontSize="xs">
@@ -174,6 +213,7 @@ export const CommentCard: React.FC<Props_> = ({
                           username,
                           avatarUrl,
                           subForum,
+                          commentAuthorId,
                           postId,
                           subForumId,
                           contentText,
@@ -206,6 +246,7 @@ export const CommentCard: React.FC<Props_> = ({
                         avatarUrl,
                         subForum,
                         postId,
+                        commentAuthorId,
                         subForumId,
                         contentText,
                         commentId,
@@ -245,9 +286,229 @@ const styles = StyleSheet.create({
 });
 
 /**
- * Todo-5: comment user action graphql schemas and types
- * Todo-6: comment user action handlers
+ * Todo-6: comment user action handlers input
+ * Todo-7: comment user action handlers
  */
+
+/**
+ * api
+ */
+
+interface CommentUserActionCreationFetchInput_ {
+  type: "UPVOTE" | "DOWNVOTE";
+  userId: string; // user id of current user
+  postId: string;
+  commentId: string;
+  communityId: string;
+  commentAuthorId: string;
+}
+
+interface CommentUserActionCheckFetchInput_ {
+  commentId: string;
+  userId: string;
+}
+
+interface UpdateCommentUserActionFetchInput_ {
+  id: string;
+  type: "UPVOTE" | "DOWNVOTE";
+  userId: string;
+  commentId: string;
+  postId: string;
+  communityId: string;
+  _version: number;
+}
+
+interface DeleteCommentUserActionInput_
+  extends UpdateCommentUserActionFetchInput_ {
+  isDeleted: boolean;
+}
+
+interface DeleteCommentUserActionFetchInput_ {
+  userId: string;
+  commentId: string;
+  commentAuthorId: string;
+  communityId: string;
+  postId: string;
+}
+
+const CommentUserActionCreationFetch = async (
+  args: CommentUserActionCreationFetchInput_
+) => {
+  try {
+    // check if user already made an action
+    const { commentAuthorId, ...input } = args;
+
+    const isCommentUserActionExistInput: CommentUserActionCheckFetchInput_ = {
+      userId: input.userId,
+      commentId: input.commentId,
+    };
+
+    const isCommentUserActionExist = (await API.graphql({
+      query: CheckCommentUserAction,
+      variables: isCommentUserActionExistInput,
+      authMode: "AMAZON_COGNITO_USER_POOLS",
+    })) as GraphQLResult<CheckCommentUserAction_>;
+
+    // if user action already exist update the existing one
+    if (
+      isCommentUserActionExist.data?.listUserCommentMetricsRelationShips &&
+      isCommentUserActionExist.data?.listUserCommentMetricsRelationShips.items
+        .length === 1
+    ) {
+      const existingCommentUserAction =
+        isCommentUserActionExist.data?.listUserCommentMetricsRelationShips
+          .items[0];
+
+      const updateCommentUserActionInput: UpdateCommentUserActionFetchInput_ = {
+        id: existingCommentUserAction.id,
+        postId: input.postId,
+        userId: input.userId,
+        commentId: input.commentId,
+        communityId: input.communityId,
+        type: input.type,
+        _version: existingCommentUserAction._version,
+      };
+
+      const updateCommentUserAction = (await API.graphql({
+        query: UpdateUserCommentMetricsRelationShip,
+        variables: { input: updateCommentUserActionInput },
+        authMode: "AMAZON_COGNITO_USER_POOLS",
+      })) as GraphQLResult<UpdateUserCommentMetricsRelationShip_>;
+
+      if (updateCommentUserAction.data?.updateUserCommentMetricsRelationShip) {
+        // decrement existing user and post metrics and increment latest user and comment metrics
+
+        await API.graphql({
+          query:
+            MetricsQueryPicker[existingCommentUserAction.type].COMMENT
+              .DECREMENT,
+          variables: { id: input.commentId },
+          authMode: "AMAZON_COGNITO_USER_POOLS",
+        });
+
+        await API.graphql({
+          query:
+            MetricsQueryPicker[existingCommentUserAction.type].USERMETRICS
+              .DECREMENT,
+          variables: { id: commentAuthorId },
+          authMode: "AMAZON_COGNITO_USER_POOLS",
+        });
+
+        await API.graphql({
+          query: MetricsQueryPicker[input.type].COMMENT.INCREMENT,
+          variables: { id: input.commentId },
+          authMode: "AMAZON_COGNITO_USER_POOLS",
+        });
+
+        await API.graphql({
+          query: MetricsQueryPicker[input.type].USERMETRICS.INCREMENT,
+          variables: { id: commentAuthorId },
+          authMode: "AMAZON_COGNITO_USER_POOLS",
+        });
+
+        return updateCommentUserAction.data.updateUserCommentMetricsRelationShip
+          .id;
+      }
+    } else {
+      // if user action doesnt exist create new
+      const createCommentUserAction = (await API.graphql({
+        query: CreateUserCommentMetricsRelationShip,
+        variables: { input },
+        authMode: "AMAZON_COGNITO_USER_POOLS",
+      })) as GraphQLResult<CreateUserCommentMetricsRelationShip_>;
+
+      if (createCommentUserAction.data?.createUserCommentMetricsRelationShip) {
+        // increment user and comment metrics
+        await API.graphql({
+          query: MetricsQueryPicker[input.type].COMMENT.INCREMENT,
+          variables: { id: input.commentId },
+          authMode: "AMAZON_COGNITO_USER_POOLS",
+        });
+
+        await API.graphql({
+          query: MetricsQueryPicker[input.type].USERMETRICS.INCREMENT,
+          variables: { id: commentAuthorId },
+          authMode: "AMAZON_COGNITO_USER_POOLS",
+        });
+        return createCommentUserAction.data.createUserCommentMetricsRelationShip
+          .id;
+      }
+    }
+  } catch (err) {
+    console.error("Error occured creating user action for comment", err);
+  }
+};
+
+const CommentUserActionDeletionFetch = async (
+  args: DeleteCommentUserActionFetchInput_
+) => {
+  try {
+    const { commentAuthorId, ...input } = args;
+    // check if user already made an action
+
+    const isCommentUserActionExistInput: CommentUserActionCheckFetchInput_ = {
+      userId: input.userId,
+      commentId: input.commentId,
+    };
+
+    const isCommentUserActionExist = (await API.graphql({
+      query: CheckCommentUserAction,
+      variables: isCommentUserActionExistInput,
+      authMode: "AMAZON_COGNITO_USER_POOLS",
+    })) as GraphQLResult<CheckCommentUserAction_>;
+
+    if (
+      isCommentUserActionExist.data?.listUserCommentMetricsRelationShips &&
+      isCommentUserActionExist.data?.listUserCommentMetricsRelationShips.items
+        .length === 1
+    ) {
+      const existingCommentUserAction =
+        isCommentUserActionExist.data?.listUserCommentMetricsRelationShips
+          .items[0];
+
+      const deleteCommentUserActionInput: DeleteCommentUserActionInput_ = {
+        id: existingCommentUserAction.id,
+        postId: input.postId,
+        userId: input.userId,
+        commentId: input.commentId,
+        communityId: input.communityId,
+        type: existingCommentUserAction.type,
+        _version: existingCommentUserAction._version,
+        isDeleted: true,
+      };
+
+      const deletedCommentUserAction = (await API.graphql({
+        query: UpdateUserCommentMetricsRelationShip,
+        variables: { input: deleteCommentUserActionInput },
+        authMode: "AMAZON_COGNITO_USER_POOLS",
+      })) as GraphQLResult<UpdateUserCommentMetricsRelationShip_>;
+
+      if (deletedCommentUserAction.data?.updateUserCommentMetricsRelationShip) {
+        // decrement user and post metrics
+        await API.graphql({
+          query:
+            MetricsQueryPicker[existingCommentUserAction.type].COMMENT
+              .DECREMENT,
+          variables: { id: input.commentId },
+          authMode: "AMAZON_COGNITO_USER_POOLS",
+        });
+
+        await API.graphql({
+          query:
+            MetricsQueryPicker[existingCommentUserAction.type].USERMETRICS
+              .DECREMENT,
+          variables: { id: commentAuthorId },
+          authMode: "AMAZON_COGNITO_USER_POOLS",
+        });
+
+        return deletedCommentUserAction.data
+          .updateUserCommentMetricsRelationShip.id;
+      }
+    }
+  } catch (err) {
+    console.error("Error occured deleting user action for comment", err);
+  }
+};
 
 /**
  * graphql queries and their types
@@ -255,6 +516,84 @@ const styles = StyleSheet.create({
  * * note dash(_) at the end of type name
  * order 1.queryType 2.graphql query
  */
+
+interface CheckCommentUserAction_ {
+  listUserCommentMetricsRelationShips?: {
+    items: Item[];
+  };
+}
+
+interface Item {
+  id: string;
+  type: "UPVOTE" | "DOWNVOTE";
+  postId: string;
+  userId: string;
+  communityId: string;
+  commentId: string;
+  _version: number;
+}
+
+const CheckCommentUserAction = /* GraphQL */ `
+  query CheckCommentUserAction($commentId: ID!, $userId: ID!) {
+    listUserCommentMetricsRelationShips(
+      filter: {
+        commentId: { eq: $commentId }
+        userId: { eq: $userId }
+        isDeleted: { attributeExists: false }
+      }
+    ) {
+      items {
+        id
+        type
+        postId
+        userId
+        communityId
+        commentId
+        _version
+      }
+    }
+  }
+`;
+
+interface CreateUserCommentMetricsRelationShip_ {
+  createUserCommentMetricsRelationShip?: Item;
+}
+
+const CreateUserCommentMetricsRelationShip = /* GraphQL */ `
+  mutation CreateUserCommentMetricsRelationShip(
+    $input: CreateUserCommentMetricsRelationShipInput!
+  ) {
+    createUserCommentMetricsRelationShip(input: $input) {
+      id
+      type
+      postId
+      userId
+      communityId
+      commentId
+      _version
+    }
+  }
+`;
+
+interface UpdateUserCommentMetricsRelationShip_ {
+  updateUserCommentMetricsRelationShip?: Item;
+}
+
+const UpdateUserCommentMetricsRelationShip = /* GraphQL */ `
+  mutation UpdateUserCommentMetricsRelationShip(
+    $input: UpdateUserCommentMetricsRelationShipInput!
+  ) {
+    updateUserCommentMetricsRelationShip(input: $input) {
+      id
+      type
+      postId
+      userId
+      communityId
+      commentId
+      _version
+    }
+  }
+`;
 
 /**
  * comment metrics graphql calls

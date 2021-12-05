@@ -138,6 +138,7 @@ export const Post: React.FC<Props_> = ({ route }) => {
         commentId={comment.id}
         timeStamp={comment.commentedDate}
         repliesCount={comment.repliesCount}
+        commentAuthorId={comment.author.id}
       />
     );
   };

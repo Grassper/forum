@@ -71,6 +71,7 @@ export type StackParamList_ = {
     subForumId?: string;
     postId?: string;
     contentText?: string;
+    commentAuthorId?: string;
     commentId?: string;
     timeStamp?: Date;
     repliesCount?: number;
@@ -93,6 +94,7 @@ export type StackParamList_ = {
     avatarUrl?: string;
     subForum?: string;
     subForumId?: string;
+    commentAuthorId?: string;
     postId?: string;
     contentText?: string;
     commentId?: string;

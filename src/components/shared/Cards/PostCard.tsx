@@ -838,10 +838,10 @@ const UserActionDeletionFetch = async (args: UserActionDeletionFetchInput_) => {
  */
 
 interface CheckUserAction_ {
-  listUserPostMetricsRelationShips?: ListUserPostMetricsRelationShips;
+  listUserPostMetricsRelationShips?: ListUserPostMetricsRelationShips_;
 }
 
-interface ListUserPostMetricsRelationShips {
+interface ListUserPostMetricsRelationShips_ {
   items: Item[];
 }
 
@@ -872,10 +872,10 @@ const CheckUserAction = /* GraphQL */ `
 `;
 
 interface CreateUserPostMetricsRelationship_ {
-  createUserPostMetricsRelationShip?: CreateUserPostMetricsRelationShip;
+  createUserPostMetricsRelationShip?: CreateUserPostMetricsRelationShip_;
 }
 
-interface CreateUserPostMetricsRelationShip {
+interface CreateUserPostMetricsRelationShip_ {
   id: string;
   type: string;
   postId: string;
@@ -894,10 +894,10 @@ const CreateUserPostMetricsRelationship = /* GraphQL */ `
 `;
 
 interface UpdateUserPostMetricsRelationship_ {
-  updateUserPostMetricsRelationShip?: UpdateUserPostMetricsRelationShip;
+  updateUserPostMetricsRelationShip?: UpdateUserPostMetricsRelationShip_;
 }
 
-interface UpdateUserPostMetricsRelationShip {
+interface UpdateUserPostMetricsRelationShip_ {
   id: string;
   type: string;
   postId: string;
