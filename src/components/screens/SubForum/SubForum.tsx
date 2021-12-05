@@ -1,4 +1,5 @@
 import { GraphQLResult } from "@aws-amplify/api-graphql";
+import { Ionicons } from "@expo/vector-icons";
 import { DrawerNavigationProp } from "@react-navigation/drawer";
 import {
   CompositeNavigationProp,
@@ -7,7 +8,7 @@ import {
 } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { API } from "aws-amplify";
-import { Button } from "native-base";
+import { Button, Icon, Menu, Pressable } from "native-base";
 import React from "react";
 import { FlatList, ListRenderItem, StyleSheet, View } from "react-native";
 
@@ -20,6 +21,7 @@ import {
   PostCard,
   Props_ as PostCardProps_,
 } from "@/root/src/components/shared/Cards/PostCard";
+import { ReportCommunity } from "@/root/src/components/shared/Report";
 import { UserContext } from "@/root/src/context";
 
 type NavigationProp_ = CompositeNavigationProp<
@@ -38,6 +40,7 @@ export const SubForum: React.FC<Props_> = ({ navigation, route }) => {
   const { subForumId } = route.params;
 
   const [subForum, getSubForum] = React.useState<Community>();
+  const [reportModal, setReportModal] = React.useState(false);
 
   const [posts, setPosts] = React.useState<Item[]>([]);
   const [nextToken, setNextToken] = React.useState<string>("");
@@ -96,8 +99,7 @@ export const SubForum: React.FC<Props_> = ({ navigation, route }) => {
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () =>
-        subForum?.creatorId &&
-        currentUser.id === subForum.creatorId && (
+        subForum?.creatorId && currentUser.id === subForum.creatorId ? (
           <Button
             size="md"
             _text={{ fontWeight: "600", color: "eGreen.400" }}
@@ -108,9 +110,26 @@ export const SubForum: React.FC<Props_> = ({ navigation, route }) => {
           >
             Manage
           </Button>
+        ) : (
+          <Menu
+            trigger={(triggerProps) => {
+              return (
+                <Pressable {...triggerProps}>
+                  <Icon
+                    as={<Ionicons name="ellipsis-vertical" />}
+                    size={5}
+                    mr="2"
+                    color="black"
+                  />
+                </Pressable>
+              );
+            }}
+          >
+            <Menu.Item onPress={() => setReportModal(true)}>Report</Menu.Item>
+          </Menu>
         ),
     });
-  }, [currentUser.id, navigation, subForum]);
+  }, [currentUser.id, navigation, reportModal, subForum]);
 
   const PostCardRenderer: ListRenderItem<Item> = ({ item }) => {
     return (
@@ -134,6 +153,13 @@ export const SubForum: React.FC<Props_> = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
+      {subForum && (
+        <ReportCommunity
+          communityId={subForum.id}
+          reportModal={reportModal}
+          setReportModal={setReportModal}
+        />
+      )}
       <FlatList
         data={posts}
         renderItem={PostCardRenderer}

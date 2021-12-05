@@ -26,7 +26,6 @@ import {
   StackNavigator,
   SubForumStackNavigator,
 } from "@/root/src/components/navigations/StackNavigator";
-import { Bookmark } from "@/root/src/components/screens/Bookmark";
 import { colors } from "@/root/src/constants";
 import { UserContext } from "@/root/src/context";
 
@@ -185,26 +184,6 @@ export const SideDrawerNavigator = () => {
               <Icon
                 as={<Feather name="user" />}
                 size={5}
-                ml="3"
-                color={color}
-              />
-            ),
-          }}
-        />
-        <DrawerNavigator.Screen
-          name="Bookmark"
-          component={Bookmark}
-          options={{
-            drawerLabel: "Bookmarks",
-            title: "Bookmarks",
-            headerStyle: {
-              backgroundColor: colors.green,
-            },
-            headerTintColor: colors.white,
-            drawerIcon: ({ color }) => (
-              <Icon
-                as={<Feather name="bookmark" />}
-                size={"19px"}
                 ml="3"
                 color={color}
               />

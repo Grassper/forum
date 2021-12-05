@@ -15,6 +15,7 @@ import {
   DrawerParamList_,
   ProfileStackParamList_,
 } from "@/root/src/components/navigations/Navigation";
+import { ReportUser } from "@/root/src/components/shared/Report";
 import { colors } from "@/root/src/constants";
 import { UserContext } from "@/root/src/context";
 
@@ -42,6 +43,7 @@ const windowWidth = Dimensions.get("window").width;
 
 export const Profile: React.FC<Props_> = ({ navigation, route }) => {
   const routeUserId = route.params.userId;
+  const [reportModal, setReportModal] = React.useState(false);
   const {
     user: { id },
   } = React.useContext(UserContext); // this context provided current login user
@@ -73,8 +75,7 @@ export const Profile: React.FC<Props_> = ({ navigation, route }) => {
               );
             }}
           >
-            <Menu.Item>Block</Menu.Item>
-            <Menu.Item>Report</Menu.Item>
+            <Menu.Item onPress={() => setReportModal(true)}>Reports</Menu.Item>
           </Menu>
         ) : (
           <Button
@@ -91,6 +92,13 @@ export const Profile: React.FC<Props_> = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
+      {routeUserId && (
+        <ReportUser
+          userId={routeUserId}
+          reportModal={reportModal}
+          setReportModal={setReportModal}
+        />
+      )}
       <ProfileCard routeUserId={routeUserId} />
       <TabNavigatorUserContext.Provider value={routeUserId}>
         <Tab.Navigator

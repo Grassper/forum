@@ -11,7 +11,7 @@ export const ReportPost: React.FC<Props_> = ({
   reportModal,
   setReportModal,
 }) => {
-  const [value, setValue] = React.useState("Sexual content");
+  const [value, setValue] = React.useState("");
 
   return (
     <Modal isOpen={reportModal} onClose={() => setReportModal(false)} mt={12}>
@@ -20,8 +20,8 @@ export const ReportPost: React.FC<Props_> = ({
         <Modal.Header>Report Post</Modal.Header>
         <Modal.Body>
           <Radio.Group
-            name="myRadioGroup"
-            accessibilityLabel="favorite number"
+            name="report"
+            accessibilityLabel="report post"
             value={value}
             onChange={(nextValue) => {
               setValue(nextValue);
