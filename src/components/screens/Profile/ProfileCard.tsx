@@ -313,7 +313,6 @@ const FollowRelationshipFetch = async (
  */
 
 /**
- * Todo-1: create, delete graphql schema and types
  * Todo-2: followers and following metrics resolvers
  */
 
