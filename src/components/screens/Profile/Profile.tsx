@@ -7,7 +7,7 @@ import {
   RouteProp,
 } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { Button, Icon } from "native-base";
+import { Button, Icon, Menu, Pressable } from "native-base";
 import React from "react";
 import { Dimensions, StyleSheet, View } from "react-native";
 
@@ -59,12 +59,23 @@ export const Profile: React.FC<Props_> = ({ navigation, route }) => {
       ),
       headerRight: () =>
         routeUserId && routeUserId !== id ? ( // checking our user id with incoming user id
-          <Icon
-            as={<Ionicons name="ellipsis-vertical" />}
-            size={5}
-            mr="2"
-            color="black"
-          />
+          <Menu
+            trigger={(triggerProps) => {
+              return (
+                <Pressable {...triggerProps}>
+                  <Icon
+                    as={<Ionicons name="ellipsis-vertical" />}
+                    size={5}
+                    mr="2"
+                    color="black"
+                  />
+                </Pressable>
+              );
+            }}
+          >
+            <Menu.Item>Block</Menu.Item>
+            <Menu.Item>Report</Menu.Item>
+          </Menu>
         ) : (
           <Button
             size="md"
