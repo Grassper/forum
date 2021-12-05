@@ -287,7 +287,13 @@ export const EditAndCreateSubForum: React.FC<Props_> = ({
         )}
       </Box>
       <Box bg="white">
-        <Box width="100px" height="100px" position="relative">
+        <Box
+          width="100px"
+          height="100px"
+          position="relative"
+          marginTop="-50px"
+          marginLeft="15px"
+        >
           {signedProfile ? (
             <Avatar
               bg="green.500"
