@@ -65,7 +65,7 @@
     }
   },
   "storage": {
-    "eforumdev": {
+    "s3905aa3fd": {
       "service": "S3",
       "providerPlugin": "awscloudformation",
       "dependsOn": []

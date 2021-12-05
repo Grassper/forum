@@ -26,7 +26,7 @@ export type AmplifyDependentResourcesAttributes = {
     };
   };
   storage: {
-    eforumdev: {
+    s3905aa3fd: {
       BucketName: "string";
       Region: "string";
     };

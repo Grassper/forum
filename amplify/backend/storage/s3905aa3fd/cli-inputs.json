@@ -1,7 +1,7 @@
 {
-  "resourceName": "eforumdev",
-  "policyUUID": "360d5221",
-  "bucketName": "eforumd4a1f70862dd4c9ca0cdc2cbc84a314e",
+  "resourceName": "s3905aa3fd",
+  "policyUUID": "905aa3fd",
+  "bucketName": "eforum6ec45eb4c9694cf6930ded62a3663b17",
   "storageAccess": "auth",
   "guestAccess": [],
   "authAccess": ["CREATE_AND_UPDATE", "READ"],
