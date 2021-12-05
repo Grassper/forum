@@ -379,3 +379,39 @@ type Timeline
   user: User! @connection(fields: ["userId"])
   post: Post @connection(fields: ["postId"])
 }
+
+type ReportComment @model @auth(rules: [{ allow: owner }]) {
+  id: ID!
+  content: String!
+  reporterId: ID!
+  commentId: ID!
+  comment: Comment! @connection(fields: ["commentId"])
+  reporter: User! @connection(fields: ["reporterId"])
+}
+
+type ReportCommunity @model @auth(rules: [{ allow: owner }]) {
+  id: ID!
+  content: String!
+  reporterId: ID!
+  communityId: ID!
+  community: Community! @connection(fields: ["communityId"])
+  reporter: User! @connection(fields: ["reporterId"])
+}
+
+type ReportUser @model @auth(rules: [{ allow: owner }]) {
+  id: ID!
+  content: String!
+  reporterId: ID!
+  userId: ID!
+  user: User! @connection(fields: ["userId"])
+  reporter: User! @connection(fields: ["reporterId"])
+}
+
+type ReportPost @model @auth(rules: [{ allow: owner }]) {
+  id: ID!
+  content: String!
+  reporterId: ID!
+  postId: ID!
+  post: Post! @connection(fields: ["postId"])
+  reporter: User! @connection(fields: ["reporterId"])
+}
