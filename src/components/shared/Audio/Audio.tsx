@@ -8,47 +8,45 @@ interface props {
   audioUri: string;
 }
 export const AudioComponent: React.FC<props> = ({ audioUri }) => {
-  const [music, setMusic] = useState();
-  const [duration, setDuration] = useState(0);
-  const [play, setPlay] = useState(false);
+  const [music, setMusic] = useState<Audio.Sound>();
+  const [isplaying, setPlaying] = useState<"PLAYING" | "PAUSED" | "NOTSTARTED">(
+    "NOTSTARTED"
+  );
 
-  React.useEffect(() => {
-    if (play && duration === 0) {
-      playSound();
-    } else {
-      if (play && duration !== 0) {
-        resume();
-      } else {
-        pause();
-      }
-    }
-  }, [play]);
-
-  async function playSound() {
-    console.log("Loading Sound", sound);
-    setDuration(duration + 1);
+  const playSound = async () => {
     const { sound } = await Audio.Sound.createAsync({ uri: audioUri });
-
     setMusic(sound);
-    setPlay(true);
     await sound.playAsync();
-  }
+    setPlaying("PLAYING");
+  };
 
-  async function pause() {
+  const pause = async () => {
     if (music) {
       await music.pauseAsync();
+      setPlaying("PAUSED");
     }
-  }
-  async function resume() {
+  };
+
+  const resume = async () => {
     if (music) {
       await music.playAsync();
+      setPlaying("PLAYING");
     }
-  }
+  };
+
+  const audioActionHandler = () => {
+    if (isplaying === "NOTSTARTED") {
+      playSound();
+    } else if (isplaying === "PLAYING") {
+      pause();
+    } else if (isplaying === "PAUSED") {
+      resume();
+    }
+  };
 
   React.useEffect(() => {
     return music
       ? () => {
-          console.log("Unloading Sound");
           music.unloadAsync();
         }
       : undefined;
@@ -56,8 +54,8 @@ export const AudioComponent: React.FC<props> = ({ audioUri }) => {
 
   return (
     <View style={styles.outerContainer}>
-      <Pressable onPress={() => setPlay(!play)} mr="1">
-        {play ? (
+      <Pressable onPress={audioActionHandler} mr="1">
+        {isplaying === "PLAYING" ? (
           <Ionicons name="ios-pause" size={50} color="#17D7A0" />
         ) : (
           <Ionicons name="ios-play" size={50} color="#17D7A0" />

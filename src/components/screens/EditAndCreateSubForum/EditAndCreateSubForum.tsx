@@ -274,14 +274,16 @@ export const EditAndCreateSubForum: React.FC<Props_> = ({
           </Box>
         )}
         {!coverLoader && (
-          <ImagePickerButton
-            maxImageSize={15}
-            imageWidth={110}
-            imageHeight={110}
-            aspectRatio={[4, 3]}
-            setS3ImageKey={setBannerImageS3Key}
-            setProgressPercentage={() => {}} // percentage progress
-          />
+          <Box position="absolute" top="2" right="2">
+            <ImagePickerButton
+              maxImageSize={15}
+              imageWidth={110}
+              imageHeight={110}
+              aspectRatio={[4, 3]}
+              setS3ImageKey={setBannerImageS3Key}
+              setProgressPercentage={() => {}} // percentage progress
+            />
+          </Box>
         )}
       </Box>
       <Box bg="white">
@@ -312,14 +314,16 @@ export const EditAndCreateSubForum: React.FC<Props_> = ({
             </Box>
           )}
           {!profileLoader && (
-            <ImagePickerButton
-              maxImageSize={5}
-              imageWidth={480}
-              imageHeight={360}
-              aspectRatio={[4, 3]}
-              setS3ImageKey={setProfileImageS3Key}
-              setProgressPercentage={() => {}} // percentage progress
-            />
+            <Box position="absolute" right="0" bottom="0">
+              <ImagePickerButton
+                maxImageSize={5}
+                imageWidth={480}
+                imageHeight={360}
+                aspectRatio={[1, 1]}
+                setS3ImageKey={setProfileImageS3Key}
+                setProgressPercentage={() => {}} // percentage progress
+              />
+            </Box>
           )}
         </Box>
       </Box>

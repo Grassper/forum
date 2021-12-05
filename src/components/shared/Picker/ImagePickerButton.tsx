@@ -1,10 +1,10 @@
 import { MaterialIcons } from "@expo/vector-icons";
 import { Storage } from "aws-amplify";
 import { format } from "date-fns";
-import * as DocumentPicker from "expo-document-picker";
-import { Box, Button, Icon, Pressable } from "native-base";
+import * as ImagePicker from "expo-image-picker";
+import { Icon, Pressable } from "native-base";
 import React from "react";
-import { Alert } from "react-native";
+import { Alert, Platform } from "react-native";
 import uuid from "react-native-uuid";
 
 import {
@@ -28,17 +28,42 @@ export const ImagePickerButton: React.FC<Props_> = ({
   setS3ImageKey,
   imageWidth,
   imageHeight,
+  aspectRatio,
 }) => {
   /**
    * Todo implement permission
    */
 
+  const verifyPermissions = async () => {
+    if (Platform.OS !== "web") {
+      const { status } =
+        await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (status !== "granted") {
+        Alert.alert(
+          "Insufficient Permissions!",
+          "Sorry, we need these permissions to make this work!'",
+          [{ text: "Okay" }]
+        );
+        return false;
+      }
+    }
+    return true;
+  };
+
   const pickImage = async () => {
-    let result = await DocumentPicker.getDocumentAsync({
-      type: "image/jpeg",
+    const hasPermission = await verifyPermissions();
+    if (!hasPermission) {
+      return;
+    }
+
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: aspectRatio,
+      quality: 0.85,
     });
 
-    if (result.type !== "cancel") {
+    if (!result.cancelled) {
       /**
        * checking allowed file size
        */
@@ -120,15 +145,7 @@ export const ImagePickerButton: React.FC<Props_> = ({
   };
 
   return (
-    <Pressable
-      bg="eGreen.400"
-      p="2"
-      borderRadius="full"
-      position="absolute"
-      bottom="72.5"
-      right="2.5"
-      onPress={pickImage}
-    >
+    <Pressable bg="eGreen.400" p="2" borderRadius="full" onPress={pickImage}>
       <Icon
         as={<MaterialIcons name="motion-photos-on" />}
         size={18}
