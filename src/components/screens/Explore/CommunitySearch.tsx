@@ -1,7 +1,7 @@
 import { GraphQLResult } from "@aws-amplify/api-graphql";
-import { useFocusEffect } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { API } from "aws-amplify";
-import { Box, ScrollView } from "native-base";
+import { Box } from "native-base";
 import React from "react";
 import { FlatList, ListRenderItem, StyleSheet } from "react-native";
 
@@ -10,12 +10,13 @@ import { colors } from "@/root/src/constants";
 
 import { TabNavigatorExploreContext } from "./context";
 
-interface Props_ {}
-
-export const CommunitySearch: React.FC<Props_> = () => {
+export const CommunitySearch: React.FC = () => {
   const searchValue = React.useContext(TabNavigatorExploreContext);
   const [community, setCommunity] = React.useState<Item[]>([]);
   const [nextToken, setNextToken] = React.useState<string>("");
+
+  const navigation = useNavigation();
+
   const populateContent = React.useCallback(() => {
     let isActive = true;
 
@@ -61,7 +62,12 @@ export const CommunitySearch: React.FC<Props_> = () => {
     return (
       <CommunityTile
         onPress={() => {
-          console.log("called");
+          navigation.navigate("SubForumStack", {
+            screen: "SubForum",
+            params: {
+              subForumId: item.id,
+            },
+          });
         }}
         hideDivider
         profileImageS3Key={item.profileImageS3Key}

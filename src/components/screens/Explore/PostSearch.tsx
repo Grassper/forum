@@ -81,7 +81,7 @@ export const PostSearch: React.FC = () => {
     );
   };
   return (
-    <Box>
+    <Box bg="white">
       <FlatList
         data={posts}
         renderItem={PostCardRenderer}

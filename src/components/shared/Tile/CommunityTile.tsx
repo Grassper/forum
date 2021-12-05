@@ -88,7 +88,7 @@ export const CommunityTile: React.FC<Props_> = ({
                 _dark={{ color: "warmGray.50" }}
                 fontWeight="500"
               >
-                e/{name}
+                {name}
               </Text>
               {!hideMembers && (
                 <Text

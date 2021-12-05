@@ -99,19 +99,19 @@ export const ProfileCard: React.FC<Props_> = ({ routeUserId }) => {
         )}
       </Box>
 
-      {routeUserId &&
-        routeUserId !== id && ( // checking our user id with incoming user id to show follow button
-          <Button
-            onPress={() => toggleValue()}
-            bg={value ? "tertiary.500" : "danger.500"}
-            variant="unstyled"
-            mb="5"
-            minWidth="24"
-            borderRadius="50"
-          >
-            {value ? "Follow" : "Unfollow"}
-          </Button>
-        )}
+      {routeUserId && routeUserId !== id && profile?.userMetrics && (
+        // checking our user id with incoming user id to show follow button
+        <Button
+          onPress={() => toggleValue()}
+          bg={value ? "tertiary.500" : "danger.500"}
+          variant="unstyled"
+          mb="5"
+          minWidth="24"
+          borderRadius="50"
+        >
+          {value ? "Follow" : "Unfollow"}
+        </Button>
+      )}
       <HStack alignItems="center" justifyContent="center" mb="15px">
         {profile?.userMetrics && profile.userMetrics.followers >= 0 ? (
           <StatsCard
