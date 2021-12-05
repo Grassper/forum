@@ -281,7 +281,6 @@ const PostInfo: React.FC<PostInfo_> = ({
                 );
               }}
             >
-              <Menu.Item>Block</Menu.Item>
               <Menu.Item onPress={() => setReportModal(true)}>Report</Menu.Item>
             </Menu>
             <ReportPost

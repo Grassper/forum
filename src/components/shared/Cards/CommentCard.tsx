@@ -3,11 +3,12 @@ import { AntDesign, Entypo, Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { API } from "aws-amplify";
 import { format } from "date-fns";
-import { Box, Flex, HStack, Icon, Pressable, Text } from "native-base";
+import { Box, Flex, HStack, Icon, Menu, Pressable, Text } from "native-base";
 import React from "react";
 import { StyleSheet } from "react-native";
 import { SvgUri } from "react-native-svg";
 
+import { ReportComment } from "@/root/src/components/shared/Report";
 import { Skeleton } from "@/root/src/components/shared/Skeleton";
 import { UserContext } from "@/root/src/context";
 
@@ -45,7 +46,7 @@ export const CommentCard: React.FC<Props_> = ({
   >("NOTVOTED");
 
   const navigation = useNavigation();
-
+  const [reportModal, setReportModal] = React.useState(false);
   const currentUser = React.useContext(UserContext).user;
 
   const CommentUserActionHandler = (
@@ -150,11 +151,31 @@ export const CommentCard: React.FC<Props_> = ({
             </Box>
           </HStack>
           {commentId && (
-            <Icon
-              as={<Ionicons name="ellipsis-vertical" />}
-              size={5}
-              color="muted.500"
-            />
+            <>
+              <Menu
+                trigger={(triggerProps) => {
+                  return (
+                    <Pressable {...triggerProps}>
+                      <Icon
+                        as={<Ionicons name="ellipsis-vertical" />}
+                        size={5}
+                        mr="2"
+                        color="black"
+                      />
+                    </Pressable>
+                  );
+                }}
+              >
+                <Menu.Item onPress={() => setReportModal(true)}>
+                  Report
+                </Menu.Item>
+              </Menu>
+              <ReportComment
+                commentId={commentId}
+                reportModal={reportModal}
+                setReportModal={setReportModal}
+              />
+            </>
           )}
         </HStack>
         {contentText ? (
