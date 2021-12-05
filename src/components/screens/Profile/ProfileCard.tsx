@@ -271,6 +271,27 @@ const FollowRelationshipFetch = async (
       })) as GraphQLResult<CreateFollowRelationship_>;
 
       if (createdRelationship.data?.createFollowRelationship) {
+        /**
+         * increment follower metrics in followee users metrics
+         * increment following metrics in follower users metrics
+         */
+
+        await API.graphql({
+          query: MetricsQueryPicker.FOLLOWERS.INCREMENT,
+          variables: {
+            id: input.followeeId,
+          },
+          authMode: "AMAZON_COGNITO_USER_POOLS",
+        });
+
+        await API.graphql({
+          query: MetricsQueryPicker.FOLLOWING.INCREMENT,
+          variables: {
+            id: input.followerId,
+          },
+          authMode: "AMAZON_COGNITO_USER_POOLS",
+        });
+
         return createdRelationship.data.createFollowRelationship.id;
       }
     } else if (
@@ -294,6 +315,27 @@ const FollowRelationshipFetch = async (
       })) as GraphQLResult<DeleteFollowRelationship_>;
 
       if (deletedRelationship.data?.updateFollowRelationship) {
+        /**
+         * decrement follower metrics in followee users metrics
+         * decrement following metrics in follower users metrics
+         */
+
+        await API.graphql({
+          query: MetricsQueryPicker.FOLLOWERS.DECREMENT,
+          variables: {
+            id: input.followeeId,
+          },
+          authMode: "AMAZON_COGNITO_USER_POOLS",
+        });
+
+        await API.graphql({
+          query: MetricsQueryPicker.FOLLOWING.DECREMENT,
+          variables: {
+            id: input.followerId,
+          },
+          authMode: "AMAZON_COGNITO_USER_POOLS",
+        });
+
         return deletedRelationship.data.updateFollowRelationship.id;
       }
     }
@@ -402,3 +444,50 @@ const CheckFollowRelationship = /* GraphQL */ `
     }
   }
 `;
+
+/**
+ * user metrics
+ */
+
+const IncrementFollowersUserMetrics = /* GraphQL */ `
+  mutation incrementFollowersUserMetrics($id: ID!) {
+    incrementFollowersUserMetrics(id: $id) {
+      id
+    }
+  }
+`;
+
+const DecrementFollowersUserMetrics = /* GraphQL */ `
+  mutation decrementFollowersUserMetrics($id: ID!) {
+    decrementFollowersUserMetrics(id: $id) {
+      id
+    }
+  }
+`;
+
+const IncrementFollowingUserMetrics = /* GraphQL */ `
+  mutation incrementFollowingUserMetrics($id: ID!) {
+    incrementFollowingUserMetrics(id: $id) {
+      id
+    }
+  }
+`;
+
+const DecrementFollowingUserMetrics = /* GraphQL */ `
+  mutation decrementFollowingUserMetrics($id: ID!) {
+    decrementFollowingUserMetrics(id: $id) {
+      id
+    }
+  }
+`;
+
+const MetricsQueryPicker = {
+  FOLLOWERS: {
+    INCREMENT: IncrementFollowersUserMetrics,
+    DECREMENT: DecrementFollowersUserMetrics,
+  },
+  FOLLOWING: {
+    INCREMENT: IncrementFollowingUserMetrics,
+    DECREMENT: DecrementFollowingUserMetrics,
+  },
+};
