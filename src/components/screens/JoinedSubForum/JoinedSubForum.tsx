@@ -16,7 +16,6 @@ import {
   DrawerParamList_,
   SubForumStackParamList_,
 } from "@/root/src/components/navigations/Navigation";
-import { SearchBar } from "@/root/src/components/shared/SearchBar";
 import { CommunityTile } from "@/root/src/components/shared/Tile";
 import { UserContext } from "@/root/src/context";
 
@@ -121,9 +120,6 @@ export const JoinedSubForum: React.FC<Props_> = ({ navigation }) => {
 
   return (
     <Box bg="white" alignItems="center" style={styles.container}>
-      <Box width="90%" pt="20px">
-        <SearchBar />
-      </Box>
       <Box width="100%" style={styles.container}>
         <FlatList
           data={communities}

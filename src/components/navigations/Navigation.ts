@@ -110,7 +110,6 @@ export type StackParamList_ = {
 export type DrawerParamList_ = {
   StackNav: NavigatorScreenParams<StackParamList_>;
   ProfileStack: NavigatorScreenParams<ProfileStackParamList_>;
-  Bookmark: undefined;
   SubForumStack: NavigatorScreenParams<SubForumStackParamList_>;
 };
 

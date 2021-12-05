@@ -7,7 +7,7 @@ import {
 } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { API } from "aws-amplify";
-import { Box, Text } from "native-base";
+import { Box } from "native-base";
 import React from "react";
 import { FlatList, ListRenderItem, StyleSheet } from "react-native";
 
@@ -15,7 +15,6 @@ import {
   DrawerParamList_,
   StackParamList_,
 } from "@/root/src/components/navigations/Navigation";
-import { SearchBar } from "@/root/src/components/shared/SearchBar";
 import { CommunityTile } from "@/root/src/components/shared/Tile";
 import { UserContext } from "@/root/src/context";
 
@@ -100,12 +99,6 @@ export const ChooseSubForum: React.FC<Props_> = ({ navigation, route }) => {
 
   return (
     <Box style={styles.container} bg="white" alignItems="center">
-      <Box pt="15px" width="90%" mb="1.5">
-        <Text mb="4" fontSize="md">
-          Post to
-        </Text>
-        <SearchBar />
-      </Box>
       <Box width="100%" style={styles.container}>
         <FlatList
           data={communities}

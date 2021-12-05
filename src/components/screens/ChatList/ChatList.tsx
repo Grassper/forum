@@ -4,7 +4,7 @@ import { CompositeNavigationProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { Box } from "native-base";
 import React from "react";
-import { FlatList, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 
 import {
   BottomTabParamList_,
@@ -12,9 +12,6 @@ import {
   StackParamList_,
 } from "@/root/src/components/navigations/Navigation";
 import { FloatingActionButton } from "@/root/src/components/shared/FabButton";
-import { dummyData } from "@/root/src/data/dummyData";
-
-import { ChatCard } from "./ChatCard";
 
 /***
  * todo 1: fetch chatrooms joined by users and fetch latest messages in the room
@@ -40,8 +37,6 @@ export const ChatList: React.FC<Props_> = ({ navigation }) => {
   };
   return (
     <Box style={styles.container}>
-      <FlatList data={dummyData} renderItem={() => <ChatCard />} />
-
       <FloatingActionButton onPress={onpress} screen="ChatList" />
     </Box>
   );

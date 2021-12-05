@@ -194,7 +194,7 @@ export const StackNavigator = () => {
         name="ChooseSubForum"
         component={ChooseSubForum}
         options={() => ({
-          title: "",
+          title: "Choose subforum",
           headerStyle: {
             backgroundColor: colors.green,
           },

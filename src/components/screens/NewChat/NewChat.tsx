@@ -16,7 +16,6 @@ import {
 } from "@/root/src/components/navigations/Navigation";
 import { UserCard } from "@/root/src/components/shared/Cards/UserCard";
 import { SearchBar } from "@/root/src/components/shared/SearchBar";
-import { UserData } from "@/root/src/data";
 import { useDebounce } from "@/root/src/hooks";
 
 /**
