@@ -1,5 +1,9 @@
+import { GraphQLResult } from "@aws-amplify/api-graphql";
+import { API } from "aws-amplify";
 import { Button, Modal, Radio } from "native-base";
 import React from "react";
+
+import { UserContext } from "@/root/src/context";
 
 interface Props_ {
   commentId: string;
@@ -10,8 +14,23 @@ interface Props_ {
 export const ReportComment: React.FC<Props_> = ({
   reportModal,
   setReportModal,
+  commentId,
 }) => {
   const [value, setValue] = React.useState("");
+  const currentUser = React.useContext(UserContext).user;
+
+  const SubmitHandler = () => {
+    if (currentUser.id && commentId && value) {
+      const input: reportCommentFetch_ = {
+        content: value,
+        reporterId: currentUser.id,
+        commentId: commentId,
+      };
+      reportCommentFetch(input);
+    }
+
+    setReportModal(false);
+  };
 
   return (
     <Modal isOpen={reportModal} onClose={() => setReportModal(false)} mt={12}>
@@ -73,13 +92,7 @@ export const ReportComment: React.FC<Props_> = ({
             >
               Cancel
             </Button>
-            <Button
-              bg="rose.600"
-              variant="unstyled"
-              onPress={() => {
-                setReportModal(false);
-              }}
-            >
+            <Button bg="rose.600" variant="unstyled" onPress={SubmitHandler}>
               Submit
             </Button>
           </Button.Group>
@@ -89,8 +102,38 @@ export const ReportComment: React.FC<Props_> = ({
   );
 };
 
-// mutation CreateReportComment($input: CreateReportCommentInput!) {
-//   createReportComment(input: $input) {
-//     id
-//   }
-// }
+interface reportCommentFetch_ {
+  content: string;
+  reporterId: string;
+  commentId: string;
+}
+const reportCommentFetch = async (input: reportCommentFetch_) => {
+  try {
+    const reportUserData = (await API.graphql({
+      query: CreateReportCommentRelation,
+      variables: { input },
+      authMode: "AMAZON_COGNITO_USER_POOLS",
+    })) as GraphQLResult<CreateReportCommentRelation_>;
+
+    if (reportUserData.data?.createReportComment) {
+      return reportUserData.data.createReportComment.id;
+    }
+  } catch (err) {
+    console.error(
+      "Error occured while report by user in the comment report screen",
+      err
+    );
+  }
+};
+
+interface CreateReportCommentRelation_ {
+  createReportComment?: { id: string };
+}
+
+const CreateReportCommentRelation = /* GraphQL */ `
+  mutation CreateReportComment($input: CreateReportCommentInput!) {
+    createReportComment(input: $input) {
+      id
+    }
+  }
+`;
