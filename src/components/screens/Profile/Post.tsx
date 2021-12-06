@@ -8,6 +8,7 @@ import {
   PostCard,
   Props_ as PostCardProps_,
 } from "@/root/src/components/shared/Cards/PostCard";
+import { UserContext } from "@/root/src/context";
 
 import { TabNavigatorUserContext } from "./Context";
 
@@ -17,12 +18,15 @@ export const Posts: React.FC = () => {
   const [posts, setPosts] = React.useState<Item[]>([]);
   const [nextToken, setNextToken] = React.useState<string>("");
 
+  const currentUser = React.useContext(UserContext).user;
+
   const populateContent = React.useCallback(() => {
     let isActive = true;
 
     const fetchCall = async () => {
       const listPostInput: listPostByUserIdFetchInput_ = {
         id: routeUserId,
+        currentUserId: currentUser.id,
         limit: 10,
         sortDirection: "DESC",
       };
@@ -38,7 +42,7 @@ export const Posts: React.FC = () => {
     return () => {
       isActive = false;
     };
-  }, [routeUserId]);
+  }, [currentUser.id, routeUserId]);
 
   useFocusEffect(populateContent);
 
@@ -98,6 +102,7 @@ interface listPostByUserIdFetchInput_ {
   id: string;
   limit: number;
   sortDirection: "ASC" | "DESC";
+  currentUserId: string;
   nextToken?: string;
 }
 
@@ -163,6 +168,7 @@ interface UserPostMetricItem {
 const listPostByUserId = /* GraphQL */ `
   query listPostByUserId(
     $id: ID!
+    $currentUserId: ID!
     $limit: Int
     $sortDirection: ModelSortDirection
     $nextToken: String
@@ -190,7 +196,7 @@ const listPostByUserId = /* GraphQL */ `
           }
           userPostMetric(
             filter: { isDeleted: { attributeExists: false } }
-            userId: { eq: $id }
+            userId: { eq: $currentUserId }
           ) {
             items {
               type

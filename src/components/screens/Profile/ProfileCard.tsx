@@ -22,6 +22,13 @@ interface State_ {
     following: number;
     totalPosts: number;
   };
+  followers: {
+    items: {
+      id: string;
+      followerId: string;
+      followeeId: string;
+    }[];
+  };
 }
 
 export const ProfileCard: React.FC<Props_> = ({ routeUserId }) => {
@@ -42,12 +49,19 @@ export const ProfileCard: React.FC<Props_> = ({ routeUserId }) => {
         // check user data for user id passed using route params
         const userData = (await API.graphql({
           query: getUser,
-          variables: { id: routeUserId },
+          variables: { id: routeUserId, currentUserId: id },
           authMode: "AMAZON_COGNITO_USER_POOLS",
         })) as GraphQLResult<getUser_>;
 
         if (userData.data?.getUser && isActive) {
           setProfile(userData.data.getUser);
+          const followersItems = userData.data.getUser.followers.items;
+          if (
+            followersItems.length === 1 &&
+            followersItems[0].followerId === id
+          ) {
+            setRelationship("FOLLOW");
+          }
         }
       } catch (err) {
         console.error("error while fetching user data in profile page", err);
@@ -59,7 +73,7 @@ export const ProfileCard: React.FC<Props_> = ({ routeUserId }) => {
     return () => {
       isActive = false;
     };
-  }, [routeUserId]);
+  }, [id, routeUserId]);
 
   useFocusEffect(populateContent);
 
@@ -375,7 +389,7 @@ type getUser_ = {
 };
 
 const getUser = /* GraphQL */ `
-  query GetUser($id: ID!) {
+  query GetUser($id: ID!, $currentUserId: ID!) {
     getUser(id: $id) {
       profileImageUrl
       username
@@ -384,6 +398,18 @@ const getUser = /* GraphQL */ `
         followers
         following
         totalPosts
+      }
+      followers(
+        filter: {
+          isDeleted: { attributeExists: false }
+          followerId: { eq: $currentUserId }
+        }
+      ) {
+        items {
+          id
+          followerId
+          followeeId
+        }
       }
     }
   }
