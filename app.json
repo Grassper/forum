@@ -21,7 +21,7 @@
         "backgroundColor": "#FFF47D"
       },
       "usesIcloudStorage": true,
-      "bundleIdentifier": "iCloud.com.grassper.eforum"
+      "bundleIdentifier": "com.grassper.eforum"
     },
     "android": {
       "splash": {
