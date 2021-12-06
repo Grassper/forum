@@ -27,6 +27,9 @@ interface Props_ {
   coverImageS3Key?: string;
   _version?: number;
   creatorId?: string;
+  totalMembers?: number;
+  totalPosts?: number;
+  members?: { items: { userId: string }[] };
 }
 
 const windowWidth = Dimensions.get("window").width;
@@ -39,6 +42,9 @@ export const SubForumCard: React.FC<Props_> = ({
   coverImageS3Key,
   creatorId,
   _version,
+  members,
+  totalMembers,
+  totalPosts,
 }) => {
   const [relationship, setRelationship] = React.useState<
     "JOINED" | "NOTJOINED"
@@ -49,6 +55,16 @@ export const SubForumCard: React.FC<Props_> = ({
 
   const currentUser = React.useContext(UserContext).user;
   const navigation = useNavigation();
+
+  React.useEffect(() => {
+    if (
+      members &&
+      members.items.length === 1 &&
+      members.items[0].userId === currentUser.id
+    ) {
+      setRelationship("JOINED");
+    }
+  }, [currentUser.id, members]);
 
   const signImage = React.useCallback(() => {
     let isActive = true;
@@ -203,13 +219,21 @@ export const SubForumCard: React.FC<Props_> = ({
             )}
           </HStack>
           <HStack alignItems="center" mb="2">
-            <Text fontSize="sm" color="blueGray.500">
-              7,629 Members
-            </Text>
+            {totalMembers ? (
+              <Text fontSize="sm" color="blueGray.500">
+                {totalMembers} Members
+              </Text>
+            ) : (
+              <Skeleton height="20px" width="150px" mt="2" />
+            )}
             <Box bg="blueGray.500" style={styles.separatorDot} />
-            <Text fontSize="sm" color="blueGray.500">
-              273 Posts
-            </Text>
+            {totalPosts ? (
+              <Text fontSize="sm" color="blueGray.500">
+                {totalPosts} Posts
+              </Text>
+            ) : (
+              <Skeleton height="20px" width="150px" mt="2" />
+            )}
           </HStack>
           <Box>
             {description ? (

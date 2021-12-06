@@ -42,6 +42,8 @@ export const SubForum: React.FC<Props_> = ({ navigation, route }) => {
   const [subForum, getSubForum] = React.useState<Community>();
   const [reportModal, setReportModal] = React.useState(false);
 
+  console.log(subForum);
+
   const [posts, setPosts] = React.useState<Item[]>([]);
   const [nextToken, setNextToken] = React.useState<string>("");
 
@@ -58,7 +60,12 @@ export const SubForum: React.FC<Props_> = ({ navigation, route }) => {
         sortDirection: "DESC",
       };
 
-      const getCommunityData = await getCommunityFetch(subForumId);
+      const getCommunityInput: getCommunityFetch_ = {
+        id: subForumId,
+        currentUserId: currentUser.id,
+      };
+
+      const getCommunityData = await getCommunityFetch(getCommunityInput);
       const listPostData = await listPostByCommunityIdFetch(listPostInput);
 
       if (getCommunityData && isActive) {
@@ -175,6 +182,9 @@ export const SubForum: React.FC<Props_> = ({ navigation, route }) => {
             coverImageS3Key={subForum?.bannerImageS3Key}
             _version={subForum?._version}
             creatorId={subForum?.creatorId}
+            totalMembers={subForum?.totalMembers}
+            totalPosts={subForum?.totalPosts}
+            members={subForum?.members}
           />
         )}
         keyExtractor={(item) => item.id}
@@ -188,11 +198,16 @@ const styles = StyleSheet.create({
   container: { flex: 1 },
 });
 
-const getCommunityFetch = async (id: string) => {
+interface getCommunityFetch_ {
+  id: string;
+  currentUserId: string;
+}
+
+const getCommunityFetch = async (input: getCommunityFetch_) => {
   try {
     const getCommunityData = (await API.graphql({
       query: getCommunity,
-      variables: { id },
+      variables: input,
       authMode: "AMAZON_COGNITO_USER_POOLS",
     })) as GraphQLResult<getCommunity>;
 
@@ -254,10 +269,13 @@ interface Community {
   bannerImageS3Key: string;
   creatorId: string;
   _version: number;
+  totalMembers: number;
+  totalPosts: number;
+  members: { items: { userId: string }[] };
 }
 
 const getCommunity = /* GraphQL */ `
-  query getCommunity($id: ID!) {
+  query getCommunity($id: ID!, $currentUserId: ID!) {
     getCommunity(id: $id) {
       id
       description
@@ -266,6 +284,18 @@ const getCommunity = /* GraphQL */ `
       bannerImageS3Key
       creatorId
       _version
+      totalMembers
+      totalPosts
+      members(
+        filter: {
+          isDeleted: { attributeExists: false }
+          userId: { eq: $currentUserId }
+        }
+      ) {
+        items {
+          userId
+        }
+      }
     }
   }
 `;
