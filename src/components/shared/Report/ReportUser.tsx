@@ -84,3 +84,9 @@ export const ReportUser: React.FC<Props_> = ({
     </Modal>
   );
 };
+
+// mutation CreateReportUser($input: CreateReportUserInput!) {
+//   createReportUser(input: $input) {
+//     id
+//   }
+// }

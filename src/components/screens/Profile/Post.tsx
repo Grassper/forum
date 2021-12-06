@@ -50,6 +50,7 @@ export const Posts: React.FC = () => {
     if (nextToken) {
       const listPostInput: listPostByUserIdFetchInput_ = {
         id: routeUserId,
+        currentUserId: currentUser.id,
         limit: 10,
         sortDirection: "DESC",
         nextToken,
@@ -62,7 +63,7 @@ export const Posts: React.FC = () => {
         setNextToken(responseData.nextToken);
       }
     }
-  }, [nextToken, routeUserId]);
+  }, [currentUser.id, nextToken, routeUserId]);
 
   const PostCardRenderer: ListRenderItem<Item> = ({ item }) => {
     return (

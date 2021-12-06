@@ -84,3 +84,9 @@ export const ReportCommunity: React.FC<Props_> = ({
     </Modal>
   );
 };
+
+// mutation CreateReportCommunity($input: CreateReportCommunityInput!) {
+//   createReportCommunity(input: $input) {
+//     id
+//   }
+// }
