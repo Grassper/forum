@@ -138,6 +138,7 @@ export const Home: React.FC<Props_> = ({ navigation }) => {
         avatarUrl={item.post.author.profileImageUrl}
         timeStamp={item.post.postedDate}
         mediaS3Key={item.post.mediaS3Key}
+        userPostMetric={item.post.userPostMetric}
       />
     );
   };
@@ -224,6 +225,15 @@ interface Post {
     id: string;
     name: string;
   };
+  userPostMetric?: UserPostMetric;
+}
+
+interface UserPostMetric {
+  items: UserPostMetricItem[];
+}
+
+interface UserPostMetricItem {
+  type: "LIKE" | "LOVE" | "SUPPORT" | "DISLIKE";
 }
 
 const listTimelineByUserId = /* GraphQL */ `
@@ -254,6 +264,14 @@ const listTimelineByUserId = /* GraphQL */ `
             community {
               name
               id
+            }
+            userPostMetric(
+              filter: { isDeleted: { attributeExists: false } }
+              userId: { eq: $id }
+            ) {
+              items {
+                type
+              }
             }
           }
         }

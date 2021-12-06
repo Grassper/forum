@@ -53,6 +53,7 @@ export const SubForum: React.FC<Props_> = ({ navigation, route }) => {
     const fetchCall = async () => {
       const listPostInput: listPostByCommunityIdFetchInput_ = {
         id: subForumId,
+        currentUserId: currentUser.id,
         limit: 10,
         sortDirection: "DESC",
       };
@@ -74,7 +75,7 @@ export const SubForum: React.FC<Props_> = ({ navigation, route }) => {
     return () => {
       isActive = false;
     };
-  }, [subForumId]);
+  }, [currentUser.id, subForumId]);
 
   useFocusEffect(populateContent);
 
@@ -82,6 +83,7 @@ export const SubForum: React.FC<Props_> = ({ navigation, route }) => {
     if (nextToken) {
       const listPostInput: listPostByCommunityIdFetchInput_ = {
         id: subForumId,
+        currentUserId: currentUser.id,
         limit: 10,
         sortDirection: "DESC",
         nextToken,
@@ -147,6 +149,7 @@ export const SubForum: React.FC<Props_> = ({ navigation, route }) => {
         avatarUrl={item.author.profileImageUrl}
         timeStamp={item.postedDate}
         mediaS3Key={item.mediaS3Key}
+        userPostMetric={item.userPostMetric}
       />
     );
   };
@@ -207,6 +210,7 @@ const getCommunityFetch = async (id: string) => {
 
 interface listPostByCommunityIdFetchInput_ {
   id: string;
+  currentUserId: string;
   limit: number;
   sortDirection: "ASC" | "DESC";
   nextToken?: string;
@@ -290,11 +294,21 @@ interface Item {
     id: string;
     name: string;
   };
+  userPostMetric: UserPostMetric;
+}
+
+interface UserPostMetric {
+  items: UserPostMetricItem[];
+}
+
+interface UserPostMetricItem {
+  type: "LIKE" | "LOVE" | "SUPPORT" | "DISLIKE";
 }
 
 const listPostByCommunityId = /* GraphQL */ `
   query ListPostByCommunityId(
     $id: ID!
+    $currentUserId: ID!
     $nextToken: String
     $sortDirection: ModelSortDirection
     $limit: Int
@@ -319,6 +333,14 @@ const listPostByCommunityId = /* GraphQL */ `
           community {
             name
             id
+          }
+          userPostMetric(
+            filter: { isDeleted: { attributeExists: false } }
+            userId: { eq: $currentUserId }
+          ) {
+            items {
+              type
+            }
           }
         }
         nextToken

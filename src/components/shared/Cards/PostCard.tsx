@@ -46,9 +46,18 @@ export interface Props_ {
     votedPollId: string;
     pollArr: Poll_[];
   };
+  userPostMetric?: UserPostMetric;
   postPage?: boolean; // true if post card is used in individual post page
   hidePostNavigation?: boolean;
   hidePostUserActions?: boolean;
+}
+
+interface UserPostMetric {
+  items: UserPostMetricItem[];
+}
+
+interface UserPostMetricItem {
+  type: "LIKE" | "LOVE" | "SUPPORT" | "DISLIKE";
 }
 
 interface Poll_ {
@@ -71,6 +80,7 @@ export const PostCard: React.FC<Props_> = ({
   authorId,
   id,
   hidePostNavigation,
+  userPostMetric,
   hidePostUserActions,
 }) => {
   const videoRef = React.useRef(null);
@@ -186,6 +196,7 @@ export const PostCard: React.FC<Props_> = ({
             authorId={authorId}
             contentText={contentText}
             mediaS3Key={mediaS3Key}
+            userPostMetric={userPostMetric}
           />
         )}
       </Box>
@@ -401,6 +412,7 @@ interface PostUserActions_ {
   timeStamp?: Date;
   contentText?: string;
   mediaS3Key?: null | string;
+  userPostMetric?: UserPostMetric;
 }
 
 /**
@@ -444,6 +456,7 @@ const PostUserActions: React.FC<PostUserActions_> = ({
             postId={post.id}
             communityId={post.subForumId}
             postAuthorId={post.authorId}
+            userPostMetric={post.userPostMetric}
           />
           <Pressable
             onPress={() =>
@@ -487,12 +500,14 @@ interface UserActionToolTip_ {
   postId?: string;
   communityId?: string;
   postAuthorId?: string;
+  userPostMetric?: UserPostMetric;
 }
 
 const UserActionToolTip: React.FC<UserActionToolTip_> = ({
   postId,
   communityId,
   postAuthorId,
+  userPostMetric,
 }) => {
   const [showTip, setTip] = useToggle(false);
 
@@ -502,6 +517,12 @@ const UserActionToolTip: React.FC<UserActionToolTip_> = ({
     useState<keyof IconsPicker_>("SUPPORTOUTLINE");
 
   const PickedIcon = IconsPicker[selectedIcon];
+
+  React.useEffect(() => {
+    if (userPostMetric && userPostMetric.items.length === 1) {
+      setSelectedIcon(userPostMetric.items[0].type);
+    }
+  }, [userPostMetric]);
 
   const UserActionCreationHandler = (
     type: UserActionCreationFetchInput_["type"]

@@ -33,6 +33,14 @@ export type SubForumStackParamList_ = {
   };
 };
 
+interface UserPostMetric {
+  items: UserPostMetricItem[];
+}
+
+interface UserPostMetricItem {
+  type: "LIKE" | "LOVE" | "SUPPORT" | "DISLIKE";
+}
+
 export type StackParamList_ = {
   BottomTabNav: NavigatorScreenParams<BottomTabParamList_>;
 
@@ -48,6 +56,7 @@ export type StackParamList_ = {
     timeStamp?: Date;
     contentText?: string;
     mediaS3Key?: null | string;
+    userPostMetric?: UserPostMetric;
   };
   AddAndEditPost: {
     postType: "Image" | "Text" | "Video" | "Audio" | "Poll";

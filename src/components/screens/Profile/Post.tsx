@@ -76,6 +76,7 @@ export const Posts: React.FC = () => {
         avatarUrl={item.author.profileImageUrl}
         timeStamp={item.postedDate}
         mediaS3Key={item.mediaS3Key}
+        userPostMetric={item.userPostMetric}
       />
     );
   };
@@ -148,6 +149,15 @@ interface Item {
     id: string;
     name: string;
   };
+  userPostMetric?: UserPostMetric;
+}
+
+interface UserPostMetric {
+  items: UserPostMetricItem[];
+}
+
+interface UserPostMetricItem {
+  type: "LIKE" | "LOVE" | "SUPPORT" | "DISLIKE";
 }
 
 const listPostByUserId = /* GraphQL */ `
@@ -177,6 +187,14 @@ const listPostByUserId = /* GraphQL */ `
           community {
             name
             id
+          }
+          userPostMetric(
+            filter: { isDeleted: { attributeExists: false } }
+            userId: { eq: $id }
+          ) {
+            items {
+              type
+            }
           }
         }
         nextToken

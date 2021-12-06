@@ -9,6 +9,7 @@ import {
   PostCard,
   Props_ as PostCardProps_,
 } from "@/root/src/components/shared/Cards/PostCard";
+import { UserContext } from "@/root/src/context";
 
 import { TabNavigatorExploreContext } from "./context";
 
@@ -18,6 +19,8 @@ export const PostSearch: React.FC = () => {
   const [posts, setPosts] = React.useState<Item[]>([]);
   const [nextToken, setNextToken] = React.useState<string>("");
 
+  const currentUser = React.useContext(UserContext).user;
+
   const populateContent = React.useCallback(() => {
     let isActive = true;
 
@@ -25,6 +28,7 @@ export const PostSearch: React.FC = () => {
       if (searchValue) {
         const searchPostInput: searchPostsFetchInput_ = {
           limit: 10,
+          currentUserId: currentUser.id,
           searchcontent: searchValue,
         };
 
@@ -40,7 +44,7 @@ export const PostSearch: React.FC = () => {
     return () => {
       isActive = false;
     };
-  }, [searchValue]);
+  }, [currentUser.id, searchValue]);
 
   useFocusEffect(populateContent);
 
@@ -48,6 +52,7 @@ export const PostSearch: React.FC = () => {
     if (nextToken && searchValue) {
       const listPostInput: searchPostsFetchInput_ = {
         searchcontent: searchValue,
+        currentUserId: currentUser.id,
         limit: 10,
         nextToken,
       };
@@ -77,6 +82,7 @@ export const PostSearch: React.FC = () => {
         avatarUrl={item.author.profileImageUrl}
         timeStamp={item.postedDate}
         mediaS3Key={item.mediaS3Key}
+        userPostMetric={item.userPostMetric}
       />
     );
   };
@@ -98,6 +104,7 @@ export const PostSearch: React.FC = () => {
 interface searchPostsFetchInput_ {
   searchcontent: string;
   limit: number;
+  currentUserId: string;
   nextToken?: string;
 }
 
@@ -142,6 +149,15 @@ interface Item {
   postedDate: Date;
   author: Author;
   community: Community;
+  userPostMetric: UserPostMetric;
+}
+
+interface UserPostMetric {
+  items: UserPostMetricItem[];
+}
+
+interface UserPostMetricItem {
+  type: "LIKE" | "LOVE" | "SUPPORT" | "DISLIKE";
 }
 
 interface Author {
@@ -158,6 +174,7 @@ interface Community {
 const listPostByContent = /* GraphQL */ `
   query listPostByContent(
     $searchcontent: String
+    $currentUserId: ID!
     $limit: Int
     $nextToken: String
   ) {
@@ -180,6 +197,14 @@ const listPostByContent = /* GraphQL */ `
         community {
           name
           id
+        }
+        userPostMetric(
+          filter: { isDeleted: { attributeExists: false } }
+          userId: { eq: $currentUserId }
+        ) {
+          items {
+            type
+          }
         }
       }
       nextToken

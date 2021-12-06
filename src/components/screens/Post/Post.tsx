@@ -41,6 +41,15 @@ interface PostHeader_ {
   timeStamp?: Date;
   contentText?: string;
   mediaS3Key?: null | string;
+  userPostMetric?: UserPostMetric;
+}
+
+interface UserPostMetric {
+  items: UserPostMetricItem[];
+}
+
+interface UserPostMetricItem {
+  type: "LIKE" | "LOVE" | "SUPPORT" | "DISLIKE";
 }
 
 const PostHeader: React.FC<PostHeader_> = (post) => {
@@ -56,6 +65,7 @@ const PostHeader: React.FC<PostHeader_> = (post) => {
         contentText={post.contentText}
         avatarUrl={post.avatarUrl}
         timeStamp={post.timeStamp}
+        userPostMetric={post.userPostMetric}
         mediaS3Key={post.mediaS3Key}
         postPage
         hidePostNavigation
