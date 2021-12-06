@@ -19,7 +19,7 @@ import {
   WarningOutlineIcon,
 } from "native-base";
 import React from "react";
-import { Alert, Dimensions, StyleSheet } from "react-native";
+import { Alert, StyleSheet } from "react-native";
 import isLength from "validator/es/lib/isLength";
 import matches from "validator/es/lib/matches";
 
@@ -43,8 +43,6 @@ interface Props_ {
   navigation: NavigationProp_;
   route: RouteProp_;
 }
-
-const windowWidth = Dimensions.get("window").width;
 
 export const EditAndCreateSubForum: React.FC<Props_> = ({
   navigation,
@@ -465,6 +463,35 @@ const handleForumCreation = async (input: handleForumCreationInput_) => {
       });
 
       /**
+       * increment total members, moderators metrics in community
+       * increment communities joined, communities moderating metrics in user metrics
+       */
+
+      await API.graphql({
+        query: MetricsQueryPicker.COMMUNITY.TOTALMEMBERS.INCREMENT,
+        variables: { id: forumData.data.createCommunity.id },
+        authMode: "AMAZON_COGNITO_USER_POOLS",
+      });
+
+      await API.graphql({
+        query: MetricsQueryPicker.COMMUNITY.TOTALMODERATORS.INCREMENT,
+        variables: { id: forumData.data.createCommunity.id },
+        authMode: "AMAZON_COGNITO_USER_POOLS",
+      });
+
+      await API.graphql({
+        query: MetricsQueryPicker.USERMETRICS.COMMUNITIESJOINED.INCREMENT,
+        variables: { id: input.creatorId },
+        authMode: "AMAZON_COGNITO_USER_POOLS",
+      });
+
+      await API.graphql({
+        query: MetricsQueryPicker.USERMETRICS.COMMUNITIESMODERATING.INCREMENT,
+        variables: { id: input.creatorId },
+        authMode: "AMAZON_COGNITO_USER_POOLS",
+      });
+
+      /**
        * return created community id to navigate
        */
 
@@ -563,3 +590,98 @@ const updateForum = /* GraphQL */ `
     }
   }
 `;
+
+/**
+ * community metrics
+ */
+
+const IncrementTotalMembersCommunity = /* GraphQL */ `
+  mutation incrementTotalMembersCommunity($id: ID!) {
+    incrementTotalMembersCommunity(id: $id) {
+      id
+    }
+  }
+`;
+
+const DecrementTotalMembersCommunity = /* GraphQL */ `
+  mutation decrementTotalMembersCommunity($id: ID!) {
+    decrementTotalMembersCommunity(id: $id) {
+      id
+    }
+  }
+`;
+
+const IncrementTotalModeratorsCommunity = /* GraphQL */ `
+  mutation incrementTotalModeratorsCommunity($id: ID!) {
+    incrementTotalModeratorsCommunity(id: $id) {
+      id
+    }
+  }
+`;
+
+const DecrementTotalModeratorsCommunity = /* GraphQL */ `
+  mutation decrementTotalModeratorsCommunity($id: ID!) {
+    decrementTotalModeratorsCommunity(id: $id) {
+      id
+    }
+  }
+`;
+
+/**
+ * user metrics
+ */
+
+const IncrementCommunitiesJoinedUserMetrics = /* GraphQL */ `
+  mutation incrementCommunitiesJoinedUserMetrics($id: ID!) {
+    incrementCommunitiesJoinedUserMetrics(id: $id) {
+      id
+    }
+  }
+`;
+
+const DecrementCommunitiesJoinedUserMetrics = /* GraphQL */ `
+  mutation decrementCommunitiesJoinedUserMetrics($id: ID!) {
+    decrementCommunitiesJoinedUserMetrics(id: $id) {
+      id
+    }
+  }
+`;
+
+const IncrementCommunitiesModeratingUserMetrics = /* GraphQL */ `
+  mutation incrementCommunitiesModeratingUserMetrics($id: ID!) {
+    incrementCommunitiesModeratingUserMetrics(id: $id) {
+      id
+    }
+  }
+`;
+
+const DecrementCommunitiesModeratingUserMetrics = /* GraphQL */ `
+  mutation decrementCommunitiesModeratingUserMetrics($id: ID!) {
+    decrementCommunitiesModeratingUserMetrics(id: $id) {
+      id
+    }
+  }
+`;
+
+const MetricsQueryPicker = {
+  COMMUNITY: {
+    TOTALMEMBERS: {
+      INCREMENT: IncrementTotalMembersCommunity,
+      DECREMENT: DecrementTotalMembersCommunity,
+    },
+    TOTALMODERATORS: {
+      INCREMENT: IncrementTotalModeratorsCommunity,
+      DECREMENT: DecrementTotalModeratorsCommunity,
+    },
+  },
+  USERMETRICS: {
+    COMMUNITIESJOINED: {
+      INCREMENT: IncrementCommunitiesJoinedUserMetrics,
+      DECREMENT: DecrementCommunitiesJoinedUserMetrics,
+    },
+    COMMUNITIESMODERATING: {
+      INCREMENT: IncrementCommunitiesModeratingUserMetrics,
+      DECREMENT: DecrementCommunitiesModeratingUserMetrics,
+    },
+  },
+};

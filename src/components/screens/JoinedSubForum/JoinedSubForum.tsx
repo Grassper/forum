@@ -208,6 +208,7 @@ const listCommunityByUserId = /* GraphQL */ `
         limit: $limit
         sortDirection: $sortDirection
         nextToken: $nextToken
+        filter: { isDeleted: { attributeExists: false } }
       ) {
         items {
           community {
