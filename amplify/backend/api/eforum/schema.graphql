@@ -276,8 +276,8 @@ enum PostUserActionType {
 type UserPostMetricsRelationShip
   @model
   @auth(rules: [{ allow: owner }, { allow: private, operations: [read] }])
-  @key(name: "byPost", fields: ["postId", "type", "userId"])
-  @key(name: "byUser", fields: ["userId", "type", "postId"]) {
+  @key(name: "byPost", fields: ["postId", "userId"])
+  @key(name: "byUser", fields: ["userId", "postId"]) {
   id: ID!
   postId: ID!
   type: PostUserActionType!
@@ -342,8 +342,8 @@ enum CommentUserActionType {
 type UserCommentMetricsRelationShip
   @model
   @auth(rules: [{ allow: owner }, { allow: private, operations: [read] }])
-  @key(name: "byUser", fields: ["userId", "type", "commentId"])
-  @key(name: "byComment", fields: ["commentId", "type", "userId"]) {
+  @key(name: "byUser", fields: ["userId", "commentId"])
+  @key(name: "byComment", fields: ["commentId", "userId"]) {
   id: ID!
   type: CommentUserActionType!
   userId: ID!
@@ -407,7 +407,7 @@ type Timeline
   userId: ID!
   postId: ID!
   user: User! @connection(fields: ["userId"])
-  post: Post @connection(fields: ["postId"])
+  post: Post! @connection(fields: ["postId"])
 }
 
 type ReportComment @model @auth(rules: [{ allow: owner }]) {

@@ -151,7 +151,7 @@ const createTimelineForAUser = async ({ userId, postId }) => {
   return createTimelineResponse;
 };
 
-const createPost = `
+const createPost = /* GraphQL */ `
   mutation CreatePost(
     $input: CreatePostInput!
     $condition: ModelPostConditionInput
@@ -163,10 +163,13 @@ const createPost = `
   }
 `;
 
-const listMembersOfCommunity = `
+const listMembersOfCommunity = /* GraphQL */ `
   query listMembersByCommunity($communityId: ID, $limit: Int) {
     listUserCommunityRelationShips(
-      filter: {communityId: {eq: $communityId}}
+      filter: {
+        communityId: { eq: $communityId }
+        isDeleted: { attributeExists: false }
+      }
       limit: $limit
     ) {
       items {
@@ -176,7 +179,7 @@ const listMembersOfCommunity = `
   }
 `;
 
-const createTimeline = `
+const createTimeline = /* GraphQL */ `
   mutation CreateTimeline(
     $input: CreateTimelineInput!
     $condition: ModelTimelineConditionInput
