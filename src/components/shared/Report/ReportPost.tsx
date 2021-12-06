@@ -1,5 +1,9 @@
+import { GraphQLResult } from "@aws-amplify/api-graphql";
+import { API } from "aws-amplify";
 import { Button, Modal, Radio } from "native-base";
 import React from "react";
+
+import { UserContext } from "@/root/src/context";
 
 interface Props_ {
   postId: string;
@@ -10,9 +14,24 @@ interface Props_ {
 export const ReportPost: React.FC<Props_> = ({
   reportModal,
   setReportModal,
+  postId,
 }) => {
   const [value, setValue] = React.useState("");
 
+  const currentUser = React.useContext(UserContext).user;
+
+  const HandlerPostSubmit = () => {
+    if (currentUser.id && postId && value) {
+      const input: reportPostFetch_ = {
+        content: value,
+        reporterId: currentUser.id,
+        postId: postId,
+      };
+      reportPostFetch(input);
+    }
+
+    setReportModal(false);
+  };
   return (
     <Modal isOpen={reportModal} onClose={() => setReportModal(false)} mt={12}>
       <Modal.Content maxWidth="350">
@@ -85,9 +104,7 @@ export const ReportPost: React.FC<Props_> = ({
             <Button
               bg="rose.600"
               variant="unstyled"
-              onPress={() => {
-                setReportModal(false);
-              }}
+              onPress={HandlerPostSubmit}
             >
               Submit
             </Button>
@@ -98,8 +115,38 @@ export const ReportPost: React.FC<Props_> = ({
   );
 };
 
-// mutation CreateReportPost($input: CreateReportPostInput!) {
-//   createReportPost(input: $input) {
-//     id
-//   }
-// }
+interface reportPostFetch_ {
+  content: string;
+  reporterId: string;
+  postId: string;
+}
+const reportPostFetch = async (input: reportPostFetch_) => {
+  try {
+    const reportUserData = (await API.graphql({
+      query: CreateReportPostRelation,
+      variables: { input },
+      authMode: "AMAZON_COGNITO_USER_POOLS",
+    })) as GraphQLResult<CreateReportUserRelation_>;
+
+    if (reportUserData.data?.createReportPost) {
+      return reportUserData.data.createReportPost.id;
+    }
+  } catch (err) {
+    console.error(
+      "Error occured while report by user in the post report screen",
+      err
+    );
+  }
+};
+
+interface CreateReportUserRelation_ {
+  createReportPost?: { id: string };
+}
+
+const CreateReportPostRelation = /* GraphQL */ `
+  mutation CreateReportPost($input: CreateReportPostInput!) {
+    createReportPost(input: $input) {
+      id
+    }
+  }
+`;
