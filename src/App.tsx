@@ -97,6 +97,8 @@ const App: React.FC = () => {
             following: 0,
             totalPosts: 0,
             totalComments: 0,
+            communitiesJoined: 0,
+            communitiesModerating: 0,
             activeDays: 0,
             lastActiveDay: new Date().toISOString(),
           };

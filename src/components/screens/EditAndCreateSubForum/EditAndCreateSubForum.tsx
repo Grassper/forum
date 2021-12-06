@@ -115,6 +115,10 @@ export const EditAndCreateSubForum: React.FC<Props_> = ({
           profileImageS3Key,
           type: "PUBLIC",
           creatorId: currentUser.id,
+          totalPosts: 0,
+          totalMembers: 0,
+          totalComments: 0,
+          totalModerators: 0,
         };
         const createdForumId = await handleForumCreation(newForumInput);
 
@@ -412,6 +416,10 @@ interface handleForumCreationInput_ {
   profileImageS3Key: string;
   type: string;
   creatorId: string;
+  totalPosts: number;
+  totalMembers: number;
+  totalComments: number;
+  totalModerators: number;
 }
 
 const handleForumCreation = async (input: handleForumCreationInput_) => {
