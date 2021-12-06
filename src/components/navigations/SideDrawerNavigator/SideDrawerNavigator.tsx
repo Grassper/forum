@@ -14,6 +14,7 @@ import {
   DrawerItemList,
 } from "@react-navigation/drawer";
 import { NavigationContainer } from "@react-navigation/native";
+import { Auth } from "aws-amplify";
 import {
   Box,
   Flex,
@@ -103,33 +104,12 @@ const CustomDrawerContent = (props: DrawerContentComponentProps) => {
               color={color}
               ml="-4"
             >
-              Blocked Accounts
-            </Text>
-          )}
-          onPress={() => {}}
-          icon={({ color }) => (
-            <Icon
-              as={<Entypo name="block" />}
-              size={"18px"}
-              ml="3"
-              color={color}
-            />
-          )}
-        />
-        <DrawerItem
-          style={styles.drawerItem}
-          label={({ color }) => (
-            <Text
-              fontSize="sm"
-              fontFamily="body"
-              fontWeight="500"
-              color={color}
-              ml="-4"
-            >
               Sign Out
             </Text>
           )}
-          onPress={() => {}}
+          onPress={() => {
+            Auth.signOut();
+          }}
           icon={({ color }) => (
             <Icon
               as={<FontAwesome name="sign-out" size={24} color="black" />}
