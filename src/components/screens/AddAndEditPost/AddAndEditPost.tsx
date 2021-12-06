@@ -327,6 +327,27 @@ const createPostAndTimelineFetch = async (
 
     if (listCommunityData.data?.createPostAndTimeline) {
       const postId = listCommunityData.data.createPostAndTimeline;
+
+      /**
+       * increment total posts in current user and community
+       */
+
+      await API.graphql({
+        query: MetricsQueryPicker.USERMETRICS.TOTALPOST.INCREMENT,
+        variables: {
+          id: input.authorId,
+        },
+        authMode: "AMAZON_COGNITO_USER_POOLS",
+      });
+
+      await API.graphql({
+        query: MetricsQueryPicker.COMMUNITY.TOTALPOST.INCREMENT,
+        variables: {
+          id: input.communityId,
+        },
+        authMode: "AMAZON_COGNITO_USER_POOLS",
+      });
+
       return postId;
     }
   } catch (err) {
@@ -370,3 +391,40 @@ const createPostAndTimeline = /* GraphQL */ `
     }
   }
 `;
+
+/**
+ * community metrics
+ */
+
+const IncrementTotalPostsCommunity = /* GraphQL */ `
+  mutation incrementTotalPostsCommunity($id: ID!) {
+    incrementTotalPostsCommunity(id: $id) {
+      id
+    }
+  }
+`;
+
+/**
+ * user metrics
+ */
+
+const IncrementTotalPostsUserMetrics = /* GraphQL */ `
+  mutation incrementTotalPostsUserMetrics($id: ID!) {
+    incrementTotalPostsUserMetrics(id: $id) {
+      id
+    }
+  }
+`;
+
+const MetricsQueryPicker = {
+  COMMUNITY: {
+    TOTALPOST: {
+      INCREMENT: IncrementTotalPostsCommunity,
+    },
+  },
+  USERMETRICS: {
+    TOTALPOST: {
+      INCREMENT: IncrementTotalPostsUserMetrics,
+    },
+  },
+};
