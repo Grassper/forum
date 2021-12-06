@@ -1,5 +1,9 @@
+import { GraphQLResult } from "@aws-amplify/api-graphql";
+import { API } from "aws-amplify";
 import { Button, Modal, Radio } from "native-base";
 import React from "react";
+
+import { UserContext } from "@/root/src/context";
 
 interface Props_ {
   communityId: string;
@@ -10,8 +14,23 @@ interface Props_ {
 export const ReportCommunity: React.FC<Props_> = ({
   reportModal,
   setReportModal,
+  communityId,
 }) => {
   const [value, setValue] = React.useState("");
+  const currentUser = React.useContext(UserContext).user;
+
+  const SubmitHandler = () => {
+    if (currentUser.id && communityId && value) {
+      const input: reportCommunityFetch_ = {
+        content: value,
+        reporterId: currentUser.id,
+        communityId: communityId,
+      };
+      reportCommunityFetch(input);
+    }
+
+    setReportModal(false);
+  };
 
   return (
     <Modal isOpen={reportModal} onClose={() => setReportModal(false)} mt={12}>
@@ -69,13 +88,7 @@ export const ReportCommunity: React.FC<Props_> = ({
             >
               Cancel
             </Button>
-            <Button
-              bg="rose.600"
-              variant="unstyled"
-              onPress={() => {
-                setReportModal(false);
-              }}
-            >
+            <Button bg="rose.600" variant="unstyled" onPress={SubmitHandler}>
               Submit
             </Button>
           </Button.Group>
@@ -85,8 +98,38 @@ export const ReportCommunity: React.FC<Props_> = ({
   );
 };
 
-// mutation CreateReportCommunity($input: CreateReportCommunityInput!) {
-//   createReportCommunity(input: $input) {
-//     id
-//   }
-// }
+interface reportCommunityFetch_ {
+  content: string;
+  reporterId: string;
+  communityId: string;
+}
+const reportCommunityFetch = async (input: reportCommunityFetch_) => {
+  try {
+    const reportUserData = (await API.graphql({
+      query: CreateReportCommunityRelation,
+      variables: { input },
+      authMode: "AMAZON_COGNITO_USER_POOLS",
+    })) as GraphQLResult<CreateReportCommunityRelation_>;
+
+    if (reportUserData.data?.createReportCommunity) {
+      return reportUserData.data.createReportCommunity.id;
+    }
+  } catch (err) {
+    console.error(
+      "Error occured while report by user in the community report screen",
+      err
+    );
+  }
+};
+
+interface CreateReportCommunityRelation_ {
+  createReportCommunity?: { id: string };
+}
+
+const CreateReportCommunityRelation = /* GraphQL */ `
+  mutation CreateReportCommunity($input: CreateReportCommunityInput!) {
+    createReportCommunity(input: $input) {
+      id
+    }
+  }
+`;
