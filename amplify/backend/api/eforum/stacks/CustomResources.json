@@ -30,9 +30,7 @@
     "QueryIncrementLikePostUserMetrics": {
       "Type": "AWS::AppSync::Resolver",
       "Properties": {
-        "ApiId": {
-          "Ref": "AppSyncApiId"
-        },
+        "ApiId": { "Ref": "AppSyncApiId" },
         "DataSourceName": "UserMetricsTable",
         "TypeName": "Mutation",
         "FieldName": "incrementLikePostUserMetrics",
@@ -40,12 +38,8 @@
           "Fn::Sub": [
             "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.incrementLikePostUserMetrics.req.vtl",
             {
-              "S3DeploymentBucket": {
-                "Ref": "S3DeploymentBucket"
-              },
-              "S3DeploymentRootKey": {
-                "Ref": "S3DeploymentRootKey"
-              }
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
             }
           ]
         },
@@ -53,12 +47,8 @@
           "Fn::Sub": [
             "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.incrementLikePostUserMetrics.res.vtl",
             {
-              "S3DeploymentBucket": {
-                "Ref": "S3DeploymentBucket"
-              },
-              "S3DeploymentRootKey": {
-                "Ref": "S3DeploymentRootKey"
-              }
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
             }
           ]
         }
@@ -67,9 +57,7 @@
     "QueryDecrementLikePostUserMetrics": {
       "Type": "AWS::AppSync::Resolver",
       "Properties": {
-        "ApiId": {
-          "Ref": "AppSyncApiId"
-        },
+        "ApiId": { "Ref": "AppSyncApiId" },
         "DataSourceName": "UserMetricsTable",
         "TypeName": "Mutation",
         "FieldName": "decrementLikePostUserMetrics",
@@ -77,12 +65,8 @@
           "Fn::Sub": [
             "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.decrementLikePostUserMetrics.req.vtl",
             {
-              "S3DeploymentBucket": {
-                "Ref": "S3DeploymentBucket"
-              },
-              "S3DeploymentRootKey": {
-                "Ref": "S3DeploymentRootKey"
-              }
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
             }
           ]
         },
@@ -90,12 +74,8 @@
           "Fn::Sub": [
             "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.decrementLikePostUserMetrics.res.vtl",
             {
-              "S3DeploymentBucket": {
-                "Ref": "S3DeploymentBucket"
-              },
-              "S3DeploymentRootKey": {
-                "Ref": "S3DeploymentRootKey"
-              }
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
             }
           ]
         }
@@ -104,9 +84,7 @@
     "QueryIncrementLovePostUserMetrics": {
       "Type": "AWS::AppSync::Resolver",
       "Properties": {
-        "ApiId": {
-          "Ref": "AppSyncApiId"
-        },
+        "ApiId": { "Ref": "AppSyncApiId" },
         "DataSourceName": "UserMetricsTable",
         "TypeName": "Mutation",
         "FieldName": "incrementLovePostUserMetrics",
@@ -114,12 +92,8 @@
           "Fn::Sub": [
             "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.incrementLovePostUserMetrics.req.vtl",
             {
-              "S3DeploymentBucket": {
-                "Ref": "S3DeploymentBucket"
-              },
-              "S3DeploymentRootKey": {
-                "Ref": "S3DeploymentRootKey"
-              }
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
             }
           ]
         },
@@ -127,12 +101,8 @@
           "Fn::Sub": [
             "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.incrementLovePostUserMetrics.res.vtl",
             {
-              "S3DeploymentBucket": {
-                "Ref": "S3DeploymentBucket"
-              },
-              "S3DeploymentRootKey": {
-                "Ref": "S3DeploymentRootKey"
-              }
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
             }
           ]
         }
@@ -141,9 +111,7 @@
     "QueryDecrementLovePostUserMetrics": {
       "Type": "AWS::AppSync::Resolver",
       "Properties": {
-        "ApiId": {
-          "Ref": "AppSyncApiId"
-        },
+        "ApiId": { "Ref": "AppSyncApiId" },
         "DataSourceName": "UserMetricsTable",
         "TypeName": "Mutation",
         "FieldName": "decrementLovePostUserMetrics",
@@ -151,12 +119,8 @@
           "Fn::Sub": [
             "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.decrementLovePostUserMetrics.req.vtl",
             {
-              "S3DeploymentBucket": {
-                "Ref": "S3DeploymentBucket"
-              },
-              "S3DeploymentRootKey": {
-                "Ref": "S3DeploymentRootKey"
-              }
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
             }
           ]
         },
@@ -164,12 +128,8 @@
           "Fn::Sub": [
             "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.decrementLovePostUserMetrics.res.vtl",
             {
-              "S3DeploymentBucket": {
-                "Ref": "S3DeploymentBucket"
-              },
-              "S3DeploymentRootKey": {
-                "Ref": "S3DeploymentRootKey"
-              }
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
             }
           ]
         }
@@ -178,9 +138,7 @@
     "QueryIncrementSupportPostUserMetrics": {
       "Type": "AWS::AppSync::Resolver",
       "Properties": {
-        "ApiId": {
-          "Ref": "AppSyncApiId"
-        },
+        "ApiId": { "Ref": "AppSyncApiId" },
         "DataSourceName": "UserMetricsTable",
         "TypeName": "Mutation",
         "FieldName": "incrementSupportPostUserMetrics",
@@ -188,12 +146,8 @@
           "Fn::Sub": [
             "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.incrementSupportPostUserMetrics.req.vtl",
             {
-              "S3DeploymentBucket": {
-                "Ref": "S3DeploymentBucket"
-              },
-              "S3DeploymentRootKey": {
-                "Ref": "S3DeploymentRootKey"
-              }
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
             }
           ]
         },
@@ -201,12 +155,8 @@
           "Fn::Sub": [
             "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.incrementSupportPostUserMetrics.res.vtl",
             {
-              "S3DeploymentBucket": {
-                "Ref": "S3DeploymentBucket"
-              },
-              "S3DeploymentRootKey": {
-                "Ref": "S3DeploymentRootKey"
-              }
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
             }
           ]
         }
@@ -215,9 +165,7 @@
     "QueryDecrementSupportPostUserMetrics": {
       "Type": "AWS::AppSync::Resolver",
       "Properties": {
-        "ApiId": {
-          "Ref": "AppSyncApiId"
-        },
+        "ApiId": { "Ref": "AppSyncApiId" },
         "DataSourceName": "UserMetricsTable",
         "TypeName": "Mutation",
         "FieldName": "decrementSupportPostUserMetrics",
@@ -225,12 +173,8 @@
           "Fn::Sub": [
             "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.decrementSupportPostUserMetrics.req.vtl",
             {
-              "S3DeploymentBucket": {
-                "Ref": "S3DeploymentBucket"
-              },
-              "S3DeploymentRootKey": {
-                "Ref": "S3DeploymentRootKey"
-              }
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
             }
           ]
         },
@@ -238,12 +182,8 @@
           "Fn::Sub": [
             "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.decrementSupportPostUserMetrics.res.vtl",
             {
-              "S3DeploymentBucket": {
-                "Ref": "S3DeploymentBucket"
-              },
-              "S3DeploymentRootKey": {
-                "Ref": "S3DeploymentRootKey"
-              }
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
             }
           ]
         }
@@ -252,9 +192,7 @@
     "QueryIncrementProfileViewUserMetrics": {
       "Type": "AWS::AppSync::Resolver",
       "Properties": {
-        "ApiId": {
-          "Ref": "AppSyncApiId"
-        },
+        "ApiId": { "Ref": "AppSyncApiId" },
         "DataSourceName": "UserMetricsTable",
         "TypeName": "Mutation",
         "FieldName": "incrementProfileViewUserMetrics",
@@ -262,12 +200,8 @@
           "Fn::Sub": [
             "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.incrementProfileViewUserMetrics.req.vtl",
             {
-              "S3DeploymentBucket": {
-                "Ref": "S3DeploymentBucket"
-              },
-              "S3DeploymentRootKey": {
-                "Ref": "S3DeploymentRootKey"
-              }
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
             }
           ]
         },
@@ -275,12 +209,8 @@
           "Fn::Sub": [
             "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.incrementProfileViewUserMetrics.res.vtl",
             {
-              "S3DeploymentBucket": {
-                "Ref": "S3DeploymentBucket"
-              },
-              "S3DeploymentRootKey": {
-                "Ref": "S3DeploymentRootKey"
-              }
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
             }
           ]
         }
@@ -289,9 +219,7 @@
     "QueryDecrementProfileViewUserMetrics": {
       "Type": "AWS::AppSync::Resolver",
       "Properties": {
-        "ApiId": {
-          "Ref": "AppSyncApiId"
-        },
+        "ApiId": { "Ref": "AppSyncApiId" },
         "DataSourceName": "UserMetricsTable",
         "TypeName": "Mutation",
         "FieldName": "decrementProfileViewUserMetrics",
@@ -299,12 +227,8 @@
           "Fn::Sub": [
             "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.decrementProfileViewUserMetrics.req.vtl",
             {
-              "S3DeploymentBucket": {
-                "Ref": "S3DeploymentBucket"
-              },
-              "S3DeploymentRootKey": {
-                "Ref": "S3DeploymentRootKey"
-              }
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
             }
           ]
         },
@@ -312,12 +236,8 @@
           "Fn::Sub": [
             "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.decrementProfileViewUserMetrics.res.vtl",
             {
-              "S3DeploymentBucket": {
-                "Ref": "S3DeploymentBucket"
-              },
-              "S3DeploymentRootKey": {
-                "Ref": "S3DeploymentRootKey"
-              }
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
             }
           ]
         }
@@ -326,9 +246,7 @@
     "QueryIncrementCommentUpvoteUserMetrics": {
       "Type": "AWS::AppSync::Resolver",
       "Properties": {
-        "ApiId": {
-          "Ref": "AppSyncApiId"
-        },
+        "ApiId": { "Ref": "AppSyncApiId" },
         "DataSourceName": "UserMetricsTable",
         "TypeName": "Mutation",
         "FieldName": "incrementCommentUpvoteUserMetrics",
@@ -336,12 +254,8 @@
           "Fn::Sub": [
             "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.incrementCommentUpvoteUserMetrics.req.vtl",
             {
-              "S3DeploymentBucket": {
-                "Ref": "S3DeploymentBucket"
-              },
-              "S3DeploymentRootKey": {
-                "Ref": "S3DeploymentRootKey"
-              }
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
             }
           ]
         },
@@ -349,12 +263,8 @@
           "Fn::Sub": [
             "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.incrementCommentUpvoteUserMetrics.res.vtl",
             {
-              "S3DeploymentBucket": {
-                "Ref": "S3DeploymentBucket"
-              },
-              "S3DeploymentRootKey": {
-                "Ref": "S3DeploymentRootKey"
-              }
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
             }
           ]
         }
@@ -363,9 +273,7 @@
     "QueryDecrementCommentUpvoteUserMetrics": {
       "Type": "AWS::AppSync::Resolver",
       "Properties": {
-        "ApiId": {
-          "Ref": "AppSyncApiId"
-        },
+        "ApiId": { "Ref": "AppSyncApiId" },
         "DataSourceName": "UserMetricsTable",
         "TypeName": "Mutation",
         "FieldName": "decrementCommentUpvoteUserMetrics",
@@ -373,12 +281,8 @@
           "Fn::Sub": [
             "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.decrementCommentUpvoteUserMetrics.req.vtl",
             {
-              "S3DeploymentBucket": {
-                "Ref": "S3DeploymentBucket"
-              },
-              "S3DeploymentRootKey": {
-                "Ref": "S3DeploymentRootKey"
-              }
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
             }
           ]
         },
@@ -386,12 +290,8 @@
           "Fn::Sub": [
             "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.decrementCommentUpvoteUserMetrics.res.vtl",
             {
-              "S3DeploymentBucket": {
-                "Ref": "S3DeploymentBucket"
-              },
-              "S3DeploymentRootKey": {
-                "Ref": "S3DeploymentRootKey"
-              }
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
             }
           ]
         }
@@ -400,9 +300,7 @@
     "QueryIncrementCommentDownvoteUserMetrics": {
       "Type": "AWS::AppSync::Resolver",
       "Properties": {
-        "ApiId": {
-          "Ref": "AppSyncApiId"
-        },
+        "ApiId": { "Ref": "AppSyncApiId" },
         "DataSourceName": "UserMetricsTable",
         "TypeName": "Mutation",
         "FieldName": "incrementCommentDownvoteUserMetrics",
@@ -410,12 +308,8 @@
           "Fn::Sub": [
             "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.incrementCommentDownvoteUserMetrics.req.vtl",
             {
-              "S3DeploymentBucket": {
-                "Ref": "S3DeploymentBucket"
-              },
-              "S3DeploymentRootKey": {
-                "Ref": "S3DeploymentRootKey"
-              }
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
             }
           ]
         },
@@ -423,12 +317,8 @@
           "Fn::Sub": [
             "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.incrementCommentDownvoteUserMetrics.res.vtl",
             {
-              "S3DeploymentBucket": {
-                "Ref": "S3DeploymentBucket"
-              },
-              "S3DeploymentRootKey": {
-                "Ref": "S3DeploymentRootKey"
-              }
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
             }
           ]
         }
@@ -437,9 +327,7 @@
     "QueryDecrementCommentDownvoteUserMetrics": {
       "Type": "AWS::AppSync::Resolver",
       "Properties": {
-        "ApiId": {
-          "Ref": "AppSyncApiId"
-        },
+        "ApiId": { "Ref": "AppSyncApiId" },
         "DataSourceName": "UserMetricsTable",
         "TypeName": "Mutation",
         "FieldName": "decrementCommentDownvoteUserMetrics",
@@ -447,12 +335,8 @@
           "Fn::Sub": [
             "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.decrementCommentDownvoteUserMetrics.req.vtl",
             {
-              "S3DeploymentBucket": {
-                "Ref": "S3DeploymentBucket"
-              },
-              "S3DeploymentRootKey": {
-                "Ref": "S3DeploymentRootKey"
-              }
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
             }
           ]
         },
@@ -460,12 +344,8 @@
           "Fn::Sub": [
             "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.decrementCommentDownvoteUserMetrics.res.vtl",
             {
-              "S3DeploymentBucket": {
-                "Ref": "S3DeploymentBucket"
-              },
-              "S3DeploymentRootKey": {
-                "Ref": "S3DeploymentRootKey"
-              }
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
             }
           ]
         }
@@ -474,9 +354,7 @@
     "QueryIncrementActiveDayUserMetrics": {
       "Type": "AWS::AppSync::Resolver",
       "Properties": {
-        "ApiId": {
-          "Ref": "AppSyncApiId"
-        },
+        "ApiId": { "Ref": "AppSyncApiId" },
         "DataSourceName": "UserMetricsTable",
         "TypeName": "Mutation",
         "FieldName": "incrementActiveDayUserMetrics",
@@ -484,12 +362,8 @@
           "Fn::Sub": [
             "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.incrementActiveDayUserMetrics.req.vtl",
             {
-              "S3DeploymentBucket": {
-                "Ref": "S3DeploymentBucket"
-              },
-              "S3DeploymentRootKey": {
-                "Ref": "S3DeploymentRootKey"
-              }
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
             }
           ]
         },
@@ -497,12 +371,8 @@
           "Fn::Sub": [
             "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.incrementActiveDayUserMetrics.res.vtl",
             {
-              "S3DeploymentBucket": {
-                "Ref": "S3DeploymentBucket"
-              },
-              "S3DeploymentRootKey": {
-                "Ref": "S3DeploymentRootKey"
-              }
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
             }
           ]
         }
@@ -511,9 +381,7 @@
     "QueryDecrementActiveDayUserMetrics": {
       "Type": "AWS::AppSync::Resolver",
       "Properties": {
-        "ApiId": {
-          "Ref": "AppSyncApiId"
-        },
+        "ApiId": { "Ref": "AppSyncApiId" },
         "DataSourceName": "UserMetricsTable",
         "TypeName": "Mutation",
         "FieldName": "decrementActiveDayUserMetrics",
@@ -521,12 +389,8 @@
           "Fn::Sub": [
             "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.decrementActiveDayUserMetrics.req.vtl",
             {
-              "S3DeploymentBucket": {
-                "Ref": "S3DeploymentBucket"
-              },
-              "S3DeploymentRootKey": {
-                "Ref": "S3DeploymentRootKey"
-              }
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
             }
           ]
         },
@@ -534,12 +398,8 @@
           "Fn::Sub": [
             "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.decrementActiveDayUserMetrics.res.vtl",
             {
-              "S3DeploymentBucket": {
-                "Ref": "S3DeploymentBucket"
-              },
-              "S3DeploymentRootKey": {
-                "Ref": "S3DeploymentRootKey"
-              }
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
             }
           ]
         }
@@ -548,9 +408,7 @@
     "QueryIncrementDislikePostUserMetrics": {
       "Type": "AWS::AppSync::Resolver",
       "Properties": {
-        "ApiId": {
-          "Ref": "AppSyncApiId"
-        },
+        "ApiId": { "Ref": "AppSyncApiId" },
         "DataSourceName": "UserMetricsTable",
         "TypeName": "Mutation",
         "FieldName": "incrementDislikePostUserMetrics",
@@ -558,12 +416,8 @@
           "Fn::Sub": [
             "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.incrementDislikePostUserMetrics.req.vtl",
             {
-              "S3DeploymentBucket": {
-                "Ref": "S3DeploymentBucket"
-              },
-              "S3DeploymentRootKey": {
-                "Ref": "S3DeploymentRootKey"
-              }
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
             }
           ]
         },
@@ -571,12 +425,8 @@
           "Fn::Sub": [
             "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.incrementDislikePostUserMetrics.res.vtl",
             {
-              "S3DeploymentBucket": {
-                "Ref": "S3DeploymentBucket"
-              },
-              "S3DeploymentRootKey": {
-                "Ref": "S3DeploymentRootKey"
-              }
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
             }
           ]
         }
@@ -585,9 +435,7 @@
     "QueryDecrementDislikePostUserMetrics": {
       "Type": "AWS::AppSync::Resolver",
       "Properties": {
-        "ApiId": {
-          "Ref": "AppSyncApiId"
-        },
+        "ApiId": { "Ref": "AppSyncApiId" },
         "DataSourceName": "UserMetricsTable",
         "TypeName": "Mutation",
         "FieldName": "decrementDislikePostUserMetrics",
@@ -595,12 +443,8 @@
           "Fn::Sub": [
             "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.decrementDislikePostUserMetrics.req.vtl",
             {
-              "S3DeploymentBucket": {
-                "Ref": "S3DeploymentBucket"
-              },
-              "S3DeploymentRootKey": {
-                "Ref": "S3DeploymentRootKey"
-              }
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
             }
           ]
         },
@@ -608,12 +452,8 @@
           "Fn::Sub": [
             "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.decrementDislikePostUserMetrics.res.vtl",
             {
-              "S3DeploymentBucket": {
-                "Ref": "S3DeploymentBucket"
-              },
-              "S3DeploymentRootKey": {
-                "Ref": "S3DeploymentRootKey"
-              }
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
             }
           ]
         }
@@ -622,9 +462,7 @@
     "QueryIncrementRepliesCount": {
       "Type": "AWS::AppSync::Resolver",
       "Properties": {
-        "ApiId": {
-          "Ref": "AppSyncApiId"
-        },
+        "ApiId": { "Ref": "AppSyncApiId" },
         "DataSourceName": "CommentTable",
         "TypeName": "Mutation",
         "FieldName": "incrementRepliesCount",
@@ -632,12 +470,8 @@
           "Fn::Sub": [
             "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.incrementRepliesCount.req.vtl",
             {
-              "S3DeploymentBucket": {
-                "Ref": "S3DeploymentBucket"
-              },
-              "S3DeploymentRootKey": {
-                "Ref": "S3DeploymentRootKey"
-              }
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
             }
           ]
         },
@@ -645,12 +479,8 @@
           "Fn::Sub": [
             "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.incrementRepliesCount.res.vtl",
             {
-              "S3DeploymentBucket": {
-                "Ref": "S3DeploymentBucket"
-              },
-              "S3DeploymentRootKey": {
-                "Ref": "S3DeploymentRootKey"
-              }
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
             }
           ]
         }
@@ -659,9 +489,7 @@
     "QueryDecrementRepliesCount": {
       "Type": "AWS::AppSync::Resolver",
       "Properties": {
-        "ApiId": {
-          "Ref": "AppSyncApiId"
-        },
+        "ApiId": { "Ref": "AppSyncApiId" },
         "DataSourceName": "CommentTable",
         "TypeName": "Mutation",
         "FieldName": "decrementRepliesCount",
@@ -669,12 +497,8 @@
           "Fn::Sub": [
             "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.decrementRepliesCount.req.vtl",
             {
-              "S3DeploymentBucket": {
-                "Ref": "S3DeploymentBucket"
-              },
-              "S3DeploymentRootKey": {
-                "Ref": "S3DeploymentRootKey"
-              }
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
             }
           ]
         },
@@ -682,12 +506,8 @@
           "Fn::Sub": [
             "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.decrementRepliesCount.res.vtl",
             {
-              "S3DeploymentBucket": {
-                "Ref": "S3DeploymentBucket"
-              },
-              "S3DeploymentRootKey": {
-                "Ref": "S3DeploymentRootKey"
-              }
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
             }
           ]
         }
@@ -696,9 +516,7 @@
     "QueryIncrementPostLikes": {
       "Type": "AWS::AppSync::Resolver",
       "Properties": {
-        "ApiId": {
-          "Ref": "AppSyncApiId"
-        },
+        "ApiId": { "Ref": "AppSyncApiId" },
         "DataSourceName": "PostTable",
         "TypeName": "Mutation",
         "FieldName": "incrementPostLikes",
@@ -706,12 +524,8 @@
           "Fn::Sub": [
             "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.incrementPostLikes.req.vtl",
             {
-              "S3DeploymentBucket": {
-                "Ref": "S3DeploymentBucket"
-              },
-              "S3DeploymentRootKey": {
-                "Ref": "S3DeploymentRootKey"
-              }
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
             }
           ]
         },
@@ -719,12 +533,8 @@
           "Fn::Sub": [
             "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.incrementPostLikes.res.vtl",
             {
-              "S3DeploymentBucket": {
-                "Ref": "S3DeploymentBucket"
-              },
-              "S3DeploymentRootKey": {
-                "Ref": "S3DeploymentRootKey"
-              }
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
             }
           ]
         }
@@ -733,9 +543,7 @@
     "QueryDecrementPostLikes": {
       "Type": "AWS::AppSync::Resolver",
       "Properties": {
-        "ApiId": {
-          "Ref": "AppSyncApiId"
-        },
+        "ApiId": { "Ref": "AppSyncApiId" },
         "DataSourceName": "PostTable",
         "TypeName": "Mutation",
         "FieldName": "decrementPostLikes",
@@ -743,12 +551,8 @@
           "Fn::Sub": [
             "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.decrementPostLikes.req.vtl",
             {
-              "S3DeploymentBucket": {
-                "Ref": "S3DeploymentBucket"
-              },
-              "S3DeploymentRootKey": {
-                "Ref": "S3DeploymentRootKey"
-              }
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
             }
           ]
         },
@@ -756,12 +560,8 @@
           "Fn::Sub": [
             "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.decrementPostLikes.res.vtl",
             {
-              "S3DeploymentBucket": {
-                "Ref": "S3DeploymentBucket"
-              },
-              "S3DeploymentRootKey": {
-                "Ref": "S3DeploymentRootKey"
-              }
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
             }
           ]
         }
@@ -770,9 +570,7 @@
     "QueryIncrementPostLoves": {
       "Type": "AWS::AppSync::Resolver",
       "Properties": {
-        "ApiId": {
-          "Ref": "AppSyncApiId"
-        },
+        "ApiId": { "Ref": "AppSyncApiId" },
         "DataSourceName": "PostTable",
         "TypeName": "Mutation",
         "FieldName": "incrementPostLoves",
@@ -780,12 +578,8 @@
           "Fn::Sub": [
             "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.incrementPostLoves.req.vtl",
             {
-              "S3DeploymentBucket": {
-                "Ref": "S3DeploymentBucket"
-              },
-              "S3DeploymentRootKey": {
-                "Ref": "S3DeploymentRootKey"
-              }
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
             }
           ]
         },
@@ -793,12 +587,8 @@
           "Fn::Sub": [
             "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.incrementPostLoves.res.vtl",
             {
-              "S3DeploymentBucket": {
-                "Ref": "S3DeploymentBucket"
-              },
-              "S3DeploymentRootKey": {
-                "Ref": "S3DeploymentRootKey"
-              }
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
             }
           ]
         }
@@ -807,9 +597,7 @@
     "QueryDecrementPostLoves": {
       "Type": "AWS::AppSync::Resolver",
       "Properties": {
-        "ApiId": {
-          "Ref": "AppSyncApiId"
-        },
+        "ApiId": { "Ref": "AppSyncApiId" },
         "DataSourceName": "PostTable",
         "TypeName": "Mutation",
         "FieldName": "decrementPostLoves",
@@ -817,12 +605,8 @@
           "Fn::Sub": [
             "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.decrementPostLoves.req.vtl",
             {
-              "S3DeploymentBucket": {
-                "Ref": "S3DeploymentBucket"
-              },
-              "S3DeploymentRootKey": {
-                "Ref": "S3DeploymentRootKey"
-              }
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
             }
           ]
         },
@@ -830,12 +614,8 @@
           "Fn::Sub": [
             "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.decrementPostLoves.res.vtl",
             {
-              "S3DeploymentBucket": {
-                "Ref": "S3DeploymentBucket"
-              },
-              "S3DeploymentRootKey": {
-                "Ref": "S3DeploymentRootKey"
-              }
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
             }
           ]
         }
@@ -844,9 +624,7 @@
     "QueryIncrementPostSupports": {
       "Type": "AWS::AppSync::Resolver",
       "Properties": {
-        "ApiId": {
-          "Ref": "AppSyncApiId"
-        },
+        "ApiId": { "Ref": "AppSyncApiId" },
         "DataSourceName": "PostTable",
         "TypeName": "Mutation",
         "FieldName": "incrementPostSupports",
@@ -854,12 +632,8 @@
           "Fn::Sub": [
             "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.incrementPostSupports.req.vtl",
             {
-              "S3DeploymentBucket": {
-                "Ref": "S3DeploymentBucket"
-              },
-              "S3DeploymentRootKey": {
-                "Ref": "S3DeploymentRootKey"
-              }
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
             }
           ]
         },
@@ -867,12 +641,8 @@
           "Fn::Sub": [
             "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.incrementPostSupports.res.vtl",
             {
-              "S3DeploymentBucket": {
-                "Ref": "S3DeploymentBucket"
-              },
-              "S3DeploymentRootKey": {
-                "Ref": "S3DeploymentRootKey"
-              }
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
             }
           ]
         }
@@ -881,9 +651,7 @@
     "QueryDecrementPostSupports": {
       "Type": "AWS::AppSync::Resolver",
       "Properties": {
-        "ApiId": {
-          "Ref": "AppSyncApiId"
-        },
+        "ApiId": { "Ref": "AppSyncApiId" },
         "DataSourceName": "PostTable",
         "TypeName": "Mutation",
         "FieldName": "decrementPostSupports",
@@ -891,12 +659,8 @@
           "Fn::Sub": [
             "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.decrementPostSupports.req.vtl",
             {
-              "S3DeploymentBucket": {
-                "Ref": "S3DeploymentBucket"
-              },
-              "S3DeploymentRootKey": {
-                "Ref": "S3DeploymentRootKey"
-              }
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
             }
           ]
         },
@@ -904,12 +668,8 @@
           "Fn::Sub": [
             "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.decrementPostSupports.res.vtl",
             {
-              "S3DeploymentBucket": {
-                "Ref": "S3DeploymentBucket"
-              },
-              "S3DeploymentRootKey": {
-                "Ref": "S3DeploymentRootKey"
-              }
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
             }
           ]
         }
@@ -918,9 +678,7 @@
     "QueryIncrementPostDislikes": {
       "Type": "AWS::AppSync::Resolver",
       "Properties": {
-        "ApiId": {
-          "Ref": "AppSyncApiId"
-        },
+        "ApiId": { "Ref": "AppSyncApiId" },
         "DataSourceName": "PostTable",
         "TypeName": "Mutation",
         "FieldName": "incrementPostDislikes",
@@ -928,12 +686,8 @@
           "Fn::Sub": [
             "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.incrementPostDislikes.req.vtl",
             {
-              "S3DeploymentBucket": {
-                "Ref": "S3DeploymentBucket"
-              },
-              "S3DeploymentRootKey": {
-                "Ref": "S3DeploymentRootKey"
-              }
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
             }
           ]
         },
@@ -941,12 +695,8 @@
           "Fn::Sub": [
             "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.incrementPostDislikes.res.vtl",
             {
-              "S3DeploymentBucket": {
-                "Ref": "S3DeploymentBucket"
-              },
-              "S3DeploymentRootKey": {
-                "Ref": "S3DeploymentRootKey"
-              }
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
             }
           ]
         }
@@ -955,9 +705,7 @@
     "QueryDecrementPostDislikes": {
       "Type": "AWS::AppSync::Resolver",
       "Properties": {
-        "ApiId": {
-          "Ref": "AppSyncApiId"
-        },
+        "ApiId": { "Ref": "AppSyncApiId" },
         "DataSourceName": "PostTable",
         "TypeName": "Mutation",
         "FieldName": "decrementPostDislikes",
@@ -965,12 +713,8 @@
           "Fn::Sub": [
             "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.decrementPostDislikes.req.vtl",
             {
-              "S3DeploymentBucket": {
-                "Ref": "S3DeploymentBucket"
-              },
-              "S3DeploymentRootKey": {
-                "Ref": "S3DeploymentRootKey"
-              }
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
             }
           ]
         },
@@ -978,12 +722,8 @@
           "Fn::Sub": [
             "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.decrementPostDislikes.res.vtl",
             {
-              "S3DeploymentBucket": {
-                "Ref": "S3DeploymentBucket"
-              },
-              "S3DeploymentRootKey": {
-                "Ref": "S3DeploymentRootKey"
-              }
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
             }
           ]
         }
@@ -992,9 +732,7 @@
     "QueryIncrementCommentUpvote": {
       "Type": "AWS::AppSync::Resolver",
       "Properties": {
-        "ApiId": {
-          "Ref": "AppSyncApiId"
-        },
+        "ApiId": { "Ref": "AppSyncApiId" },
         "DataSourceName": "CommentTable",
         "TypeName": "Mutation",
         "FieldName": "incrementCommentUpvote",
@@ -1002,12 +740,8 @@
           "Fn::Sub": [
             "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.incrementCommentUpvote.req.vtl",
             {
-              "S3DeploymentBucket": {
-                "Ref": "S3DeploymentBucket"
-              },
-              "S3DeploymentRootKey": {
-                "Ref": "S3DeploymentRootKey"
-              }
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
             }
           ]
         },
@@ -1015,12 +749,8 @@
           "Fn::Sub": [
             "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.incrementCommentUpvote.res.vtl",
             {
-              "S3DeploymentBucket": {
-                "Ref": "S3DeploymentBucket"
-              },
-              "S3DeploymentRootKey": {
-                "Ref": "S3DeploymentRootKey"
-              }
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
             }
           ]
         }
@@ -1029,9 +759,7 @@
     "QueryDecrementCommentUpvote": {
       "Type": "AWS::AppSync::Resolver",
       "Properties": {
-        "ApiId": {
-          "Ref": "AppSyncApiId"
-        },
+        "ApiId": { "Ref": "AppSyncApiId" },
         "DataSourceName": "CommentTable",
         "TypeName": "Mutation",
         "FieldName": "decrementCommentUpvote",
@@ -1039,12 +767,8 @@
           "Fn::Sub": [
             "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.decrementCommentUpvote.req.vtl",
             {
-              "S3DeploymentBucket": {
-                "Ref": "S3DeploymentBucket"
-              },
-              "S3DeploymentRootKey": {
-                "Ref": "S3DeploymentRootKey"
-              }
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
             }
           ]
         },
@@ -1052,12 +776,8 @@
           "Fn::Sub": [
             "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.decrementCommentUpvote.res.vtl",
             {
-              "S3DeploymentBucket": {
-                "Ref": "S3DeploymentBucket"
-              },
-              "S3DeploymentRootKey": {
-                "Ref": "S3DeploymentRootKey"
-              }
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
             }
           ]
         }
@@ -1066,9 +786,7 @@
     "QueryIncrementCommentDownvote": {
       "Type": "AWS::AppSync::Resolver",
       "Properties": {
-        "ApiId": {
-          "Ref": "AppSyncApiId"
-        },
+        "ApiId": { "Ref": "AppSyncApiId" },
         "DataSourceName": "CommentTable",
         "TypeName": "Mutation",
         "FieldName": "incrementCommentDownvote",
@@ -1076,12 +794,8 @@
           "Fn::Sub": [
             "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.incrementCommentDownvote.req.vtl",
             {
-              "S3DeploymentBucket": {
-                "Ref": "S3DeploymentBucket"
-              },
-              "S3DeploymentRootKey": {
-                "Ref": "S3DeploymentRootKey"
-              }
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
             }
           ]
         },
@@ -1089,12 +803,8 @@
           "Fn::Sub": [
             "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.incrementCommentDownvote.res.vtl",
             {
-              "S3DeploymentBucket": {
-                "Ref": "S3DeploymentBucket"
-              },
-              "S3DeploymentRootKey": {
-                "Ref": "S3DeploymentRootKey"
-              }
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
             }
           ]
         }
@@ -1103,9 +813,7 @@
     "QueryDecrementCommentDownvote": {
       "Type": "AWS::AppSync::Resolver",
       "Properties": {
-        "ApiId": {
-          "Ref": "AppSyncApiId"
-        },
+        "ApiId": { "Ref": "AppSyncApiId" },
         "DataSourceName": "CommentTable",
         "TypeName": "Mutation",
         "FieldName": "decrementCommentDownvote",
@@ -1113,12 +821,8 @@
           "Fn::Sub": [
             "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.decrementCommentDownvote.req.vtl",
             {
-              "S3DeploymentBucket": {
-                "Ref": "S3DeploymentBucket"
-              },
-              "S3DeploymentRootKey": {
-                "Ref": "S3DeploymentRootKey"
-              }
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
             }
           ]
         },
@@ -1126,12 +830,8 @@
           "Fn::Sub": [
             "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.decrementCommentDownvote.res.vtl",
             {
-              "S3DeploymentBucket": {
-                "Ref": "S3DeploymentBucket"
-              },
-              "S3DeploymentRootKey": {
-                "Ref": "S3DeploymentRootKey"
-              }
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
             }
           ]
         }
@@ -1140,9 +840,7 @@
     "QueryIncrementFollowersUserMetrics": {
       "Type": "AWS::AppSync::Resolver",
       "Properties": {
-        "ApiId": {
-          "Ref": "AppSyncApiId"
-        },
+        "ApiId": { "Ref": "AppSyncApiId" },
         "DataSourceName": "UserMetricsTable",
         "TypeName": "Mutation",
         "FieldName": "incrementFollowersUserMetrics",
@@ -1150,12 +848,8 @@
           "Fn::Sub": [
             "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.incrementFollowersUserMetrics.req.vtl",
             {
-              "S3DeploymentBucket": {
-                "Ref": "S3DeploymentBucket"
-              },
-              "S3DeploymentRootKey": {
-                "Ref": "S3DeploymentRootKey"
-              }
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
             }
           ]
         },
@@ -1163,12 +857,8 @@
           "Fn::Sub": [
             "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.incrementFollowersUserMetrics.res.vtl",
             {
-              "S3DeploymentBucket": {
-                "Ref": "S3DeploymentBucket"
-              },
-              "S3DeploymentRootKey": {
-                "Ref": "S3DeploymentRootKey"
-              }
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
             }
           ]
         }
@@ -1177,9 +867,7 @@
     "QueryDecrementFollowersUserMetrics": {
       "Type": "AWS::AppSync::Resolver",
       "Properties": {
-        "ApiId": {
-          "Ref": "AppSyncApiId"
-        },
+        "ApiId": { "Ref": "AppSyncApiId" },
         "DataSourceName": "UserMetricsTable",
         "TypeName": "Mutation",
         "FieldName": "decrementFollowersUserMetrics",
@@ -1187,12 +875,8 @@
           "Fn::Sub": [
             "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.decrementFollowersUserMetrics.req.vtl",
             {
-              "S3DeploymentBucket": {
-                "Ref": "S3DeploymentBucket"
-              },
-              "S3DeploymentRootKey": {
-                "Ref": "S3DeploymentRootKey"
-              }
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
             }
           ]
         },
@@ -1200,12 +884,8 @@
           "Fn::Sub": [
             "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.decrementFollowersUserMetrics.res.vtl",
             {
-              "S3DeploymentBucket": {
-                "Ref": "S3DeploymentBucket"
-              },
-              "S3DeploymentRootKey": {
-                "Ref": "S3DeploymentRootKey"
-              }
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
             }
           ]
         }
@@ -1214,9 +894,7 @@
     "QueryIncrementFollowingUserMetrics": {
       "Type": "AWS::AppSync::Resolver",
       "Properties": {
-        "ApiId": {
-          "Ref": "AppSyncApiId"
-        },
+        "ApiId": { "Ref": "AppSyncApiId" },
         "DataSourceName": "UserMetricsTable",
         "TypeName": "Mutation",
         "FieldName": "incrementFollowingUserMetrics",
@@ -1224,12 +902,8 @@
           "Fn::Sub": [
             "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.incrementFollowingUserMetrics.req.vtl",
             {
-              "S3DeploymentBucket": {
-                "Ref": "S3DeploymentBucket"
-              },
-              "S3DeploymentRootKey": {
-                "Ref": "S3DeploymentRootKey"
-              }
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
             }
           ]
         },
@@ -1237,12 +911,8 @@
           "Fn::Sub": [
             "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.incrementFollowingUserMetrics.res.vtl",
             {
-              "S3DeploymentBucket": {
-                "Ref": "S3DeploymentBucket"
-              },
-              "S3DeploymentRootKey": {
-                "Ref": "S3DeploymentRootKey"
-              }
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
             }
           ]
         }
@@ -1251,9 +921,7 @@
     "QueryDecrementFollowingUserMetrics": {
       "Type": "AWS::AppSync::Resolver",
       "Properties": {
-        "ApiId": {
-          "Ref": "AppSyncApiId"
-        },
+        "ApiId": { "Ref": "AppSyncApiId" },
         "DataSourceName": "UserMetricsTable",
         "TypeName": "Mutation",
         "FieldName": "decrementFollowingUserMetrics",
@@ -1261,12 +929,8 @@
           "Fn::Sub": [
             "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.decrementFollowingUserMetrics.req.vtl",
             {
-              "S3DeploymentBucket": {
-                "Ref": "S3DeploymentBucket"
-              },
-              "S3DeploymentRootKey": {
-                "Ref": "S3DeploymentRootKey"
-              }
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
             }
           ]
         },
@@ -1274,12 +938,440 @@
           "Fn::Sub": [
             "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.decrementFollowingUserMetrics.res.vtl",
             {
-              "S3DeploymentBucket": {
-                "Ref": "S3DeploymentBucket"
-              },
-              "S3DeploymentRootKey": {
-                "Ref": "S3DeploymentRootKey"
-              }
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
+            }
+          ]
+        }
+      }
+    },
+    "QueryIncrementTotalPostsUserMetrics": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": { "Ref": "AppSyncApiId" },
+        "DataSourceName": "UserMetricsTable",
+        "TypeName": "Mutation",
+        "FieldName": "incrementTotalPostsUserMetrics",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Sub": [
+            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.incrementTotalPostsUserMetrics.req.vtl",
+            {
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
+            }
+          ]
+        },
+        "ResponseMappingTemplateS3Location": {
+          "Fn::Sub": [
+            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.incrementTotalPostsUserMetrics.res.vtl",
+            {
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
+            }
+          ]
+        }
+      }
+    },
+    "QueryDecrementTotalPostsUserMetrics": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": { "Ref": "AppSyncApiId" },
+        "DataSourceName": "UserMetricsTable",
+        "TypeName": "Mutation",
+        "FieldName": "decrementTotalPostsUserMetrics",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Sub": [
+            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.decrementTotalPostsUserMetrics.req.vtl",
+            {
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
+            }
+          ]
+        },
+        "ResponseMappingTemplateS3Location": {
+          "Fn::Sub": [
+            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.decrementTotalPostsUserMetrics.res.vtl",
+            {
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
+            }
+          ]
+        }
+      }
+    },
+    "QueryIncrementTotalCommentsUserMetrics": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": { "Ref": "AppSyncApiId" },
+        "DataSourceName": "UserMetricsTable",
+        "TypeName": "Mutation",
+        "FieldName": "incrementTotalCommentsUserMetrics",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Sub": [
+            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.incrementTotalCommentsUserMetrics.req.vtl",
+            {
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
+            }
+          ]
+        },
+        "ResponseMappingTemplateS3Location": {
+          "Fn::Sub": [
+            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.incrementTotalCommentsUserMetrics.res.vtl",
+            {
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
+            }
+          ]
+        }
+      }
+    },
+    "QueryDecrementTotalCommentsUserMetrics": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": { "Ref": "AppSyncApiId" },
+        "DataSourceName": "UserMetricsTable",
+        "TypeName": "Mutation",
+        "FieldName": "decrementTotalCommentsUserMetrics",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Sub": [
+            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.decrementTotalCommentsUserMetrics.req.vtl",
+            {
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
+            }
+          ]
+        },
+        "ResponseMappingTemplateS3Location": {
+          "Fn::Sub": [
+            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.decrementTotalCommentsUserMetrics.res.vtl",
+            {
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
+            }
+          ]
+        }
+      }
+    },
+    "QueryIncrementCommunitiesJoinedUserMetrics": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": { "Ref": "AppSyncApiId" },
+        "DataSourceName": "UserMetricsTable",
+        "TypeName": "Mutation",
+        "FieldName": "incrementCommunitiesJoinedUserMetrics",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Sub": [
+            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.incrementCommunitiesJoinedUserMetrics.req.vtl",
+            {
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
+            }
+          ]
+        },
+        "ResponseMappingTemplateS3Location": {
+          "Fn::Sub": [
+            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.incrementCommunitiesJoinedUserMetrics.res.vtl",
+            {
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
+            }
+          ]
+        }
+      }
+    },
+    "QueryDecrementCommunitiesJoinedUserMetrics": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": { "Ref": "AppSyncApiId" },
+        "DataSourceName": "UserMetricsTable",
+        "TypeName": "Mutation",
+        "FieldName": "decrementCommunitiesJoinedUserMetrics",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Sub": [
+            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.decrementCommunitiesJoinedUserMetrics.req.vtl",
+            {
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
+            }
+          ]
+        },
+        "ResponseMappingTemplateS3Location": {
+          "Fn::Sub": [
+            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.decrementCommunitiesJoinedUserMetrics.res.vtl",
+            {
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
+            }
+          ]
+        }
+      }
+    },
+    "QueryIncrementCommunitiesModeratingUserMetrics": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": { "Ref": "AppSyncApiId" },
+        "DataSourceName": "UserMetricsTable",
+        "TypeName": "Mutation",
+        "FieldName": "incrementCommunitiesModeratingUserMetrics",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Sub": [
+            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.incrementCommunitiesModeratingUserMetrics.req.vtl",
+            {
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
+            }
+          ]
+        },
+        "ResponseMappingTemplateS3Location": {
+          "Fn::Sub": [
+            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.incrementCommunitiesModeratingUserMetrics.res.vtl",
+            {
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
+            }
+          ]
+        }
+      }
+    },
+    "QueryDecrementCommunitiesModeratingUserMetrics": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": { "Ref": "AppSyncApiId" },
+        "DataSourceName": "UserMetricsTable",
+        "TypeName": "Mutation",
+        "FieldName": "decrementCommunitiesModeratingUserMetrics",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Sub": [
+            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.decrementCommunitiesModeratingUserMetrics.req.vtl",
+            {
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
+            }
+          ]
+        },
+        "ResponseMappingTemplateS3Location": {
+          "Fn::Sub": [
+            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.decrementCommunitiesModeratingUserMetrics.res.vtl",
+            {
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
+            }
+          ]
+        }
+      }
+    },
+    "QueryIncrementTotalPostsCommunity": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": { "Ref": "AppSyncApiId" },
+        "DataSourceName": "CommunityTable",
+        "TypeName": "Mutation",
+        "FieldName": "incrementTotalPostsCommunity",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Sub": [
+            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.incrementTotalPostsCommunity.req.vtl",
+            {
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
+            }
+          ]
+        },
+        "ResponseMappingTemplateS3Location": {
+          "Fn::Sub": [
+            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.incrementTotalPostsCommunity.res.vtl",
+            {
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
+            }
+          ]
+        }
+      }
+    },
+    "QueryDecrementTotalPostsCommunity": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": { "Ref": "AppSyncApiId" },
+        "DataSourceName": "CommunityTable",
+        "TypeName": "Mutation",
+        "FieldName": "decrementTotalPostsCommunity",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Sub": [
+            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.decrementTotalPostsCommunity.req.vtl",
+            {
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
+            }
+          ]
+        },
+        "ResponseMappingTemplateS3Location": {
+          "Fn::Sub": [
+            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.decrementTotalPostsCommunity.res.vtl",
+            {
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
+            }
+          ]
+        }
+      }
+    },
+    "QueryIncrementTotalMembersCommunity": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": { "Ref": "AppSyncApiId" },
+        "DataSourceName": "CommunityTable",
+        "TypeName": "Mutation",
+        "FieldName": "incrementTotalMembersCommunity",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Sub": [
+            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.incrementTotalMembersCommunity.req.vtl",
+            {
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
+            }
+          ]
+        },
+        "ResponseMappingTemplateS3Location": {
+          "Fn::Sub": [
+            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.incrementTotalMembersCommunity.res.vtl",
+            {
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
+            }
+          ]
+        }
+      }
+    },
+    "QueryDecrementTotalMembersCommunity": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": { "Ref": "AppSyncApiId" },
+        "DataSourceName": "CommunityTable",
+        "TypeName": "Mutation",
+        "FieldName": "decrementTotalMembersCommunity",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Sub": [
+            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.decrementTotalMembersCommunity.req.vtl",
+            {
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
+            }
+          ]
+        },
+        "ResponseMappingTemplateS3Location": {
+          "Fn::Sub": [
+            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.decrementTotalMembersCommunity.res.vtl",
+            {
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
+            }
+          ]
+        }
+      }
+    },
+    "QueryIncrementTotalCommentsCommunity": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": { "Ref": "AppSyncApiId" },
+        "DataSourceName": "CommunityTable",
+        "TypeName": "Mutation",
+        "FieldName": "incrementTotalCommentsCommunity",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Sub": [
+            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.incrementTotalCommentsCommunity.req.vtl",
+            {
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
+            }
+          ]
+        },
+        "ResponseMappingTemplateS3Location": {
+          "Fn::Sub": [
+            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.incrementTotalCommentsCommunity.res.vtl",
+            {
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
+            }
+          ]
+        }
+      }
+    },
+    "QueryDecrementTotalCommentsCommunity": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": { "Ref": "AppSyncApiId" },
+        "DataSourceName": "CommunityTable",
+        "TypeName": "Mutation",
+        "FieldName": "decrementTotalCommentsCommunity",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Sub": [
+            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.decrementTotalCommentsCommunity.req.vtl",
+            {
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
+            }
+          ]
+        },
+        "ResponseMappingTemplateS3Location": {
+          "Fn::Sub": [
+            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.decrementTotalCommentsCommunity.res.vtl",
+            {
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
+            }
+          ]
+        }
+      }
+    },
+    "QueryIncrementTotalModeratorsCommunity": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": { "Ref": "AppSyncApiId" },
+        "DataSourceName": "CommunityTable",
+        "TypeName": "Mutation",
+        "FieldName": "incrementTotalModeratorsCommunity",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Sub": [
+            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.incrementTotalModeratorsCommunity.req.vtl",
+            {
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
+            }
+          ]
+        },
+        "ResponseMappingTemplateS3Location": {
+          "Fn::Sub": [
+            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.incrementTotalModeratorsCommunity.res.vtl",
+            {
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
+            }
+          ]
+        }
+      }
+    },
+    "QueryDecrementTotalModeratorsCommunity": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": { "Ref": "AppSyncApiId" },
+        "DataSourceName": "CommunityTable",
+        "TypeName": "Mutation",
+        "FieldName": "decrementTotalModeratorsCommunity",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Sub": [
+            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.decrementTotalModeratorsCommunity.req.vtl",
+            {
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
+            }
+          ]
+        },
+        "ResponseMappingTemplateS3Location": {
+          "Fn::Sub": [
+            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.decrementTotalModeratorsCommunity.res.vtl",
+            {
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
             }
           ]
         }
@@ -1288,20 +1380,9 @@
   },
   "Conditions": {
     "HasEnvironmentParameter": {
-      "Fn::Not": [
-        {
-          "Fn::Equals": [
-            {
-              "Ref": "env"
-            },
-            "NONE"
-          ]
-        }
-      ]
+      "Fn::Not": [{ "Fn::Equals": [{ "Ref": "env" }, "NONE"] }]
     },
-    "AlwaysFalse": {
-      "Fn::Equals": ["true", "false"]
-    }
+    "AlwaysFalse": { "Fn::Equals": ["true", "false"] }
   },
   "Outputs": {
     "EmptyOutput": {

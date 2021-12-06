@@ -23,6 +23,20 @@ type Mutation {
   decrementFollowersUserMetrics(id: ID!): UserMetrics @aws_cognito_user_pools
   incrementFollowingUserMetrics(id: ID!): UserMetrics @aws_cognito_user_pools
   decrementFollowingUserMetrics(id: ID!): UserMetrics @aws_cognito_user_pools
+  incrementTotalPostsUserMetrics(id: ID!): UserMetrics @aws_cognito_user_pools
+  decrementTotalPostsUserMetrics(id: ID!): UserMetrics @aws_cognito_user_pools
+  incrementTotalCommentsUserMetrics(id: ID!): UserMetrics
+    @aws_cognito_user_pools
+  decrementTotalCommentsUserMetrics(id: ID!): UserMetrics
+    @aws_cognito_user_pools
+  incrementCommunitiesJoinedUserMetrics(id: ID!): UserMetrics
+    @aws_cognito_user_pools
+  decrementCommunitiesJoinedUserMetrics(id: ID!): UserMetrics
+    @aws_cognito_user_pools
+  incrementCommunitiesModeratingUserMetrics(id: ID!): UserMetrics
+    @aws_cognito_user_pools
+  decrementCommunitiesModeratingUserMetrics(id: ID!): UserMetrics
+    @aws_cognito_user_pools
   incrementRepliesCount(id: ID!): Comment @aws_cognito_user_pools
   decrementRepliesCount(id: ID!): Comment @aws_cognito_user_pools
   incrementPostLikes(id: ID!): Post @aws_cognito_user_pools
@@ -37,6 +51,14 @@ type Mutation {
   decrementCommentUpvote(id: ID!): Comment @aws_cognito_user_pools
   incrementCommentDownvote(id: ID!): Comment @aws_cognito_user_pools
   decrementCommentDownvote(id: ID!): Comment @aws_cognito_user_pools
+  incrementTotalPostsCommunity(id: ID!): Community @aws_cognito_user_pools
+  decrementTotalPostsCommunity(id: ID!): Community @aws_cognito_user_pools
+  incrementTotalMembersCommunity(id: ID!): Community @aws_cognito_user_pools
+  decrementTotalMembersCommunity(id: ID!): Community @aws_cognito_user_pools
+  incrementTotalCommentsCommunity(id: ID!): Community @aws_cognito_user_pools
+  decrementTotalCommentsCommunity(id: ID!): Community @aws_cognito_user_pools
+  incrementTotalModeratorsCommunity(id: ID!): Community @aws_cognito_user_pools
+  decrementTotalModeratorsCommunity(id: ID!): Community @aws_cognito_user_pools
   createPostAndTimeline(
     type: PostType!
     content: String!
@@ -106,6 +128,8 @@ type UserMetrics
   following: Int!
   totalPosts: Int!
   totalComments: Int!
+  communitiesJoined: Int!
+  communitiesModerating: Int!
   activeDays: Int!
   lastActiveDay: AWSDateTime!
   User: User! @connection(fields: ["id"])
@@ -147,6 +171,10 @@ type Community
   profileImageS3Key: String!
   type: CommunityType!
   creatorId: ID!
+  totalPosts: Int!
+  totalMembers: Int!
+  totalComments: Int!
+  totalModerators: Int!
   creator: User! @connection(fields: ["creatorId"])
   posts: [Post] @connection(keyName: "byCommunity", fields: ["id"])
   members: [UserCommunityRelationShip]
@@ -169,6 +197,7 @@ type UserCommunityRelationShip
   id: ID!
   userId: ID!
   communityId: ID!
+  isDeleted: Boolean
   user: User! @connection(fields: ["userId"])
   community: Community! @connection(fields: ["communityId"])
 }
@@ -181,6 +210,7 @@ type ModeratorCommunityRelationShip
   id: ID!
   moderatorId: ID!
   communityId: ID!
+  isDeleted: Boolean
   user: User! @connection(fields: ["moderatorId"])
   community: Community! @connection(fields: ["communityId"])
 }
