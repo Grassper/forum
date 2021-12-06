@@ -175,9 +175,29 @@ const createCommentHandler = async (args: createCommentHandlerInput_) => {
         authMode: "AMAZON_COGNITO_USER_POOLS",
       })) as GraphQLResult<createParentChildCommentRelationship_>;
 
+      /**
+       * increment replies for comment
+       * increment total comment for user and community
+       */
       await API.graphql({
         query: incrementCommentRepliesCount,
         variables: { id: parentCommentId },
+        authMode: "AMAZON_COGNITO_USER_POOLS",
+      });
+
+      await API.graphql({
+        query: MetricsQueryPicker.USERMETRICS.TOTALCOMMENTS.INCREMENT,
+        variables: {
+          id: input.authorId,
+        },
+        authMode: "AMAZON_COGNITO_USER_POOLS",
+      });
+
+      await API.graphql({
+        query: MetricsQueryPicker.COMMUNITY.TOTALCOMMENTS.INCREMENT,
+        variables: {
+          id: input.communityId,
+        },
         authMode: "AMAZON_COGNITO_USER_POOLS",
       });
 
@@ -237,3 +257,39 @@ const incrementCommentRepliesCount = /* GraphQL */ `
     }
   }
 `;
+
+/**
+ * community metrics
+ */
+const IncrementTotalCommentsCommunity = /* GraphQL */ `
+  mutation incrementTotalCommentsCommunity($id: ID!) {
+    incrementTotalCommentsCommunity(id: $id) {
+      id
+    }
+  }
+`;
+
+/**
+ * user metrics
+ */
+
+const IncrementTotalCommentsUserMetrics = /* GraphQL */ `
+  mutation incrementTotalCommentsUserMetrics($id: ID!) {
+    incrementTotalCommentsUserMetrics(id: $id) {
+      id
+    }
+  }
+`;
+
+const MetricsQueryPicker = {
+  COMMUNITY: {
+    TOTALCOMMENTS: {
+      INCREMENT: IncrementTotalCommentsCommunity,
+    },
+  },
+  USERMETRICS: {
+    TOTALCOMMENTS: {
+      INCREMENT: IncrementTotalCommentsUserMetrics,
+    },
+  },
+};
