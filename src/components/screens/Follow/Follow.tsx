@@ -26,3 +26,44 @@ interface Props_ {}
 export const Follow: React.FC<Props_> = () => {
   return <Box bg="white" flex="1" alignItems="center" />;
 };
+
+// {
+//   "id": "be7cb66a-9a35-4581-b570-a791cb1c3e0b"
+// }
+
+const GetFollowersByUserId = /* GraphQL */ `
+  query getFollowers($id: ID!, $nextToken: String, $limit: Int) {
+    getUser(id: $id) {
+      followers(
+        nextToken: $nextToken
+        limit: $limit
+        sortDirection: DESC
+        filter: { isDeleted: { attributeExists: false } }
+      ) {
+        items {
+          follower {
+            id
+            username
+            profileImageUrl
+          }
+        }
+      }
+    }
+  }
+`;
+
+const GetFollowingByUserId = /* GraphQL */ `
+  query getFollowing($id: ID!, $nextToken: String, $limit: Int) {
+    getUser(id: $id) {
+      followees(limit: $limit, nextToken: $nextToken) {
+        items {
+          followee {
+            id
+            username
+            profileImageUrl
+          }
+        }
+      }
+    }
+  }
+`;

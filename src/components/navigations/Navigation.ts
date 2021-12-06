@@ -13,7 +13,10 @@ export type ProfileStackParamList_ = {
   // * User
   Profile: { userId: string };
   EditProfile: undefined;
-  Follow: { title: "Followers" | "Following" | "Blocked Accounts" };
+  Follow: {
+    title: "Followers" | "Following" | "Blocked Accounts";
+    routeUserId: string;
+  };
 };
 
 export type SubForumStackParamList_ = {
