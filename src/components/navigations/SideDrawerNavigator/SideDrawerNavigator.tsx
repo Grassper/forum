@@ -24,7 +24,7 @@ import {
   Text,
 } from "native-base";
 import React, { useState } from "react";
-import { StyleSheet } from "react-native";
+import { Linking, StyleSheet } from "react-native";
 import { SvgUri } from "react-native-svg";
 
 import { DrawerParamList_ } from "@/root/src/components/navigations/Navigation";
@@ -152,7 +152,9 @@ const CustomDrawerContent = (props: DrawerContentComponentProps) => {
               Privacy Policy
             </Text>
           )}
-          onPress={() => {}}
+          onPress={() =>
+            Linking.openURL("https://www.eforum.io/policies/privacy-policy")
+          }
           icon={({ color }) => (
             <Icon
               as={<MaterialIcons name="policy" size={24} color="black" />}
@@ -175,7 +177,9 @@ const CustomDrawerContent = (props: DrawerContentComponentProps) => {
               Terms of use
             </Text>
           )}
-          onPress={() => {}}
+          onPress={() =>
+            Linking.openURL("https://www.eforum.io/policies/terms-of-use")
+          }
           icon={({ color }) => (
             <Icon
               as={
