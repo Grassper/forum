@@ -38,7 +38,7 @@ const fetchFonts = (): Promise<void> => {
 
 const App: React.FC = () => {
   const [fontLoaded, setFontLoaded] = React.useState(false);
-  const { updateUser } = React.useContext(UserContext);
+  const { user, updateUser } = React.useContext(UserContext);
 
   React.useEffect(() => {
     const checkCurrentUserInDb = async () => {
@@ -130,6 +130,10 @@ const App: React.FC = () => {
         onError={console.warn}
       />
     );
+  }
+
+  if (!user.id) {
+    return <AppLoading />;
   }
 
   return (
