@@ -1,5 +1,7 @@
+import { GraphQLResult } from "@aws-amplify/api-graphql";
 import { Foundation } from "@expo/vector-icons";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import { API } from "aws-amplify";
 import {
   Avatar,
   Box,
@@ -15,7 +17,6 @@ import { Dimensions, StyleSheet } from "react-native";
 
 import { Skeleton } from "@/root/src/components/shared/Skeleton";
 import { UserContext } from "@/root/src/context";
-import { useToggle } from "@/root/src/hooks";
 import { SignS3ImageKey } from "@/root/src/utils/helpers";
 
 interface Props_ {
@@ -39,7 +40,9 @@ export const SubForumCard: React.FC<Props_> = ({
   creatorId,
   _version,
 }) => {
-  const [status, setStatus] = useToggle(true);
+  const [relationship, setRelationship] = React.useState<
+    "JOINED" | "NOTJOINED"
+  >("NOTJOINED");
 
   const [signedProfile, setSignedProfile] = React.useState("");
   const [signedCover, setSignedCover] = React.useState("");
@@ -73,6 +76,30 @@ export const SubForumCard: React.FC<Props_> = ({
   }, [profileImageS3Key, coverImageS3Key]);
 
   useFocusEffect(signImage);
+
+  const RelationshipHandler = () => {
+    if (id && creatorId && currentUser.id && creatorId !== currentUser.id) {
+      if (relationship === "NOTJOINED") {
+        setRelationship("JOINED");
+
+        // create user forum relationship call
+        UserForumRelationFetch({
+          userId: currentUser.id,
+          communityId: id,
+          action: "ADD",
+        });
+      } else {
+        setRelationship("NOTJOINED");
+
+        // delete user forum relationship call
+        UserForumRelationFetch({
+          userId: currentUser.id,
+          communityId: id,
+          action: "DELETE",
+        });
+      }
+    }
+  };
 
   return (
     <Box>
@@ -163,13 +190,15 @@ export const SubForumCard: React.FC<Props_> = ({
 
             {id && creatorId && creatorId !== currentUser.id && (
               <Button
-                onPress={() => setStatus()}
-                bg={status ? "tertiary.500" : "danger.500"}
+                onPress={RelationshipHandler}
+                bg={
+                  relationship === "NOTJOINED" ? "tertiary.500" : "danger.500"
+                }
                 variant="unstyled"
                 minWidth="24"
                 borderRadius="50"
               >
-                {status ? "Join" : "Exit"}
+                {relationship === "NOTJOINED" ? "Join" : "Exit"}
               </Button>
             )}
           </HStack>
@@ -207,3 +236,273 @@ const styles = StyleSheet.create({
     width: 2.5,
   },
 });
+
+/**
+ * Todo-1: graphql schema update
+ * Todo-2: graphql schema test
+ * Todo-3: update subforum creation call
+ * Todo-3: graphql queries and types
+ * Todo-4: custom resolvers
+ * Todo-5: handlers
+ */
+
+/**
+ * api
+ */
+
+interface UserForumRelationFetchInput_ {
+  userId: string;
+  communityId: string;
+  action: "ADD" | "DELETE";
+}
+
+interface DeleteUserForumRelationFetchInput_ {
+  id: string;
+  userId: string;
+  communityId: string;
+  isDeleted: boolean;
+}
+
+interface CreateUserForumRelationFetchInput_ {
+  userId: string;
+  communityId: string;
+}
+
+const UserForumRelationFetch = async (input: UserForumRelationFetchInput_) => {
+  try {
+    // check if user forum relationship exist
+
+    const isUserForumRelationExit = (await API.graphql({
+      query: CheckUserForumRelation,
+      variables: {
+        userId: input.userId,
+        communityId: input.communityId,
+      },
+      authMode: "AMAZON_COGNITO_USER_POOLS",
+    })) as GraphQLResult<CheckUserForumRelation_>;
+
+    const isUserForumRelationExistItems =
+      isUserForumRelationExit.data?.listUserCommunityRelationShips.items;
+
+    // if relationship doesnt exist, create on
+    if (
+      isUserForumRelationExistItems &&
+      isUserForumRelationExistItems.length === 0 &&
+      input.action === "ADD"
+    ) {
+      const createUserForumRelationInput: CreateUserForumRelationFetchInput_ = {
+        userId: input.userId,
+        communityId: input.communityId,
+      };
+
+      const createdUserForumRelationship = (await API.graphql({
+        query: CreateUserForumRelation,
+        variables: {
+          input: createUserForumRelationInput,
+        },
+        authMode: "AMAZON_COGNITO_USER_POOLS",
+      })) as GraphQLResult<CreateUserForumRelation_>;
+
+      if (createdUserForumRelationship.data?.createUserCommunityRelationShip) {
+        /**
+         * increment communities joined metrics in current user
+         * increment total members metrics in community
+         */
+
+        await API.graphql({
+          query: MetricsQueryPicker.USERMETRICS.COMMUNITIESJOINED.INCREMENT,
+          variables: {
+            id: input.userId,
+          },
+          authMode: "AMAZON_COGNITO_USER_POOLS",
+        });
+
+        await API.graphql({
+          query: MetricsQueryPicker.COMMUNITY.TOTALMEMBERS.INCREMENT,
+          variables: {
+            id: input.communityId,
+          },
+          authMode: "AMAZON_COGNITO_USER_POOLS",
+        });
+
+        return createdUserForumRelationship.data.createUserCommunityRelationShip
+          .id;
+      }
+    } else if (
+      isUserForumRelationExistItems &&
+      isUserForumRelationExistItems.length === 1 &&
+      input.action === "DELETE"
+    ) {
+      const deletedUserForumRelationInput: DeleteUserForumRelationFetchInput_ =
+        {
+          id: isUserForumRelationExistItems[0].id,
+          userId: input.userId,
+          communityId: input.communityId,
+          isDeleted: true,
+        };
+
+      const deletedUserForumRelationship = (await API.graphql({
+        query: DeleteUserForumRelation,
+        variables: {
+          input: deletedUserForumRelationInput,
+        },
+        authMode: "AMAZON_COGNITO_USER_POOLS",
+      })) as GraphQLResult<DeleteUserForumRelation_>;
+
+      if (deletedUserForumRelationship.data?.updateUserCommunityRelationShip) {
+        /**
+         * decrement communities joined metrics in current user
+         * decrement total members metrics in community
+         */
+
+        await API.graphql({
+          query: MetricsQueryPicker.USERMETRICS.COMMUNITIESJOINED.DECREMENT,
+          variables: {
+            id: input.userId,
+          },
+          authMode: "AMAZON_COGNITO_USER_POOLS",
+        });
+
+        await API.graphql({
+          query: MetricsQueryPicker.COMMUNITY.TOTALMEMBERS.DECREMENT,
+          variables: {
+            id: input.communityId,
+          },
+          authMode: "AMAZON_COGNITO_USER_POOLS",
+        });
+
+        return deletedUserForumRelationship.data.updateUserCommunityRelationShip
+          .id;
+      }
+    }
+  } catch (err) {
+    console.error(
+      "Error occured while creating or deleting user forum relationship in subforum card",
+      err
+    );
+  }
+};
+
+/**
+ * graphql queries and their types
+ * types pattern {queryName}_
+ * * note dash(_) at the end of type name
+ * order 1.queryType 2.graphql query
+ */
+
+interface CheckUserForumRelation_ {
+  listUserCommunityRelationShips: {
+    items: Item[];
+  };
+}
+
+interface CreateUserForumRelation_ {
+  createUserCommunityRelationShip: Item;
+}
+
+interface DeleteUserForumRelation_ {
+  updateUserCommunityRelationShip: Item;
+}
+
+interface Item {
+  id: string;
+  userId: string;
+  communityId: string;
+}
+
+const CreateUserForumRelation = /* GraphQL */ `
+  mutation CreateUserForumRelation(
+    $input: CreateUserCommunityRelationShipInput!
+  ) {
+    createUserCommunityRelationShip(input: $input) {
+      id
+      userId
+      communityId
+    }
+  }
+`;
+
+const DeleteUserForumRelation = /* GraphQL */ `
+  mutation UpdateUserCommunityRelationShip(
+    $input: UpdateUserCommunityRelationShipInput!
+  ) {
+    updateUserCommunityRelationShip(input: $input) {
+      id
+      userId
+      communityId
+    }
+  }
+`;
+
+const CheckUserForumRelation = /* GraphQL */ `
+  query ListUserCommunityRelationShips($userId: ID!, $communityId: ID!) {
+    listUserCommunityRelationShips(
+      filter: {
+        isDeleted: { attributeExists: false }
+        userId: { eq: $userId }
+        communityId: { eq: $communityId }
+      }
+    ) {
+      items {
+        id
+        userId
+        communityId
+      }
+    }
+  }
+`;
+
+/**
+ * community metrics
+ */
+
+const IncrementTotalMembersCommunity = /* GraphQL */ `
+  mutation incrementTotalMembersCommunity($id: ID!) {
+    incrementTotalMembersCommunity(id: $id) {
+      id
+    }
+  }
+`;
+
+const DecrementTotalMembersCommunity = /* GraphQL */ `
+  mutation decrementTotalMembersCommunity($id: ID!) {
+    decrementTotalMembersCommunity(id: $id) {
+      id
+    }
+  }
+`;
+
+/**
+ * user metrics
+ */
+
+const IncrementCommunitiesJoinedUserMetrics = /* GraphQL */ `
+  mutation incrementCommunitiesJoinedUserMetrics($id: ID!) {
+    incrementCommunitiesJoinedUserMetrics(id: $id) {
+      id
+    }
+  }
+`;
+
+const DecrementCommunitiesJoinedUserMetrics = /* GraphQL */ `
+  mutation decrementCommunitiesJoinedUserMetrics($id: ID!) {
+    decrementCommunitiesJoinedUserMetrics(id: $id) {
+      id
+    }
+  }
+`;
+
+const MetricsQueryPicker = {
+  COMMUNITY: {
+    TOTALMEMBERS: {
+      INCREMENT: IncrementTotalMembersCommunity,
+      DECREMENT: DecrementTotalMembersCommunity,
+    },
+  },
+  USERMETRICS: {
+    COMMUNITIESJOINED: {
+      INCREMENT: IncrementCommunitiesJoinedUserMetrics,
+      DECREMENT: DecrementCommunitiesJoinedUserMetrics,
+    },
+  },
+};
