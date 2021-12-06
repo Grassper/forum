@@ -1,5 +1,4 @@
 import { GraphQLResult } from "@aws-amplify/api-graphql";
-import { useFocusEffect } from "@react-navigation/native";
 import { API } from "aws-amplify";
 import { Button, Modal, Radio } from "native-base";
 import React from "react";
@@ -107,7 +106,7 @@ const reportUserFetch = async (input: reportUserFetch_) => {
   try {
     const reportUserData = (await API.graphql({
       query: CreateReportUserRelation,
-      variables: input,
+      variables: { input },
       authMode: "AMAZON_COGNITO_USER_POOLS",
     })) as GraphQLResult<CreateReportUserRelation_>;
 
@@ -130,8 +129,3 @@ const CreateReportUserRelation = /* GraphQL */ `
     }
   }
 `;
-// mutation CreateReportUser($input: CreateReportUserInput!) {
-//   createReportUser(input: $input) {
-//     id
-//   }
-// }

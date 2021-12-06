@@ -1,4 +1,11 @@
-import { AntDesign, Entypo, Feather, Ionicons } from "@expo/vector-icons";
+import {
+  AntDesign,
+  Entypo,
+  Feather,
+  FontAwesome,
+  Ionicons,
+  MaterialIcons,
+} from "@expo/vector-icons";
 import {
   createDrawerNavigator,
   DrawerContentComponentProps,
@@ -125,7 +132,59 @@ const CustomDrawerContent = (props: DrawerContentComponentProps) => {
           onPress={() => {}}
           icon={({ color }) => (
             <Icon
-              as={<Ionicons name="share-outline" />}
+              as={<FontAwesome name="sign-out" size={24} color="black" />}
+              size={"20px"}
+              ml="3"
+              color={color}
+            />
+          )}
+        />
+        <DrawerItem
+          style={styles.drawerItem}
+          label={({ color }) => (
+            <Text
+              fontSize="sm"
+              fontFamily="body"
+              fontWeight="500"
+              color={color}
+              ml="-4"
+            >
+              Privacy Policy
+            </Text>
+          )}
+          onPress={() => {}}
+          icon={({ color }) => (
+            <Icon
+              as={<MaterialIcons name="policy" size={24} color="black" />}
+              size={"20px"}
+              ml="3"
+              color={color}
+            />
+          )}
+        />
+        <DrawerItem
+          style={styles.drawerItem}
+          label={({ color }) => (
+            <Text
+              fontSize="sm"
+              fontFamily="body"
+              fontWeight="500"
+              color={color}
+              ml="-4"
+            >
+              Terms of use
+            </Text>
+          )}
+          onPress={() => {}}
+          icon={({ color }) => (
+            <Icon
+              as={
+                <Ionicons
+                  name="document-text-outline"
+                  size={24}
+                  color="black"
+                />
+              }
               size={"20px"}
               ml="3"
               color={color}
