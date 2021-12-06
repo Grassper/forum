@@ -23,8 +23,13 @@ interface Props_ {
   commentAuthorId?: string;
   postId?: string;
   contentText?: string;
+  userCommentMetric?: userCommentMetric_;
   commentId?: string;
   timeStamp?: Date;
+}
+
+interface userCommentMetric_ {
+  items: { type: "UPVOTE" | "DOWNVOTE" }[];
 }
 
 export const CommentCard: React.FC<Props_> = ({
@@ -40,10 +45,17 @@ export const CommentCard: React.FC<Props_> = ({
   contentText,
   commentId,
   hideCommentUserActions,
+  userCommentMetric,
 }) => {
   const [action, setAction] = React.useState<
     "UPVOTE" | "DOWNVOTE" | "NOTVOTED"
   >("NOTVOTED");
+
+  React.useEffect(() => {
+    if (userCommentMetric && userCommentMetric.items.length === 1) {
+      setAction(userCommentMetric.items[0].type);
+    }
+  }, [userCommentMetric]);
 
   const navigation = useNavigation();
   const [reportModal, setReportModal] = React.useState(false);

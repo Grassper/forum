@@ -17,6 +17,7 @@ import {
 } from "@/root/src/components/navigations/Navigation";
 import { CommentCard } from "@/root/src/components/shared/Cards/CommentCard";
 import { PostCard } from "@/root/src/components/shared/Cards/PostCard";
+import { UserContext } from "@/root/src/context";
 
 type NavigationProp_ = CompositeNavigationProp<
   StackNavigationProp<StackParamList_, "Post">,
@@ -76,9 +77,6 @@ const PostHeader: React.FC<PostHeader_> = (post) => {
           <Text fontWeight="500" color="eGreen.400">
             Comments
           </Text>
-          <Text fontWeight="500" color="eGreen.400" fontSize="xs" ml="1">
-            253k
-          </Text>
         </Flex>
       </Box>
     </Box>
@@ -91,6 +89,8 @@ export const Post: React.FC<Props_> = ({ route }) => {
   const [comments, setComments] = React.useState<Item[]>([]);
   const [nextToken, setNextToken] = React.useState<string>("");
 
+  const currentUser = React.useContext(UserContext).user;
+
   const populateContent = React.useCallback(() => {
     let isActive = true;
 
@@ -98,6 +98,7 @@ export const Post: React.FC<Props_> = ({ route }) => {
       if (postData.id) {
         const listCommentInput: listCommentsByPostIdFetch_ = {
           postId: postData.id,
+          currentUserId: currentUser.id,
           limit: 10,
         };
         const commentData = await listCommentsByPostIdFetch(listCommentInput);
@@ -114,7 +115,7 @@ export const Post: React.FC<Props_> = ({ route }) => {
     return () => {
       isActive = false;
     };
-  }, [postData.id]);
+  }, [currentUser.id, postData.id]);
 
   useFocusEffect(populateContent);
 
@@ -122,6 +123,7 @@ export const Post: React.FC<Props_> = ({ route }) => {
     if (nextToken && postData.id) {
       const listCommentInput: listCommentsByPostIdFetch_ = {
         postId: postData.id,
+        currentUserId: currentUser.id,
         limit: 10,
         nextToken,
       };
@@ -149,6 +151,7 @@ export const Post: React.FC<Props_> = ({ route }) => {
         timeStamp={comment.commentedDate}
         repliesCount={comment.repliesCount}
         commentAuthorId={comment.author.id}
+        userCommentMetric={comment.userCommentMetric}
       />
     );
   };
@@ -176,6 +179,7 @@ const styles = StyleSheet.create({
 interface listCommentsByPostIdFetch_ {
   postId: string;
   limit: number;
+  currentUserId: string;
   nextToken?: string;
 }
 
@@ -224,7 +228,12 @@ interface ChildComment {
   author: Author;
   commentedDate: Date;
   community: Community;
+  userCommentMetric: userCommentMetric_;
   repliesCount: number;
+}
+
+interface userCommentMetric_ {
+  items: { type: "UPVOTE" | "DOWNVOTE" }[];
 }
 
 interface Author {
@@ -243,6 +252,7 @@ const listCommentsByPostId = /* GraphQL */ `
     $postId: ID!
     $nextToken: String
     $limit: Int
+    $currentUserId: ID!
   ) {
     listParentChildCommentRelationships(
       filter: {
@@ -268,6 +278,14 @@ const listCommentsByPostId = /* GraphQL */ `
             name
           }
           repliesCount
+          userCommentMetric(
+            filter: { isDeleted: { attributeExists: false } }
+            userId: { eq: $currentUserId }
+          ) {
+            items {
+              type
+            }
+          }
         }
       }
       nextToken
