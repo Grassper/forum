@@ -8,6 +8,7 @@ import {
   Button,
   FormControl,
   Input,
+  Spinner,
   WarningOutlineIcon,
 } from "native-base";
 import React from "react";
@@ -40,12 +41,14 @@ export const EditProfile: React.FC<Props_> = ({ navigation }) => {
 
   const [isAboutValid, setAboutValid] = React.useState(false);
   const [aboutErrorMsg, setAboutErrorMsg] = React.useState("");
+  const [loading, setLoading] = React.useState(false);
 
   const currentUser = React.useContext(UserContext).user; // this context provided current login user
   const setUser = React.useContext(UserContext).updateUser;
 
   const handleSubmit = React.useCallback(async () => {
     if (isAboutValid) {
+      setLoading(true);
       try {
         const updateUserInput = {
           id: currentUser.id,
@@ -86,6 +89,7 @@ export const EditProfile: React.FC<Props_> = ({ navigation }) => {
         params: { userId: currentUser.id },
         merge: true,
       }); // pass id of current user
+      setLoading(false);
     }
   }, [about, currentUser, isAboutValid, navigation, setUser]);
 
@@ -116,13 +120,13 @@ export const EditProfile: React.FC<Props_> = ({ navigation }) => {
           size="md"
           _text={{ fontWeight: "600", color: "white" }}
           variant="unstyled"
-          onPress={handleSubmit}
+          onPress={!loading ? handleSubmit : null}
         >
-          Save
+          {!loading ? "Save" : <Spinner color="indigo.500" />}
         </Button>
       ),
     });
-  }, [handleSubmit, navigation]);
+  }, [handleSubmit, navigation, loading]);
 
   return (
     <Box style={styles.wrapper}>
