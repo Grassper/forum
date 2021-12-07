@@ -9,11 +9,13 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { API } from "aws-amplify";
 import { Box } from "native-base";
 import React from "react";
+import { FlatList, ListRenderItem, StyleSheet } from "react-native";
 
 import {
   DrawerParamList_,
   ProfileStackParamList_,
 } from "@/root/src/components/navigations/Navigation";
+import { FollowCard } from "@/root/src/components/shared/Cards";
 
 type NavigationProp_ = CompositeNavigationProp<
   StackNavigationProp<ProfileStackParamList_, "Follow">,
@@ -27,27 +29,45 @@ interface Props_ {
   route: RouteProp_;
 }
 
-export const Follow: React.FC<Props_> = ({ navigation, route }) => {
+export const Follow: React.FC<Props_> = ({ route }) => {
   const title = route.params?.title;
   const routeUserId = route.params?.routeUserId;
-  const [usersList, setUsersList] = React.useState<Item[]>([]);
+  const [usersList, setUsersList] = React.useState<
+    (FollowersItems_ | FollowingItems_)[]
+  >([]);
   const [nextToken, setNextToken] = React.useState<string>("");
 
   const populateContent = React.useCallback(() => {
     let isActive = true;
 
     const fetchCall = async () => {
-      if (title === "Following") {
-        const follwersInput: followingFetchInput_ = {
-          limit: 10,
-          id: routeUserId,
-          nextToken,
-        };
+      if (routeUserId) {
+        if (title === "Following") {
+          const followingInput: UserRelationshipFetchInput_ = {
+            limit: 10,
+            id: routeUserId,
+            relationship: "FOLLOWING",
+          };
 
-        const responseData = await followingFetch(follwersInput);
-        if (responseData && isActive) {
-          setUsersList(responseData.items);
-          // setNextToken(responseData.items.);
+          const responseData = await UserRelationshipFetch(followingInput);
+
+          if (responseData && isActive) {
+            setUsersList(responseData.items);
+            setNextToken(responseData.nextToken);
+          }
+        } else if (title === "Followers") {
+          const followersInput: UserRelationshipFetchInput_ = {
+            limit: 10,
+            id: routeUserId,
+            relationship: "FOLLOWERS",
+          };
+
+          const responseData = await UserRelationshipFetch(followersInput);
+
+          if (responseData && isActive) {
+            setUsersList(responseData.items);
+            setNextToken(responseData.nextToken);
+          }
         }
       }
     };
@@ -56,13 +76,190 @@ export const Follow: React.FC<Props_> = ({ navigation, route }) => {
     return () => {
       isActive = false;
     };
-  }, [title]);
-  return <Box bg="white" flex="1" alignItems="center" />;
+  }, [routeUserId, title]);
+
+  useFocusEffect(populateContent);
+
+  const FollowerCardRenderer: ListRenderItem<FollowersItems_> = ({ item }) => {
+    return (
+      <FollowCard
+        id={item.follower.id}
+        username={item.follower.username}
+        avatarUrl={item.follower.profileImageUrl}
+      />
+    );
+  };
+
+  const FollowingCardRenderer: ListRenderItem<FollowingItems_> = ({ item }) => {
+    return (
+      <FollowCard
+        id={item.followee.id}
+        username={item.followee.username}
+        avatarUrl={item.followee.profileImageUrl}
+      />
+    );
+  };
+
+  const handlePagination = async () => {
+    if (nextToken && routeUserId) {
+      if (title === "Following") {
+        const followingInput: UserRelationshipFetchInput_ = {
+          limit: 10,
+          id: routeUserId,
+          nextToken,
+          relationship: "FOLLOWING",
+        };
+
+        const responseData = await UserRelationshipFetch(followingInput);
+
+        if (responseData) {
+          setUsersList((prevState) => [...prevState, ...responseData.items]);
+          setNextToken(responseData.nextToken);
+        }
+      } else if (title === "Followers") {
+        const followersInput: UserRelationshipFetchInput_ = {
+          limit: 10,
+          id: routeUserId,
+          nextToken,
+          relationship: "FOLLOWERS",
+        };
+
+        const responseData = await UserRelationshipFetch(followersInput);
+        if (responseData) {
+          setUsersList((prevState) => [...prevState, ...responseData.items]);
+          setNextToken(responseData.nextToken);
+        }
+      }
+    }
+  };
+
+  return (
+    <Box style={styles.container} bg="white" pt="4">
+      {title === "Following" ? (
+        <FlatList
+          data={usersList as FollowingItems_[]}
+          renderItem={FollowingCardRenderer}
+          keyExtractor={(item) => item.followee.id}
+          onEndReached={() => handlePagination()}
+        />
+      ) : (
+        <FlatList
+          data={usersList as FollowersItems_[]}
+          renderItem={FollowerCardRenderer}
+          keyExtractor={(item) => item.follower.id}
+          onEndReached={() => handlePagination()}
+        />
+      )}
+    </Box>
+  );
 };
 
-// {
-//   "id": "be7cb66a-9a35-4581-b570-a791cb1c3e0b"
-// }
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});
+
+/**
+ * api calls
+ */
+interface UserRelationshipFetchInput_ {
+  id: string;
+  limit: number;
+  nextToken?: string;
+  relationship: "FOLLOWERS" | "FOLLOWING";
+}
+
+const UserRelationshipFetch = async (args: UserRelationshipFetchInput_) => {
+  try {
+    const { relationship, ...input } = args;
+
+    if (relationship === "FOLLOWING") {
+      const listFollowingUserData = (await API.graphql({
+        query: GetFollowingByUserId,
+        variables: input,
+        authMode: "AMAZON_COGNITO_USER_POOLS",
+      })) as GraphQLResult<GetFollowingByUserId_>;
+
+      if (listFollowingUserData.data?.getUser) {
+        const followingData = listFollowingUserData.data.getUser.followees;
+        return followingData;
+      }
+    } else if (relationship === "FOLLOWERS") {
+      const listFollowersUserData = (await API.graphql({
+        query: GetFollowersByUserId,
+        variables: input,
+        authMode: "AMAZON_COGNITO_USER_POOLS",
+      })) as GraphQLResult<GetFollowersByUserId_>;
+
+      if (listFollowersUserData.data?.getUser) {
+        const followersData = listFollowersUserData.data.getUser.followers;
+        return followersData;
+      }
+    }
+  } catch (err) {
+    console.error(
+      "Error occured while fetch the following in follow screen",
+      err
+    );
+  }
+};
+
+interface GetFollowingByUserId_ {
+  getUser?: {
+    followees: {
+      items: FollowingItems_[];
+      nextToken: string;
+    };
+  };
+}
+
+interface GetFollowersByUserId_ {
+  getUser?: {
+    followers: {
+      items: FollowersItems_[];
+      nextToken: string;
+    };
+  };
+}
+
+interface FollowingItems_ {
+  followee: {
+    id: string;
+    username: string;
+    profileImageUrl: string;
+  };
+}
+
+interface FollowersItems_ {
+  follower: {
+    id: string;
+    username: string;
+    profileImageUrl: string;
+  };
+}
+
+const GetFollowingByUserId = /* GraphQL */ `
+  query getFollowing($id: ID!, $nextToken: String, $limit: Int) {
+    getUser(id: $id) {
+      followees(
+        limit: $limit
+        nextToken: $nextToken
+        sortDirection: DESC
+        filter: { isDeleted: { attributeExists: false } }
+      ) {
+        items {
+          followee {
+            id
+            username
+            profileImageUrl
+          }
+        }
+        nextToken
+      }
+    }
+  }
+`;
 
 const GetFollowersByUserId = /* GraphQL */ `
   query getFollowers($id: ID!, $nextToken: String, $limit: Int) {
@@ -80,73 +277,7 @@ const GetFollowersByUserId = /* GraphQL */ `
             profileImageUrl
           }
         }
-      }
-    }
-  }
-`;
-
-/**
- * api calls
- */
-interface followingFetchInput_ {
-  limit: number;
-  id: string;
-  nextToken?: string;
-}
-
-const followingFetch = async (input: followingFetchInput_) => {
-  try {
-    const listFollowingUserData = (await API.graphql({
-      query: GetFollowingByUserId,
-      variables: input,
-      authMode: "AMAZON_COGNITO_USER_POOLS",
-    })) as GraphQLResult<GetFollowingByUserId_>;
-
-    if (listFollowingUserData.data?.getUser) {
-      const followingData = listFollowingUserData.data.getUser.followees;
-      return followingData;
-    }
-  } catch (err) {
-    console.error(
-      "Error occured while fetch the following in follow screen",
-      err
-    );
-  }
-};
-
-interface GetFollowingByUserId_ {
-  getUser?: GetUser;
-}
-
-interface GetUser {
-  followees: Followees;
-}
-
-interface Followees {
-  items: Item[];
-}
-
-interface Item {
-  followee: Followee;
-}
-
-interface Followee {
-  id: string;
-  username: string;
-  profileImageUrl: string;
-}
-
-const GetFollowingByUserId = /* GraphQL */ `
-  query getFollowing($id: ID!, $nextToken: String, $limit: Int) {
-    getUser(id: $id) {
-      followees(limit: $limit, nextToken: $nextToken) {
-        items {
-          followee {
-            id
-            username
-            profileImageUrl
-          }
-        }
+        nextToken
       }
     }
   }

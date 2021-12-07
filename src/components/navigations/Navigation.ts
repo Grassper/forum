@@ -14,7 +14,7 @@ export type ProfileStackParamList_ = {
   Profile: { userId: string };
   EditProfile: undefined;
   Follow: {
-    title: "Followers" | "Following" | "Blocked Accounts";
+    title: "Followers" | "Following";
     routeUserId: string;
   };
 };
