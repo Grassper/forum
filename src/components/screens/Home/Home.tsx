@@ -13,9 +13,9 @@ import React, { useState } from "react";
 import {
   FlatList,
   ListRenderItem,
+  ScrollView,
   StyleSheet,
   View,
-  ScrollView,
 } from "react-native";
 
 import {
@@ -156,6 +156,7 @@ export const Home: React.FC<Props_> = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+      <PostCard />
       {!loading ? (
         <>
           <BottomSheet isOpen={isOpen} onClose={HandleBottomSheet} />
