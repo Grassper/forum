@@ -3,7 +3,7 @@ import { DrawerNavigationProp } from "@react-navigation/drawer";
 import { CompositeNavigationProp, RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { API } from "aws-amplify";
-import { Box, Button, Divider, Flex, Input } from "native-base";
+import { Box, Button, Divider, Flex, Input, Spinner } from "native-base";
 import React from "react";
 import { Alert, StyleSheet } from "react-native";
 import isLength from "validator/es/lib/isLength";
@@ -32,6 +32,7 @@ export const AddAndEditReplies: React.FC<Props_> = ({ navigation, route }) => {
 
   const [isReplyValid, setReplyValid] = React.useState(false);
   const [replyErrorMsg, setReplyErrorMsg] = React.useState("");
+  const [loading, setLoading] = React.useState(false);
 
   const { action, ...comment } = route.params;
   const currentUser = React.useContext(UserContext).user;
@@ -44,6 +45,7 @@ export const AddAndEditReplies: React.FC<Props_> = ({ navigation, route }) => {
       comment.subForumId &&
       comment.commentId
     ) {
+      setLoading(true);
       const commentInput: createCommentHandlerInput_ = {
         content: reply,
         postId: comment.postId,
@@ -61,6 +63,7 @@ export const AddAndEditReplies: React.FC<Props_> = ({ navigation, route }) => {
       if (createCommentResponse) {
         navigation.goBack();
       }
+      setLoading(false);
     } else {
       Alert.alert(replyErrorMsg);
     }
@@ -98,13 +101,21 @@ export const AddAndEditReplies: React.FC<Props_> = ({ navigation, route }) => {
           size="md"
           _text={{ fontWeight: "600", color: "white" }}
           variant="unstyled"
-          onPress={handleSubmit}
+          onPress={!loading ? handleSubmit : null}
         >
-          {action === "Add" ? "Post" : "Update"}
+          {!loading ? (
+            action === "Add" ? (
+              "Post"
+            ) : (
+              "Update"
+            )
+          ) : (
+            <Spinner color="indigo.500" />
+          )}
         </Button>
       ),
     });
-  }, [action, handleSubmit, navigation]);
+  }, [action, handleSubmit, navigation, loading]);
 
   return (
     <Box style={styles.container} bg="white">

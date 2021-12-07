@@ -16,6 +16,7 @@ import {
   Icon,
   Image,
   Input,
+  Spinner,
   WarningOutlineIcon,
 } from "native-base";
 import React from "react";
@@ -52,6 +53,7 @@ export const EditAndCreateSubForum: React.FC<Props_> = ({
 
   const [forumName, setForumName] = React.useState("");
   const [description, setDescription] = React.useState("");
+  const [loading, setLoading] = React.useState(false);
 
   const [profileImageS3Key, setProfileImageS3Key] = React.useState("");
   const [bannerImageS3Key, setBannerImageS3Key] = React.useState("");
@@ -104,6 +106,7 @@ export const EditAndCreateSubForum: React.FC<Props_> = ({
       profileImageS3Key &&
       bannerImageS3Key
     ) {
+      setLoading(true);
       /** checking current screen for action add or edit action */
       if (action === "Add") {
         const newForumInput: handleForumCreationInput_ = {
@@ -156,6 +159,7 @@ export const EditAndCreateSubForum: React.FC<Props_> = ({
           });
         }
       }
+      setLoading(false);
     } else {
       Alert.alert(
         "You should provide all required fields including cover and subforum image to create subforum"
@@ -182,13 +186,21 @@ export const EditAndCreateSubForum: React.FC<Props_> = ({
           size="md"
           _text={{ fontWeight: "600", color: "white" }}
           variant="unstyled"
-          onPress={handleSubmit}
+          onPress={!loading ? handleSubmit : null}
         >
-          {title === "Edit Subforum" ? "Save" : "Create"}
+          {!loading ? (
+            title === "Edit Subforum" ? (
+              "Save"
+            ) : (
+              "Create"
+            )
+          ) : (
+            <Spinner color="indigo.500" />
+          )}
         </Button>
       ),
     });
-  }, [navigation, title, handleSubmit]);
+  }, [navigation, title, handleSubmit, loading]);
 
   const signImage = React.useCallback(() => {
     let isActive = true;

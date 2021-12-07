@@ -23,7 +23,7 @@ export const Skeleton: React.FC<Props_> = (props) => {
     outputRange: [-width, width],
   });
   return (
-    <Box bg="coolGray.100" {...props}>
+    <Box bg="coolGray.100" overflow="hidden" {...props}>
       <AnimatedLG
         colors={["#b0b0b030", "#b0b0b030", "#b0b0b030", "#b0b0b030"]}
         start={{ x: 0, y: 0 }}
