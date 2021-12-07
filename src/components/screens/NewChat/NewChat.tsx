@@ -16,23 +16,16 @@ import {
 } from "@/root/src/components/navigations/Navigation";
 import { UserCard } from "@/root/src/components/shared/Cards/UserCard";
 import { SearchBar } from "@/root/src/components/shared/SearchBar";
+import { UserContext } from "@/root/src/context";
 import { useDebounce } from "@/root/src/hooks";
 
-/**
- * todo 1: search reimplement and update the flatlist
- * todo 2: write onclick functin for click the item in the
- *  flatlist which create the chatroom for that personalize
- * todo3: navigate to that newly created chatroom if that chatroom already exist use that one
- *
- *
- */
 type NavigationProp_ = CompositeNavigationProp<
   StackNavigationProp<StackParamList_, "NewChat">,
   DrawerNavigationProp<DrawerParamList_>
 >;
 
 interface Props_ {
-  Navigation: NavigationProp_;
+  navigation: NavigationProp_;
 }
 
 interface UserCard_ {
@@ -41,21 +34,14 @@ interface UserCard_ {
   profileImageUrl: string;
 }
 
-const UserCardRenderer: ListRenderItem<UserCard_> = ({ item }) => {
-  return (
-    <UserCard
-      id={item.id}
-      username={item.username}
-      avatarUrl={item.profileImageUrl}
-    />
-  );
-};
-
-export const NewChat: React.FC<Props_> = () => {
+export const NewChat: React.FC<Props_> = ({ navigation }) => {
   const [searchValue, setSearchValue] = React.useState("");
   const [profiles, setProfiles] = React.useState<Item[]>([]);
   const [nextToken, setNextToken] = React.useState<string>("");
   const debouncedSearchTerm = useDebounce(searchValue, 1000);
+
+  const currentUser = React.useContext(UserContext).user;
+
   const populateContent = React.useCallback(() => {
     let isActive = true;
 
@@ -98,6 +84,33 @@ export const NewChat: React.FC<Props_> = () => {
       }
     }
   };
+
+  const UserCardRenderer: ListRenderItem<UserCard_> = ({ item }) => {
+    return (
+      <UserCard
+        id={item.id}
+        username={item.username}
+        avatarUrl={item.profileImageUrl}
+        onPress={async () => {
+          if (currentUser.id && item.id) {
+            const chatRoomId = await ChatRoomCreationFetch({
+              userId: item.id,
+              currentUserId: currentUser.id,
+            });
+
+            if (chatRoomId) {
+              navigation.navigate("ChatRoom", {
+                title: item.username,
+                imageUri: item.profileImageUrl,
+                roomId: chatRoomId,
+              });
+            }
+          }
+        }}
+      />
+    );
+  };
+
   return (
     <Box style={styles.container} bg="white" alignItems="center">
       <Box alignItems="center" width="90%" py="15px">
@@ -178,6 +191,94 @@ const searchUsers = /* GraphQL */ `
         id
       }
       nextToken
+    }
+  }
+`;
+
+/**
+ * * messaging
+ * Todo-6: when user click the user card in user list check if chat room exist between two users. if exist pass the chatroom id
+ */
+
+interface ChatRoomCreationFetchInput_ {
+  userId: string;
+  currentUserId: string;
+}
+
+const ChatRoomCreationFetch = async (input: ChatRoomCreationFetchInput_) => {
+  try {
+    /**
+     * creating chatroom
+     */
+
+    const createdChatRoom = (await API.graphql({
+      query: CreateChatRoom,
+      variables: { input: {} },
+      authMode: "AMAZON_COGNITO_USER_POOLS",
+    })) as GraphQLResult<CreateChatRoom_>;
+
+    if (createdChatRoom.data?.createChatRoom) {
+      const chatRoomId = createdChatRoom.data?.createChatRoom.id;
+
+      // adding user to created chatroom
+      (await API.graphql({
+        query: CreateChatRoomRelationship,
+        variables: {
+          input: {
+            userId: input.userId,
+            chatRoomId: chatRoomId,
+          },
+        },
+        authMode: "AMAZON_COGNITO_USER_POOLS",
+      })) as GraphQLResult<CreateChatRoomRelationship_>;
+
+      // adding current authenticated user to created chatroom
+      (await API.graphql({
+        query: CreateChatRoomRelationship,
+        variables: {
+          input: {
+            userId: input.currentUserId,
+            chatRoomId: chatRoomId,
+          },
+        },
+        authMode: "AMAZON_COGNITO_USER_POOLS",
+      })) as GraphQLResult<CreateChatRoomRelationship_>;
+
+      return chatRoomId;
+    }
+  } catch (err) {
+    console.error("Error occured while creating ChatRoom", err);
+  }
+};
+
+interface CreateChatRoom_ {
+  createChatRoom?: { id: string };
+}
+
+const CreateChatRoom = /* GraphQL */ `
+  mutation CreateChatRoom($input: CreateChatRoomInput!) {
+    createChatRoom(input: $input) {
+      id
+    }
+  }
+`;
+
+interface CreateChatRoomRelationship_ {
+  createUserChatRoomRelationship?: {
+    id: string;
+    userId: string;
+    chatRoomId: string;
+  };
+}
+
+const CreateChatRoomRelationship = /* GraphQL */ `
+  mutation CreateChatRoomRelationship(
+    $input: CreateUserChatRoomRelationshipInput!
+  ) {
+    createUserChatRoomRelationship(input: $input) {
+      id
+      userId
+      chatRoomId
     }
   }
 `;
