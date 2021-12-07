@@ -3,7 +3,7 @@ import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { API } from "aws-amplify";
 import { Box } from "native-base";
 import React from "react";
-import { FlatList, ListRenderItem, StyleSheet } from "react-native";
+import { FlatList, ListRenderItem, ScrollView, StyleSheet } from "react-native";
 
 import { CommunityTile } from "@/root/src/components/shared/Tile";
 import { colors } from "@/root/src/constants";
@@ -15,6 +15,8 @@ export const CommunitySearch: React.FC = () => {
   const [community, setCommunity] = React.useState<Item[]>([]);
   const [nextToken, setNextToken] = React.useState<string>("");
 
+  const [loading, setLoading] = React.useState(false);
+
   const navigation = useNavigation();
 
   const populateContent = React.useCallback(() => {
@@ -22,6 +24,7 @@ export const CommunitySearch: React.FC = () => {
 
     const fetchCall = async () => {
       if (searchValue) {
+        setLoading(true);
         const searchUsersInput: searchCommunityFetchInput_ = {
           limit: 10,
           searchcommunityvalue: searchValue,
@@ -31,6 +34,9 @@ export const CommunitySearch: React.FC = () => {
         if (responseData && isActive) {
           setCommunity(responseData.items);
           setNextToken(responseData.nextToken);
+        }
+        if (isActive) {
+          setLoading(false);
         }
       }
     };
@@ -72,18 +78,36 @@ export const CommunitySearch: React.FC = () => {
         hideDivider
         profileImageS3Key={item.profileImageS3Key}
         name={item.name}
+        members={item.totalMembers}
       />
     );
   };
 
   return (
     <Box style={styles.container} bg={colors.white} pt="4">
-      <FlatList
-        data={community}
-        renderItem={CommunityCardRenderer}
-        keyExtractor={(item) => item.id}
-        onEndReached={() => handlePagination()}
-      />
+      {!loading ? (
+        <FlatList
+          data={community}
+          renderItem={CommunityCardRenderer}
+          keyExtractor={(item) => item.id}
+          onEndReached={() => handlePagination()}
+        />
+      ) : (
+        <ScrollView>
+          <CommunityTile hideDivider />
+          <CommunityTile hideDivider />
+          <CommunityTile hideDivider />
+          <CommunityTile hideDivider />
+          <CommunityTile hideDivider />
+          <CommunityTile hideDivider />
+          <CommunityTile hideDivider />
+          <CommunityTile hideDivider />
+          <CommunityTile hideDivider />
+          <CommunityTile hideDivider />
+          <CommunityTile hideDivider />
+          <CommunityTile hideDivider />
+        </ScrollView>
+      )}
     </Box>
   );
 };
@@ -139,6 +163,7 @@ interface Item {
   profileImageS3Key: string;
   name: string;
   owner: string;
+  totalMembers: number;
 }
 
 const searchCommunity = /* GraphQL */ `
@@ -157,6 +182,7 @@ const searchCommunity = /* GraphQL */ `
         profileImageS3Key
         name
         owner
+        totalMembers
       }
       nextToken
     }

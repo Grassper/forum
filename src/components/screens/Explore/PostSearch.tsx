@@ -3,7 +3,7 @@ import { useFocusEffect } from "@react-navigation/native";
 import { API } from "aws-amplify";
 import { Box } from "native-base";
 import React from "react";
-import { FlatList, ListRenderItem } from "react-native";
+import { FlatList, ListRenderItem, ScrollView } from "react-native";
 
 import {
   PostCard,
@@ -19,6 +19,8 @@ export const PostSearch: React.FC = () => {
   const [posts, setPosts] = React.useState<Item[]>([]);
   const [nextToken, setNextToken] = React.useState<string>("");
 
+  const [loading, setLoading] = React.useState(false);
+
   const currentUser = React.useContext(UserContext).user;
 
   const populateContent = React.useCallback(() => {
@@ -26,6 +28,7 @@ export const PostSearch: React.FC = () => {
 
     const fetchCall = async () => {
       if (searchValue) {
+        setLoading(true);
         const searchPostInput: searchPostsFetchInput_ = {
           limit: 10,
           currentUserId: currentUser.id,
@@ -36,6 +39,9 @@ export const PostSearch: React.FC = () => {
         if (responseData && isActive) {
           setPosts(responseData.items);
           setNextToken(responseData.nextToken);
+        }
+        if (isActive) {
+          setLoading(false);
         }
       }
     };
@@ -88,12 +94,24 @@ export const PostSearch: React.FC = () => {
   };
   return (
     <Box bg="white">
-      <FlatList
-        data={posts}
-        renderItem={PostCardRenderer}
-        keyExtractor={(item) => item.id}
-        onEndReached={() => handlePagination()}
-      />
+      {!loading ? (
+        <FlatList
+          data={posts}
+          renderItem={PostCardRenderer}
+          keyExtractor={(item) => item.id}
+          onEndReached={() => handlePagination()}
+        />
+      ) : (
+        <ScrollView>
+          <PostCard />
+          <PostCard />
+          <PostCard />
+          <PostCard />
+          <PostCard />
+          <PostCard />
+          <PostCard />
+        </ScrollView>
+      )}
     </Box>
   );
 };

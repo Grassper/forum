@@ -10,7 +10,13 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { API } from "aws-amplify";
 import { Box, Icon, Image } from "native-base";
 import React, { useState } from "react";
-import { FlatList, ListRenderItem, StyleSheet, View } from "react-native";
+import {
+  FlatList,
+  ListRenderItem,
+  StyleSheet,
+  View,
+  ScrollView,
+} from "react-native";
 
 import {
   BottomTabParamList_,
@@ -47,12 +53,14 @@ export const Home: React.FC<Props_> = ({ navigation }) => {
 
   const [posts, setPosts] = React.useState<Item[]>([]);
   const [nextToken, setNextToken] = React.useState<string>("");
+  const [loading, setLoading] = React.useState(false);
 
   const populateContent = React.useCallback(() => {
     let isActive = true;
 
     const fetchCall = async () => {
       if (id) {
+        setLoading(true);
         const listPostInput: listTimelineByUserIdFetchInput_ = {
           id: id,
           limit: 10,
@@ -63,6 +71,9 @@ export const Home: React.FC<Props_> = ({ navigation }) => {
         if (responseData && isActive) {
           setPosts(responseData.items);
           setNextToken(responseData.nextToken);
+        }
+        if (isActive) {
+          setLoading(false);
         }
       }
     };
@@ -145,14 +156,28 @@ export const Home: React.FC<Props_> = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <BottomSheet isOpen={isOpen} onClose={HandleBottomSheet} />
-      <FlatList
-        data={posts}
-        renderItem={PostCardRenderer}
-        keyExtractor={(item) => item.post.id}
-        onEndReached={() => handlePagination()}
-      />
-      <FloatingActionButton onPress={HandleBottomSheet} screen="Home" />
+      {!loading ? (
+        <>
+          <BottomSheet isOpen={isOpen} onClose={HandleBottomSheet} />
+          <FlatList
+            data={posts}
+            renderItem={PostCardRenderer}
+            keyExtractor={(item) => item.post.id}
+            onEndReached={() => handlePagination()}
+          />
+          <FloatingActionButton onPress={HandleBottomSheet} screen="Home" />
+        </>
+      ) : (
+        <ScrollView>
+          <PostCard />
+          <PostCard />
+          <PostCard />
+          <PostCard />
+          <PostCard />
+          <PostCard />
+          <PostCard />
+        </ScrollView>
+      )}
     </View>
   );
 };

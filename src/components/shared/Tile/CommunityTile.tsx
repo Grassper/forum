@@ -1,4 +1,4 @@
-import { Entypo, Ionicons } from "@expo/vector-icons";
+import { Entypo } from "@expo/vector-icons";
 import {
   Avatar,
   Box,
@@ -12,12 +12,14 @@ import {
 } from "native-base";
 import React from "react";
 
+import { Skeleton } from "@/root/src/components/shared/Skeleton";
 import { SignS3ImageKey } from "@/root/src/utils/helpers";
 
 export interface Props_ {
   onPress?: () => void;
-  profileImageS3Key: string;
-  name: string;
+  profileImageS3Key?: string;
+  name?: string;
+  members?: number;
   hideDivider?: boolean;
   hideMembers?: boolean;
   hideNavArrow?: boolean;
@@ -28,6 +30,7 @@ export const CommunityTile: React.FC<Props_> = ({
   hideMembers,
   hideNavArrow,
   onPress,
+  members,
   name,
   profileImageS3Key,
 }) => {
@@ -63,45 +66,38 @@ export const CommunityTile: React.FC<Props_> = ({
                   fontWeight="600"
                   color="white"
                 >
-                  {name.charAt(0).toUpperCase() || "Ef"}
+                  "Ef"
                 </Text>
               </Avatar>
             ) : (
-              <Box
-                bg="coolGray.200"
-                width="40px"
-                height="40px"
-                alignItems="center"
-                justifyContent="center"
-                borderRadius="full"
-              >
-                <Icon
-                  as={<Ionicons name="ios-image" />}
-                  size={3}
-                  color="muted.700"
-                />
-              </Box>
+              <Skeleton width="40px" height="40px" borderRadius="full" />
             )}
             <VStack>
-              <Text
-                color="coolGray.800"
-                _dark={{ color: "warmGray.50" }}
-                fontWeight="500"
-              >
-                {name}
-              </Text>
-              {!hideMembers && (
+              {name ? (
+                <Text
+                  color="coolGray.800"
+                  _dark={{ color: "warmGray.50" }}
+                  fontWeight="500"
+                >
+                  {name}
+                </Text>
+              ) : (
+                <Skeleton height="20px" width="250px" />
+              )}
+              {!hideMembers && members ? (
                 <Text
                   color="coolGray.600"
                   _dark={{ color: "warmGray.200" }}
                   fontSize="xs"
                 >
-                  1.6M Members
+                  {members} Members
                 </Text>
+              ) : (
+                <Skeleton height="20px" width="150px" mt="2" />
               )}
             </VStack>
             <Spacer />
-            {!hideNavArrow && (
+            {!hideNavArrow && name && (
               <HStack space="4">
                 <Icon
                   as={<Entypo name="chevron-small-right" />}

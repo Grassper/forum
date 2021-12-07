@@ -10,7 +10,13 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { API } from "aws-amplify";
 import { Button, Icon, Menu, Pressable } from "native-base";
 import React from "react";
-import { FlatList, ListRenderItem, StyleSheet, View } from "react-native";
+import {
+  FlatList,
+  ListRenderItem,
+  ScrollView,
+  StyleSheet,
+  View,
+} from "react-native";
 
 import {
   DrawerParamList_,
@@ -42,10 +48,10 @@ export const SubForum: React.FC<Props_> = ({ navigation, route }) => {
   const [subForum, getSubForum] = React.useState<Community>();
   const [reportModal, setReportModal] = React.useState(false);
 
-  console.log(subForum);
-
   const [posts, setPosts] = React.useState<Item[]>([]);
   const [nextToken, setNextToken] = React.useState<string>("");
+
+  const [loading, setLoading] = React.useState(false);
 
   const currentUser = React.useContext(UserContext).user;
 
@@ -53,6 +59,7 @@ export const SubForum: React.FC<Props_> = ({ navigation, route }) => {
     let isActive = true;
 
     const fetchCall = async () => {
+      setLoading(true);
       const listPostInput: listPostByCommunityIdFetchInput_ = {
         id: subForumId,
         currentUserId: currentUser.id,
@@ -75,6 +82,10 @@ export const SubForum: React.FC<Props_> = ({ navigation, route }) => {
       if (listPostData && isActive) {
         setPosts(listPostData.items);
         setNextToken(listPostData.nextToken);
+      }
+
+      if (isActive) {
+        setLoading(false);
       }
     };
     fetchCall();
@@ -163,33 +174,48 @@ export const SubForum: React.FC<Props_> = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
-      {subForum && (
-        <ReportCommunity
-          communityId={subForum.id}
-          reportModal={reportModal}
-          setReportModal={setReportModal}
-        />
-      )}
-      <FlatList
-        data={posts}
-        renderItem={PostCardRenderer}
-        ListHeaderComponent={() => (
-          <SubForumCard
-            id={subForum?.id}
-            name={subForum?.name}
-            description={subForum?.description}
-            profileImageS3Key={subForum?.profileImageS3Key}
-            coverImageS3Key={subForum?.bannerImageS3Key}
-            _version={subForum?._version}
-            creatorId={subForum?.creatorId}
-            totalMembers={subForum?.totalMembers}
-            totalPosts={subForum?.totalPosts}
-            members={subForum?.members}
+      {!loading ? (
+        <>
+          {subForum && (
+            <ReportCommunity
+              communityId={subForum.id}
+              reportModal={reportModal}
+              setReportModal={setReportModal}
+            />
+          )}
+          <FlatList
+            data={posts}
+            renderItem={PostCardRenderer}
+            ListHeaderComponent={() => (
+              <SubForumCard
+                id={subForum?.id}
+                name={subForum?.name}
+                description={subForum?.description}
+                profileImageS3Key={subForum?.profileImageS3Key}
+                coverImageS3Key={subForum?.bannerImageS3Key}
+                _version={subForum?._version}
+                creatorId={subForum?.creatorId}
+                totalMembers={subForum?.totalMembers}
+                totalPosts={subForum?.totalPosts}
+                members={subForum?.members}
+              />
+            )}
+            keyExtractor={(item) => item.id}
+            onEndReached={() => handlePagination()}
           />
-        )}
-        keyExtractor={(item) => item.id}
-        onEndReached={() => handlePagination()}
-      />
+        </>
+      ) : (
+        <ScrollView>
+          <SubForumCard />
+          <PostCard />
+          <PostCard />
+          <PostCard />
+          <PostCard />
+          <PostCard />
+          <PostCard />
+          <PostCard />
+        </ScrollView>
+      )}
     </View>
   );
 };

@@ -2,7 +2,7 @@ import { GraphQLResult } from "@aws-amplify/api-graphql";
 import { useFocusEffect } from "@react-navigation/native";
 import { API } from "aws-amplify";
 import React from "react";
-import { FlatList, ListRenderItem } from "react-native";
+import { FlatList, ListRenderItem, ScrollView } from "react-native";
 
 import {
   PostCard,
@@ -18,12 +18,15 @@ export const Posts: React.FC = () => {
   const [posts, setPosts] = React.useState<Item[]>([]);
   const [nextToken, setNextToken] = React.useState<string>("");
 
+  const [loading, setLoading] = React.useState(false);
+
   const currentUser = React.useContext(UserContext).user;
 
   const populateContent = React.useCallback(() => {
     let isActive = true;
 
     const fetchCall = async () => {
+      setLoading(true);
       const listPostInput: listPostByUserIdFetchInput_ = {
         id: routeUserId,
         currentUserId: currentUser.id,
@@ -35,6 +38,9 @@ export const Posts: React.FC = () => {
       if (responseData && isActive) {
         setPosts(responseData.items);
         setNextToken(responseData.nextToken);
+      }
+      if (isActive) {
+        setLoading(false);
       }
     };
     fetchCall();
@@ -87,12 +93,26 @@ export const Posts: React.FC = () => {
   };
 
   return (
-    <FlatList
-      data={posts}
-      renderItem={PostCardRenderer}
-      keyExtractor={(item) => item.id}
-      onEndReached={() => handlePagination()}
-    />
+    <>
+      {!loading ? (
+        <FlatList
+          data={posts}
+          renderItem={PostCardRenderer}
+          keyExtractor={(item) => item.id}
+          onEndReached={() => handlePagination()}
+        />
+      ) : (
+        <ScrollView>
+          <PostCard />
+          <PostCard />
+          <PostCard />
+          <PostCard />
+          <PostCard />
+          <PostCard />
+          <PostCard />
+        </ScrollView>
+      )}
+    </>
   );
 };
 

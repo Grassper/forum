@@ -24,9 +24,12 @@
         "backgroundColor": "#ffffff"
       },
       "usesIcloudStorage": true,
-      "bundleIdentifier": "com.grassper.eforum"
+      "bundleIdentifier": "com.grassper.eforum",
+      "buildNumber": "1.0.0"
     },
     "android": {
+      "package": "com.grassper.eforum",
+      "versionCode": 1,
       "splash": {
         "ldpi": "./assets/appIcons/drawable-ldpi/splash_screen.png",
         "hdpi": "./assets/appIcons/drawable-hdpi/splash_screen.png",
@@ -41,7 +44,12 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/appIcons/drawable-ldpi/logo.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "permissions": [
+        "CAMERA",
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE"
+      ]
     },
     "web": {
       "favicon": "./assets/appIcons/drawable-ldpi/logo.png"

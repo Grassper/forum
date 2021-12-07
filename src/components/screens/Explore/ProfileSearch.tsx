@@ -3,7 +3,7 @@ import { useFocusEffect } from "@react-navigation/native";
 import { API } from "aws-amplify";
 import { Box } from "native-base";
 import React from "react";
-import { FlatList, ListRenderItem, StyleSheet } from "react-native";
+import { FlatList, ListRenderItem, ScrollView, StyleSheet } from "react-native";
 
 import { FollowCard } from "@/root/src/components/shared/Cards";
 import { colors } from "@/root/src/constants";
@@ -16,11 +16,14 @@ export const ProfileSearch: React.FC = () => {
   const [profiles, setProfiles] = React.useState<Item[]>([]);
   const [nextToken, setNextToken] = React.useState<string>("");
 
+  const [loading, setLoading] = React.useState(false);
+
   const populateContent = React.useCallback(() => {
     let isActive = true;
 
     const fetchCall = async () => {
       if (searchValue) {
+        setLoading(true);
         const searchUsersInput: searchUsersFetchInput_ = {
           limit: 10,
           username: searchValue,
@@ -30,6 +33,9 @@ export const ProfileSearch: React.FC = () => {
         if (responseData && isActive) {
           setProfiles(responseData.items);
           setNextToken(responseData.nextToken);
+        }
+        if (isActive) {
+          setLoading(false);
         }
       }
     };
@@ -69,12 +75,30 @@ export const ProfileSearch: React.FC = () => {
   };
   return (
     <Box style={styles.container} bg={colors.white} pt="4">
-      <FlatList
-        data={profiles}
-        renderItem={ProfileCardRenderer}
-        keyExtractor={(item) => item.id}
-        onEndReached={() => handlePagination()}
-      />
+      {!loading ? (
+        <FlatList
+          data={profiles}
+          renderItem={ProfileCardRenderer}
+          keyExtractor={(item) => item.id}
+          onEndReached={() => handlePagination()}
+        />
+      ) : (
+        <ScrollView>
+          <FollowCard />
+          <FollowCard />
+          <FollowCard />
+          <FollowCard />
+          <FollowCard />
+          <FollowCard />
+          <FollowCard />
+          <FollowCard />
+          <FollowCard />
+          <FollowCard />
+          <FollowCard />
+          <FollowCard />
+          <FollowCard />
+        </ScrollView>
+      )}
     </Box>
   );
 };

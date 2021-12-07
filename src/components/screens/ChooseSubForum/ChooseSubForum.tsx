@@ -9,7 +9,7 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { API } from "aws-amplify";
 import { Box } from "native-base";
 import React from "react";
-import { FlatList, ListRenderItem, StyleSheet } from "react-native";
+import { FlatList, ListRenderItem, ScrollView, StyleSheet } from "react-native";
 
 import {
   DrawerParamList_,
@@ -36,6 +36,8 @@ export const ChooseSubForum: React.FC<Props_> = ({ navigation, route }) => {
   const [communities, setCommunities] = React.useState<Item[]>([]);
   const [nextToken, setNextToken] = React.useState<string>("");
 
+  const [loading, setLoading] = React.useState(false);
+
   const handlePagination = async () => {
     if (nextToken) {
       const listCommunityInput: listCommunityByUserIdFetchInput_ = {
@@ -58,6 +60,8 @@ export const ChooseSubForum: React.FC<Props_> = ({ navigation, route }) => {
     let isActive = true;
 
     const fetchCall = async () => {
+      setLoading(true);
+
       const listCommunityInput: listCommunityByUserIdFetchInput_ = {
         id: currentUser.id,
         limit: 10,
@@ -68,6 +72,9 @@ export const ChooseSubForum: React.FC<Props_> = ({ navigation, route }) => {
       if (responseData && isActive) {
         setCommunities(responseData.items);
         setNextToken(responseData.nextToken);
+      }
+      if (isActive) {
+        setLoading(false);
       }
     };
 
@@ -84,6 +91,7 @@ export const ChooseSubForum: React.FC<Props_> = ({ navigation, route }) => {
       <CommunityTile
         name={item.community.name}
         profileImageS3Key={item.community.profileImageS3Key}
+        members={item.community.totalMembers}
         hideDivider
         onPress={() => {
           navigation.navigate("AddAndEditPost", {
@@ -100,12 +108,29 @@ export const ChooseSubForum: React.FC<Props_> = ({ navigation, route }) => {
   return (
     <Box style={styles.container} bg="white" alignItems="center">
       <Box width="100%" style={styles.container}>
-        <FlatList
-          data={communities}
-          renderItem={CommunityTileRenderer}
-          keyExtractor={(item) => item.community.id}
-          onEndReached={() => handlePagination()}
-        />
+        {!loading ? (
+          <FlatList
+            data={communities}
+            renderItem={CommunityTileRenderer}
+            keyExtractor={(item) => item.community.id}
+            onEndReached={() => handlePagination()}
+          />
+        ) : (
+          <ScrollView>
+            <CommunityTile hideDivider />
+            <CommunityTile hideDivider />
+            <CommunityTile hideDivider />
+            <CommunityTile hideDivider />
+            <CommunityTile hideDivider />
+            <CommunityTile hideDivider />
+            <CommunityTile hideDivider />
+            <CommunityTile hideDivider />
+            <CommunityTile hideDivider />
+            <CommunityTile hideDivider />
+            <CommunityTile hideDivider />
+            <CommunityTile hideDivider />
+          </ScrollView>
+        )}
       </Box>
     </Box>
   );
@@ -173,6 +198,7 @@ interface Community {
   id: string;
   name: string;
   profileImageS3Key: string;
+  totalMembers: number;
 }
 
 const listCommunityByUserId = /* GraphQL */ `
@@ -193,6 +219,7 @@ const listCommunityByUserId = /* GraphQL */ `
             id
             name
             profileImageS3Key
+            totalMembers
           }
         }
         nextToken
