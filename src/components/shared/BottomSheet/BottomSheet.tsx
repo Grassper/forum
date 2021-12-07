@@ -23,7 +23,7 @@ export const BottomSheet: React.FC<Props_> = ({ isOpen, onClose }) => {
     <Actionsheet isOpen={isOpen} onClose={onClose}>
       <Actionsheet.Content bg="white">
         <VStack alignItems="center" space="4" mt="5">
-          <HStack width="100%" space="4">
+          <HStack width="100%" space="8">
             <Item
               onPress={() => {
                 navigation.navigate("StackNav", {
@@ -82,23 +82,6 @@ export const BottomSheet: React.FC<Props_> = ({ isOpen, onClose }) => {
               iconName="ios-text"
               iconSize="20px"
               postType="text"
-            />
-
-            <Item
-              onPress={() => {
-                navigation.navigate("StackNav", {
-                  screen: "ChooseSubForum",
-                  params: {
-                    postType: "Poll",
-                    action: "Add",
-                    hideUpload: true,
-                  },
-                });
-                onClose();
-              }}
-              iconName="stats-chart"
-              iconSize="20px"
-              postType="poll"
             />
           </HStack>
           <Box>
