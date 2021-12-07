@@ -194,9 +194,7 @@ export const CommentCard: React.FC<Props_> = ({
           <Text mb="4">{contentText}</Text>
         ) : (
           <>
-            <Skeleton height="20px" width="100%" mb="2" />
-            <Skeleton height="20px" width="85%" mb="2" />
-            <Skeleton height="20px" width="100%" mb="4" />
+            <Skeleton height="20px" width="95%" mb="2" />
           </>
         )}
         {!hideCommentUserActions && commentId && (

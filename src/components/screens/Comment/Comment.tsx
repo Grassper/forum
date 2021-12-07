@@ -9,7 +9,7 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { API } from "aws-amplify";
 import { Box, Flex, Text } from "native-base";
 import React from "react";
-import { FlatList, ListRenderItem, StyleSheet } from "react-native";
+import { FlatList, ListRenderItem, ScrollView, StyleSheet } from "react-native";
 
 import {
   DrawerParamList_,
@@ -67,11 +67,14 @@ export const Comment: React.FC<Props_> = ({ route }) => {
   const [childComments, setChildComments] = React.useState<Item[]>([]);
   const [nextToken, setNextToken] = React.useState<string>("");
 
+  const [loading, setLoading] = React.useState(false);
+
   const populateContent = React.useCallback(() => {
     let isActive = true;
 
     const fetchCall = async () => {
       if (comment.commentId) {
+        setLoading(true);
         const listCommentInput: listChildCommentsByParentCommentIdFetch_ = {
           parentCommentId: comment.commentId,
           limit: 10,
@@ -83,6 +86,9 @@ export const Comment: React.FC<Props_> = ({ route }) => {
         if (commentData && isActive) {
           setChildComments(commentData.items);
           setNextToken(commentData.nextToken);
+        }
+        if (isActive) {
+          setLoading(false);
         }
       }
     };
@@ -134,13 +140,36 @@ export const Comment: React.FC<Props_> = ({ route }) => {
 
   return (
     <Box style={styles.container}>
-      <FlatList
-        data={childComments}
-        renderItem={CommentCardRenderer}
-        keyExtractor={(item) => item.childComment.id}
-        onEndReached={() => handlePagination()}
-        ListHeaderComponent={() => <CommentHeader {...comment} />}
-      />
+      {!loading ? (
+        <FlatList
+          data={childComments}
+          renderItem={CommentCardRenderer}
+          keyExtractor={(item) => item.childComment.id}
+          onEndReached={() => handlePagination()}
+          ListHeaderComponent={() => <CommentHeader {...comment} />}
+        />
+      ) : (
+        <ScrollView>
+          <CommentCard {...comment} hideReplyButton hideCommentUserActions />
+          <Box alignItems="center" bg="white" mt="2" pt="4">
+            <Flex width="100%">
+              <CommentCard />
+              <CommentCard />
+              <CommentCard />
+              <CommentCard />
+              <CommentCard />
+              <CommentCard />
+              <CommentCard />
+              <CommentCard />
+              <CommentCard />
+              <CommentCard />
+              <CommentCard />
+              <CommentCard />
+              <CommentCard />
+            </Flex>
+          </Box>
+        </ScrollView>
+      )}
     </Box>
   );
 };

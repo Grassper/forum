@@ -156,7 +156,7 @@ export const Home: React.FC<Props_> = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <PostCard />
+      {/* <PostCard /> */}
       {!loading ? (
         <>
           <BottomSheet isOpen={isOpen} onClose={HandleBottomSheet} />

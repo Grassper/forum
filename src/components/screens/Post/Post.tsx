@@ -9,7 +9,7 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { API } from "aws-amplify";
 import { Box, Flex, Text } from "native-base";
 import React from "react";
-import { FlatList, ListRenderItem, StyleSheet } from "react-native";
+import { FlatList, ListRenderItem, ScrollView, StyleSheet } from "react-native";
 
 import {
   DrawerParamList_,
@@ -90,12 +90,14 @@ export const Post: React.FC<Props_> = ({ route }) => {
   const [nextToken, setNextToken] = React.useState<string>("");
 
   const currentUser = React.useContext(UserContext).user;
+  const [loading, setLoading] = React.useState(false);
 
   const populateContent = React.useCallback(() => {
     let isActive = true;
 
     const fetchCall = async () => {
       if (postData.id) {
+        setLoading(true);
         const listCommentInput: listCommentsByPostIdFetch_ = {
           postId: postData.id,
           currentUserId: currentUser.id,
@@ -106,6 +108,9 @@ export const Post: React.FC<Props_> = ({ route }) => {
         if (commentData && isActive) {
           setComments(commentData.items);
           setNextToken(commentData.nextToken);
+        }
+        if (isActive) {
+          setLoading(false);
         }
       }
     };
@@ -158,13 +163,36 @@ export const Post: React.FC<Props_> = ({ route }) => {
 
   return (
     <Box style={styles.container}>
-      <FlatList
-        data={comments}
-        renderItem={CommentCardRenderer}
-        keyExtractor={(item) => item.childComment.id}
-        onEndReached={() => handlePagination()}
-        ListHeaderComponent={() => <PostHeader {...postData} />}
-      />
+      {!loading ? (
+        <FlatList
+          data={comments}
+          renderItem={CommentCardRenderer}
+          keyExtractor={(item) => item.childComment.id}
+          onEndReached={() => handlePagination()}
+          ListHeaderComponent={() => <PostHeader {...postData} />}
+        />
+      ) : (
+        <ScrollView>
+          <PostCard postPage hidePostNavigation {...postData} />
+          <Box alignItems="center" bg="white" mt="2" pt="4">
+            <Flex width="100%">
+              <CommentCard />
+              <CommentCard />
+              <CommentCard />
+              <CommentCard />
+              <CommentCard />
+              <CommentCard />
+              <CommentCard />
+              <CommentCard />
+              <CommentCard />
+              <CommentCard />
+              <CommentCard />
+              <CommentCard />
+              <CommentCard />
+            </Flex>
+          </Box>
+        </ScrollView>
+      )}
     </Box>
   );
 };
