@@ -359,7 +359,7 @@ type UserCommentMetricsRelationShip
 
 type UserChatRoomRelationship
   @model
-  @auth(rules: [{ allow: owner }])
+  @auth(rules: [{ allow: owner }, { allow: private, operations: [read] }])
   @key(name: "byChatRoom", fields: ["chatRoomId", "userId"])
   @key(name: "byUser", fields: ["userId", "chatRoomId"]) {
   id: ID!
@@ -371,7 +371,7 @@ type UserChatRoomRelationship
 
 type ChatRoom
   @model
-  @auth(rules: [{ allow: owner }]) { # allow only people in the chat room to read
+  @auth(rules: [{ allow: owner }, { allow: private, operations: [read] }]) { # allow only people in the chat room to read
   id: ID!
   users: [UserChatRoomRelationship]
     @connection(keyName: "byChatRoom", fields: ["id"])
@@ -380,7 +380,7 @@ type ChatRoom
 
 type Message
   @model
-  @auth(rules: [{ allow: owner }])
+  @auth(rules: [{ allow: owner }, { allow: private, operations: [read] }])
   @key(
     name: "byChatRoom"
     fields: ["chatRoomId"]
