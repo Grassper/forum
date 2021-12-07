@@ -11,6 +11,7 @@ import {
   Icon,
   Input,
   Pressable,
+  Spinner,
   Text,
   VStack,
 } from "native-base";
@@ -48,7 +49,7 @@ export const AddAndEditPost: React.FC<Props_> = ({ navigation, route }) => {
   const [Option, setOption] = React.useState(""); // poll option input
   const [Polls, setPoll] = React.useState<PollType_[]>([]); // poll options
   const [mediaS3Key, setMediaS3Key] = React.useState("");
-
+  const [loading, setLoading] = React.useState(false);
   const [isContentValid, setContentValid] = React.useState(false);
   const [contentErrorMsg, setContentErrorMsg] = React.useState("");
 
@@ -58,6 +59,7 @@ export const AddAndEditPost: React.FC<Props_> = ({ navigation, route }) => {
 
   const handleSubmit = React.useCallback(async () => {
     if (isContentValid) {
+      setLoading(true);
       let postInput: createPostAndTimelineFetchInput_ = {
         authorId: currentUser.id,
         communityId: route.params.communityId,
@@ -102,6 +104,7 @@ export const AddAndEditPost: React.FC<Props_> = ({ navigation, route }) => {
           );
         }
       }
+      setLoading(false);
     } else {
       Alert.alert(contentErrorMsg);
     }
@@ -139,13 +142,13 @@ export const AddAndEditPost: React.FC<Props_> = ({ navigation, route }) => {
           size="md"
           _text={{ fontWeight: "600", color: "white" }}
           variant="unstyled"
-          onPress={handleSubmit}
+          onPress={!loading ? handleSubmit : null}
         >
-          Post
+          {!loading ? "Post" : <Spinner color="indigo.500" />}
         </Button>
       ),
     });
-  }, [handleSubmit, navigation]);
+  }, [handleSubmit, navigation, loading]);
 
   return (
     <VStack
