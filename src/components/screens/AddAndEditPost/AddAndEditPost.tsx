@@ -7,10 +7,8 @@ import { API } from "aws-amplify";
 import {
   Box,
   Button,
-  CloseIcon,
   Flex,
   Icon,
-  IconButton,
   Input,
   Pressable,
   Spinner,
@@ -26,7 +24,6 @@ import {
   DrawerParamList_,
   StackParamList_,
 } from "@/root/src/components/navigations/Navigation";
-import { AlertDialogComponent } from "@/root/src/components/shared/AlertDialog";
 import { DocumentPickerButton } from "@/root/src/components/shared/Picker";
 import { CommunityTile } from "@/root/src/components/shared/Tile";
 import { UserContext } from "@/root/src/context";

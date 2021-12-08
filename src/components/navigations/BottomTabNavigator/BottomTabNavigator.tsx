@@ -6,7 +6,7 @@ import { BottomTabParamList_ } from "@/root/src/components/navigations/Navigatio
 import { ChatList } from "@/root/src/components/screens/ChatList";
 import { Explore } from "@/root/src/components/screens/Explore";
 import { Home } from "@/root/src/components/screens/Home";
-
+import { colors } from "@/root/src/constants";
 const Tab = createBottomTabNavigator<BottomTabParamList_>();
 
 /**
@@ -58,9 +58,16 @@ export const BottomTabNavigator = () => {
         name="ChatList"
         component={ChatList}
         options={{
-          title: "",
+          title: "Messages",
           tabBarShowLabel: false,
           tabBarIconStyle: { alignItems: "center" },
+          headerStyle: {
+            backgroundColor: colors.green,
+          },
+          headerTintColor: colors.white,
+          headerTitleStyle: {
+            fontFamily: "mm",
+          },
           tabBarIcon: ({ focused }) => {
             return (
               <FontAwesome
