@@ -1,27 +1,33 @@
+import { GraphQLResult } from "@aws-amplify/api-graphql";
 import { Feather } from "@expo/vector-icons";
 import { DrawerNavigationProp } from "@react-navigation/drawer";
 import {
   CompositeNavigationProp,
   RouteProp,
+  useFocusEffect,
   useNavigation,
 } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { Box, Center, Flex, Text } from "native-base";
+import { API } from "aws-amplify";
+import { Box, Flex, Text } from "native-base";
 import React from "react";
-import { ImageBackground, ScrollView, StyleSheet } from "react-native";
+import {
+  FlatList,
+  ImageBackground,
+  ListRenderItem,
+  StyleSheet,
+} from "react-native";
 import { SvgUri } from "react-native-svg";
 
 import {
   DrawerParamList_,
   StackParamList_,
 } from "@/root/src/components/navigations/Navigation";
+import { UserContext } from "@/root/src/context";
 
 import { ChatCard } from "./ChatCard";
 import { InputField } from "./InputField";
 
-/**
- * todo 1: create the chatroom
- */
 type NavigationProp_ = CompositeNavigationProp<
   StackNavigationProp<StackParamList_, "ChatRoom">,
   DrawerNavigationProp<DrawerParamList_>
@@ -36,9 +42,71 @@ interface Props_ {
 
 export const ChatRoom: React.FC<Props_> = ({ route }) => {
   const navigation = useNavigation();
-  const scrollViewRef: React.RefObject<ScrollView> = React.createRef();
+  const flatListRef: React.RefObject<FlatList> = React.createRef();
 
   const { imageUri, title, roomId } = route.params;
+
+  const [messages, setMessages] = React.useState<Item[]>([]);
+  const [nextToken, setNextToken] = React.useState<string>("");
+
+  const [loading, setLoading] = React.useState(false);
+  const currentUser = React.useContext(UserContext).user;
+  const populateContent = React.useCallback(() => {
+    let isActive = true;
+
+    const fetchCall = async () => {
+      if (roomId) {
+        setLoading(true);
+        const listMessageInput: ListMessageFetchInput_ = {
+          limit: 10,
+          chatRoomId: roomId,
+        };
+
+        const responseData = await ListMessageFetch(listMessageInput);
+        if (responseData && isActive) {
+          setMessages(responseData.items);
+          setNextToken(responseData.nextToken);
+        }
+        if (isActive) {
+          setLoading(false);
+        }
+      }
+    };
+    fetchCall();
+
+    return () => {
+      isActive = false;
+    };
+  }, [roomId]);
+
+  useFocusEffect(populateContent);
+
+  const ChatCardRenderer: ListRenderItem<Item> = ({ item }) => {
+    return (
+      <ChatCard
+        content={item.content}
+        timeStamp={item.createdAt}
+        align={item.userId === currentUser.id ? "right" : "left"}
+      />
+    );
+  };
+
+  const handlePagination = async () => {
+    if (nextToken && roomId) {
+      const listMessageInput: ListMessageFetchInput_ = {
+        limit: 10,
+        chatRoomId: roomId,
+        nextToken,
+      };
+
+      const responseData = await ListMessageFetch(listMessageInput);
+
+      if (responseData) {
+        setMessages((prevState) => [...prevState, ...responseData.items]);
+        setNextToken(responseData.nextToken);
+      }
+    }
+  };
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -77,23 +145,20 @@ export const ChatRoom: React.FC<Props_> = ({ route }) => {
         resizeMode="cover"
         style={styles.container}
       >
-        <ScrollView
-          ref={scrollViewRef}
-          onContentSizeChange={() => scrollViewRef.current?.scrollToEnd()}
-        >
-          <Center>
-            <Flex width="90%" pt="4">
-              <ChatCard align="right" />
-              <ChatCard align="left" />
-              <ChatCard align="right" />
-              <ChatCard align="right" />
-              <ChatCard align="left" />
-              <ChatCard align="right" />
-            </Flex>
-          </Center>
-        </ScrollView>
+        <Box alignItems="center" style={styles.container} py="4">
+          <Box width="95%">
+            <FlatList
+              ref={flatListRef}
+              onContentSizeChange={() => flatListRef.current?.scrollToEnd()}
+              data={messages}
+              renderItem={ChatCardRenderer}
+              keyExtractor={(item) => item.id}
+              onEndReached={() => handlePagination()}
+            />
+          </Box>
+        </Box>
         <InputField
-          onFocus={() => scrollViewRef.current?.scrollToEnd()}
+          onFocus={() => flatListRef.current?.scrollToEnd()}
           chatRoomId={roomId}
         />
       </ImageBackground>
@@ -104,3 +169,71 @@ export const ChatRoom: React.FC<Props_> = ({ route }) => {
 const styles = StyleSheet.create({
   container: { flex: 1 },
 });
+
+interface ListMessageFetchInput_ {
+  chatRoomId: string;
+  limit: number;
+  nextToken?: string;
+}
+
+const ListMessageFetch = async (input: ListMessageFetchInput_) => {
+  try {
+    const listMessageResponseData = (await API.graphql({
+      query: listMessagesByChatRoom,
+      variables: input,
+      authMode: "AMAZON_COGNITO_USER_POOLS",
+    })) as GraphQLResult<listMessagesByChatRoom_>;
+
+    if (listMessageResponseData.data?.messagesByChatRoom) {
+      return listMessageResponseData.data?.messagesByChatRoom;
+    }
+  } catch (err) {
+    console.error("Error occured while listing by chatroom id", err);
+  }
+};
+
+/**
+ * todo 1: fetch chatroom messages by chatroom id
+ * todo 2: graphql schema and types
+ * todo 3: fetch and pagination handlers
+ * todo 4: grapqhl subscriptions
+ */
+
+interface listMessagesByChatRoom_ {
+  messagesByChatRoom?: MessagesByChatRoom;
+}
+
+interface MessagesByChatRoom {
+  items: Item[];
+  nextToken: string;
+}
+
+interface Item {
+  id: string;
+  content: string;
+  createdAt: Date;
+  userId: string;
+}
+
+const listMessagesByChatRoom = /* GraphQL */ `
+  query listMessagesByChatRoom(
+    $chatRoomId: ID!
+    $limit: Int
+    $nextToken: String
+  ) {
+    messagesByChatRoom(
+      chatRoomId: $chatRoomId
+      sortDirection: DESC
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        content
+        createdAt
+        userId
+      }
+      nextToken
+    }
+  }
+`;
