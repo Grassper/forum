@@ -111,16 +111,6 @@ export const Home: React.FC<Props_> = ({ navigation }) => {
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => <HeaderProfileIcon />,
-      headerRight: () => (
-        <Box mr="3">
-          <Icon
-            as={<Ionicons name="search-outline" />}
-            size={"20px"}
-            ml="3"
-            color="muted.900"
-          />
-        </Box>
-      ),
       headerTitle: () => (
         <Image
           size="28px"

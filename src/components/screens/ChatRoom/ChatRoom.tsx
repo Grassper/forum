@@ -1,4 +1,4 @@
-import { Feather, FontAwesome } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
 import { DrawerNavigationProp } from "@react-navigation/drawer";
 import {
   CompositeNavigationProp,
@@ -6,15 +6,9 @@ import {
   useNavigation,
 } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { Box, Center, Flex, Icon, Input, Text } from "native-base";
+import { Box, Center, Flex, Text } from "native-base";
 import React from "react";
-import {
-  ImageBackground,
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-  StyleSheet,
-} from "react-native";
+import { ImageBackground, ScrollView, StyleSheet } from "react-native";
 import { SvgUri } from "react-native-svg";
 
 import {
@@ -23,6 +17,7 @@ import {
 } from "@/root/src/components/navigations/Navigation";
 
 import { ChatCard } from "./ChatCard";
+import { InputField } from "./InputField";
 
 /**
  * todo 1: create the chatroom
@@ -40,11 +35,10 @@ interface Props_ {
 }
 
 export const ChatRoom: React.FC<Props_> = ({ route }) => {
-  const [Comment, setComment] = React.useState("");
   const navigation = useNavigation();
   const scrollViewRef: React.RefObject<ScrollView> = React.createRef();
 
-  const { imageUri, title } = route.params;
+  const { imageUri, title, roomId } = route.params;
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -58,13 +52,6 @@ export const ChatRoom: React.FC<Props_> = ({ route }) => {
               mr="100"
               onPress={() => navigation.goBack()}
             />
-            {/* <Avatar
-              bg="green.500"
-              size="35px"
-              source={{
-                uri: "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-              }}
-            /> */}
             <Box
               width="35px"
               height="35px"
@@ -105,45 +92,10 @@ export const ChatRoom: React.FC<Props_> = ({ route }) => {
             </Flex>
           </Center>
         </ScrollView>
-        <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
-          keyboardVerticalOffset={60}
-        >
-          <Box bg="transparent" py="1" justifyContent="center" safeAreaBottom>
-            <Flex
-              flexDirection="row"
-              alignItems="center"
-              justifyContent="center"
-              bgColor="transparent"
-            >
-              <Input
-                bg="white"
-                p="3"
-                width="80%"
-                multiline
-                value={Comment}
-                onChangeText={setComment}
-                borderRadius="md"
-                placeholder="Type here.."
-                placeholderTextColor="muted.400"
-                fontSize="sm"
-                variant="unstyled"
-                onFocus={() => scrollViewRef.current?.scrollToEnd()}
-              />
-              <Flex
-                bg="eGreen.400"
-                width="10"
-                ml="2"
-                height="10"
-                alignItems="center"
-                justifyContent="center"
-                borderRadius="full"
-              >
-                <Icon as={<FontAwesome name="send" />} size={4} color="white" />
-              </Flex>
-            </Flex>
-          </Box>
-        </KeyboardAvoidingView>
+        <InputField
+          onFocus={() => scrollViewRef.current?.scrollToEnd()}
+          chatRoomId={roomId}
+        />
       </ImageBackground>
     </Box>
   );

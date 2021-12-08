@@ -101,7 +101,13 @@ export const ChatList: React.FC<Props_> = ({ navigation }) => {
         id={item.chatRoom.id}
         username={pickOppositeUser[0].user.username}
         avatarUrl={pickOppositeUser[0].user.profileImageUrl}
-        onPress={() => {}}
+        onPress={() => {
+          navigation.navigate("ChatRoom", {
+            title: pickOppositeUser[0].user.username,
+            imageUri: pickOppositeUser[0].user.profileImageUrl,
+            roomId: item.chatRoom.id,
+          });
+        }}
       />
     );
   };
