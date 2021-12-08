@@ -365,8 +365,8 @@ type UserChatRoomRelationship
   id: ID!
   userId: ID!
   chatRoomId: ID!
-  user: User! @connection(fields: ["userId"])
-  chatRoom: ChatRoom! @connection(fields: ["chatRoomId"])
+  user: User @connection(fields: ["userId"])
+  chatRoom: ChatRoom @connection(fields: ["chatRoomId"])
 }
 
 type ChatRoom
@@ -390,7 +390,7 @@ type Message
   content: String!
   userId: ID!
   chatRoomId: ID!
-  user: User! @connection(fields: ["userId"])
+  user: User @connection(fields: ["userId"])
   chatRoom: ChatRoom! @connection(fields: ["chatRoomId"])
 }
 
