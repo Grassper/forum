@@ -134,7 +134,3 @@ declare global {
     interface RootParamList extends RootStackParamList_ {}
   }
 }
-
-/**
- * todo-1: root navigator should be stack navigator
- */

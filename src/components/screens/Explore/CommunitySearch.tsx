@@ -1,5 +1,9 @@
 import { GraphQLResult } from "@aws-amplify/api-graphql";
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import {
+  StackActions,
+  useFocusEffect,
+  useNavigation,
+} from "@react-navigation/native";
 import { API } from "aws-amplify";
 import { Box } from "native-base";
 import React from "react";
@@ -68,15 +72,17 @@ export const CommunitySearch: React.FC = () => {
     return (
       <CommunityTile
         onPress={() => {
-          navigation.navigate("Application", {
-            screen: "SubForumStack",
-            params: {
-              screen: "SubForum",
+          navigation.dispatch(
+            StackActions.push("Application", {
+              screen: "SubForumStack",
               params: {
-                subForumId: item.id,
+                screen: "SubForum",
+                params: {
+                  subForumId: item.id,
+                },
               },
-            },
-          });
+            })
+          );
         }}
         hideDivider
         profileImageS3Key={item.profileImageS3Key}
