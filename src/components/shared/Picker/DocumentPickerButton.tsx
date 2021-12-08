@@ -1,7 +1,7 @@
 import { AntDesign } from "@expo/vector-icons";
 import { Storage } from "aws-amplify";
 import { format } from "date-fns";
-import * as DocumentPicker from "expo-document-picker";
+// import * as DocumentPicker from "expo-document-picker";
 import * as ImagePicker from "expo-image-picker";
 import { Box, Icon, Pressable, Text } from "native-base";
 import React from "react";
@@ -53,9 +53,9 @@ export const DocumentPickerButton: React.FC<Props_> = ({
       return;
     }
 
-    const pickerType = {
-      Audio: "audio/mpeg",
-    };
+    // const pickerType = {
+    //   Audio: "audio/mpeg",
+    // };
 
     const timeStamp = format(new Date(), "yyyyMMdd");
 
@@ -111,28 +111,28 @@ export const DocumentPickerButton: React.FC<Props_> = ({
       }
     }
 
-    if (postType === "Audio") {
-      let pickerResult = await DocumentPicker.getDocumentAsync({
-        type: pickerType[postType],
-      });
+    // if (postType === "Audio") {
+    //   let pickerResult = await DocumentPicker.getDocumentAsync({
+    //     type: pickerType[postType],
+    //   });
 
-      if (pickerResult.type !== "cancel") {
-        /**
-         * checking allowed file size
-         */
+    //   if (pickerResult.type !== "cancel") {
+    //     /**
+    //      * checking allowed file size
+    //      */
 
-        const isFileSizeAllowed = await FileSizeChecker(pickerResult.uri, 15); // allowed size in 15 mb before compression
+    //     const isFileSizeAllowed = await FileSizeChecker(pickerResult.uri, 15); // allowed size in 15 mb before compression
 
-        if (!isFileSizeAllowed) {
-          return;
-        }
+    //     if (!isFileSizeAllowed) {
+    //       return;
+    //     }
 
-        uploadedS3Key = await handlePickedAsset(
-          pickerResult.uri,
-          uploadKeyFormat[postType]
-        );
-      }
-    }
+    //     uploadedS3Key = await handlePickedAsset(
+    //       pickerResult.uri,
+    //       uploadKeyFormat[postType]
+    //     );
+    //   }
+    // }
     if (uploadedS3Key) {
       setMediaS3Key(uploadedS3Key);
       setUploading(false);

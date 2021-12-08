@@ -30,6 +30,25 @@ export const BottomSheet: React.FC<Props_> = ({ isOpen, onClose }) => {
                   screen: "StackNav",
                   params: {
                     screen: "ChooseSubForum",
+                    params: {
+                      postType: "Text",
+                      action: "Add",
+                      hideUpload: true,
+                    },
+                  },
+                });
+                onClose();
+              }}
+              iconName="ios-text"
+              iconSize="20px"
+              postType="text"
+            />
+            <Item
+              onPress={() => {
+                navigation.navigate("Application", {
+                  screen: "StackNav",
+                  params: {
+                    screen: "ChooseSubForum",
                     params: { postType: "Image", action: "Add" },
                   },
                 });
@@ -39,23 +58,6 @@ export const BottomSheet: React.FC<Props_> = ({ isOpen, onClose }) => {
               iconSize="20px"
               postType="image"
             />
-
-            <Item
-              onPress={() => {
-                navigation.navigate("Application", {
-                  screen: "StackNav",
-                  params: {
-                    screen: "ChooseSubForum",
-                    params: { postType: "Audio", action: "Add" },
-                  },
-                });
-                onClose();
-              }}
-              iconName="mic"
-              iconSize="22px"
-              postType="audio"
-            />
-
             <Item
               onPress={() => {
                 navigation.navigate("Application", {
@@ -75,26 +77,21 @@ export const BottomSheet: React.FC<Props_> = ({ isOpen, onClose }) => {
               iconSize="20px"
               postType="video"
             />
-
-            <Item
+            {/* <Item
               onPress={() => {
                 navigation.navigate("Application", {
                   screen: "StackNav",
                   params: {
                     screen: "ChooseSubForum",
-                    params: {
-                      postType: "Text",
-                      action: "Add",
-                      hideUpload: true,
-                    },
+                    params: { postType: "Audio", action: "Add" },
                   },
                 });
                 onClose();
               }}
-              iconName="ios-text"
-              iconSize="20px"
-              postType="text"
-            />
+              iconName="mic"
+              iconSize="22px"
+              postType="audio"
+            /> */}
           </HStack>
           <Box>
             <Pressable onPress={onClose}>

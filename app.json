@@ -23,7 +23,6 @@
         "resizeMode": "contain",
         "backgroundColor": "#ffffff"
       },
-      "usesIcloudStorage": true,
       "bundleIdentifier": "com.nodeberry.eforum",
       "buildNumber": "1.0.0"
     },
@@ -60,12 +59,6 @@
         "expo-image-picker",
         {
           "photosPermission": "The app accesses your photos to let you share them with your friends."
-        }
-      ],
-      [
-        "expo-document-picker",
-        {
-          "appleTeamId": "3AQ2QC8HA6"
         }
       ]
     ]
