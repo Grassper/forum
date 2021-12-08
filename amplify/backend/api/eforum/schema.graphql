@@ -383,13 +383,14 @@ type Message
   @auth(rules: [{ allow: owner }, { allow: private, operations: [read] }])
   @key(
     name: "byChatRoom"
-    fields: ["chatRoomId"]
+    fields: ["chatRoomId", "createdAt"]
     queryField: "messagesByChatRoom"
   ) {
   id: ID!
   content: String!
   userId: ID!
   chatRoomId: ID!
+  createdAt: String!
   user: User @connection(fields: ["userId"])
   chatRoom: ChatRoom! @connection(fields: ["chatRoomId"])
 }
