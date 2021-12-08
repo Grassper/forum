@@ -292,18 +292,27 @@ export const EditAndCreateSubForum: React.FC<Props_> = ({
             />
           </Box>
         )}
-        {!coverLoader && (
-          <Box position="absolute" top="2" right="2">
+
+        <Box position="absolute" top="2" right="2">
+          {!coverLoader ? (
             <ImagePickerButton
               maxImageSize={15}
               imageWidth={110}
               imageHeight={110}
               aspectRatio={[4, 3]}
               setS3ImageKey={setBannerImageS3Key}
-              setProgressPercentage={() => {}} // percentage progress
+              setProgressPercentage={(value) => {
+                value == 100
+                  ? toggleCoverLoader(false)
+                  : toggleCoverLoader(true);
+              }} // percentage progress
             />
-          </Box>
-        )}
+          ) : (
+            <Box bg="eGreen.400" p="2" borderRadius="full">
+              <Spinner size="sm" color="white" />
+            </Box>
+          )}
+        </Box>
       </Box>
       <Box bg="white">
         <Box
@@ -339,18 +348,27 @@ export const EditAndCreateSubForum: React.FC<Props_> = ({
               />
             </Box>
           )}
-          {!profileLoader && (
-            <Box position="absolute" right="0" bottom="0">
+
+          <Box position="absolute" right="0" bottom="0">
+            {!profileLoader ? (
               <ImagePickerButton
                 maxImageSize={5}
                 imageWidth={480}
                 imageHeight={360}
                 aspectRatio={[1, 1]}
                 setS3ImageKey={setProfileImageS3Key}
-                setProgressPercentage={() => {}} // percentage progress
+                setProgressPercentage={(value) => {
+                  value == 100
+                    ? toggleProfileLoader(false)
+                    : toggleProfileLoader(true);
+                }} // percentage progress
               />
-            </Box>
-          )}
+            ) : (
+              <Box bg="eGreen.400" p="2" borderRadius="full">
+                <Spinner size="sm" color="white" />
+              </Box>
+            )}
+          </Box>
         </Box>
       </Box>
       <Box style={styles.wrapper} bg="white">
