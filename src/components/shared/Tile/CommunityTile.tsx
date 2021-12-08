@@ -84,16 +84,20 @@ export const CommunityTile: React.FC<Props_> = ({
               ) : (
                 <Skeleton height="20px" width="250px" />
               )}
-              {!hideMembers && members ? (
-                <Text
-                  color="coolGray.600"
-                  _dark={{ color: "warmGray.200" }}
-                  fontSize="xs"
-                >
-                  {members} Members
-                </Text>
-              ) : (
-                <Skeleton height="20px" width="150px" mt="2" />
+              {!hideMembers && (
+                <>
+                  {members ? (
+                    <Text
+                      color="coolGray.600"
+                      _dark={{ color: "warmGray.200" }}
+                      fontSize="xs"
+                    >
+                      {members} Members
+                    </Text>
+                  ) : (
+                    <Skeleton height="20px" width="150px" mt="2" />
+                  )}
+                </>
               )}
             </VStack>
             <Spacer />
