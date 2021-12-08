@@ -1,6 +1,5 @@
 import {
   AntDesign,
-  Entypo,
   Feather,
   FontAwesome,
   Ionicons,
@@ -13,7 +12,6 @@ import {
   DrawerItem,
   DrawerItemList,
 } from "@react-navigation/drawer";
-import { NavigationContainer } from "@react-navigation/native";
 import { Auth } from "aws-amplify";
 import {
   Box,
@@ -195,67 +193,60 @@ const defaultDrawerOptions = {
 
 export const SideDrawerNavigator = () => {
   return (
-    <NavigationContainer>
-      <DrawerNavigator.Navigator
-        screenOptions={defaultDrawerOptions}
-        drawerContent={(props) => <CustomDrawerContent {...props} />}
-      >
-        <DrawerNavigator.Screen
-          name="StackNav"
-          component={StackNavigator}
-          options={{
-            drawerLabel: "Home",
-            headerShown: false,
-            drawerIcon: ({ color }) => (
-              <Icon
-                as={<AntDesign name="home" />}
-                size={5}
-                ml="3"
-                color={color}
-              />
-            ),
-          }}
-        />
-        <DrawerNavigator.Screen
-          name="ProfileStack"
-          component={ProfileStackNavigator}
-          options={{
-            drawerLabel: "Profile",
-            title: "Profile",
-            headerShown: false,
-            drawerIcon: ({ color }) => (
-              <Icon
-                as={<Feather name="user" />}
-                size={5}
-                ml="3"
-                color={color}
-              />
-            ),
-          }}
-        />
-        <DrawerNavigator.Screen
-          name="SubForumStack"
-          component={SubForumStackNavigator}
-          options={() => ({
-            drawerLabel: "Joined Forums",
-            title: "",
-            headerShown: false,
-            headerStyle: {
-              backgroundColor: colors.green,
-            },
-            headerTintColor: colors.white,
-            drawerIcon: ({ color }) => (
-              <Icon
-                as={<AntDesign name="pluscircleo" />}
-                size={"18px"}
-                ml="3"
-                color={color}
-              />
-            ),
-          })}
-        />
-      </DrawerNavigator.Navigator>
-    </NavigationContainer>
+    <DrawerNavigator.Navigator
+      screenOptions={defaultDrawerOptions}
+      drawerContent={(props) => <CustomDrawerContent {...props} />}
+    >
+      <DrawerNavigator.Screen
+        name="StackNav"
+        component={StackNavigator}
+        options={{
+          drawerLabel: "Home",
+          headerShown: false,
+          drawerIcon: ({ color }) => (
+            <Icon
+              as={<AntDesign name="home" />}
+              size={5}
+              ml="3"
+              color={color}
+            />
+          ),
+        }}
+      />
+      <DrawerNavigator.Screen
+        name="ProfileStack"
+        component={ProfileStackNavigator}
+        options={{
+          drawerLabel: "Profile",
+          title: "Profile",
+          headerShown: false,
+          drawerIcon: ({ color }) => (
+            <Icon as={<Feather name="user" />} size={5} ml="3" color={color} />
+          ),
+        }}
+      />
+      <DrawerNavigator.Screen
+        name="SubForumStack"
+        component={SubForumStackNavigator}
+        options={() => ({
+          drawerLabel: "Joined Forums",
+          title: "",
+          headerShown: false,
+          headerStyle: {
+            backgroundColor: colors.green,
+          },
+          headerTintColor: colors.white,
+          drawerIcon: ({ color }) => (
+            <Icon
+              as={<AntDesign name="pluscircleo" />}
+              size={"18px"}
+              ml="3"
+              color={color}
+            />
+          ),
+        })}
+      />
+    </DrawerNavigator.Navigator>
   );
 };
 

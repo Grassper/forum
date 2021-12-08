@@ -14,6 +14,7 @@ import { Dimensions, StyleSheet, View } from "react-native";
 import {
   DrawerParamList_,
   ProfileStackParamList_,
+  RootStackParamList_,
 } from "@/root/src/components/navigations/Navigation";
 import { ReportUser } from "@/root/src/components/shared/Report";
 import { colors } from "@/root/src/constants";
@@ -27,7 +28,10 @@ import { ProfileCard } from "./ProfileCard";
 
 type NavigationProp_ = CompositeNavigationProp<
   StackNavigationProp<ProfileStackParamList_, "Profile">,
-  DrawerNavigationProp<DrawerParamList_>
+  CompositeNavigationProp<
+    DrawerNavigationProp<DrawerParamList_, "ProfileStack">,
+    StackNavigationProp<RootStackParamList_, "Application">
+  >
 >;
 
 type RouteProp_ = RouteProp<ProfileStackParamList_, "Profile">;

@@ -26,6 +26,7 @@ import matches from "validator/es/lib/matches";
 
 import {
   DrawerParamList_,
+  RootStackParamList_,
   SubForumStackParamList_,
 } from "@/root/src/components/navigations/Navigation";
 import { ImagePickerButton } from "@/root/src/components/shared/Picker";
@@ -37,7 +38,10 @@ type RouteProp_ = RouteProp<SubForumStackParamList_, "EditAndCreateSubForum">;
 
 type NavigationProp_ = CompositeNavigationProp<
   StackNavigationProp<SubForumStackParamList_, "EditAndCreateSubForum">,
-  DrawerNavigationProp<DrawerParamList_>
+  CompositeNavigationProp<
+    DrawerNavigationProp<DrawerParamList_, "SubForumStack">,
+    StackNavigationProp<RootStackParamList_, "Application">
+  >
 >;
 
 interface Props_ {

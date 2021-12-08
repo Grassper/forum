@@ -14,6 +14,7 @@ import { FlatList, ListRenderItem, StyleSheet } from "react-native";
 import {
   BottomTabParamList_,
   DrawerParamList_,
+  RootStackParamList_,
   StackParamList_,
 } from "@/root/src/components/navigations/Navigation";
 import { UserCard } from "@/root/src/components/shared/Cards/UserCard";
@@ -23,8 +24,11 @@ import { UserContext } from "@/root/src/context";
 type NavigationProp_ = CompositeNavigationProp<
   BottomTabNavigationProp<BottomTabParamList_, "ChatList">,
   CompositeNavigationProp<
-    StackNavigationProp<StackParamList_>,
-    DrawerNavigationProp<DrawerParamList_>
+    StackNavigationProp<StackParamList_, "BottomTabNav">,
+    CompositeNavigationProp<
+      DrawerNavigationProp<DrawerParamList_, "StackNav">,
+      StackNavigationProp<RootStackParamList_, "Application">
+    >
   >
 >;
 

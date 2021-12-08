@@ -22,6 +22,7 @@ import matches from "validator/es/lib/matches";
 
 import {
   DrawerParamList_,
+  RootStackParamList_,
   StackParamList_,
 } from "@/root/src/components/navigations/Navigation";
 import { DocumentPickerButton } from "@/root/src/components/shared/Picker";
@@ -32,7 +33,10 @@ type RouteProp_ = RouteProp<StackParamList_, "AddAndEditPost">;
 
 type NavigationProp_ = CompositeNavigationProp<
   StackNavigationProp<StackParamList_, "AddAndEditPost">,
-  DrawerNavigationProp<DrawerParamList_>
+  CompositeNavigationProp<
+    DrawerNavigationProp<DrawerParamList_, "StackNav">,
+    StackNavigationProp<RootStackParamList_, "Application">
+  >
 >;
 interface Props_ {
   navigation: NavigationProp_;

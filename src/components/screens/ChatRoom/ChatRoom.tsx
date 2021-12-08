@@ -21,6 +21,7 @@ import { SvgUri } from "react-native-svg";
 
 import {
   DrawerParamList_,
+  RootStackParamList_,
   StackParamList_,
 } from "@/root/src/components/navigations/Navigation";
 import { UserContext } from "@/root/src/context";
@@ -30,7 +31,10 @@ import { InputField } from "./InputField";
 
 type NavigationProp_ = CompositeNavigationProp<
   StackNavigationProp<StackParamList_, "ChatRoom">,
-  DrawerNavigationProp<DrawerParamList_>
+  CompositeNavigationProp<
+    DrawerNavigationProp<DrawerParamList_, "StackNav">,
+    StackNavigationProp<RootStackParamList_, "Application">
+  >
 >;
 
 type RouteProp_ = RouteProp<StackParamList_, "ChatRoom">;

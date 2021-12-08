@@ -68,10 +68,13 @@ export const CommunitySearch: React.FC = () => {
     return (
       <CommunityTile
         onPress={() => {
-          navigation.navigate("SubForumStack", {
-            screen: "SubForum",
+          navigation.navigate("Application", {
+            screen: "SubForumStack",
             params: {
-              subForumId: item.id,
+              screen: "SubForum",
+              params: {
+                subForumId: item.id,
+              },
             },
           });
         }}

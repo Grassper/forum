@@ -13,13 +13,17 @@ import { FlatList, ListRenderItem, ScrollView, StyleSheet } from "react-native";
 
 import {
   DrawerParamList_,
+  RootStackParamList_,
   StackParamList_,
 } from "@/root/src/components/navigations/Navigation";
 import { CommentCard } from "@/root/src/components/shared/Cards/CommentCard";
 
 type NavigationProp_ = CompositeNavigationProp<
   StackNavigationProp<StackParamList_, "Comment">,
-  DrawerNavigationProp<DrawerParamList_>
+  CompositeNavigationProp<
+    DrawerNavigationProp<DrawerParamList_, "StackNav">,
+    StackNavigationProp<RootStackParamList_, "Application">
+  >
 >;
 
 type RouteProp_ = RouteProp<StackParamList_, "Comment">;

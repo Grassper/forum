@@ -10,12 +10,12 @@ import { NativeBaseProvider } from "native-base";
 import React from "react";
 import { enableScreens } from "react-native-screens";
 
+import { RootStackNavigator } from "@/root/src/components/navigations/RootStackNavigator";
 import { NativeBaseTheme as Theme } from "@/root/src/config";
 import { UserContext, UserContextProvider } from "@/root/src/context";
 
 // @ts-ignore
 import config from "./aws-exports";
-import { SideDrawerNavigator } from "./components/navigations/SideDrawerNavigator";
 
 Amplify.configure({ ...config, Analytics: { disabled: true } });
 
@@ -138,7 +138,7 @@ const App: React.FC = () => {
 
   return (
     <NativeBaseProvider theme={Theme}>
-      <SideDrawerNavigator />
+      <RootStackNavigator />
     </NativeBaseProvider>
   );
 };

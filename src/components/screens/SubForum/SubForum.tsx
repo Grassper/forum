@@ -20,6 +20,7 @@ import {
 
 import {
   DrawerParamList_,
+  RootStackParamList_,
   SubForumStackParamList_,
 } from "@/root/src/components/navigations/Navigation";
 import { SubForumCard } from "@/root/src/components/shared/Cards";
@@ -32,7 +33,10 @@ import { UserContext } from "@/root/src/context";
 
 type NavigationProp_ = CompositeNavigationProp<
   StackNavigationProp<SubForumStackParamList_, "SubForum">,
-  DrawerNavigationProp<DrawerParamList_>
+  CompositeNavigationProp<
+    DrawerNavigationProp<DrawerParamList_, "SubForumStack">,
+    StackNavigationProp<RootStackParamList_, "Application">
+  >
 >;
 
 type RouteProp_ = RouteProp<SubForumStackParamList_, "SubForum">;

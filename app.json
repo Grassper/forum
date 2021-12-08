@@ -24,11 +24,11 @@
         "backgroundColor": "#ffffff"
       },
       "usesIcloudStorage": true,
-      "bundleIdentifier": "com.grassper.eforum",
+      "bundleIdentifier": "com.nodeberry.eforum",
       "buildNumber": "1.0.0"
     },
     "android": {
-      "package": "com.grassper.eforum",
+      "package": "com.nodeberry.eforum",
       "versionCode": 1,
       "splash": {
         "ldpi": "./assets/appIcons/drawable-ldpi/splash_screen.png",

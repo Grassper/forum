@@ -12,6 +12,7 @@ import { FlatList, ListRenderItem, StyleSheet } from "react-native";
 
 import {
   DrawerParamList_,
+  RootStackParamList_,
   StackParamList_,
 } from "@/root/src/components/navigations/Navigation";
 import { UserCard } from "@/root/src/components/shared/Cards/UserCard";
@@ -21,7 +22,10 @@ import { useDebounce } from "@/root/src/hooks";
 
 type NavigationProp_ = CompositeNavigationProp<
   StackNavigationProp<StackParamList_, "NewChat">,
-  DrawerNavigationProp<DrawerParamList_>
+  CompositeNavigationProp<
+    DrawerNavigationProp<DrawerParamList_, "StackNav">,
+    StackNavigationProp<RootStackParamList_, "Application">
+  >
 >;
 
 interface Props_ {

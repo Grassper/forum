@@ -20,13 +20,17 @@ import matches from "validator/es/lib/matches";
 import {
   DrawerParamList_,
   ProfileStackParamList_,
+  RootStackParamList_,
 } from "@/root/src/components/navigations/Navigation";
 import { colors } from "@/root/src/constants";
 import { UserContext } from "@/root/src/context";
 
 type NavigationProp_ = CompositeNavigationProp<
   StackNavigationProp<ProfileStackParamList_, "EditProfile">,
-  DrawerNavigationProp<DrawerParamList_>
+  CompositeNavigationProp<
+    DrawerNavigationProp<DrawerParamList_, "ProfileStack">,
+    StackNavigationProp<RootStackParamList_, "Application">
+  >
 >;
 
 type RouteProp_ = RouteProp<ProfileStackParamList_, "EditProfile">;

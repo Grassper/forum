@@ -1,5 +1,4 @@
 import { GraphQLResult } from "@aws-amplify/api-graphql";
-import { Ionicons } from "@expo/vector-icons";
 import { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
 import { DrawerNavigationProp } from "@react-navigation/drawer";
 import {
@@ -8,7 +7,7 @@ import {
 } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { API } from "aws-amplify";
-import { Box, Icon, Image } from "native-base";
+import { Image } from "native-base";
 import React, { useState } from "react";
 import {
   FlatList,
@@ -21,6 +20,7 @@ import {
 import {
   BottomTabParamList_,
   DrawerParamList_,
+  RootStackParamList_,
   StackParamList_,
 } from "@/root/src/components/navigations/Navigation";
 import { BottomSheet } from "@/root/src/components/shared/BottomSheet";
@@ -35,8 +35,11 @@ import { UserContext } from "@/root/src/context";
 type NavigationProp_ = CompositeNavigationProp<
   BottomTabNavigationProp<BottomTabParamList_, "Explore">,
   CompositeNavigationProp<
-    StackNavigationProp<StackParamList_>,
-    DrawerNavigationProp<DrawerParamList_>
+    StackNavigationProp<StackParamList_, "BottomTabNav">,
+    CompositeNavigationProp<
+      DrawerNavigationProp<DrawerParamList_, "StackNav">,
+      StackNavigationProp<RootStackParamList_, "Application">
+    >
   >
 >;
 

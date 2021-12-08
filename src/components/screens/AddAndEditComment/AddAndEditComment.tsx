@@ -19,6 +19,7 @@ import matches from "validator/es/lib/matches";
 
 import {
   DrawerParamList_,
+  RootStackParamList_,
   StackParamList_,
 } from "@/root/src/components/navigations/Navigation";
 import { PostCard } from "@/root/src/components/shared/Cards/PostCard";
@@ -26,7 +27,10 @@ import { UserContext } from "@/root/src/context";
 
 type NavigationProp_ = CompositeNavigationProp<
   StackNavigationProp<StackParamList_, "AddAndEditComment">,
-  DrawerNavigationProp<DrawerParamList_>
+  CompositeNavigationProp<
+    DrawerNavigationProp<DrawerParamList_, "StackNav">,
+    StackNavigationProp<RootStackParamList_, "Application">
+  >
 >;
 
 type RouteProp_ = RouteProp<StackParamList_, "AddAndEditComment">;

@@ -125,8 +125,16 @@ export type DrawerParamList_ = {
   SubForumStack: NavigatorScreenParams<SubForumStackParamList_>;
 };
 
+export type RootStackParamList_ = {
+  Application: NavigatorScreenParams<DrawerParamList_>;
+};
+
 declare global {
   namespace ReactNavigation {
-    interface RootParamList extends DrawerParamList_ {}
+    interface RootParamList extends RootStackParamList_ {}
   }
 }
+
+/**
+ * todo-1: root navigator should be stack navigator
+ */

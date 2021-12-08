@@ -14,6 +14,7 @@ import { FlatList, ListRenderItem, ScrollView, StyleSheet } from "react-native";
 
 import {
   DrawerParamList_,
+  RootStackParamList_,
   SubForumStackParamList_,
 } from "@/root/src/components/navigations/Navigation";
 import { CommunityTile } from "@/root/src/components/shared/Tile";
@@ -21,7 +22,10 @@ import { UserContext } from "@/root/src/context";
 
 type NavigationProp_ = CompositeNavigationProp<
   StackNavigationProp<SubForumStackParamList_, "JoinedSubForum">,
-  DrawerNavigationProp<DrawerParamList_>
+  CompositeNavigationProp<
+    DrawerNavigationProp<DrawerParamList_, "SubForumStack">,
+    StackNavigationProp<RootStackParamList_, "Application">
+  >
 >;
 
 interface Props_ {
