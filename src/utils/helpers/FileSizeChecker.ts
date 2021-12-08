@@ -18,7 +18,7 @@ export const FileSizeChecker = async (
   );
 
   if (!isFileSizeAllowed) {
-    Alert.alert(`Image size must be smaller than ${allowedSizeInMb}MB!`);
+    Alert.alert(`file size must be smaller than ${allowedSizeInMb}MB!`);
     return false;
   }
 

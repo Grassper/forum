@@ -2,9 +2,10 @@ import { AntDesign } from "@expo/vector-icons";
 import { Storage } from "aws-amplify";
 import { format } from "date-fns";
 import * as DocumentPicker from "expo-document-picker";
+import * as ImagePicker from "expo-image-picker";
 import { Box, Icon, Pressable, Text } from "native-base";
 import React from "react";
-import { Alert } from "react-native";
+import { Alert, Platform } from "react-native";
 import uuid from "react-native-uuid";
 
 import {
@@ -26,15 +27,34 @@ export const DocumentPickerButton: React.FC<Props_> = ({
   const [uploading, setUploading] = React.useState(false);
   const [uploadingError, setUploadingError] = React.useState(false);
 
+  const verifyPermissions = async () => {
+    if (Platform.OS !== "web") {
+      const { status } =
+        await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (status !== "granted") {
+        Alert.alert(
+          "Insufficient Permissions!",
+          "Sorry, we need these permissions to make this work!'",
+          [{ text: "Okay" }]
+        );
+        return false;
+      }
+    }
+    return true;
+  };
+
   const handlePicker = async () => {
     /**
      * Todo implement permission
      */
 
+    const hasPermission = await verifyPermissions();
+    if (!hasPermission) {
+      return;
+    }
+
     const pickerType = {
-      Image: "image/jpeg",
       Audio: "audio/mpeg",
-      Video: "video/mp4",
     };
 
     const timeStamp = format(new Date(), "yyyyMMdd");
@@ -47,7 +67,51 @@ export const DocumentPickerButton: React.FC<Props_> = ({
 
     let uploadedS3Key = "";
 
-    if (postType !== "Poll" && postType !== "Text") {
+    if (postType === "Image") {
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        quality: 0.85,
+      });
+
+      if (!result.cancelled) {
+        const isFileSizeAllowed = await FileSizeChecker(result.uri, 15); // allowed size in mb
+
+        if (!isFileSizeAllowed) {
+          return;
+        }
+
+        const compressedUrl = await ImageCompressor(result.uri, 1080, 1080);
+
+        uploadedS3Key = await handlePickedAsset(
+          compressedUrl,
+          uploadKeyFormat[postType]
+        );
+      }
+    }
+
+    if (postType === "Video") {
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Videos,
+        allowsEditing: true,
+        videoExportPreset: ImagePicker.VideoExportPreset.MediumQuality,
+      });
+
+      if (!result.cancelled) {
+        const isFileSizeAllowed = await FileSizeChecker(result.uri, 15); // allowed size in mb
+
+        if (!isFileSizeAllowed) {
+          return;
+        }
+
+        uploadedS3Key = await handlePickedAsset(
+          result.uri,
+          uploadKeyFormat[postType]
+        );
+      }
+    }
+
+    if (postType === "Audio") {
       let pickerResult = await DocumentPicker.getDocumentAsync({
         type: pickerType[postType],
       });
@@ -63,48 +127,16 @@ export const DocumentPickerButton: React.FC<Props_> = ({
           return;
         }
 
-        /**
-         * checking post type
-         */
-        if (postType === "Image") {
-          /**
-           * compressing image and save jpeg
-           */
-          const compressedUrl = await ImageCompressor(
-            pickerResult.uri,
-            1080,
-            1080
-          );
-          /**
-           * Upload compressed image to s3
-           */
-
-          uploadedS3Key = await handlePickedAsset(
-            compressedUrl,
-            uploadKeyFormat[postType]
-          );
-        }
-
-        if (postType === "Audio") {
-          uploadedS3Key = await handlePickedAsset(
-            pickerResult.uri,
-            uploadKeyFormat[postType]
-          );
-        }
-
-        if (postType === "Video") {
-          uploadedS3Key = await handlePickedAsset(
-            pickerResult.uri,
-            uploadKeyFormat[postType]
-          );
-        }
-
-        if (uploadedS3Key) {
-          setMediaS3Key(uploadedS3Key);
-          setUploading(false);
-          setUploadingError(false);
-        }
+        uploadedS3Key = await handlePickedAsset(
+          pickerResult.uri,
+          uploadKeyFormat[postType]
+        );
       }
+    }
+    if (uploadedS3Key) {
+      setMediaS3Key(uploadedS3Key);
+      setUploading(false);
+      setUploadingError(false);
     }
   };
 
