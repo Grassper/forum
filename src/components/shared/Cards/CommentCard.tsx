@@ -238,19 +238,22 @@ export const CommentCard: React.FC<Props_> = ({
                 {!hideReplyButton && (
                   <Pressable
                     onPress={() => {
-                      navigation.navigate("StackNav", {
-                        screen: "AddAndEditReplies",
+                      navigation.navigate("Application", {
+                        screen: "StackNav",
                         params: {
-                          username,
-                          avatarUrl,
-                          subForum,
-                          commentAuthorId,
-                          postId,
-                          subForumId,
-                          contentText,
-                          commentId,
-                          timeStamp,
-                          action: "Add",
+                          screen: "AddAndEditReplies",
+                          params: {
+                            username,
+                            avatarUrl,
+                            subForum,
+                            commentAuthorId,
+                            postId,
+                            subForumId,
+                            contentText,
+                            commentId,
+                            timeStamp,
+                            action: "Add",
+                          },
                         },
                       });
                     }}
@@ -270,19 +273,22 @@ export const CommentCard: React.FC<Props_> = ({
               {!!repliesCount && (
                 <Pressable
                   onPress={() => {
-                    navigation.navigate("StackNav", {
-                      screen: "Comment",
+                    navigation.navigate("Application", {
+                      screen: "StackNav",
                       params: {
-                        username,
-                        avatarUrl,
-                        subForum,
-                        postId,
-                        commentAuthorId,
-                        subForumId,
-                        contentText,
-                        commentId,
-                        timeStamp,
-                        repliesCount,
+                        screen: "Comment",
+                        params: {
+                          username,
+                          avatarUrl,
+                          subForum,
+                          postId,
+                          commentAuthorId,
+                          subForumId,
+                          contentText,
+                          commentId,
+                          timeStamp,
+                          repliesCount,
+                        },
                       },
                     });
                   }}

@@ -26,9 +26,12 @@ export const BottomSheet: React.FC<Props_> = ({ isOpen, onClose }) => {
           <HStack width="100%" space="8">
             <Item
               onPress={() => {
-                navigation.navigate("StackNav", {
-                  screen: "ChooseSubForum",
-                  params: { postType: "Image", action: "Add" },
+                navigation.navigate("Application", {
+                  screen: "StackNav",
+                  params: {
+                    screen: "ChooseSubForum",
+                    params: { postType: "Image", action: "Add" },
+                  },
                 });
                 onClose();
               }}
@@ -39,9 +42,12 @@ export const BottomSheet: React.FC<Props_> = ({ isOpen, onClose }) => {
 
             <Item
               onPress={() => {
-                navigation.navigate("StackNav", {
-                  screen: "ChooseSubForum",
-                  params: { postType: "Audio", action: "Add" },
+                navigation.navigate("Application", {
+                  screen: "StackNav",
+                  params: {
+                    screen: "ChooseSubForum",
+                    params: { postType: "Audio", action: "Add" },
+                  },
                 });
                 onClose();
               }}
@@ -52,11 +58,14 @@ export const BottomSheet: React.FC<Props_> = ({ isOpen, onClose }) => {
 
             <Item
               onPress={() => {
-                navigation.navigate("StackNav", {
-                  screen: "ChooseSubForum",
+                navigation.navigate("Application", {
+                  screen: "StackNav",
                   params: {
-                    postType: "Video",
-                    action: "Add",
+                    screen: "ChooseSubForum",
+                    params: {
+                      postType: "Video",
+                      action: "Add",
+                    },
                   },
                 });
 
@@ -69,12 +78,15 @@ export const BottomSheet: React.FC<Props_> = ({ isOpen, onClose }) => {
 
             <Item
               onPress={() => {
-                navigation.navigate("StackNav", {
-                  screen: "ChooseSubForum",
+                navigation.navigate("Application", {
+                  screen: "StackNav",
                   params: {
-                    postType: "Text",
-                    action: "Add",
-                    hideUpload: true,
+                    screen: "ChooseSubForum",
+                    params: {
+                      postType: "Text",
+                      action: "Add",
+                      hideUpload: true,
+                    },
                   },
                 });
                 onClose();

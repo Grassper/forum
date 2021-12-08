@@ -460,9 +460,12 @@ const PostUserActions: React.FC<PostUserActions_> = ({
           />
           <Pressable
             onPress={() =>
-              navigation.navigate("StackNav", {
-                screen: "AddAndEditComment",
-                params: { ...post, action: "Add" },
+              navigation.navigate("Application", {
+                screen: "StackNav",
+                params: {
+                  screen: "AddAndEditComment",
+                  params: { ...post, action: "Add" },
+                },
               })
             }
           >
@@ -476,9 +479,12 @@ const PostUserActions: React.FC<PostUserActions_> = ({
         {!hidePostNavigation && id && (
           <Pressable
             onPress={() =>
-              navigation.navigate("StackNav", {
-                screen: "Post",
-                params: { ...post },
+              navigation.navigate("Application", {
+                screen: "StackNav",
+                params: {
+                  screen: "Post",
+                  params: { ...post },
+                },
               })
             }
           >
