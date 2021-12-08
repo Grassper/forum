@@ -108,6 +108,10 @@ const createMessageFetch = async (input: createMessageFetch_) => {
 interface createMessage_ {
   createMessage?: {
     id: string;
+    content: string;
+    chatRoomId: string;
+    userId: string;
+    createdAt: string;
   };
 }
 
@@ -115,6 +119,10 @@ const createMessage = /* GraphQL */ `
   mutation createMessage($input: CreateMessageInput!) {
     createMessage(input: $input) {
       id
+      content
+      chatRoomId
+      userId
+      createdAt
     }
   }
 `;

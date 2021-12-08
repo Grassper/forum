@@ -5005,7 +5005,7 @@ aws-amplify-react-native@^6.0.1:
   dependencies:
     buffer "^5.2.1"
 
-aws-amplify@^4.3.8:
+aws-amplify@^4.3.10:
   version "4.3.10"
   resolved "https://registry.yarnpkg.com/aws-amplify/-/aws-amplify-4.3.10.tgz#965776478b621fe87f05e2099cf89ddbd2448fed"
   integrity sha512-goiwtm4d/uGcSVa0Xodb0HrxkJoweHBWxWDv4of+R98gmg9WwzA23YU2awO0mcgErD8FG2pb9WgIc75Gaw0//Q==

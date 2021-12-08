@@ -49,14 +49,12 @@ export const ChatRoom: React.FC<Props_> = ({ route }) => {
   const [messages, setMessages] = React.useState<Item[]>([]);
   const [nextToken, setNextToken] = React.useState<string>("");
 
-  const [loading, setLoading] = React.useState(false);
   const currentUser = React.useContext(UserContext).user;
   const populateContent = React.useCallback(() => {
     let isActive = true;
 
     const fetchCall = async () => {
       if (roomId) {
-        setLoading(true);
         const listMessageInput: ListMessageFetchInput_ = {
           limit: 10,
           chatRoomId: roomId,
@@ -66,9 +64,6 @@ export const ChatRoom: React.FC<Props_> = ({ route }) => {
         if (responseData && isActive) {
           setMessages(responseData.items);
           setNextToken(responseData.nextToken);
-        }
-        if (isActive) {
-          setLoading(false);
         }
       }
     };
@@ -151,9 +146,10 @@ export const ChatRoom: React.FC<Props_> = ({ route }) => {
               ref={flatListRef}
               onContentSizeChange={() => flatListRef.current?.scrollToEnd()}
               data={messages}
+              inverted
               renderItem={ChatCardRenderer}
               keyExtractor={(item) => item.id}
-              onEndReached={() => handlePagination()}
+              onEndReached={() => {}}
             />
           </Box>
         </Box>
@@ -193,10 +189,8 @@ const ListMessageFetch = async (input: ListMessageFetchInput_) => {
 };
 
 /**
- * todo 1: fetch chatroom messages by chatroom id
- * todo 2: graphql schema and types
- * todo 3: fetch and pagination handlers
  * todo 4: grapqhl subscriptions
+ * todo 5: subscribe to the message by when user visit the screen
  */
 
 interface listMessagesByChatRoom_ {
@@ -234,6 +228,28 @@ const listMessagesByChatRoom = /* GraphQL */ `
         userId
       }
       nextToken
+    }
+  }
+`;
+
+interface onCreateMessageByChatRoomId_ {
+  onMessageByChatRoomId?: {
+    id: string;
+    content: string;
+    chatRoomId: string;
+    userId: string;
+    createdAt: Date;
+  };
+}
+
+const onCreateMessageByChatRoomId = /* GraphQL */ `
+  subscription onCreateMessageByChatRoomId($chatRoomId: ID!) {
+    onMessageByChatRoomId(chatRoomId: $chatRoomId) {
+      id
+      content
+      chatRoomId
+      userId
+      createdAt
     }
   }
 `;

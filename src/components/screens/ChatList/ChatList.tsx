@@ -7,7 +7,7 @@ import {
 } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { API } from "aws-amplify";
-import { Box, ScrollView } from "native-base";
+import { Box } from "native-base";
 import React from "react";
 import { FlatList, ListRenderItem, StyleSheet } from "react-native";
 
@@ -16,10 +16,6 @@ import {
   DrawerParamList_,
   StackParamList_,
 } from "@/root/src/components/navigations/Navigation";
-/**
- * need to refactor follow card used for skeleton
- */
-import { FollowCard } from "@/root/src/components/shared/Cards";
 import { UserCard } from "@/root/src/components/shared/Cards/UserCard";
 import { FloatingActionButton } from "@/root/src/components/shared/FabButton";
 import { UserContext } from "@/root/src/context";
@@ -40,8 +36,6 @@ export const ChatList: React.FC<Props_> = ({ navigation }) => {
   const [chatRooms, setChatRooms] = React.useState<ChatRooms_["items"]>([]);
   const [nextToken, setNextToken] = React.useState<string>("");
 
-  const [loading, setLoading] = React.useState(false);
-
   const currentUser = React.useContext(UserContext).user;
 
   const populateContent = React.useCallback(() => {
@@ -49,7 +43,6 @@ export const ChatList: React.FC<Props_> = ({ navigation }) => {
 
     const fetchCall = async () => {
       if (currentUser.id) {
-        setLoading(true);
         const ListChatRoomInput: ListChatRoomFetchInput_ = {
           id: currentUser.id,
           limit: 10,
@@ -59,9 +52,6 @@ export const ChatList: React.FC<Props_> = ({ navigation }) => {
         if (responseData && isActive) {
           setChatRooms(responseData.items);
           setNextToken(responseData.nextToken);
-        }
-        if (isActive) {
-          setLoading(false);
         }
       }
     };
@@ -114,44 +104,21 @@ export const ChatList: React.FC<Props_> = ({ navigation }) => {
 
   return (
     <Box style={styles.container} bg="white" alignItems="center">
-      {!loading ? (
-        <>
-          <Box alignItems="center" width="95%" py="15px">
-            <Box width="100%">
-              <FlatList
-                data={chatRooms}
-                renderItem={ChatCardRenderer}
-                keyExtractor={(item) => item.chatRoom.id}
-                onEndReached={() => handlePagination()}
-              />
-            </Box>
-          </Box>
-
-          <FloatingActionButton
-            onPress={() => navigation.push("NewChat")}
-            screen="ChatList"
+      <Box alignItems="center" width="95%" py="15px">
+        <Box width="100%">
+          <FlatList
+            data={chatRooms}
+            renderItem={ChatCardRenderer}
+            keyExtractor={(item) => item.chatRoom.id}
+            onEndReached={() => handlePagination()}
           />
-        </>
-      ) : (
-        <ScrollView py="15" width="100%">
-          <FollowCard />
-          <FollowCard />
-          <FollowCard />
-          <FollowCard />
-          <FollowCard />
-          <FollowCard />
-          <FollowCard />
-          <FollowCard />
-          <FollowCard />
-          <FollowCard />
-          <FollowCard />
-          <FollowCard />
-          <FollowCard />
-          <FollowCard />
-          <FollowCard />
-          <FollowCard />
-        </ScrollView>
-      )}
+        </Box>
+      </Box>
+
+      <FloatingActionButton
+        onPress={() => navigation.push("NewChat")}
+        screen="ChatList"
+      />
     </Box>
   );
 };
