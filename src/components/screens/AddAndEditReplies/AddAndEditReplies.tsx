@@ -3,7 +3,7 @@ import { DrawerNavigationProp } from "@react-navigation/drawer";
 import { CompositeNavigationProp, RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { API } from "aws-amplify";
-import { Box, Button, Divider, Flex, Input, Spinner } from "native-base";
+import { Box, Button, Divider, HStack, Input, Spinner } from "native-base";
 import React from "react";
 import { Alert, StyleSheet } from "react-native";
 import isLength from "validator/es/lib/isLength";
@@ -128,11 +128,7 @@ export const AddAndEditReplies: React.FC<Props_> = ({ navigation, route }) => {
         <Divider />
       </Box>
       <Box bg="white" py="4" mt="2">
-        <Flex
-          flexDirection="row"
-          alignItems="flex-start"
-          justifyContent="center"
-        >
+        <HStack alignItems="flex-start" justifyContent="center">
           <Input
             width="90%"
             multiline
@@ -144,7 +140,7 @@ export const AddAndEditReplies: React.FC<Props_> = ({ navigation, route }) => {
             fontSize="sm"
             variant="unstyled"
           />
-        </Flex>
+        </HStack>
       </Box>
     </Box>
   );

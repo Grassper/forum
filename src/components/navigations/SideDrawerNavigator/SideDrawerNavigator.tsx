@@ -17,6 +17,7 @@ import {
   Box,
   Flex,
   Icon,
+  HStack,
   MoonIcon,
   Pressable,
   SunIcon,
@@ -77,7 +78,7 @@ const CustomDrawerContent = (props: DrawerContentComponentProps) => {
             setLightMode(!lightMode);
           }}
         >
-          <Flex direction="row" alignSelf="center" alignItems="center">
+          <HStack alignSelf="center" alignItems="center">
             {lightMode ? (
               <SunIcon size="4" mr="2" mt="1" />
             ) : (
@@ -86,7 +87,7 @@ const CustomDrawerContent = (props: DrawerContentComponentProps) => {
             <Text fontSize="xs" fontFamily="body" color="black" mt="1">
               {lightMode ? "Light" : "Dark"}
             </Text>
-          </Flex>
+          </HStack>
         </Pressable>
       </Box>
 

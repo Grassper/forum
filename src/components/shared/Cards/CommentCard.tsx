@@ -3,7 +3,7 @@ import { AntDesign, Entypo, Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { API } from "aws-amplify";
 import { format } from "date-fns";
-import { Box, Flex, HStack, Icon, Menu, Pressable, Text } from "native-base";
+import { Box, HStack, Icon, Menu, Pressable, Text } from "native-base";
 import React from "react";
 import { StyleSheet } from "react-native";
 import { SvgUri } from "react-native-svg";
@@ -206,7 +206,7 @@ export const CommentCard: React.FC<Props_> = ({
                     voteHandler("UPVOTE");
                   }}
                 >
-                  <Flex flexDirection="row" alignItems="flex-end">
+                  <HStack alignItems="flex-end">
                     <Icon
                       as={<AntDesign name="caretcircleoup" />}
                       size={5}
@@ -215,14 +215,14 @@ export const CommentCard: React.FC<Props_> = ({
                     <Text ml="1" fontSize="xs">
                       1.5k
                     </Text>
-                  </Flex>
+                  </HStack>
                 </Pressable>
                 <Pressable
                   onPress={() => {
                     voteHandler("DOWNVOTE");
                   }}
                 >
-                  <Flex flexDirection="row" alignItems="flex-end">
+                  <HStack alignItems="flex-end">
                     <Box style={styles.downVoteIcon}>
                       <Icon
                         as={<AntDesign name="caretcircleoup" />}
@@ -233,7 +233,7 @@ export const CommentCard: React.FC<Props_> = ({
                     <Text ml="1" fontSize="xs">
                       85k
                     </Text>
-                  </Flex>
+                  </HStack>
                 </Pressable>
                 {!hideReplyButton && (
                   <Pressable
@@ -258,7 +258,7 @@ export const CommentCard: React.FC<Props_> = ({
                       });
                     }}
                   >
-                    <Flex flexDirection="row" alignItems="flex-end">
+                    <HStack alignItems="flex-end">
                       <Box>
                         <Icon
                           as={<Entypo name="reply" />}
@@ -266,7 +266,7 @@ export const CommentCard: React.FC<Props_> = ({
                           color={"muted.500"}
                         />
                       </Box>
-                    </Flex>
+                    </HStack>
                   </Pressable>
                 )}
               </HStack>

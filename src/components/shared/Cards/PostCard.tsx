@@ -378,7 +378,7 @@ const Poll: React.FC<Props_["poll"]> = ({ title, pollArr, totalVotes }) => {
           </Box>
         )}
       </Box>
-      <Flex flexDirection="row" justifyContent="space-between">
+      <HStack justifyContent="space-between">
         <HStack alignItems="center">
           <Text fontSize="xs">{totalVotes} votes</Text>
           <Box bg="blueGray.500" style={styles.separatorDot} />
@@ -395,7 +395,7 @@ const Poll: React.FC<Props_["poll"]> = ({ title, pollArr, totalVotes }) => {
             </Text>
           </Pressable>
         )}
-      </Flex>
+      </HStack>
     </Box>
   );
 };

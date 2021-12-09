@@ -7,7 +7,7 @@ import {
   Box,
   Button,
   Divider,
-  Flex,
+  HStack,
   Input,
   ScrollView,
   Spinner,
@@ -130,11 +130,7 @@ export const AddAndEditComment: React.FC<Props_> = ({ navigation, route }) => {
           <Divider />
         </Box>
         <Box bg="white" py="4" mt="2">
-          <Flex
-            flexDirection="row"
-            alignItems="flex-start"
-            justifyContent="center"
-          >
+          <HStack alignItems="flex-start" justifyContent="center">
             <Input
               width="90%"
               multiline
@@ -146,7 +142,7 @@ export const AddAndEditComment: React.FC<Props_> = ({ navigation, route }) => {
               fontSize="sm"
               variant="unstyled"
             />
-          </Flex>
+          </HStack>
         </Box>
       </ScrollView>
     </Box>
