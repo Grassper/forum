@@ -7,7 +7,7 @@ import {
 } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { API } from "aws-amplify";
-import { Box, Flex, Text } from "native-base";
+import { Box, Flex, HStack, Text } from "native-base";
 import React from "react";
 import { FlatList, ListRenderItem, ScrollView, StyleSheet } from "react-native";
 
@@ -77,11 +77,11 @@ const PostHeader: React.FC<PostHeader_> = (post) => {
       />
 
       <Box alignItems="center" bg="white" mt="2" pt="4">
-        <Flex width="90%" flexDirection="row" alignItems="flex-end">
+        <HStack width="90%" alignItems="flex-end">
           <Text fontWeight="500" color="eGreen.400">
             Comments
           </Text>
-        </Flex>
+        </HStack>
       </Box>
     </Box>
   );

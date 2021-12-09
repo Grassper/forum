@@ -1,7 +1,7 @@
 import { GraphQLResult } from "@aws-amplify/api-graphql";
 import { FontAwesome } from "@expo/vector-icons";
 import { API } from "aws-amplify";
-import { Box, Flex, Icon, Input, Pressable } from "native-base";
+import { Box, Flex, HStack, Icon, Input, Pressable } from "native-base";
 import React from "react";
 import { KeyboardAvoidingView, Platform } from "react-native";
 
@@ -36,8 +36,7 @@ export const InputField: React.FC<Props_> = ({ onFocus, chatRoomId }) => {
       keyboardVerticalOffset={60}
     >
       <Box bg="transparent" py="1" justifyContent="center" safeAreaBottom>
-        <Flex
-          flexDirection="row"
+        <HStack
           alignItems="center"
           justifyContent="center"
           bgColor="transparent"
@@ -69,7 +68,7 @@ export const InputField: React.FC<Props_> = ({ onFocus, chatRoomId }) => {
               <Icon as={<FontAwesome name="send" />} size={4} color="white" />
             </Flex>
           </Pressable>
-        </Flex>
+        </HStack>
       </Box>
     </KeyboardAvoidingView>
   );

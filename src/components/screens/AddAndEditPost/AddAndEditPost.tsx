@@ -7,7 +7,7 @@ import { API } from "aws-amplify";
 import {
   Box,
   Button,
-  Flex,
+  HStack,
   Icon,
   Input,
   Pressable,
@@ -185,7 +185,7 @@ export const AddAndEditPost: React.FC<Props_> = ({ navigation, route }) => {
             <Box mt="2">
               {Polls.map((entry, index) => {
                 return (
-                  <Flex flexDirection="row" alignItems="center">
+                  <HStack alignItems="center">
                     <Text
                       key={`poll-${index}`}
                       p="3"
@@ -221,13 +221,13 @@ export const AddAndEditPost: React.FC<Props_> = ({ navigation, route }) => {
                         color="white"
                       />
                     </Pressable>
-                  </Flex>
+                  </HStack>
                 );
               })}
             </Box>
             {/* max poll array length is 3. hide input if that exceed  */}
             {Polls.length <= 2 && (
-              <Flex flexDirection="row" alignItems="center">
+              <HStack alignItems="center">
                 <Input
                   bg="muted.100"
                   p="4"
@@ -253,7 +253,7 @@ export const AddAndEditPost: React.FC<Props_> = ({ navigation, route }) => {
                 >
                   <Icon as={<AntDesign name="plus" />} size={4} color="white" />
                 </Pressable>
-              </Flex>
+              </HStack>
             )}
             <Input
               mt="2"

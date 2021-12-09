@@ -2,12 +2,12 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { Auth } from "aws-amplify";
 import {
   Box,
-  Flex,
   Icon,
   Input,
   Pressable,
   StatusBar,
   Text,
+  VStack,
 } from "native-base";
 import React from "react";
 
@@ -45,7 +45,7 @@ export const SignUp: React.FC<Props_> = ({ Login, setLogin }) => {
     <Box flex="1">
       <StatusBar />
       <Box px="3" height="100%">
-        <Flex justifyContent="space-between" direction="column" height="100%">
+        <VStack justifyContent="space-between" height="100%">
           <Box>
             <Box alignItems="flex-end" pt="3">
               <Pressable onPress={() => setLogin(!Login)}>
@@ -142,7 +142,7 @@ export const SignUp: React.FC<Props_> = ({ Login, setLogin }) => {
               </Text>
             </Pressable>
           </Box>
-        </Flex>
+        </VStack>
       </Box>
     </Box>
   );

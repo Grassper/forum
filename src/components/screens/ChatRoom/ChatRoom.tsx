@@ -9,7 +9,7 @@ import {
 } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { API } from "aws-amplify";
-import { Box, Flex, Text } from "native-base";
+import { Box, HStack, Text } from "native-base";
 import React from "react";
 import {
   FlatList,
@@ -111,7 +111,7 @@ export const ChatRoom: React.FC<Props_> = ({ route }) => {
     navigation.setOptions({
       headerLeft: () => (
         <Box>
-          <Flex direction="row" alignItems="center">
+          <HStack alignItems="center">
             <Feather
               name="chevron-left"
               size={30}
@@ -131,7 +131,7 @@ export const ChatRoom: React.FC<Props_> = ({ route }) => {
             <Text color="white" fontSize="md" fontWeight="500" ml="2">
               {title}
             </Text>
-          </Flex>
+          </HStack>
         </Box>
       ),
     });
