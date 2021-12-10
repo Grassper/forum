@@ -101,12 +101,13 @@ export const EditProfile: React.FC<Props_> = ({ navigation }) => {
     const validateAbout = () => {
       if (
         isLength(about, { min: 0, max: 300 }) &&
-        matches(about, "^[A-Za-z][A-Za-z0-9 _|.,!]{0,300}$", "m")
+        matches(about, "^[A-Za-z][A-Za-z0-9 _|.,!']{0,300}$", "m")
       ) {
         setAboutValid(true);
         setAboutErrorMsg("");
       } else {
         setAboutValid(false);
+
         setAboutErrorMsg("it should be alphanumeric max: 300 chars");
       }
     };
