@@ -22,8 +22,10 @@ import {
   ProfileStackParamList_,
   RootStackParamList_,
 } from "@/root/src/components/navigations/Navigation";
+import { AvatorPicker } from "@/root/src/components/shared/Avatar";
 import { colors } from "@/root/src/constants";
 import { UserContext } from "@/root/src/context";
+import { useDebounce } from "@/root/src/hooks";
 
 type NavigationProp_ = CompositeNavigationProp<
   StackNavigationProp<ProfileStackParamList_, "EditProfile">,
@@ -42,21 +44,23 @@ interface Props_ {
 
 export const EditProfile: React.FC<Props_> = ({ navigation }) => {
   const [about, setAbout] = React.useState("");
-
+  const [profileUrl, setProfileUrl] = React.useState("");
   const [isAboutValid, setAboutValid] = React.useState(false);
   const [aboutErrorMsg, setAboutErrorMsg] = React.useState("");
   const [loading, setLoading] = React.useState(false);
 
+  const debouncedAbout = useDebounce(about, 1000);
   const currentUser = React.useContext(UserContext).user; // this context provided current login user
   const setUser = React.useContext(UserContext).updateUser;
 
   const handleSubmit = React.useCallback(async () => {
-    if (isAboutValid) {
+    if (isAboutValid && profileUrl) {
       setLoading(true);
       try {
         const updateUserInput = {
           id: currentUser.id,
           about,
+          profileImageUrl: profileUrl,
           _version: currentUser._version,
         };
 
@@ -95,7 +99,7 @@ export const EditProfile: React.FC<Props_> = ({ navigation }) => {
       }); // pass id of current user
       setLoading(false);
     }
-  }, [about, currentUser, isAboutValid, navigation, setUser]);
+  }, [about, currentUser, isAboutValid, navigation, setUser, profileUrl]);
 
   React.useEffect(() => {
     const validateAbout = () => {
@@ -116,6 +120,7 @@ export const EditProfile: React.FC<Props_> = ({ navigation }) => {
 
   React.useEffect(() => {
     setAbout(currentUser.about);
+    setProfileUrl(currentUser.profileImageUrl);
   }, [currentUser]);
 
   React.useLayoutEffect(() => {
@@ -144,11 +149,7 @@ export const EditProfile: React.FC<Props_> = ({ navigation }) => {
             borderRadius="full"
             overflow="hidden"
           >
-            <SvgUri
-              uri={currentUser.profileImageUrl}
-              width="100%"
-              height="100%"
-            />
+            <SvgUri uri={profileUrl} width="100%" height="100%" />
           </Box>
         </Box>
         <FormControl mt="4" isInvalid={!isAboutValid}>
@@ -171,9 +172,12 @@ export const EditProfile: React.FC<Props_> = ({ navigation }) => {
           <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>
             {aboutErrorMsg}
           </FormControl.ErrorMessage>
+        </FormControl>
+        <FormControl>
           <FormControl.HelperText>
-            Introduce Yourself to community
+            Avatars are generated based on about hash.
           </FormControl.HelperText>
+          <AvatorPicker about={debouncedAbout} setProfileUrl={setProfileUrl} />
         </FormControl>
       </Box>
     </Box>
