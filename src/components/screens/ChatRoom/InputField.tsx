@@ -8,11 +8,10 @@ import { KeyboardAvoidingView, Platform } from "react-native";
 import { UserContext } from "@/root/src/context";
 
 interface Props_ {
-  onFocus: () => void;
   chatRoomId: string;
 }
 
-export const InputField: React.FC<Props_> = ({ onFocus, chatRoomId }) => {
+export const InputField: React.FC<Props_> = ({ chatRoomId }) => {
   const [message, setMessage] = React.useState("");
   const currentUser = React.useContext(UserContext).user;
 
@@ -53,7 +52,6 @@ export const InputField: React.FC<Props_> = ({ onFocus, chatRoomId }) => {
             placeholderTextColor="muted.400"
             fontSize="sm"
             variant="unstyled"
-            onFocus={onFocus}
           />
           <Pressable onPress={handleSubmitMessage}>
             <Flex

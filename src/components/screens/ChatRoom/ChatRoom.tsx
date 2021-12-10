@@ -81,7 +81,7 @@ export const ChatRoom: React.FC<Props_> = ({ route }) => {
       });
 
       // @ts-ignore
-      return () => subscription.unsubscribe();
+      return subscription.unsubscribe;
     }
   }, [roomId]);
 
@@ -179,19 +179,15 @@ export const ChatRoom: React.FC<Props_> = ({ route }) => {
           <Box width="95%">
             <FlatList
               ref={flatListRef}
-              onContentSizeChange={() => flatListRef.current?.scrollToEnd()}
               data={messages}
               inverted
               renderItem={ChatCardRenderer}
               keyExtractor={(item) => item.id}
-              onEndReached={() => {}}
+              onEndReached={handlePagination}
             />
           </Box>
         </Box>
-        <InputField
-          onFocus={() => flatListRef.current?.scrollToEnd()}
-          chatRoomId={roomId}
-        />
+        <InputField chatRoomId={roomId} />
       </ImageBackground>
     </Box>
   );
