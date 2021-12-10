@@ -11,7 +11,6 @@ export const SearchBar: React.FC<Props_> = ({ value, setValue }) => {
   return (
     <>
       <Input
-        bg="muted.100"
         py="3"
         value={value}
         onChangeText={setValue}
@@ -30,14 +29,18 @@ export const SearchBar: React.FC<Props_> = ({ value, setValue }) => {
           />
         }
         InputRightElement={
-          <Pressable onPress={() => setValue("")}>
-            <Icon
-              as={<MaterialIcons name="clear" />}
-              size={18}
-              mr="3"
-              color="muted.400"
-            />
-          </Pressable>
+          value !== "" ? (
+            <Pressable onPress={() => setValue("")}>
+              <Icon
+                as={<MaterialIcons name="clear" />}
+                size={18}
+                mr="3"
+                color="muted.400"
+              />
+            </Pressable>
+          ) : (
+            <></>
+          )
         }
       />
     </>
