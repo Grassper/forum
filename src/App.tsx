@@ -1,9 +1,7 @@
 import "react-native-gesture-handler";
 
-import { GraphQLResult } from "@aws-amplify/api-graphql";
-import Amplify, { API, Auth } from "aws-amplify";
+import Amplify, { Auth } from "aws-amplify";
 // @ts-ignore
-import { withAuthenticator } from "aws-amplify-react-native";
 import AppLoading from "expo-app-loading";
 import * as Font from "expo-font";
 import { NativeBaseProvider } from "native-base";
@@ -12,7 +10,13 @@ import { enableScreens } from "react-native-screens";
 
 import { RootStackNavigator } from "@/root/src/components/navigations/RootStackNavigator";
 import { NativeBaseTheme as Theme } from "@/root/src/config";
-import { UserContext, UserContextProvider } from "@/root/src/context";
+import {
+  AuthContext,
+  AuthContextProvider,
+  UserContext,
+  UserContextProvider,
+} from "@/root/src/context";
+import { RegisterUserInDb } from "@/root/src/utils/helpers";
 
 // @ts-ignore
 import config from "./aws-exports";
@@ -38,10 +42,12 @@ const fetchFonts = (): Promise<void> => {
 
 const App: React.FC = () => {
   const [fontLoaded, setFontLoaded] = React.useState(false);
-  const { user, updateUser } = React.useContext(UserContext);
+
+  const { updateUser } = React.useContext(UserContext);
+  const { authState, setAuthState } = React.useContext(AuthContext);
 
   React.useEffect(() => {
-    const checkCurrentUserInDb = async () => {
+    const checkUserIsAuthenticated = async () => {
       try {
         // get authenticated user from cognito
         const currentUser = await Auth.currentAuthenticatedUser({
@@ -49,78 +55,15 @@ const App: React.FC = () => {
         });
 
         if (currentUser) {
-          // check user exist in db
-          const userData = (await API.graphql({
-            query: getUser,
-            variables: { id: currentUser.attributes.sub },
-            authMode: "AMAZON_COGNITO_USER_POOLS",
-          })) as GraphQLResult<getUser_>;
-
-          if (userData.data?.getUser) {
-            // if user already exist set state and return
-            const { profileImageUrl, coins, about, _version } =
-              userData.data.getUser;
-
-            updateUser({
-              id: currentUser.attributes.sub,
-              username: currentUser.username,
-              email: currentUser.attributes.email,
-              about,
-              profileImageUrl,
-              coins,
-              _version,
-            });
-
-            return;
-          }
-
-          // if user is not registered. register user to db
-          const newUser = {
-            id: currentUser.attributes.sub,
-            username: currentUser.username,
-            email: currentUser.attributes.email,
-            profileImageUrl: `https://avatars.dicebear.com/api/micah/${currentUser.attributes.sub}.svg`, // for user profile replace space with dash
-            coins: 1000,
-            about: "Hooray, Finally i'm am here",
-          };
-
-          const newUserMetrics = {
-            id: currentUser.attributes.sub,
-            postLikes: 0,
-            postLoves: 0,
-            postSupports: 0,
-            postDislikes: 0,
-            profileViews: 0,
-            commentUpvotes: 0,
-            commentDownvotes: 0,
-            followers: 0,
-            following: 0,
-            totalPosts: 0,
-            totalComments: 0,
-            communitiesJoined: 0,
-            communitiesModerating: 0,
-            activeDays: 0,
-            lastActiveDay: new Date().toISOString(),
-          };
-
-          await API.graphql({
-            query: createUser,
-            variables: { input: newUser },
-            authMode: "AMAZON_COGNITO_USER_POOLS",
-          });
-
-          await API.graphql({
-            query: createUserMetrics,
-            variables: { input: newUserMetrics },
-            authMode: "AMAZON_COGNITO_USER_POOLS",
-          });
+          await RegisterUserInDb(currentUser, updateUser, setAuthState);
         }
       } catch (err) {
-        console.error("error while registering user in app.tsx", err);
+        console.log(err);
+        setAuthState("LOGGEDOUT");
       }
     };
-    checkCurrentUserInDb();
-  }, [updateUser]);
+    checkUserIsAuthenticated();
+  }, [setAuthState, updateUser]);
 
   if (!fontLoaded) {
     return (
@@ -132,7 +75,7 @@ const App: React.FC = () => {
     );
   }
 
-  if (!user.id) {
+  if (authState === "INITIALIZING") {
     return <AppLoading />;
   }
 
@@ -145,55 +88,12 @@ const App: React.FC = () => {
 
 const ContextWrapper: React.FC = () => {
   return (
-    <UserContextProvider>
-      <App />
-    </UserContextProvider>
+    <AuthContextProvider>
+      <UserContextProvider>
+        <App />
+      </UserContextProvider>
+    </AuthContextProvider>
   );
 };
 
-export default withAuthenticator(ContextWrapper);
-
-/**
- * graphql queries and their types
- * types pattern {queryName}_
- * * note dash(_) at the end of type name
- * order 1.queryType 2.graphql query
- */
-
-type getUser_ = {
-  getUser?: {
-    id: string;
-    profileImageUrl: string;
-    coins: number;
-    about: string;
-    _version: number;
-  };
-};
-
-const getUser = /* GraphQL */ `
-  query GetUser($id: ID!) {
-    getUser(id: $id) {
-      id
-      profileImageUrl
-      about
-      coins
-      _version
-    }
-  }
-`;
-
-const createUser = /* GraphQL */ `
-  mutation CreateUser($input: CreateUserInput!) {
-    createUser(input: $input) {
-      id
-    }
-  }
-`;
-
-const createUserMetrics = /* GraphQL */ `
-  mutation createUserMetrics($input: CreateUserMetricsInput!) {
-    createUserMetrics(input: $input) {
-      id
-    }
-  }
-`;
+export default ContextWrapper;

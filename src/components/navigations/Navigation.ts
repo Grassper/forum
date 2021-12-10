@@ -9,6 +9,14 @@ export type BottomTabParamList_ = {
   ChatList: undefined;
 };
 
+export type AuthStackParamList_ = {
+  SignIn: undefined;
+  SignUp: undefined;
+  Verification: { username: string; email: string };
+  ForgotPassword: { username: string; email: string };
+  AccountRecovery: undefined;
+};
+
 export type ProfileStackParamList_ = {
   // * User
   Profile: { userId: string };
@@ -126,6 +134,7 @@ export type DrawerParamList_ = {
 };
 
 export type RootStackParamList_ = {
+  Authentication: NavigatorScreenParams<AuthStackParamList_>;
   Application: NavigatorScreenParams<DrawerParamList_>;
 };
 

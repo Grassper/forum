@@ -3,6 +3,7 @@ import React from "react";
 
 import { BottomTabNavigator } from "@/root/src/components/navigations/BottomTabNavigator";
 import {
+  AuthStackParamList_,
   ProfileStackParamList_,
   StackParamList_,
   SubForumStackParamList_,
@@ -10,6 +11,13 @@ import {
 import { AddAndEditComment } from "@/root/src/components/screens/AddAndEditComment";
 import { AddAndEditPost } from "@/root/src/components/screens/AddAndEditPost";
 import { AddAndEditReplies } from "@/root/src/components/screens/AddAndEditReplies";
+import {
+  AccountRecovery,
+  ForgotPassword,
+  SignIn,
+  SignUp,
+  Verification,
+} from "@/root/src/components/screens/Authentication";
 import { ChatRoom } from "@/root/src/components/screens/ChatRoom";
 import { ChooseSubForum } from "@/root/src/components/screens/ChooseSubForum";
 import { Comment } from "@/root/src/components/screens/Comment";
@@ -28,6 +36,7 @@ import { UserContext } from "@/root/src/context";
 const Stack = createStackNavigator<StackParamList_>();
 const ProfileStack = createStackNavigator<ProfileStackParamList_>();
 const SubForumStack = createStackNavigator<SubForumStackParamList_>();
+const AuthStack = createStackNavigator<AuthStackParamList_>();
 
 const defaultStackOptions = {
   headerBackTitleVisible: false,
@@ -231,5 +240,52 @@ export const StackNavigator = () => {
         })}
       />
     </Stack.Navigator>
+  );
+};
+
+export const AuthStackNavigator = () => {
+  return (
+    <AuthStack.Navigator>
+      <AuthStack.Screen
+        name="SignIn"
+        component={SignIn}
+        options={() => ({
+          title: "",
+          headerShown: false,
+        })}
+      />
+      <AuthStack.Screen
+        name="SignUp"
+        component={SignUp}
+        options={() => ({
+          title: "",
+          headerShown: false,
+        })}
+      />
+      <AuthStack.Screen
+        name="Verification"
+        component={Verification}
+        options={() => ({
+          title: "",
+          headerShown: false,
+        })}
+      />
+      <AuthStack.Screen
+        name="ForgotPassword"
+        component={ForgotPassword}
+        options={() => ({
+          title: "",
+          headerShown: false,
+        })}
+      />
+      <AuthStack.Screen
+        name="AccountRecovery"
+        component={AccountRecovery}
+        options={() => ({
+          title: "",
+          headerShown: false,
+        })}
+      />
+    </AuthStack.Navigator>
   );
 };

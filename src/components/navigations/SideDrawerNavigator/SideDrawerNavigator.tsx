@@ -33,12 +33,13 @@ import {
   SubForumStackNavigator,
 } from "@/root/src/components/navigations/StackNavigator";
 import { colors } from "@/root/src/constants";
-import { UserContext } from "@/root/src/context";
+import { AuthContext, UserContext } from "@/root/src/context";
 
 const DrawerNavigator = createDrawerNavigator<DrawerParamList_>();
 
 const CustomDrawerContent = (props: DrawerContentComponentProps) => {
   const [lightMode, setLightMode] = useState(true);
+  const { setAuthState } = React.useContext(AuthContext);
 
   const {
     user: { profileImageUrl, username },
@@ -105,8 +106,9 @@ const CustomDrawerContent = (props: DrawerContentComponentProps) => {
               Sign Out
             </Text>
           )}
-          onPress={() => {
-            Auth.signOut();
+          onPress={async () => {
+            await Auth.signOut();
+            setAuthState("LOGGEDOUT");
           }}
           icon={({ color }) => (
             <Icon
