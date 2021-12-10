@@ -201,6 +201,7 @@ const searchUsers = /* GraphQL */ `
 
 /**
  * * messaging
+ * Todo-6: when user try to create the chat room for same user block
  * Todo-6: when user click the user card in user list check if chat room exist between two users. if exist pass the chatroom id
  */
 
@@ -213,11 +214,31 @@ const ChatRoomCreationFetch = async (input: ChatRoomCreationFetchInput_) => {
   try {
     /**
      * creating chatroom
+     * chatroom id pattern --> currentUserId#EF#anotherUserId
+     * checking chatroom between user already exist query for currentUserId#EF#anotherUserId && anotherUserId#EF#currentUserId
      */
+
+    const isCheckChatRoomExistInput = {
+      chatRoomId1: `${input.currentUserId}#EF#${input.userId}`,
+      chatRoomId2: `${input.userId}#EF#${input.currentUserId}`,
+    };
+
+    const isCheckChatRoomExist = (await API.graphql({
+      query: CheckChatRoomExist,
+      variables: isCheckChatRoomExistInput,
+      authMode: "AMAZON_COGNITO_USER_POOLS",
+    })) as GraphQLResult<checkChatRoomExist_>;
+
+    const isCheckChatRoomExistItems =
+      isCheckChatRoomExist.data?.listChatRooms?.items;
+
+    if (isCheckChatRoomExistItems?.length === 1) {
+      return isCheckChatRoomExistItems[0].id;
+    }
 
     const createdChatRoom = (await API.graphql({
       query: CreateChatRoom,
-      variables: { input: {} },
+      variables: { input: { id: `${input.currentUserId}#EF#${input.userId}` } },
       authMode: "AMAZON_COGNITO_USER_POOLS",
     })) as GraphQLResult<CreateChatRoom_>;
 
@@ -283,6 +304,28 @@ const CreateChatRoomRelationship = /* GraphQL */ `
       id
       userId
       chatRoomId
+    }
+  }
+`;
+
+interface checkChatRoomExist_ {
+  listChatRooms?: {
+    items: {
+      id: string;
+    }[];
+  };
+}
+
+const CheckChatRoomExist = /* GraphQL */ `
+  query checkChatRoomExist($chatRoomId1: ID!, $chatRoomId2: ID!) {
+    listChatRooms(
+      filter: {
+        or: [{ id: { eq: $chatRoomId1 } }, { id: { eq: $chatRoomId2 } }]
+      }
+    ) {
+      items {
+        id
+      }
     }
   }
 `;
