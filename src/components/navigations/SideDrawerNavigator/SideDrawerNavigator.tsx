@@ -32,7 +32,6 @@ import {
   StackNavigator,
   SubForumStackNavigator,
 } from "@/root/src/components/navigations/StackNavigator";
-import { colors } from "@/root/src/constants";
 import { AuthContext, UserContext } from "@/root/src/context";
 
 const DrawerNavigator = createDrawerNavigator<DrawerParamList_>();
@@ -234,10 +233,6 @@ export const SideDrawerNavigator = () => {
           drawerLabel: "Joined Forums",
           title: "",
           headerShown: false,
-          headerStyle: {
-            backgroundColor: colors.green,
-          },
-          headerTintColor: colors.white,
           drawerIcon: ({ color }) => (
             <Icon
               as={<AntDesign name="pluscircleo" />}

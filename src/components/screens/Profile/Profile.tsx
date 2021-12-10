@@ -17,7 +17,6 @@ import { colors } from "@/root/src/constants";
 import { UserContext } from "@/root/src/context";
 
 import { About } from "./About";
-import { Comments } from "./Comment";
 import { TabNavigatorUserContext } from "./Context";
 import { Posts } from "./Post";
 import { ProfileCard } from "./ProfileCard";
@@ -105,8 +104,8 @@ export const Profile: React.FC<Props_> = ({ navigation, route }) => {
             tabBarInactiveTintColor: colors.gray,
             tabBarIndicatorStyle: {
               backgroundColor: colors.green,
-              width: windowWidth / 6,
-              left: windowWidth / 12,
+              width: windowWidth / 4,
+              left: windowWidth / 8,
               height: 2,
             },
           }}
@@ -116,13 +115,6 @@ export const Profile: React.FC<Props_> = ({ navigation, route }) => {
             component={Posts}
             options={() => ({
               title: "Posts",
-            })}
-          />
-          <Tab.Screen
-            name="profileComments"
-            component={Comments}
-            options={() => ({
-              title: "Comments",
             })}
           />
           <Tab.Screen
