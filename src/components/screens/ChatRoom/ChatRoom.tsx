@@ -19,6 +19,7 @@ import {
 } from "react-native";
 import { SvgUri } from "react-native-svg";
 
+import { Observable } from "@/root/node_modules/zen-observable-ts";
 import {
   DrawerParamList_,
   RootStackParamList_,
@@ -54,6 +55,36 @@ export const ChatRoom: React.FC<Props_> = ({ route }) => {
   const [nextToken, setNextToken] = React.useState<string>("");
 
   const currentUser = React.useContext(UserContext).user;
+
+  React.useEffect(() => {
+    if (roomId) {
+      const subscription = API.graphql({
+        query: onCreateMessageByChatRoomId,
+        variables: { chatRoomId: roomId },
+        authMode: "AMAZON_COGNITO_USER_POOLS",
+      }) as Observable<object>;
+      subscription.subscribe({
+        next: (payload: {
+          value: GraphQLResult<onCreateMessageByChatRoomId_>;
+        }) => {
+          /**
+           * check if message exist
+           * update the received message to current messages
+           */
+
+          const subscriptionMessage = payload.value.data?.onMessageByChatRoomId;
+          if (subscriptionMessage) {
+            setMessages((prevState) => [subscriptionMessage, ...prevState]);
+          }
+        },
+        error: (error) => console.warn(error),
+      });
+
+      // @ts-ignore
+      return () => subscription.unsubscribe();
+    }
+  }, [roomId]);
+
   const populateContent = React.useCallback(() => {
     let isActive = true;
 
@@ -209,6 +240,7 @@ interface MessagesByChatRoom {
 interface Item {
   id: string;
   content: string;
+  chatRoomId: string;
   createdAt: Date;
   userId: string;
 }
@@ -228,6 +260,7 @@ const listMessagesByChatRoom = /* GraphQL */ `
       items {
         id
         content
+        chatRoomId
         createdAt
         userId
       }
