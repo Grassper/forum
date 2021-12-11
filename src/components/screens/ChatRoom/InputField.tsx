@@ -1,7 +1,15 @@
 import { GraphQLResult } from "@aws-amplify/api-graphql";
-import { FontAwesome } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
 import { API } from "aws-amplify";
-import { Box, Flex, HStack, Icon, Input, Pressable } from "native-base";
+import {
+  Box,
+  Flex,
+  HStack,
+  Icon,
+  Input,
+  Pressable,
+  Spinner,
+} from "native-base";
 import React from "react";
 import { KeyboardAvoidingView, Platform } from "react-native";
 
@@ -13,9 +21,11 @@ interface Props_ {
 
 export const InputField: React.FC<Props_> = ({ chatRoomId }) => {
   const [message, setMessage] = React.useState("");
+  const [sending, setSending] = React.useState(false);
   const currentUser = React.useContext(UserContext).user;
 
   const handleSubmitMessage = async () => {
+    setSending(true);
     if (message) {
       const messageInput = {
         content: message,
@@ -26,6 +36,7 @@ export const InputField: React.FC<Props_> = ({ chatRoomId }) => {
       await createMessageFetch(messageInput);
 
       setMessage("");
+      setSending(false);
     }
   };
 
@@ -63,7 +74,11 @@ export const InputField: React.FC<Props_> = ({ chatRoomId }) => {
               justifyContent="center"
               borderRadius="full"
             >
-              <Icon as={<FontAwesome name="send" />} size={4} color="white" />
+              {!sending ? (
+                <Icon as={<Feather name="send" />} size={4} color="white" />
+              ) : (
+                <Spinner color="white" />
+              )}
             </Flex>
           </Pressable>
         </HStack>

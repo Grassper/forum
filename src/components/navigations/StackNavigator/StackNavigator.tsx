@@ -42,7 +42,9 @@ const defaultStackOptions = {
   headerBackTitleVisible: false,
   headerTintColor: colors.green,
   headerTitleStyle: {
-    fontFamily: "mm",
+    fontFamily: "mr",
+    fontSize: 14,
+    color: colors.black,
   },
 };
 
@@ -56,18 +58,14 @@ export const SubForumStackNavigator = () => {
         name="JoinedSubForum"
         component={JoinedSubForum}
         options={() => ({
-          title: "Joined Forums",
-          headerStyle: {
-            backgroundColor: colors.green,
-          },
-          headerTintColor: colors.white,
+          title: "Sub Forums",
         })}
       />
       <SubForumStack.Screen
         name="SubForum"
         component={SubForum}
-        options={() => ({
-          title: "",
+        options={({ route }) => ({
+          title: `e/${route.params.title}`,
         })}
       />
       <SubForumStack.Screen
@@ -75,10 +73,6 @@ export const SubForumStackNavigator = () => {
         component={SubForumMod}
         options={() => ({
           title: "Manage",
-          headerStyle: {
-            backgroundColor: colors.green,
-          },
-          headerTintColor: colors.white,
         })}
       />
       <SubForumStack.Screen
@@ -87,10 +81,7 @@ export const SubForumStackNavigator = () => {
         initialParams={{ title: "Create Subforum", action: "Add" }}
         options={({ route }) => ({
           title: route.params.title,
-          headerStyle: {
-            backgroundColor: colors.green,
-          },
-          headerTintColor: colors.white,
+          headerTintColor: colors.green,
         })}
       />
     </SubForumStack.Navigator>
@@ -119,23 +110,9 @@ export const ProfileStackNavigator = () => {
         component={Follow}
         options={({ route }) => ({
           title: route.params.title,
-          headerStyle: {
-            backgroundColor: colors.green,
-          },
-          headerTintColor: colors.white,
         })}
       />
-      <ProfileStack.Screen
-        name="EditProfile"
-        component={EditProfile}
-        options={() => ({
-          title: "Edit Profile",
-          headerStyle: {
-            backgroundColor: colors.green,
-          },
-          headerTintColor: colors.white,
-        })}
-      />
+      <ProfileStack.Screen name="EditProfile" component={EditProfile} />
     </ProfileStack.Navigator>
   );
 };
@@ -191,33 +168,23 @@ export const StackNavigator = () => {
       <Stack.Screen
         name="AddAndEditPost"
         component={AddAndEditPost}
-        options={() => ({
-          title: "",
-          headerStyle: {
-            backgroundColor: colors.green,
-          },
-          headerTintColor: colors.white,
+        options={({ route }) => ({
+          title: route.params.title,
+          headerTintColor: colors.green,
         })}
       />
       <Stack.Screen
         name="ChooseSubForum"
         component={ChooseSubForum}
         options={() => ({
-          title: "Choose subforum",
-          headerStyle: {
-            backgroundColor: colors.green,
-          },
-          headerTintColor: colors.white,
+          title: "Select Sub-Forum",
+          headerTintColor: colors.green,
         })}
       />
       <Stack.Screen
         name="ChatRoom"
         component={ChatRoom}
         options={() => ({
-          title: "",
-          headerStyle: {
-            backgroundColor: colors.green,
-          },
           headerTintColor: colors.white,
         })}
       />
@@ -225,11 +192,7 @@ export const StackNavigator = () => {
         name="NewChat"
         component={NewChat}
         options={{
-          title: "New Chat",
-          headerStyle: {
-            backgroundColor: colors.green,
-          },
-          headerTintColor: colors.white,
+          title: "Search Your Friends",
         }}
       />
       <Stack.Screen

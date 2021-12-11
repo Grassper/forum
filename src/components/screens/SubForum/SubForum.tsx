@@ -1,5 +1,4 @@
 import { GraphQLResult } from "@aws-amplify/api-graphql";
-import { Ionicons } from "@expo/vector-icons";
 import { DrawerNavigationProp } from "@react-navigation/drawer";
 import {
   CompositeNavigationProp,
@@ -8,7 +7,7 @@ import {
 } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { API } from "aws-amplify";
-import { Button, Icon, Menu, Pressable } from "native-base";
+import { Button } from "native-base";
 import React from "react";
 import {
   FlatList,
@@ -135,22 +134,14 @@ export const SubForum: React.FC<Props_> = ({ navigation, route }) => {
             Manage
           </Button>
         ) : (
-          <Menu
-            trigger={(triggerProps) => {
-              return (
-                <Pressable {...triggerProps}>
-                  <Icon
-                    as={<Ionicons name="ellipsis-vertical" />}
-                    size={5}
-                    mr="2"
-                    color="black"
-                  />
-                </Pressable>
-              );
-            }}
+          <Button
+            size="md"
+            _text={{ fontWeight: "600", color: "eGreen.400" }}
+            variant="unstyled"
+            onPress={() => setReportModal(true)}
           >
-            <Menu.Item onPress={() => setReportModal(true)}>Report</Menu.Item>
-          </Menu>
+            Help
+          </Button>
         ),
     });
   }, [currentUser.id, navigation, reportModal, subForum]);

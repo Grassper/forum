@@ -1,10 +1,4 @@
-import {
-  AntDesign,
-  Feather,
-  FontAwesome,
-  Ionicons,
-  MaterialIcons,
-} from "@expo/vector-icons";
+import { AntDesign, Ionicons } from "@expo/vector-icons";
 import {
   createDrawerNavigator,
   DrawerContentComponentProps,
@@ -102,32 +96,6 @@ const CustomDrawerContent = (props: DrawerContentComponentProps) => {
               color={color}
               ml="-4"
             >
-              Sign Out
-            </Text>
-          )}
-          onPress={async () => {
-            await Auth.signOut();
-            setAuthState("LOGGEDOUT");
-          }}
-          icon={({ color }) => (
-            <Icon
-              as={<FontAwesome name="sign-out" size={24} color="black" />}
-              size={"20px"}
-              ml="3"
-              color={color}
-            />
-          )}
-        />
-        <DrawerItem
-          style={styles.drawerItem}
-          label={({ color }) => (
-            <Text
-              fontSize="sm"
-              fontFamily="body"
-              fontWeight="500"
-              color={color}
-              ml="-4"
-            >
               Privacy Policy
             </Text>
           )}
@@ -136,7 +104,7 @@ const CustomDrawerContent = (props: DrawerContentComponentProps) => {
           }
           icon={({ color }) => (
             <Icon
-              as={<MaterialIcons name="policy" size={24} color="black" />}
+              as={<AntDesign name="Safety" size={24} color="black" />}
               size={"20px"}
               ml="3"
               color={color}
@@ -168,6 +136,32 @@ const CustomDrawerContent = (props: DrawerContentComponentProps) => {
                   color="black"
                 />
               }
+              size={"20px"}
+              ml="3"
+              color={color}
+            />
+          )}
+        />
+        <DrawerItem
+          style={styles.drawerItem}
+          label={({ color }) => (
+            <Text
+              fontSize="sm"
+              fontFamily="body"
+              fontWeight="500"
+              color={color}
+              ml="-4"
+            >
+              Sign Out
+            </Text>
+          )}
+          onPress={async () => {
+            await Auth.signOut();
+            setAuthState("LOGGEDOUT");
+          }}
+          icon={({ color }) => (
+            <Icon
+              as={<AntDesign name="logout" size={24} color="black" />}
               size={"20px"}
               ml="3"
               color={color}
@@ -222,7 +216,12 @@ export const SideDrawerNavigator = () => {
           title: "Profile",
           headerShown: false,
           drawerIcon: ({ color }) => (
-            <Icon as={<Feather name="user" />} size={5} ml="3" color={color} />
+            <Icon
+              as={<AntDesign name="profile" />}
+              size={5}
+              ml="3"
+              color={color}
+            />
           ),
         }}
       />
@@ -230,12 +229,12 @@ export const SideDrawerNavigator = () => {
         name="SubForumStack"
         component={SubForumStackNavigator}
         options={() => ({
-          drawerLabel: "Joined Forums",
+          drawerLabel: "Forums",
           title: "",
           headerShown: false,
           drawerIcon: ({ color }) => (
             <Icon
-              as={<AntDesign name="pluscircleo" />}
+              as={<AntDesign name="addusergroup" />}
               size={"18px"}
               ml="3"
               color={color}

@@ -9,6 +9,7 @@ import {
   FormControl,
   Input,
   Spinner,
+  Text,
   WarningOutlineIcon,
 } from "native-base";
 import React from "react";
@@ -128,13 +129,14 @@ export const EditProfile: React.FC<Props_> = ({ navigation }) => {
       headerRight: () => (
         <Button
           size="md"
-          _text={{ fontWeight: "600", color: "white" }}
+          _text={{ fontWeight: "600", color: "eGreen.400" }}
           variant="unstyled"
           onPress={!loading ? handleSubmit : null}
         >
-          {!loading ? "Save" : <Spinner color="indigo.500" />}
+          {!loading ? "Save" : <Spinner color="eGreen.400" />}
         </Button>
       ),
+      headerTitle: () => <Text>Edit Profile</Text>,
     });
   }, [handleSubmit, navigation, loading]);
 

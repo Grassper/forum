@@ -1,16 +1,16 @@
 import { GraphQLResult } from "@aws-amplify/api-graphql";
-import { Ionicons } from "@expo/vector-icons";
+import { Feather, Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { API } from "aws-amplify";
 import { format } from "date-fns";
 import { Video } from "expo-av";
 import {
   Box,
+  Button,
   Flex,
   HStack,
   Icon,
   Image,
-  Menu,
   Pressable,
   Text,
 } from "native-base";
@@ -278,22 +278,13 @@ const PostInfo: React.FC<PostInfo_> = ({
         </HStack>
         {postId && (
           <>
-            <Menu
-              trigger={(triggerProps) => {
-                return (
-                  <Pressable {...triggerProps}>
-                    <Icon
-                      as={<Ionicons name="ellipsis-vertical" />}
-                      size={5}
-                      mr="2"
-                      color="black"
-                    />
-                  </Pressable>
-                );
-              }}
-            >
-              <Menu.Item onPress={() => setReportModal(true)}>Report</Menu.Item>
-            </Menu>
+            <Pressable onPress={() => setReportModal(true)}>
+              <Icon
+                as={<Feather name="more-vertical" />}
+                size={5}
+                color="coolGray.500"
+              />
+            </Pressable>
             <ReportPost
               postId={postId}
               reportModal={reportModal}
@@ -451,7 +442,7 @@ const PostUserActions: React.FC<PostUserActions_> = ({
   return (
     <Box>
       <HStack alignItems="center" justifyContent="space-between">
-        <HStack space="3" alignItems="center">
+        <HStack space="6" alignItems="center">
           <UserActionToolTip
             postId={post.id}
             communityId={post.subForumId}
@@ -490,7 +481,7 @@ const PostUserActions: React.FC<PostUserActions_> = ({
           >
             <Box style={styles.openPostIcon}>
               <Icon
-                as={<Ionicons name="share-outline" />}
+                as={<Ionicons name="expand" />}
                 size={5}
                 color="muted.500"
               />

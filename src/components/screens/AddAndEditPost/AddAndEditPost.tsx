@@ -144,11 +144,11 @@ export const AddAndEditPost: React.FC<Props_> = ({ navigation, route }) => {
       headerRight: () => (
         <Button
           size="md"
-          _text={{ fontWeight: "600", color: "white" }}
+          _text={{ fontWeight: "600", color: "eGreen.400" }}
           variant="unstyled"
           onPress={!loading ? handleSubmit : null}
         >
-          {!loading ? "Post" : <Spinner color="indigo.500" />}
+          {!loading ? "Post" : <Spinner color="eGreen.400" />}
         </Button>
       ),
     });

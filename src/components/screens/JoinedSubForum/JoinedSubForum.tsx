@@ -1,14 +1,12 @@
 import { GraphQLResult } from "@aws-amplify/api-graphql";
-import { AntDesign } from "@expo/vector-icons";
 import { DrawerNavigationProp } from "@react-navigation/drawer";
 import {
   CompositeNavigationProp,
-  DrawerActions,
   useFocusEffect,
 } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { API } from "aws-amplify";
-import { Box, Icon } from "native-base";
+import { Box, Button } from "native-base";
 import React from "react";
 import { FlatList, ListRenderItem, ScrollView, StyleSheet } from "react-native";
 
@@ -19,6 +17,8 @@ import {
 } from "@/root/src/components/navigations/Navigation";
 import { CommunityTile } from "@/root/src/components/shared/Tile";
 import { UserContext } from "@/root/src/context";
+
+import { HeaderProfileIcon } from "../../shared/HeaderProfileIcon";
 
 type NavigationProp_ = CompositeNavigationProp<
   StackNavigationProp<SubForumStackParamList_, "JoinedSubForum">,
@@ -89,28 +89,21 @@ export const JoinedSubForum: React.FC<Props_> = ({ navigation }) => {
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
-      headerLeft: () => (
-        <Icon
-          as={<AntDesign name="menuunfold" />}
-          size={5}
-          ml="4"
-          onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
-          color="white"
-        />
-      ),
+      headerLeft: () => <HeaderProfileIcon />,
       headerRight: () => (
-        <Icon
-          as={<AntDesign name="pluscircleo" />}
-          size={"20px"}
-          mr="4"
+        <Button
+          size="md"
+          _text={{ fontWeight: "600", color: "eGreen.400" }}
+          variant="unstyled"
           onPress={() =>
             navigation.push("EditAndCreateSubForum", {
               title: "Create Subforum",
               action: "Add",
             })
           }
-          color="white"
-        />
+        >
+          Create
+        </Button>
       ),
     });
   }, [navigation]);
@@ -123,7 +116,10 @@ export const JoinedSubForum: React.FC<Props_> = ({ navigation }) => {
         members={item.community.totalMembers}
         hideDivider
         onPress={() =>
-          navigation.navigate("SubForum", { subForumId: item.community.id })
+          navigation.navigate("SubForum", {
+            subForumId: item.community.id,
+            title: item.community.name,
+          })
         }
       />
     );

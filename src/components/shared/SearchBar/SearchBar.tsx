@@ -17,6 +17,7 @@ export const SearchBar: React.FC<Props_> = ({ value, setValue }) => {
         borderRadius="md"
         placeholder="Search"
         placeholderTextColor="muted.400"
+        autoCapitalize="none"
         fontSize="sm"
         variant="unstyled"
         textTransform="none"

@@ -27,16 +27,16 @@ enableScreens();
 
 const fetchFonts = (): Promise<void> => {
   return Font.loadAsync({
-    ml: require("@/root/assets/fonts/Montserrat-Light.ttf"),
-    mr: require("@/root/assets/fonts/Montserrat-Regular.ttf"),
-    mm: require("@/root/assets/fonts/Montserrat-Medium.ttf"),
-    ms: require("@/root/assets/fonts/Montserrat-SemiBold.ttf"),
-    mb: require("@/root/assets/fonts/Montserrat-Bold.ttf"),
-    rl: require("@/root/assets/fonts/RobotoSlab-Light.ttf"),
-    rr: require("@/root/assets/fonts/RobotoSlab-Regular.ttf"),
-    rm: require("@/root/assets/fonts/RobotoSlab-Medium.ttf"),
-    rs: require("@/root/assets/fonts/RobotoSlab-SemiBold.ttf"),
-    rb: require("@/root/assets/fonts/RobotoSlab-Bold.ttf"),
+    ml: require("@/root/assets/fonts/LexendDeca-Light.ttf"),
+    mr: require("@/root/assets/fonts/LexendDeca-Regular.ttf"),
+    mm: require("@/root/assets/fonts/LexendDeca-Medium.ttf"),
+    ms: require("@/root/assets/fonts/LexendDeca-SemiBold.ttf"),
+    mb: require("@/root/assets/fonts/LexendDeca-Bold.ttf"),
+    rl: require("@/root/assets/fonts/LexendDeca-Light.ttf"),
+    rr: require("@/root/assets/fonts/LexendDeca-Regular.ttf"),
+    rm: require("@/root/assets/fonts/LexendDeca-Medium.ttf"),
+    rs: require("@/root/assets/fonts/LexendDeca-SemiBold.ttf"),
+    rb: require("@/root/assets/fonts/LexendDeca-Bold.ttf"),
   });
 };
 

@@ -1,4 +1,4 @@
-import { MaterialIcons } from "@expo/vector-icons";
+import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { Auth } from "aws-amplify";
 import {
@@ -54,7 +54,7 @@ export const SignUp: React.FC<Props_> = ({ navigation }) => {
         setLoading(false);
       }
     } else {
-      Alert.alert("Fields shouldn't be empty");
+      Alert.alert("Please enter a valid E-mail, Username & Password");
     }
   };
   return (
@@ -66,11 +66,14 @@ export const SignUp: React.FC<Props_> = ({ navigation }) => {
         width="90%"
       >
         <Box>
-          <Box alignItems="flex-end" pt="2">
+          <Box alignItems="flex-start" pt="2">
             <Pressable onPress={() => navigation.navigate("SignIn")}>
-              <Text fontWeight="600" color="eGreen.400">
-                Sign in
-              </Text>
+              <Icon
+                as={<Ionicons name="ios-arrow-back" />}
+                color="eGreen.400"
+                size={"24px"}
+                mr="3"
+              />
             </Pressable>
           </Box>
           <Text
@@ -98,7 +101,8 @@ export const SignUp: React.FC<Props_> = ({ navigation }) => {
             value={emailId}
             onChangeText={setEmailId}
             borderRadius="full"
-            placeholder="email"
+            placeholder="E-mail"
+            autoCapitalize="none"
             placeholderTextColor="coolGray.400"
             borderColor="coolGray.200"
             _focus={{
@@ -112,7 +116,8 @@ export const SignUp: React.FC<Props_> = ({ navigation }) => {
             value={userName}
             onChangeText={setUserName}
             borderRadius="full"
-            placeholder="username"
+            placeholder="Username"
+            autoCapitalize="none"
             placeholderTextColor="coolGray.400"
             borderColor="coolGray.200"
             p="4"
@@ -126,7 +131,8 @@ export const SignUp: React.FC<Props_> = ({ navigation }) => {
             value={password}
             onChangeText={setPassword}
             borderRadius="full"
-            placeholder="password"
+            placeholder="Password"
+            autoCapitalize="none"
             placeholderTextColor="coolGray.400"
             borderColor="coolGray.200"
             type="password"
@@ -173,7 +179,7 @@ export const SignUp: React.FC<Props_> = ({ navigation }) => {
               bg={colors.green}
               borderRadius="full"
               justifyContent="center"
-              height="40px"
+              height="50px"
               alignItems="center"
             >
               <Text fontSize="md" fontWeight="600" color={buttonContrast}>
@@ -188,7 +194,7 @@ export const SignUp: React.FC<Props_> = ({ navigation }) => {
               borderRadius="full"
               justifyContent="center"
               alignItems="center"
-              height="40px"
+              height="50px"
             >
               <Spinner color="white" />
             </Flex>

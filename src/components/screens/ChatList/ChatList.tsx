@@ -21,6 +21,8 @@ import { UserCard } from "@/root/src/components/shared/Cards/UserCard";
 import { FloatingActionButton } from "@/root/src/components/shared/FabButton";
 import { UserContext } from "@/root/src/context";
 
+import { HeaderProfileIcon } from "../../shared/HeaderProfileIcon";
+
 type NavigationProp_ = CompositeNavigationProp<
   BottomTabNavigationProp<BottomTabParamList_, "ChatList">,
   CompositeNavigationProp<
@@ -84,6 +86,12 @@ export const ChatList: React.FC<Props_> = ({ navigation }) => {
   };
 
   useFocusEffect(populateContent);
+
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => <HeaderProfileIcon />,
+    });
+  }, [navigation]);
 
   const ChatCardRenderer: ListRenderItem<ChatRoomsItem_> = ({ item }) => {
     const pickOppositeUser = item.chatRoom.users.items.filter(

@@ -141,15 +141,17 @@ export const ChatRoom: React.FC<Props_> = ({ route }) => {
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
+        <Feather
+          name="chevron-left"
+          size={30}
+          color="green"
+          mr="100"
+          onPress={() => navigation.goBack()}
+        />
+      ),
+      headerTitle: () => (
         <Box>
           <HStack alignItems="center">
-            <Feather
-              name="chevron-left"
-              size={30}
-              color="white"
-              mr="100"
-              onPress={() => navigation.goBack()}
-            />
             <Box
               width="35px"
               height="35px"
@@ -159,7 +161,12 @@ export const ChatRoom: React.FC<Props_> = ({ route }) => {
             >
               <SvgUri uri={imageUri} width="100%" height="100%" />
             </Box>
-            <Text color="white" fontSize="md" fontWeight="500" ml="2">
+            <Text
+              fontSize="sm"
+              fontWeight="400"
+              ml="2"
+              textTransform="capitalize"
+            >
               {title}
             </Text>
           </HStack>
@@ -184,6 +191,8 @@ export const ChatRoom: React.FC<Props_> = ({ route }) => {
               renderItem={ChatCardRenderer}
               keyExtractor={(item) => item.id}
               onEndReached={handlePagination}
+              showsHorizontalScrollIndicator={false}
+              showsVerticalScrollIndicator={false}
             />
           </Box>
         </Box>

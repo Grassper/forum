@@ -103,6 +103,7 @@ export const ChooseSubForum: React.FC<Props_> = ({ navigation, route }) => {
             name: item.community.name,
             profileImageS3Key: item.community.profileImageS3Key,
             communityId: item.community.id,
+            title: "Add new post",
           });
         }}
       />

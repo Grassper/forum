@@ -49,7 +49,7 @@ export const SignIn: React.FC<Props_> = ({ navigation }) => {
         setLoading(false);
       }
     } else {
-      Alert.alert("Fields shouldn't be empty");
+      Alert.alert("Please enter a valid Username & Password");
     }
   };
   return (
@@ -97,6 +97,7 @@ export const SignIn: React.FC<Props_> = ({ navigation }) => {
             width="100%"
             value={userName}
             onChangeText={setUserName}
+            autoCapitalize="none"
             placeholderTextColor="coolGray.400"
             borderColor="coolGray.200"
             borderRadius="full"
@@ -104,7 +105,7 @@ export const SignIn: React.FC<Props_> = ({ navigation }) => {
               borderColor: colors.green,
             }}
             color={useContrastText("light.100")}
-            placeholder="username"
+            placeholder="Username"
             p="4"
             mb="5"
           />
@@ -112,10 +113,11 @@ export const SignIn: React.FC<Props_> = ({ navigation }) => {
             width="100%"
             value={password}
             onChangeText={setPassword}
+            autoCapitalize="none"
             placeholderTextColor="coolGray.400"
             borderColor="coolGray.200"
             borderRadius="full"
-            placeholder="password"
+            placeholder="Password"
             _focus={{
               borderColor: colors.green,
             }}
@@ -159,10 +161,10 @@ export const SignIn: React.FC<Props_> = ({ navigation }) => {
               borderRadius="full"
               justifyContent="center"
               alignItems="center"
-              height="40px"
+              height="50px"
             >
               <Text fontSize="md" fontWeight="600" color={buttonContrast}>
-                continue
+                Log Me In
               </Text>
             </Pressable>
           ) : (
@@ -173,7 +175,7 @@ export const SignIn: React.FC<Props_> = ({ navigation }) => {
               borderRadius="full"
               justifyContent="center"
               alignItems="center"
-              height="40px"
+              height="50px"
             >
               <Spinner color="white" />
             </Flex>

@@ -1,8 +1,10 @@
 import Auth from "@aws-amplify/auth";
+import { Ionicons } from "@expo/vector-icons";
 import { StackNavigationProp } from "@react-navigation/stack";
 import {
   Box,
   Flex,
+  Icon,
   Input,
   Pressable,
   Spinner,
@@ -62,11 +64,14 @@ export const AccountRecovery: React.FC<Props_> = ({ navigation }) => {
         width="90%"
       >
         <Box>
-          <Box alignItems="flex-end" pt="2">
+          <Box alignItems="flex-start" pt="2">
             <Pressable onPress={() => navigation.navigate("SignIn")}>
-              <Text fontWeight="600" color="eGreen.400">
-                Help
-              </Text>
+              <Icon
+                as={<Ionicons name="ios-arrow-back" />}
+                color="eGreen.400"
+                size={"24px"}
+                mr="3"
+              />
             </Pressable>
           </Box>
           <Text
@@ -80,9 +85,9 @@ export const AccountRecovery: React.FC<Props_> = ({ navigation }) => {
             Forget Password
           </Text>
           <Box>
-            <Text fontSize="sm" pt="3" pb="4">
-              We will sent a 6-digit security verification code to your
-              registered email
+            <Text fontSize="sm" pb="6" color={colors.gray}>
+              It's fine that happens ! Click on the button below to reset your
+              password
             </Text>
           </Box>
 
@@ -90,6 +95,7 @@ export const AccountRecovery: React.FC<Props_> = ({ navigation }) => {
             width="100%"
             value={userName}
             onChangeText={setUserName}
+            autoCapitalize="none"
             borderRadius="full"
             placeholder="username"
             placeholderTextColor="coolGray.400"
@@ -109,11 +115,11 @@ export const AccountRecovery: React.FC<Props_> = ({ navigation }) => {
               bg={colors.green}
               borderRadius="full"
               justifyContent="center"
-              height="40px"
+              height="50px"
               alignItems="center"
             >
               <Text fontSize="md" fontWeight="600" color={buttonContrast}>
-                continue
+                Continue
               </Text>
             </Pressable>
           ) : (
@@ -124,7 +130,7 @@ export const AccountRecovery: React.FC<Props_> = ({ navigation }) => {
               borderRadius="full"
               justifyContent="center"
               alignItems="center"
-              height="40px"
+              height="50px"
             >
               <Spinner color="white" />
             </Flex>

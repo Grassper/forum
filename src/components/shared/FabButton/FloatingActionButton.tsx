@@ -17,7 +17,7 @@ export const FloatingActionButton: React.FC<Props_> = ({ onPress, screen }) => {
       <Icon
         as={
           screen === "Home" ? (
-            <AntDesign name="plus" />
+            <AntDesign name="form" />
           ) : (
             <Entypo name="feather" />
           )

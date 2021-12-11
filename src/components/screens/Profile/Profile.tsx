@@ -1,9 +1,8 @@
-import { Ionicons } from "@expo/vector-icons";
 import { DrawerNavigationProp } from "@react-navigation/drawer";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { CompositeNavigationProp, RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { Button, Icon, Menu, Pressable } from "native-base";
+import { Button } from "native-base";
 import React from "react";
 import { Dimensions, StyleSheet, View } from "react-native";
 
@@ -12,6 +11,7 @@ import {
   ProfileStackParamList_,
   RootStackParamList_,
 } from "@/root/src/components/navigations/Navigation";
+import { HeaderProfileIcon } from "@/root/src/components/shared/HeaderProfileIcon";
 import { ReportUser } from "@/root/src/components/shared/Report";
 import { colors } from "@/root/src/constants";
 import { UserContext } from "@/root/src/context";
@@ -51,22 +51,14 @@ export const Profile: React.FC<Props_> = ({ navigation, route }) => {
     navigation.setOptions({
       headerRight: () =>
         routeUserId && routeUserId !== id ? ( // checking our user id with incoming user id
-          <Menu
-            trigger={(triggerProps) => {
-              return (
-                <Pressable {...triggerProps}>
-                  <Icon
-                    as={<Ionicons name="ellipsis-vertical" />}
-                    size={5}
-                    mr="2"
-                    color="black"
-                  />
-                </Pressable>
-              );
-            }}
+          <Button
+            size="md"
+            _text={{ fontWeight: "600", color: "eGreen.400" }}
+            variant="unstyled"
+            onPress={() => setReportModal(true)}
           >
-            <Menu.Item onPress={() => setReportModal(true)}>Reports</Menu.Item>
-          </Menu>
+            Report
+          </Button>
         ) : (
           <Button
             size="md"
@@ -77,6 +69,7 @@ export const Profile: React.FC<Props_> = ({ navigation, route }) => {
             Edit
           </Button>
         ),
+      headerLeft: () => <HeaderProfileIcon />,
     });
   }, [id, navigation, routeUserId]);
 

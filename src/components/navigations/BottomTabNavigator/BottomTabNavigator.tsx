@@ -1,4 +1,4 @@
-import { FontAwesome, Foundation, Ionicons } from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import React from "react";
 
@@ -6,7 +6,7 @@ import { BottomTabParamList_ } from "@/root/src/components/navigations/Navigatio
 import { ChatList } from "@/root/src/components/screens/ChatList";
 import { Explore } from "@/root/src/components/screens/Explore";
 import { Home } from "@/root/src/components/screens/Home";
-import { colors } from "@/root/src/constants";
+
 const Tab = createBottomTabNavigator<BottomTabParamList_>();
 
 /**
@@ -26,7 +26,7 @@ export const BottomTabNavigator = () => {
           tabBarIconStyle: { alignItems: "center" },
           tabBarIcon: ({ focused }) => {
             return (
-              <Foundation
+              <AntDesign
                 name="home"
                 size={24}
                 color={focused ? "#17D7A0" : "black"}
@@ -39,14 +39,14 @@ export const BottomTabNavigator = () => {
         name="Explore"
         component={Explore}
         options={{
-          title: "",
+          title: "Explore",
           headerShown: false,
           tabBarShowLabel: false,
           tabBarIconStyle: { alignItems: "center" },
           tabBarIcon: ({ focused }) => {
             return (
-              <Ionicons
-                name="compass"
+              <AntDesign
+                name="find"
                 size={24}
                 color={focused ? "#17D7A0" : "black"}
               />
@@ -58,20 +58,17 @@ export const BottomTabNavigator = () => {
         name="ChatList"
         component={ChatList}
         options={{
-          title: "Messages",
+          title: "Discussions",
           tabBarShowLabel: false,
           tabBarIconStyle: { alignItems: "center" },
-          headerStyle: {
-            backgroundColor: colors.green,
-          },
-          headerTintColor: colors.white,
           headerTitleStyle: {
-            fontFamily: "mm",
+            fontFamily: "mr",
+            fontSize: 13,
           },
           tabBarIcon: ({ focused }) => {
             return (
-              <FontAwesome
-                name="send"
+              <AntDesign
+                name="message1"
                 size={21}
                 color={focused ? "#17D7A0" : "black"}
               />

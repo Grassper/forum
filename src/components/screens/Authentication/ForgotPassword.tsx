@@ -1,5 +1,5 @@
 import Auth from "@aws-amplify/auth";
-import { MaterialIcons } from "@expo/vector-icons";
+import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import {
@@ -124,11 +124,14 @@ export const ForgotPassword: React.FC<Props_> = ({ navigation, route }) => {
         width="90%"
       >
         <Box>
-          <Box alignItems="flex-end" pt="2">
+          <Box alignItems="flex-start" pt="2">
             <Pressable onPress={() => navigation.navigate("SignIn")}>
-              <Text fontWeight="600" color="eGreen.400">
-                Help
-              </Text>
+              <Icon
+                as={<Ionicons name="ios-arrow-back" />}
+                color="eGreen.400"
+                size={"24px"}
+                mr="3"
+              />
             </Pressable>
           </Box>
           <Text
@@ -142,13 +145,111 @@ export const ForgotPassword: React.FC<Props_> = ({ navigation, route }) => {
             Password Recovery
           </Text>
           <Box>
-            <Text fontSize="sm" py="3">
+            <Text fontSize="sm">
               We've sent a 6-digit security verification code to{" "}
               <Text color="eGreen.400" fontSize="md">
                 {email}
               </Text>
             </Text>
           </Box>
+          <HStack justifyContent="space-between" py="4">
+            <Input
+              ref={pinRef1}
+              onChangeText={(value) => {
+                setVerificationPins((prevState) => ({
+                  ...prevState,
+                  pin1: value,
+                }));
+              }}
+              value={verificationPins.pin1}
+              maxLength={1}
+              style={styles.textInput}
+              keyboardType="numeric"
+              _focus={{
+                borderColor: colors.green,
+              }}
+            />
+            <Input
+              ref={pinRef2}
+              onChangeText={(value) => {
+                setVerificationPins((prevState) => ({
+                  ...prevState,
+                  pin2: value,
+                }));
+              }}
+              value={verificationPins.pin2}
+              maxLength={1}
+              style={styles.textInput}
+              keyboardType="numeric"
+              _focus={{
+                borderColor: colors.green,
+              }}
+            />
+            <Input
+              ref={pinRef3}
+              onChangeText={(value) => {
+                setVerificationPins((prevState) => ({
+                  ...prevState,
+                  pin3: value,
+                }));
+              }}
+              value={verificationPins.pin3}
+              maxLength={1}
+              style={styles.textInput}
+              keyboardType="numeric"
+              _focus={{
+                borderColor: colors.green,
+              }}
+            />
+            <Input
+              ref={pinRef4}
+              onChangeText={(value) => {
+                setVerificationPins((prevState) => ({
+                  ...prevState,
+                  pin4: value,
+                }));
+              }}
+              value={verificationPins.pin4}
+              maxLength={1}
+              style={styles.textInput}
+              keyboardType="numeric"
+              _focus={{
+                borderColor: colors.green,
+              }}
+            />
+            <Input
+              ref={pinRef5}
+              onChangeText={(value) => {
+                setVerificationPins((prevState) => ({
+                  ...prevState,
+                  pin5: value,
+                }));
+              }}
+              value={verificationPins.pin5}
+              maxLength={1}
+              style={styles.textInput}
+              keyboardType="numeric"
+              _focus={{
+                borderColor: colors.green,
+              }}
+            />
+            <Input
+              ref={pinRef6}
+              onChangeText={(value) => {
+                setVerificationPins((prevState) => ({
+                  ...prevState,
+                  pin6: value,
+                }));
+              }}
+              value={verificationPins.pin6}
+              maxLength={1}
+              style={styles.textInput}
+              keyboardType="numeric"
+              _focus={{
+                borderColor: colors.green,
+              }}
+            />
+          </HStack>
           <Box py="4">
             <Input
               width="100%"
@@ -196,104 +297,6 @@ export const ForgotPassword: React.FC<Props_> = ({ navigation, route }) => {
                 />
               }
             />
-            <HStack justifyContent="space-between" py="4">
-              <Input
-                ref={pinRef1}
-                onChangeText={(value) => {
-                  setVerificationPins((prevState) => ({
-                    ...prevState,
-                    pin1: value,
-                  }));
-                }}
-                value={verificationPins.pin1}
-                maxLength={1}
-                style={styles.textInput}
-                keyboardType="numeric"
-                _focus={{
-                  borderColor: colors.green,
-                }}
-              />
-              <Input
-                ref={pinRef2}
-                onChangeText={(value) => {
-                  setVerificationPins((prevState) => ({
-                    ...prevState,
-                    pin2: value,
-                  }));
-                }}
-                value={verificationPins.pin2}
-                maxLength={1}
-                style={styles.textInput}
-                keyboardType="numeric"
-                _focus={{
-                  borderColor: colors.green,
-                }}
-              />
-              <Input
-                ref={pinRef3}
-                onChangeText={(value) => {
-                  setVerificationPins((prevState) => ({
-                    ...prevState,
-                    pin3: value,
-                  }));
-                }}
-                value={verificationPins.pin3}
-                maxLength={1}
-                style={styles.textInput}
-                keyboardType="numeric"
-                _focus={{
-                  borderColor: colors.green,
-                }}
-              />
-              <Input
-                ref={pinRef4}
-                onChangeText={(value) => {
-                  setVerificationPins((prevState) => ({
-                    ...prevState,
-                    pin4: value,
-                  }));
-                }}
-                value={verificationPins.pin4}
-                maxLength={1}
-                style={styles.textInput}
-                keyboardType="numeric"
-                _focus={{
-                  borderColor: colors.green,
-                }}
-              />
-              <Input
-                ref={pinRef5}
-                onChangeText={(value) => {
-                  setVerificationPins((prevState) => ({
-                    ...prevState,
-                    pin5: value,
-                  }));
-                }}
-                value={verificationPins.pin5}
-                maxLength={1}
-                style={styles.textInput}
-                keyboardType="numeric"
-                _focus={{
-                  borderColor: colors.green,
-                }}
-              />
-              <Input
-                ref={pinRef6}
-                onChangeText={(value) => {
-                  setVerificationPins((prevState) => ({
-                    ...prevState,
-                    pin6: value,
-                  }));
-                }}
-                value={verificationPins.pin6}
-                maxLength={1}
-                style={styles.textInput}
-                keyboardType="numeric"
-                _focus={{
-                  borderColor: colors.green,
-                }}
-              />
-            </HStack>
           </Box>
         </Box>
         <Box width="100%" justifyContent="flex-end">
@@ -303,11 +306,11 @@ export const ForgotPassword: React.FC<Props_> = ({ navigation, route }) => {
               backgroundColor={colors.green}
               borderRadius="full"
               alignItems="center"
-              height="40px"
+              height="50px"
               justifyContent="center"
             >
               <Text fontSize="md" fontWeight="600" color={buttonContrast}>
-                continue
+                Reset Password
               </Text>
             </Pressable>
           ) : (
@@ -318,7 +321,7 @@ export const ForgotPassword: React.FC<Props_> = ({ navigation, route }) => {
               borderRadius="full"
               justifyContent="center"
               alignItems="center"
-              height="40px"
+              height="50px"
             >
               <Spinner color="white" />
             </Flex>

@@ -188,7 +188,7 @@ export const EditAndCreateSubForum: React.FC<Props_> = ({
       headerRight: () => (
         <Button
           size="md"
-          _text={{ fontWeight: "600", color: "white" }}
+          _text={{ fontWeight: "600", color: "eGreen.400" }}
           variant="unstyled"
           onPress={!loading ? handleSubmit : null}
         >
@@ -196,10 +196,10 @@ export const EditAndCreateSubForum: React.FC<Props_> = ({
             title === "Edit Subforum" ? (
               "Save"
             ) : (
-              "Create"
+              "Finish"
             )
           ) : (
-            <Spinner color="indigo.500" />
+            <Spinner color="eGreen.400" />
           )}
         </Button>
       ),

@@ -116,8 +116,8 @@ export const Home: React.FC<Props_> = ({ navigation }) => {
       headerLeft: () => <HeaderProfileIcon />,
       headerTitle: () => (
         <Image
-          size="28px"
-          resizeMode={"cover"}
+          size="30px"
+          resizeMode={"contain"}
           borderRadius={100}
           source={require("@/root/assets/images/logo.png")}
           alt="Eforum logo"

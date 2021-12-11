@@ -29,7 +29,7 @@ export type ProfileStackParamList_ = {
 
 export type SubForumStackParamList_ = {
   // * SubForum
-  SubForum: { subForumId: string };
+  SubForum: { subForumId: string; title: string };
   SubForumMod: undefined;
   JoinedSubForum: undefined;
   EditAndCreateSubForum: {
@@ -76,6 +76,7 @@ export type StackParamList_ = {
     profileImageS3Key: string;
     name: string;
     communityId: string;
+    title: string;
   };
   ChooseSubForum: {
     postType: "Image" | "Text" | "Video" | "Audio" | "Poll";

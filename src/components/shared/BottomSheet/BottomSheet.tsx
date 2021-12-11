@@ -10,7 +10,6 @@ import {
   VStack,
 } from "native-base";
 import React from "react";
-import { StyleSheet } from "react-native";
 
 interface Props_ {
   isOpen: boolean;
@@ -41,7 +40,7 @@ export const BottomSheet: React.FC<Props_> = ({ isOpen, onClose }) => {
               }}
               iconName="ios-text"
               iconSize="20px"
-              postType="text"
+              postType="Write"
             />
             <Item
               onPress={() => {
@@ -56,7 +55,7 @@ export const BottomSheet: React.FC<Props_> = ({ isOpen, onClose }) => {
               }}
               iconName="ios-image"
               iconSize="20px"
-              postType="image"
+              postType="Image"
             />
             <Item
               onPress={() => {
@@ -75,7 +74,7 @@ export const BottomSheet: React.FC<Props_> = ({ isOpen, onClose }) => {
               }}
               iconName="ios-videocam"
               iconSize="20px"
-              postType="video"
+              postType="Video"
             />
             {/* <Item
               onPress={() => {
@@ -95,8 +94,10 @@ export const BottomSheet: React.FC<Props_> = ({ isOpen, onClose }) => {
           </HStack>
           <Box>
             <Pressable onPress={onClose}>
-              <Box style={styles.cancelIcon}>
-                <Icon as={<Ionicons name="add" />} size={6} color="muted.700" />
+              <Box>
+                <Text color="eGreen.400" pt="2">
+                  Cancel
+                </Text>
               </Box>
             </Pressable>
           </Box>
@@ -132,15 +133,7 @@ const Item: React.FC<Items_> = ({ onPress, iconName, postType, iconSize }) => {
           />
         </Box>
       </Pressable>
-      <Text color="coolGray.500" textTransform="uppercase">
-        {postType}
-      </Text>
+      <Text color="coolGray.500">{postType}</Text>
     </VStack>
   );
 };
-
-const styles = StyleSheet.create({
-  cancelIcon: {
-    transform: [{ rotate: "45deg" }],
-  },
-});

@@ -252,7 +252,7 @@ export const Verification: React.FC<Props_> = ({ navigation, route }) => {
               borderRadius="full"
               justifyContent="center"
               alignItems="center"
-              height="40px"
+              height="50px"
             >
               <Text fontSize="md" fontWeight="600" color={buttonContrast}>
                 Verify
@@ -266,7 +266,7 @@ export const Verification: React.FC<Props_> = ({ navigation, route }) => {
               borderRadius="full"
               justifyContent="center"
               alignItems="center"
-              height="40px"
+              height="50px"
             >
               <Spinner color="white" />
             </Flex>
