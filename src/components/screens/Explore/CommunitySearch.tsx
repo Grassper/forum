@@ -79,6 +79,7 @@ export const CommunitySearch: React.FC = () => {
                 screen: "SubForum",
                 params: {
                   subForumId: item.id,
+                  title: item.name,
                 },
               },
             })

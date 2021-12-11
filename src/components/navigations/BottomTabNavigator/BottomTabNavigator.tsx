@@ -39,7 +39,7 @@ export const BottomTabNavigator = () => {
         name="Explore"
         component={Explore}
         options={{
-          title: "Explore",
+          title: "",
           headerShown: false,
           tabBarShowLabel: false,
           tabBarIconStyle: { alignItems: "center" },
@@ -62,8 +62,8 @@ export const BottomTabNavigator = () => {
           tabBarShowLabel: false,
           tabBarIconStyle: { alignItems: "center" },
           headerTitleStyle: {
-            fontFamily: "lr",
-            fontSize: 13,
+            fontFamily: "lm",
+            fontSize: 16,
           },
           tabBarIcon: ({ focused }) => {
             return (
