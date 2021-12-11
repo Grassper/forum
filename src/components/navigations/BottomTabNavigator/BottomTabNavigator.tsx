@@ -62,7 +62,7 @@ export const BottomTabNavigator = () => {
           tabBarShowLabel: false,
           tabBarIconStyle: { alignItems: "center" },
           headerTitleStyle: {
-            fontFamily: "lm",
+            fontFamily: "lr",
             fontSize: 16,
           },
           tabBarIcon: ({ focused }) => {

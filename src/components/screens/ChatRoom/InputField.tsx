@@ -36,8 +36,8 @@ export const InputField: React.FC<Props_> = ({ chatRoomId }) => {
       await createMessageFetch(messageInput);
 
       setMessage("");
-      setSending(false);
     }
+    setSending(false);
   };
 
   return (
@@ -64,7 +64,7 @@ export const InputField: React.FC<Props_> = ({ chatRoomId }) => {
             fontSize="sm"
             variant="unstyled"
           />
-          <Pressable onPress={handleSubmitMessage}>
+          <Pressable onPress={!sending ? handleSubmitMessage : () => {}}>
             <Flex
               bg="eGreen.400"
               width="10"

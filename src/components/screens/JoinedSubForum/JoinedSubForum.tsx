@@ -15,10 +15,9 @@ import {
   RootStackParamList_,
   SubForumStackParamList_,
 } from "@/root/src/components/navigations/Navigation";
+import { HeaderProfileIcon } from "@/root/src/components/shared/HeaderProfileIcon";
 import { CommunityTile } from "@/root/src/components/shared/Tile";
 import { UserContext } from "@/root/src/context";
-
-import { HeaderProfileIcon } from "../../shared/HeaderProfileIcon";
 
 type NavigationProp_ = CompositeNavigationProp<
   StackNavigationProp<SubForumStackParamList_, "JoinedSubForum">,

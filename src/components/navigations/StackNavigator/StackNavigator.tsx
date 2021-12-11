@@ -43,7 +43,7 @@ const defaultStackOptions = {
   headerTintColor: colors.green,
   headerTitleStyle: {
     fontFamily: "lr",
-    fontSize: 14,
+    fontSize: 16,
     color: colors.black,
   },
 };

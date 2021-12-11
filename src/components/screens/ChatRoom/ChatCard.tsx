@@ -33,7 +33,7 @@ export const ChatCard: React.FC<ChatCard_> = ({
             {content}
           </Text>
           <Text
-            fontSize="8px"
+            fontSize="10px"
             color={align === "left" ? "coolGray.600" : "white"}
             alignSelf="flex-end"
             mt="1"
