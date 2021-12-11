@@ -30,7 +30,7 @@ export const CommentTile: React.FC<Props_> = () => {
 const styles = StyleSheet.create({
   comment: {
     color: colors.black,
-    fontFamily: "ml",
+    fontFamily: "ll",
     fontSize: 14,
     lineHeight: 21,
     marginBottom: 5,
@@ -43,13 +43,13 @@ const styles = StyleSheet.create({
   },
   metaText: {
     color: colors.green,
-    fontFamily: "mr",
+    fontFamily: "lr",
     fontSize: 14,
     lineHeight: 21,
   },
   post: {
     color: colors.black,
-    fontFamily: "mm",
+    fontFamily: "lm",
     fontSize: 15,
     lineHeight: 22,
     marginBottom: 5,

@@ -177,12 +177,12 @@ const defaultDrawerOptions = {
   drawerActiveBackgroundColor: "#fef3c760",
   drawerActiveTintColor: "#18181b",
   drawerLabelStyle: {
-    fontFamily: "mm",
+    fontFamily: "lm",
     marginLeft: -18,
     fontSize: 14,
   },
   headerTitleStyle: {
-    fontFamily: "mm",
+    fontFamily: "lm",
   },
 };
 

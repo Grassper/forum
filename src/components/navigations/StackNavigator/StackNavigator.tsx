@@ -42,7 +42,7 @@ const defaultStackOptions = {
   headerBackTitleVisible: false,
   headerTintColor: colors.green,
   headerTitleStyle: {
-    fontFamily: "mr",
+    fontFamily: "lr",
     fontSize: 14,
     color: colors.black,
   },

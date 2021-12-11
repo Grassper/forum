@@ -89,7 +89,7 @@ export const Profile: React.FC<Props_> = ({ navigation, route }) => {
           screenOptions={{
             tabBarLabelStyle: {
               fontSize: 15,
-              fontFamily: "mr",
+              fontFamily: "lr",
               textTransform: "capitalize",
             },
             tabBarStyle: { backgroundColor: colors.white, elevation: 0 },

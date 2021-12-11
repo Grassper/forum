@@ -27,16 +27,11 @@ enableScreens();
 
 const fetchFonts = (): Promise<void> => {
   return Font.loadAsync({
-    ml: require("@/root/assets/fonts/LexendDeca-Light.ttf"),
-    mr: require("@/root/assets/fonts/LexendDeca-Regular.ttf"),
-    mm: require("@/root/assets/fonts/LexendDeca-Medium.ttf"),
-    ms: require("@/root/assets/fonts/LexendDeca-SemiBold.ttf"),
-    mb: require("@/root/assets/fonts/LexendDeca-Bold.ttf"),
-    rl: require("@/root/assets/fonts/LexendDeca-Light.ttf"),
-    rr: require("@/root/assets/fonts/LexendDeca-Regular.ttf"),
-    rm: require("@/root/assets/fonts/LexendDeca-Medium.ttf"),
-    rs: require("@/root/assets/fonts/LexendDeca-SemiBold.ttf"),
-    rb: require("@/root/assets/fonts/LexendDeca-Bold.ttf"),
+    ll: require("@/root/assets/fonts/LexendDeca-Light.ttf"),
+    lr: require("@/root/assets/fonts/LexendDeca-Regular.ttf"),
+    lm: require("@/root/assets/fonts/LexendDeca-Medium.ttf"),
+    ls: require("@/root/assets/fonts/LexendDeca-SemiBold.ttf"),
+    lb: require("@/root/assets/fonts/LexendDeca-Bold.ttf"),
   });
 };
 

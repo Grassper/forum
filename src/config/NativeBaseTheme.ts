@@ -12,45 +12,28 @@ export const NativeBaseTheme = extendTheme({
   },
   fontConfig: {
     // Add new fonts
-    Montserrat: {
+    LexendDeca: {
       300: {
-        normal: "ml",
+        normal: "ll",
       },
       400: {
-        normal: "mr",
+        normal: "lr",
       },
       500: {
-        normal: "mm",
+        normal: "lm",
       },
       600: {
-        normal: "ms",
+        normal: "ls",
       },
       700: {
-        normal: "mb",
-      },
-    },
-    RobotoSlab: {
-      300: {
-        normal: "rl",
-      },
-      400: {
-        normal: "rr",
-      },
-      500: {
-        normal: "rm",
-      },
-      600: {
-        normal: "rs",
-      },
-      700: {
-        normal: "rb",
+        normal: "lb",
       },
     },
   },
 
   // Make sure values below matches any of the keys in `fontConfig`
   fonts: {
-    heading: "RobotoSlab",
-    body: "Montserrat",
+    heading: "LexendDeca",
+    body: "LexendDeca",
   },
 });

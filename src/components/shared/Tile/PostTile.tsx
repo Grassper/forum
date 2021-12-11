@@ -50,13 +50,13 @@ const styles = StyleSheet.create({
   },
   metaText: {
     color: colors.green,
-    fontFamily: "mr",
+    fontFamily: "lr",
     fontSize: 14,
     lineHeight: 21,
   },
   post: {
     color: colors.black,
-    fontFamily: "mr",
+    fontFamily: "lr",
     fontSize: 15,
     lineHeight: 22,
     marginBottom: 5,

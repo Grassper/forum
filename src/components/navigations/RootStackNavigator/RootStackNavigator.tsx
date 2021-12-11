@@ -12,7 +12,7 @@ const defaultStackOptions = {
   headerBackTitleVisible: false,
   headerTintColor: colors.green,
   headerTitleStyle: {
-    fontFamily: "mm",
+    fontFamily: "lm",
   },
 };
 
