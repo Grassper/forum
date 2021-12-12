@@ -61,28 +61,8 @@ exports.handler = async (event, context, callback) => {
       postedDate: event.arguments.postedDate,
       ...postStats,
     };
-  } else if (event.arguments.type === "POLL") {
-    if (!event.arguments.poll) {
-      callback(
-        `post type of ${event.arguments.type} should contain arrays of poll`,
-        null
-      );
-    }
-    postInput = {
-      type: event.arguments.type,
-      content: event.arguments.content,
-      poll: event.arguments.poll,
-      tags: event.arguments.tags,
-      authorId: event.arguments.authorId,
-      communityId: event.arguments.communityId,
-      postedDate: event.arguments.postedDate,
-      ...postStats,
-    };
   } else {
-    callback(
-      "post type should be any of text, audio, video, image, poll",
-      null
-    );
+    callback("post type should be any of text, audio, video, image", null);
   }
 
   try {

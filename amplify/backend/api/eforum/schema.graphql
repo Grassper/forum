@@ -63,7 +63,6 @@ type Mutation {
     type: PostType!
     content: String!
     mediaS3Key: String
-    poll: [PollInput]
     tags: [String!]!
     authorId: ID!
     communityId: ID!
@@ -226,19 +225,6 @@ enum PostType {
   AUDIO
   VIDEO
   IMAGE
-  POLL
-}
-
-input PollInput {
-  id: ID!
-  content: String!
-  votes: Int!
-}
-
-type Poll {
-  id: ID!
-  content: String!
-  votes: Int!
 }
 
 type Post
@@ -256,7 +242,6 @@ type Post
   type: PostType!
   content: String!
   mediaS3Key: String
-  poll: [Poll]
   tags: [String!]!
   likes: Int!
   loves: Int!
