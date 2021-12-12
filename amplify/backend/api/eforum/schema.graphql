@@ -439,3 +439,79 @@ type ReportPost @model @auth(rules: [{ allow: owner }]) {
   post: Post! @connection(fields: ["postId"])
   reporter: User! @connection(fields: ["reporterId"])
 }
+
+# Survey schema
+# Survey timeLine generator
+# graphql query and types for create and fetch
+# ui updation
+
+type SurveyQuestion
+  @model
+  @auth(
+    rules: [
+      { allow: owner }
+      { allow: private, operations: [read] }
+      { allow: private, provider: iam, operations: [create, read] }
+    ]
+  )
+  @key(name: "byUser", fields: ["userId"])
+  @key(name: "byCommunity", fields: ["communityId"]) {
+  id: ID!
+  content: String!
+  userId: ID!
+  communityId: ID!
+  startDate: AWSDateTime!
+  endDate: AWSDateTime!
+  user: User! @connection(fields: ["userId"])
+  community: Community! @connection(fields: ["communityId"])
+  surveyAnswer: [SurveyAnswer]
+    @connection(keyName: "bySurveyQuestion", fields: ["id"])
+}
+
+type SurveyAnswer
+  @model
+  @auth(
+    rules: [
+      { allow: owner }
+      { allow: private, operations: [read] }
+      { allow: private, provider: iam, operations: [create, read] }
+    ]
+  )
+  @key(name: "bySurveyQuestion", fields: ["surveyQuestionId"])
+  @key(name: "byUser", fields: ["userId"])
+  @key(name: "byCommunity", fields: ["communityId"]) {
+  id: ID!
+  content: String!
+  surveyQuestionId: ID!
+  userId: ID!
+  communityId: ID!
+  voteCount: Int!
+  user: User! @connection(fields: ["userId"])
+  community: Community! @connection(fields: ["communityId"])
+  surveyQuestion: SurveyQuestion! @connection(fields: ["surveyQuestionId"])
+}
+
+type UserSurveyMetricsRelationShip
+  @model
+  @auth(
+    rules: [
+      { allow: owner }
+      { allow: private, operations: [read] }
+      { allow: private, provider: iam, operations: [create, read] }
+    ]
+  )
+  @key(name: "bySurveyQuestion", fields: ["surveyQuestionId"])
+  @key(name: "byUser", fields: ["userId"])
+  @key(name: "byCommunity", fields: ["communityId"])
+  @key(name: "bySurveyAnswer", fields: ["surveyAnswerId"]) {
+  id: ID!
+  surveyQuestionId: ID!
+  userId: ID!
+  communityId: ID!
+  surveyAnswerId: ID!
+  isDeleted: Boolean
+  user: User! @connection(fields: ["userId"])
+  community: Community! @connection(fields: ["communityId"])
+  surveyQuestion: SurveyQuestion! @connection(fields: ["surveyQuestionId"])
+  surveyAnswer: SurveyAnswer! @connection(fields: ["surveyAnswerId"])
+}
