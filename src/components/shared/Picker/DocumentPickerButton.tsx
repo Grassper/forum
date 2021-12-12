@@ -1,11 +1,11 @@
 import { AntDesign } from "@expo/vector-icons";
 import { Storage } from "aws-amplify";
 import { format } from "date-fns";
-// import * as DocumentPicker from "expo-document-picker";
 import * as ImagePicker from "expo-image-picker";
 import { Box, Icon, Pressable, Text } from "native-base";
 import React from "react";
 import { Alert, Platform } from "react-native";
+import DocumentPicker from "react-native-document-picker";
 import uuid from "react-native-uuid";
 
 import {
@@ -48,14 +48,12 @@ export const DocumentPickerButton: React.FC<Props_> = ({
      * Todo implement permission
      */
 
-    const hasPermission = await verifyPermissions();
-    if (!hasPermission) {
-      return;
+    if (postType === "Video" || postType === "Image") {
+      const hasPermission = await verifyPermissions();
+      if (!hasPermission) {
+        return;
+      }
     }
-
-    // const pickerType = {
-    //   Audio: "audio/mpeg",
-    // };
 
     const timeStamp = format(new Date(), "yyyyMMdd");
 
@@ -111,28 +109,34 @@ export const DocumentPickerButton: React.FC<Props_> = ({
       }
     }
 
-    // if (postType === "Audio") {
-    //   let pickerResult = await DocumentPicker.getDocumentAsync({
-    //     type: pickerType[postType],
-    //   });
+    if (postType === "Audio") {
+      try {
+        let pickerResult = await DocumentPicker.pickSingle({
+          type: DocumentPicker.types.audio,
+        });
 
-    //   if (pickerResult.type !== "cancel") {
-    //     /**
-    //      * checking allowed file size
-    //      */
+        /**
+         * checking allowed file size
+         */
 
-    //     const isFileSizeAllowed = await FileSizeChecker(pickerResult.uri, 15); // allowed size in 15 mb before compression
+        const isFileSizeAllowed = await FileSizeChecker(pickerResult.uri, 15); // allowed size in 15 mb before compression
 
-    //     if (!isFileSizeAllowed) {
-    //       return;
-    //     }
+        if (!isFileSizeAllowed) {
+          return;
+        }
 
-    //     uploadedS3Key = await handlePickedAsset(
-    //       pickerResult.uri,
-    //       uploadKeyFormat[postType]
-    //     );
-    //   }
-    // }
+        uploadedS3Key = await handlePickedAsset(
+          pickerResult.uri,
+          uploadKeyFormat[postType]
+        );
+      } catch (err) {
+        if (DocumentPicker.isCancel(err)) {
+          return;
+        } else {
+          throw err;
+        }
+      }
+    }
     if (uploadedS3Key) {
       setMediaS3Key(uploadedS3Key);
       setUploading(false);

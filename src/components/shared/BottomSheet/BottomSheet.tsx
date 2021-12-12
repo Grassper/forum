@@ -76,7 +76,7 @@ export const BottomSheet: React.FC<Props_> = ({ isOpen, onClose }) => {
               iconSize="20px"
               postType="Video"
             />
-            {/* <Item
+            <Item
               onPress={() => {
                 navigation.navigate("Application", {
                   screen: "StackNav",
@@ -90,7 +90,7 @@ export const BottomSheet: React.FC<Props_> = ({ isOpen, onClose }) => {
               iconName="mic"
               iconSize="22px"
               postType="audio"
-            /> */}
+            />
           </HStack>
           <Box>
             <Pressable onPress={onClose}>
