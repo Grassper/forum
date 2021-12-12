@@ -489,6 +489,8 @@ type SurveyAnswer
   user: User! @connection(fields: ["userId"])
   community: Community! @connection(fields: ["communityId"])
   surveyQuestion: SurveyQuestion! @connection(fields: ["surveyQuestionId"])
+  userSurveyMetric: [UserSurveyMetricsRelationShip]
+    @connection(keyName: "bySurveyAnswer", fields: ["id"])
 }
 
 type UserSurveyMetricsRelationShip
