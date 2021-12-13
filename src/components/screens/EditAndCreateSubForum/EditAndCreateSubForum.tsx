@@ -121,6 +121,7 @@ export const EditAndCreateSubForum: React.FC<Props_> = ({
           type: "PUBLIC",
           creatorId: currentUser.id,
           totalPosts: 0,
+          totalSurveys: 0,
           totalMembers: 0,
           totalComments: 0,
           totalModerators: 0,
@@ -449,6 +450,7 @@ interface handleForumCreationInput_ {
   type: string;
   creatorId: string;
   totalPosts: number;
+  totalSurveys: number;
   totalMembers: number;
   totalComments: number;
   totalModerators: number;
