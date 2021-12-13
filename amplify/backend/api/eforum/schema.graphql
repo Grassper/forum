@@ -132,6 +132,7 @@ type UserMetrics
   followers: Int!
   following: Int!
   totalPosts: Int!
+  totalSurveys: Int!
   totalComments: Int!
   communitiesJoined: Int!
   communitiesModerating: Int!
@@ -177,6 +178,7 @@ type Community
   type: CommunityType!
   creatorId: ID!
   totalPosts: Int!
+  totalSurveys: Int!
   totalMembers: Int!
   totalComments: Int!
   totalModerators: Int!
@@ -445,6 +447,23 @@ type ReportPost @model @auth(rules: [{ allow: owner }]) {
 # graphql query and types for create and fetch
 # ui updation
 
+type SurveyTimeline
+  @model
+  @auth(
+    rules: [
+      { allow: private, operations: [read] }
+      { allow: private, provider: iam, operations: [create] }
+    ]
+  )
+  @key(name: "byUser", fields: ["userId", "createdAt"]) {
+  id: ID!
+  userId: ID!
+  surveyQuestionId: ID!
+  createdAt: String!
+  user: User! @connection(fields: ["userId"])
+  surveyQuestion: SurveyQuestion! @connection(fields: ["surveyQuestionId"])
+}
+
 type SurveyQuestion
   @model
   @auth(
@@ -454,14 +473,15 @@ type SurveyQuestion
       { allow: private, provider: iam, operations: [create, read] }
     ]
   )
-  @key(name: "byUser", fields: ["userId"])
-  @key(name: "byCommunity", fields: ["communityId"]) {
+  @key(name: "byUser", fields: ["userId", "createdAt"])
+  @key(name: "byCommunity", fields: ["communityId", "createdAt"]) {
   id: ID!
   content: String!
   userId: ID!
   communityId: ID!
   startDate: AWSDateTime!
   endDate: AWSDateTime!
+  createdAt: String!
   user: User! @connection(fields: ["userId"])
   community: Community! @connection(fields: ["communityId"])
   surveyAnswer: [SurveyAnswer]
