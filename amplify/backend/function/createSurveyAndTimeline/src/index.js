@@ -189,7 +189,7 @@ exports.handler = async (event, context, callback) => {
       );
 
       // creating survey timeline for users
-      timeLineCreationHandler(communityId, createdSurveyQuestionId);
+      await timeLineCreationHandler(communityId, createdSurveyQuestionId);
     }
     return createdSurveyQuestion.data?.createSurveyQuestion;
   } catch (err) {

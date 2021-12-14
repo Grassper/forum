@@ -74,7 +74,7 @@ exports.handler = async (event, context, callback) => {
     const post = postResponse.data?.createPost;
 
     if (post) {
-      timeLineCreationHandler(post.communityId, post.id);
+      await timeLineCreationHandler(post.communityId, post.id);
     }
 
     return post;
