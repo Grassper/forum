@@ -1376,6 +1376,168 @@
           ]
         }
       }
+    },
+    "QueryIncrementTotalSurveysUserMetrics": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": { "Ref": "AppSyncApiId" },
+        "DataSourceName": "UserMetricsTable",
+        "TypeName": "Mutation",
+        "FieldName": "incrementTotalSurveysUserMetrics",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Sub": [
+            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.incrementTotalSurveysUserMetrics.req.vtl",
+            {
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
+            }
+          ]
+        },
+        "ResponseMappingTemplateS3Location": {
+          "Fn::Sub": [
+            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.incrementTotalSurveysUserMetrics.res.vtl",
+            {
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
+            }
+          ]
+        }
+      }
+    },
+    "QueryDecrementTotalSurveysUserMetrics": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": { "Ref": "AppSyncApiId" },
+        "DataSourceName": "UserMetricsTable",
+        "TypeName": "Mutation",
+        "FieldName": "decrementTotalSurveysUserMetrics",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Sub": [
+            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.decrementTotalSurveysUserMetrics.req.vtl",
+            {
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
+            }
+          ]
+        },
+        "ResponseMappingTemplateS3Location": {
+          "Fn::Sub": [
+            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.decrementTotalSurveysUserMetrics.res.vtl",
+            {
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
+            }
+          ]
+        }
+      }
+    },
+    "QueryIncrementTotalSurveysCommunity": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": { "Ref": "AppSyncApiId" },
+        "DataSourceName": "CommunityTable",
+        "TypeName": "Mutation",
+        "FieldName": "incrementTotalSurveysCommunity",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Sub": [
+            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.incrementTotalSurveysCommunity.req.vtl",
+            {
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
+            }
+          ]
+        },
+        "ResponseMappingTemplateS3Location": {
+          "Fn::Sub": [
+            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.incrementTotalSurveysCommunity.res.vtl",
+            {
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
+            }
+          ]
+        }
+      }
+    },
+    "QueryDecrementTotalSurveysCommunity": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": { "Ref": "AppSyncApiId" },
+        "DataSourceName": "CommunityTable",
+        "TypeName": "Mutation",
+        "FieldName": "decrementTotalSurveysCommunity",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Sub": [
+            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.decrementTotalSurveysCommunity.req.vtl",
+            {
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
+            }
+          ]
+        },
+        "ResponseMappingTemplateS3Location": {
+          "Fn::Sub": [
+            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.decrementTotalSurveysCommunity.res.vtl",
+            {
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
+            }
+          ]
+        }
+      }
+    },
+    "QueryIncrementVoteCountSurveyAnswer": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": { "Ref": "AppSyncApiId" },
+        "DataSourceName": "SurveyAnswerTable",
+        "TypeName": "Mutation",
+        "FieldName": "incrementVoteCountSurveyAnswer",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Sub": [
+            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.incrementVoteCountSurveyAnswer.req.vtl",
+            {
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
+            }
+          ]
+        },
+        "ResponseMappingTemplateS3Location": {
+          "Fn::Sub": [
+            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.incrementVoteCountSurveyAnswer.res.vtl",
+            {
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
+            }
+          ]
+        }
+      }
+    },
+    "QueryDecrementVoteCountSurveyAnswer": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": { "Ref": "AppSyncApiId" },
+        "DataSourceName": "SurveyAnswerTable",
+        "TypeName": "Mutation",
+        "FieldName": "decrementVoteCountSurveyAnswer",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Sub": [
+            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.decrementVoteCountSurveyAnswer.req.vtl",
+            {
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
+            }
+          ]
+        },
+        "ResponseMappingTemplateS3Location": {
+          "Fn::Sub": [
+            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.decrementVoteCountSurveyAnswer.res.vtl",
+            {
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
+            }
+          ]
+        }
+      }
     }
   },
   "Conditions": {

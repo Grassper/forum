@@ -37,6 +37,8 @@ type Mutation {
     @aws_cognito_user_pools
   decrementCommunitiesModeratingUserMetrics(id: ID!): UserMetrics
     @aws_cognito_user_pools
+  incrementTotalSurveysUserMetrics(id: ID!): UserMetrics @aws_cognito_user_pools
+  decrementTotalSurveysUserMetrics(id: ID!): UserMetrics @aws_cognito_user_pools
   incrementRepliesCount(id: ID!): Comment @aws_cognito_user_pools
   decrementRepliesCount(id: ID!): Comment @aws_cognito_user_pools
   incrementPostLikes(id: ID!): Post @aws_cognito_user_pools
@@ -59,6 +61,10 @@ type Mutation {
   decrementTotalCommentsCommunity(id: ID!): Community @aws_cognito_user_pools
   incrementTotalModeratorsCommunity(id: ID!): Community @aws_cognito_user_pools
   decrementTotalModeratorsCommunity(id: ID!): Community @aws_cognito_user_pools
+  incrementTotalSurveysCommunity(id: ID!): Community @aws_cognito_user_pools
+  decrementTotalSurveysCommunity(id: ID!): Community @aws_cognito_user_pools
+  incrementVoteCountSurveyAnswer(id: ID!): SurveyAnswer @aws_cognito_user_pools
+  decrementVoteCountSurveyAnswer(id: ID!): SurveyAnswer @aws_cognito_user_pools
   createPostAndTimeline(
     type: PostType!
     content: String!
