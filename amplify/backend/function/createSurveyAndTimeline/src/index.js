@@ -189,30 +189,9 @@ exports.handler = async (event, context, callback) => {
       );
 
       // creating survey timeline for users
-
-      // list members for communityId
-      const listMembersResponse = await makeAppSyncRequest(
-        { communityId: communityId, limit: 100000 },
-        listMembersOfCommunity
-      );
-
-      if (listMembersResponse.data?.listUserCommunityRelationShips) {
-        const members =
-          listMembersResponse.data.listUserCommunityRelationShips.items;
-
-        // creating timeline for users
-
-        await Promise.all(
-          members.map((entry) =>
-            createSurveyTimelineForAUser({
-              userId: entry.userId,
-              surveyQuestionId: createdSurveyQuestionId,
-            })
-          )
-        );
-      }
+      timeLineCreationHandler(communityId, createdSurveyQuestionId);
     }
-    return createdSurveyQuestion;
+    return createdSurveyQuestion.data?.createSurveyQuestion;
   } catch (err) {
     callback("Error occured while creating survey", null);
   }
@@ -247,6 +226,30 @@ const createSurveyTimelineForAUser = async ({ userId, surveyQuestionId }) => {
     createSurveyTimeline
   );
   return createSurveyTimelineResponse;
+};
+
+const timeLineCreationHandler = async (communityId, surveyQuestionId) => {
+  // list members for communityId
+  const listMembersResponse = await makeAppSyncRequest(
+    { communityId: communityId, limit: 100000 },
+    listMembersOfCommunity
+  );
+
+  if (listMembersResponse.data?.listUserCommunityRelationShips) {
+    const members =
+      listMembersResponse.data.listUserCommunityRelationShips.items;
+
+    // creating timeline for users
+
+    await Promise.all(
+      members.map((entry) =>
+        createSurveyTimelineForAUser({
+          userId: entry.userId,
+          surveyQuestionId: surveyQuestionId,
+        })
+      )
+    );
+  }
 };
 
 const createSurveyQuestion = /* GraphQL */ `
@@ -288,8 +291,6 @@ const createSurveyTimeline = /* GraphQL */ `
   ) {
     createSurveyTimeline(input: $input, condition: $condition) {
       id
-      userId
-      surveyQuestionId
     }
   }
 `;

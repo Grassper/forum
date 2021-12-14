@@ -74,25 +74,7 @@ exports.handler = async (event, context, callback) => {
     const post = postResponse.data?.createPost;
 
     if (post) {
-      // list members for communityId
-
-      const listMembersResponse = await makeAppSyncRequest(
-        { communityId: post.communityId, limit: 100000 },
-        listMembersOfCommunity
-      );
-
-      if (listMembersResponse.data?.listUserCommunityRelationShips) {
-        const members =
-          listMembersResponse.data.listUserCommunityRelationShips.items;
-
-        // creating timeline for users
-
-        await Promise.all(
-          members.map((entry) =>
-            createTimelineForAUser({ userId: entry.userId, postId: post.id })
-          )
-        );
-      }
+      timeLineCreationHandler(post.communityId, post.id);
     }
 
     return post;
@@ -130,6 +112,28 @@ const createTimelineForAUser = async ({ userId, postId }) => {
     createTimeline
   );
   return createTimelineResponse;
+};
+
+const timeLineCreationHandler = async (communityId, postId) => {
+  // list members for communityId
+
+  const listMembersResponse = await makeAppSyncRequest(
+    { communityId: communityId, limit: 100000 },
+    listMembersOfCommunity
+  );
+
+  if (listMembersResponse.data?.listUserCommunityRelationShips) {
+    const members =
+      listMembersResponse.data.listUserCommunityRelationShips.items;
+
+    // creating timeline for users
+
+    await Promise.all(
+      members.map((entry) =>
+        createTimelineForAUser({ userId: entry.userId, postId: postId })
+      )
+    );
+  }
 };
 
 const createPost = /* GraphQL */ `
