@@ -70,6 +70,16 @@ type Mutation {
   ): Post
     @function(name: "createPostAndTimeline-${env}")
     @auth(rules: [{ allow: private, provider: userPools }])
+  createSurveyAndTimeline(
+    question: String!
+    answers: [String!]!
+    startDate: AWSDateTime!
+    endDate: AWSDateTime!
+    userId: ID!
+    communityId: ID!
+  ): SurveyQuestion
+    @function(name: "createSurverAndTimeline-${env}")
+    @auth(rules: [{ allow: private, provider: userPools }])
 }
 
 type Subscription {

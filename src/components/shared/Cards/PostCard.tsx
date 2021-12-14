@@ -4,16 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import { API } from "aws-amplify";
 import { format } from "date-fns";
 import { Video } from "expo-av";
-import {
-  Box,
-  Button,
-  Flex,
-  HStack,
-  Icon,
-  Image,
-  Pressable,
-  Text,
-} from "native-base";
+import { Box, Flex, HStack, Icon, Image, Pressable, Text } from "native-base";
 import React, { useState } from "react";
 import { Platform, StatusBar, StyleSheet } from "react-native";
 import { SvgUri } from "react-native-svg";

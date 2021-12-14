@@ -435,3 +435,11 @@ const MetricsQueryPicker = {
     },
   },
 };
+
+/**
+ * Todo-2: timeline generator function
+ * Todo-3: survey custom resolvers for increment count, no-of-survey in community, users metrics
+ * Todo-4: update metrics in community, users while create
+ * Todo-3: graphql query and types and fetch
+ * Todo-5: survey screen
+ */

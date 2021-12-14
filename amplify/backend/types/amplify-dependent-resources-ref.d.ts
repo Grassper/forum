@@ -24,6 +24,12 @@ export type AmplifyDependentResourcesAttributes = {
       Region: "string";
       LambdaExecutionRole: "string";
     };
+    createSurverAndTimeline: {
+      Name: "string";
+      Arn: "string";
+      Region: "string";
+      LambdaExecutionRole: "string";
+    };
   };
   storage: {
     s3905aa3fd: {
