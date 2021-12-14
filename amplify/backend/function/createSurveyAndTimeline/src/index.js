@@ -9,8 +9,7 @@ Amplify Params - DO NOT EDIT */
 const axios = require("axios");
 const AWS = require("aws-sdk");
 
-const isLength = require("validator/es/lib/isLength");
-const matches = require("validator/es/lib/matches");
+const validator = require("validator");
 const isAfter = require("date-fns/isAfter");
 const parseISO = require("date-fns/parseISO");
 
@@ -30,8 +29,8 @@ const endpoint = new urlParse(appsyncUrl).hostname.toString();
 
 const validateContent = async (Content, minLength, maxLength) => {
   if (
-    isLength(Content, { min: minLength, max: maxLength }) &&
-    matches(
+    validator.isLength(Content, { min: minLength, max: maxLength }) &&
+    validator.matches(
       Content,
       `^[A-Za-z][A-Za-z0-9 _|.,!]{${minLength},${maxLength}}$`,
       "m"
@@ -108,8 +107,8 @@ exports.handler = async (event, context, callback) => {
     event.arguments.startDate &&
     event.arguments.endDate &&
     isAfter(
-      parseISO(event.arguments.startDate),
-      parseISO(event.arguments.endDate)
+      parseISO(event.arguments.endDate),
+      parseISO(event.arguments.startDate)
     )
   ) {
     startDate = event.arguments.startDate;

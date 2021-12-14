@@ -443,3 +443,34 @@ const MetricsQueryPicker = {
  * Todo-3: graphql query and types and fetch
  * Todo-5: survey screen
  */
+
+const createSurveyAndTimeline = /* GraphQL */ `
+  mutation createSurveyAndTimeline(
+    $answers: [String!]!
+    $communityId: ID!
+    $endDate: AWSDateTime!
+    $question: String!
+    $startDate: AWSDateTime!
+    $userId: ID!
+  ) {
+    createSurveyAndTimeline(
+      answers: $answers
+      communityId: $communityId
+      endDate: $endDate
+      startDate: $startDate
+      userId: $userId
+      question: $question
+    ) {
+      id
+    }
+  }
+`;
+
+// {
+//   "question": "Your daily routine contains",
+//   "answers": ["jogging","bathing","sleeping"],
+//   "communityId": "48e035e2-1907-4c54-939c-1eb42448f370",
+//   "userId": "be7cb66a-9a35-4581-b570-a791cb1c3e0b",
+//   "startDate": "2021-12-14T11:12:34.826Z",
+//   "endDate": "2021-12-18T11:12:34.826Z"
+// }

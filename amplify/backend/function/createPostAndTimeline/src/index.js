@@ -10,6 +10,7 @@ const axios = require("axios");
 const AWS = require("aws-sdk");
 
 const urlParse = require("url").URL;
+
 const appsyncUrl = process.env.API_EFORUM_GRAPHQLAPIENDPOINTOUTPUT;
 const region = process.env.REGION;
 const endpoint = new urlParse(appsyncUrl).hostname.toString();
