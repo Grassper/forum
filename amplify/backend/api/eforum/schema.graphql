@@ -78,7 +78,7 @@ type Mutation {
     userId: ID!
     communityId: ID!
   ): SurveyQuestion
-    @function(name: "createSurverAndTimeline-${env}")
+    @function(name: "createSurveyAndTimeline-${env}")
     @auth(rules: [{ allow: private, provider: userPools }])
 }
 

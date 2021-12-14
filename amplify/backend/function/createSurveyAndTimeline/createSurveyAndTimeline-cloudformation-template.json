@@ -61,12 +61,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "createSurverAndTimeline",
+            "createSurveyAndTimeline",
             {
               "Fn::Join": [
                 "",
                 [
-                  "createSurverAndTimeline",
+                  "createSurveyAndTimeline",
                   "-",
                   {
                     "Ref": "env"
@@ -103,12 +103,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "eforumLambdaRole76cb1995",
+            "eforumLambdaRolede92b5e9",
             {
               "Fn::Join": [
                 "",
                 [
-                  "eforumLambdaRole76cb1995",
+                  "eforumLambdaRolede92b5e9",
                   "-",
                   {
                     "Ref": "env"

@@ -64,7 +64,7 @@
         }
       ]
     },
-    "createSurverAndTimeline": {
+    "createSurveyAndTimeline": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda",
