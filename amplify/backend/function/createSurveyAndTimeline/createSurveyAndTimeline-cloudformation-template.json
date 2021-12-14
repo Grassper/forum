@@ -1,6 +1,6 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
-  "Description": "Lambda Function resource stack creation using Amplify CLI",
+  "Description": "{\"createdOn\":\"Mac\",\"createdBy\":\"Amplify\",\"createdWith\":\"7.4.5\",\"stackType\":\"function-Lambda\",\"metadata\":{}}",
   "Parameters": {
     "CloudWatchRule": {
       "Type": "String",
@@ -20,12 +20,10 @@
       "Type": "String",
       "Default": "apieforumGraphQLAPIIdOutput"
     },
-
     "apieforumGraphQLAPIEndpointOutput": {
       "Type": "String",
       "Default": "apieforumGraphQLAPIEndpointOutput"
     },
-
     "apieforumGraphQLAPIKeyOutput": {
       "Type": "String",
       "Default": "apieforumGraphQLAPIKeyOutput"
@@ -78,8 +76,12 @@
         },
         "Environment": {
           "Variables": {
-            "ENV": { "Ref": "env" },
-            "REGION": { "Ref": "AWS::Region" },
+            "ENV": {
+              "Ref": "env"
+            },
+            "REGION": {
+              "Ref": "AWS::Region"
+            },
             "API_EFORUM_GRAPHQLAPIIDOUTPUT": {
               "Ref": "apieforumGraphQLAPIIdOutput"
             },
@@ -91,7 +93,9 @@
             }
           }
         },
-        "Role": { "Fn::GetAtt": ["LambdaExecutionRole", "Arn"] },
+        "Role": {
+          "Fn::GetAtt": ["LambdaExecutionRole", "Arn"]
+        },
         "Runtime": "nodejs14.x",
         "Layers": [],
         "Timeout": 25
@@ -137,7 +141,11 @@
       "Type": "AWS::IAM::Policy",
       "Properties": {
         "PolicyName": "lambda-execution-policy",
-        "Roles": [{ "Ref": "LambdaExecutionRole" }],
+        "Roles": [
+          {
+            "Ref": "LambdaExecutionRole"
+          }
+        ],
         "PolicyDocument": {
           "Version": "2012-10-17",
           "Statement": [
@@ -152,9 +160,15 @@
                 "Fn::Sub": [
                   "arn:aws:logs:${region}:${account}:log-group:/aws/lambda/${lambda}:log-stream:*",
                   {
-                    "region": { "Ref": "AWS::Region" },
-                    "account": { "Ref": "AWS::AccountId" },
-                    "lambda": { "Ref": "LambdaFunction" }
+                    "region": {
+                      "Ref": "AWS::Region"
+                    },
+                    "account": {
+                      "Ref": "AWS::AccountId"
+                    },
+                    "lambda": {
+                      "Ref": "LambdaFunction"
+                    }
                   }
                 ]
               }
@@ -168,7 +182,11 @@
       "Type": "AWS::IAM::Policy",
       "Properties": {
         "PolicyName": "amplify-lambda-execution-policy",
-        "Roles": [{ "Ref": "LambdaExecutionRole" }],
+        "Roles": [
+          {
+            "Ref": "LambdaExecutionRole"
+          }
+        ],
         "PolicyDocument": {
           "Version": "2012-10-17",
           "Statement": [
@@ -181,11 +199,17 @@
                     "",
                     [
                       "arn:aws:appsync:",
-                      { "Ref": "AWS::Region" },
+                      {
+                        "Ref": "AWS::Region"
+                      },
                       ":",
-                      { "Ref": "AWS::AccountId" },
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
                       ":apis/",
-                      { "Ref": "apieforumGraphQLAPIIdOutput" },
+                      {
+                        "Ref": "apieforumGraphQLAPIIdOutput"
+                      },
                       "/types/Query/*"
                     ]
                   ]
@@ -195,11 +219,17 @@
                     "",
                     [
                       "arn:aws:appsync:",
-                      { "Ref": "AWS::Region" },
+                      {
+                        "Ref": "AWS::Region"
+                      },
                       ":",
-                      { "Ref": "AWS::AccountId" },
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
                       ":apis/",
-                      { "Ref": "apieforumGraphQLAPIIdOutput" },
+                      {
+                        "Ref": "apieforumGraphQLAPIIdOutput"
+                      },
                       "/types/Mutation/*"
                     ]
                   ]
@@ -218,7 +248,9 @@
       }
     },
     "Arn": {
-      "Value": { "Fn::GetAtt": ["LambdaFunction", "Arn"] }
+      "Value": {
+        "Fn::GetAtt": ["LambdaFunction", "Arn"]
+      }
     },
     "Region": {
       "Value": {

@@ -24,7 +24,7 @@ export type AmplifyDependentResourcesAttributes = {
       Region: "string";
       LambdaExecutionRole: "string";
     };
-    createSurverAndTimeline: {
+    createSurveyAndTimeline: {
       Name: "string";
       Arn: "string";
       Region: "string";
