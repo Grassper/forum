@@ -7,6 +7,7 @@ export type BottomTabParamList_ = {
   Home: undefined;
   Explore: undefined;
   ChatList: undefined;
+  Survey: undefined;
 };
 
 export type AuthStackParamList_ = {

@@ -539,7 +539,6 @@ const MetricsQueryPicker = {
 
 /**
  * Todo-4: update metrics in community, users while create
- * Todo-3: graphql query and types and fetch
  * Todo-5: survey screen
  */
 

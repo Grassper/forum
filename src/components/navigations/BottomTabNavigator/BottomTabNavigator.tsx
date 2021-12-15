@@ -6,6 +6,7 @@ import { BottomTabParamList_ } from "@/root/src/components/navigations/Navigatio
 import { ChatList } from "@/root/src/components/screens/ChatList";
 import { Explore } from "@/root/src/components/screens/Explore";
 import { Home } from "@/root/src/components/screens/Home";
+import { Survey } from "@/root/src/components/screens/Survey";
 
 const Tab = createBottomTabNavigator<BottomTabParamList_>();
 
@@ -69,6 +70,28 @@ export const BottomTabNavigator = () => {
             return (
               <AntDesign
                 name="message1"
+                size={21}
+                color={focused ? "#17D7A0" : "black"}
+              />
+            );
+          },
+        }}
+      />
+      <Tab.Screen
+        name="Survey"
+        component={Survey}
+        options={{
+          title: "Surveys",
+          tabBarShowLabel: false,
+          tabBarIconStyle: { alignItems: "center" },
+          headerTitleStyle: {
+            fontFamily: "lr",
+            fontSize: 16,
+          },
+          tabBarIcon: ({ focused }) => {
+            return (
+              <AntDesign
+                name="barchart"
                 size={21}
                 color={focused ? "#17D7A0" : "black"}
               />
