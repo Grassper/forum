@@ -49,48 +49,37 @@ interface PollType_ {
 
 export const AddAndEditPost: React.FC<Props_> = ({ navigation, route }) => {
   const [Content, setContent] = React.useState(""); // post content
-  const [PollTitle, setPollTitle] = React.useState("");
+  const [PollQuestion, setPollQuestion] = React.useState("");
   const [Option, setOption] = React.useState(""); // poll option input
-  const [Polls, setPoll] = React.useState<PollType_[]>([]); // poll options
+  const [PollOption, setPollOption] = React.useState<PollType_[]>([]); // poll options
   const [mediaS3Key, setMediaS3Key] = React.useState("");
   const [loading, setLoading] = React.useState(false);
   const [isContentValid, setContentValid] = React.useState(false);
   const [contentErrorMsg, setContentErrorMsg] = React.useState("");
+
+  const [isPollAnswersValid, setPollAnswersValid] = React.useState(false);
+  const [pollAnswerErrorMsg, setPollAnswerErrorMsg] = React.useState("");
+
+  const [isPollQuestionValid, setPollQuestionValid] = React.useState(false);
+  const [pollQuestionErrorMsg, setPollQuestionErrorMsg] = React.useState("");
 
   const currentUser = React.useContext(UserContext).user;
 
   const { hideUpload, postType } = route.params;
 
   const handleSubmit = React.useCallback(async () => {
-    if (isContentValid) {
-      setLoading(true);
-      let postInput: createPostAndTimelineFetchInput_ = {
-        authorId: currentUser.id,
-        communityId: route.params.communityId,
-        content: Content,
-        postedDate: new Date(),
-        tags: ["Testing tags"],
-        type: route.params.postType.toUpperCase() as createPostAndTimelineFetchInput_["type"],
-      };
-      if (route.params.postType === "Text") {
-        const createdPostId = await createPostAndTimelineFetch(postInput);
-
-        if (createdPostId) {
-          navigation.navigate({
-            name: "BottomTabNav",
-            params: {
-              screen: "Home",
-            },
-            merge: true,
-          });
-        }
-      } else if (route.params.postType !== "Poll") {
-        if (mediaS3Key) {
-          postInput = {
-            ...postInput,
-            mediaS3Key,
-          };
-
+    if (route.params.postType !== "Poll") {
+      if (isContentValid) {
+        setLoading(true);
+        let postInput: createPostAndTimelineFetchInput_ = {
+          authorId: currentUser.id,
+          communityId: route.params.communityId,
+          content: Content,
+          postedDate: new Date(),
+          tags: ["Testing tags"],
+          type: route.params.postType.toUpperCase() as createPostAndTimelineFetchInput_["type"],
+        };
+        if (route.params.postType === "Text") {
           const createdPostId = await createPostAndTimelineFetch(postInput);
 
           if (createdPostId) {
@@ -103,22 +92,55 @@ export const AddAndEditPost: React.FC<Props_> = ({ navigation, route }) => {
             });
           }
         } else {
-          Alert.alert(
-            `Attachment is required for ${route.params.postType} post`
-          );
+          if (mediaS3Key) {
+            postInput = {
+              ...postInput,
+              mediaS3Key,
+            };
+
+            const createdPostId = await createPostAndTimelineFetch(postInput);
+
+            if (createdPostId) {
+              navigation.navigate({
+                name: "BottomTabNav",
+                params: {
+                  screen: "Home",
+                },
+                merge: true,
+              });
+            }
+          } else {
+            Alert.alert(
+              `Attachment is required for ${route.params.postType} post`
+            );
+          }
         }
+        setLoading(false);
+      } else {
+        Alert.alert(contentErrorMsg);
       }
-      setLoading(false);
     } else {
-      Alert.alert(contentErrorMsg);
+      if (isPollQuestionValid) {
+        if (isPollAnswersValid) {
+          console.log("Poll is valid");
+        } else {
+          Alert.alert(pollAnswerErrorMsg);
+        }
+      } else {
+        Alert.alert(pollQuestionErrorMsg);
+      }
     }
   }, [
     Content,
     contentErrorMsg,
     currentUser.id,
     isContentValid,
+    isPollAnswersValid,
+    isPollQuestionValid,
     mediaS3Key,
     navigation,
+    pollAnswerErrorMsg,
+    pollQuestionErrorMsg,
     route.params.communityId,
     route.params.postType,
   ]);
@@ -139,6 +161,50 @@ export const AddAndEditPost: React.FC<Props_> = ({ navigation, route }) => {
     validateContent();
   }, [Content]);
 
+  React.useEffect(() => {
+    const validatePollQuestion = () => {
+      if (
+        isLength(PollQuestion, { min: 3, max: 140 }) &&
+        matches(PollQuestion, "^[A-Za-z][A-Za-z0-9 _|.,!?]{3,140}$", "m")
+      ) {
+        setPollQuestionValid(true);
+        setPollQuestionErrorMsg("");
+      } else {
+        setPollQuestionValid(false);
+        setPollQuestionErrorMsg(
+          "Survey question should between min 3 and max 140"
+        );
+      }
+    };
+    validatePollQuestion();
+  }, [PollQuestion]);
+
+  React.useEffect(() => {
+    const validatePollAnswer = () => {
+      const PollAnswersValid = PollOption.every((entry) => {
+        if (
+          isLength(entry.content, { min: 3, max: 30 }) &&
+          matches(entry.content, "^[A-Za-z][A-Za-z0-9 _|.,!]{3,30}$", "m")
+        ) {
+          return true;
+        } else {
+          return false;
+        }
+      });
+
+      if (PollAnswersValid) {
+        setPollAnswersValid(true);
+        setPollAnswerErrorMsg("");
+      } else {
+        setPollAnswersValid(false);
+        setPollQuestionErrorMsg(
+          "Survey answer should between min 3 and max 30"
+        );
+      }
+    };
+    validatePollAnswer();
+  }, [PollOption]);
+
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
@@ -153,6 +219,17 @@ export const AddAndEditPost: React.FC<Props_> = ({ navigation, route }) => {
       ),
     });
   }, [handleSubmit, navigation, loading]);
+
+  const pollAdditionHandler = () => {
+    setPollOption((prev) => [...prev, { content: Option }]);
+    setOption("");
+  };
+
+  const pollRemovalHandler = (selectedPoll: String) => {
+    setPollOption((prev) =>
+      prev.filter((entry) => entry.content !== selectedPoll)
+    );
+  };
 
   return (
     <VStack
@@ -175,15 +252,15 @@ export const AddAndEditPost: React.FC<Props_> = ({ navigation, route }) => {
               multiline
               numberOfLines={2}
               maxLength={100}
-              value={PollTitle}
-              onChangeText={setPollTitle}
-              placeholder="Title"
+              value={PollQuestion}
+              onChangeText={setPollQuestion}
+              placeholder="Question"
               placeholderTextColor="muted.400"
               fontSize="md"
               variant="unstyled"
             />
             <Box mt="2">
-              {Polls.map((entry, index) => {
+              {PollOption.map((entry, index) => {
                 return (
                   <HStack alignItems="center">
                     <Text
@@ -206,13 +283,7 @@ export const AddAndEditPost: React.FC<Props_> = ({ navigation, route }) => {
                       mb="2"
                       alignItems="center"
                       justifyContent="center"
-                      onPress={() => {
-                        setPoll((prev) =>
-                          prev.filter(
-                            (entry1) => entry1.content !== entry.content
-                          )
-                        );
-                      }}
+                      onPress={() => pollRemovalHandler(entry.content)}
                     >
                       <Icon
                         as={<AntDesign name="plus" />}
@@ -225,8 +296,8 @@ export const AddAndEditPost: React.FC<Props_> = ({ navigation, route }) => {
                 );
               })}
             </Box>
-            {/* max poll array length is 3. hide input if that exceed  */}
-            {Polls.length <= 2 && (
+            {/* max poll array length is 5. hide input if that exceed  */}
+            {PollOption.length <= 4 && (
               <HStack alignItems="center">
                 <Input
                   bg="muted.100"
@@ -246,10 +317,7 @@ export const AddAndEditPost: React.FC<Props_> = ({ navigation, route }) => {
                   height="50px"
                   alignItems="center"
                   justifyContent="center"
-                  onPress={() => {
-                    setPoll((prev) => [...prev, { content: Option }]);
-                    setOption("");
-                  }}
+                  onPress={pollAdditionHandler}
                 >
                   <Icon as={<AntDesign name="plus" />} size={4} color="white" />
                 </Pressable>

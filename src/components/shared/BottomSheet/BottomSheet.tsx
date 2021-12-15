@@ -97,7 +97,11 @@ export const BottomSheet: React.FC<Props_> = ({ isOpen, onClose }) => {
                   screen: "StackNav",
                   params: {
                     screen: "ChooseSubForum",
-                    params: { postType: "Poll", action: "Add" },
+                    params: {
+                      postType: "Poll",
+                      action: "Add",
+                      hideUpload: true,
+                    },
                   },
                 });
                 onClose();
