@@ -128,7 +128,31 @@ export const AddAndEditPost: React.FC<Props_> = ({ navigation, route }) => {
       if (isPollQuestionValid) {
         if (isPollAnswersValid) {
           if (isContentValid && endDate) {
-            console.log("poll valid", addDays(endDate, 2));
+            setLoading(true);
+            const surveyInput = {
+              question: PollQuestion,
+              answers: PollOption.map((entry) => entry.content),
+              communityId: route.params.communityId,
+              surveyPurpose: Content,
+              userId: currentUser.id,
+              startDate: new Date(),
+              endDate: addDays(endDate, 2),
+            };
+
+            const createdSurveyId = await createSurveyAndTimelineFetch(
+              surveyInput
+            );
+
+            if (createdSurveyId) {
+              navigation.navigate({
+                name: "BottomTabNav",
+                params: {
+                  screen: "Home",
+                },
+                merge: true,
+              });
+            }
+            setLoading(false);
           } else {
             Alert.alert(contentErrorMsg);
           }
@@ -141,6 +165,8 @@ export const AddAndEditPost: React.FC<Props_> = ({ navigation, route }) => {
     }
   }, [
     Content,
+    PollOption,
+    PollQuestion,
     contentErrorMsg,
     currentUser.id,
     endDate,
@@ -335,7 +361,7 @@ export const AddAndEditPost: React.FC<Props_> = ({ navigation, route }) => {
                 </Pressable>
               </HStack>
             )}
-            <>
+            {/* <>
               <Pressable
                 bg="eGreen.400"
                 width="40px"
@@ -364,7 +390,7 @@ export const AddAndEditPost: React.FC<Props_> = ({ navigation, route }) => {
                   setDateModalOpen(false);
                 }}
               />
-            </>
+            </> */}
             <Input
               mt="2"
               maxLength={140}
@@ -436,14 +462,14 @@ const createPostAndTimelineFetch = async (
   input: createPostAndTimelineFetchInput_
 ) => {
   try {
-    const listCommunityData = (await API.graphql({
+    const postTimelineCreationData = (await API.graphql({
       query: createPostAndTimeline,
       variables: input,
       authMode: "AMAZON_COGNITO_USER_POOLS",
     })) as GraphQLResult<createPostAndTimeline_>;
 
-    if (listCommunityData.data?.createPostAndTimeline) {
-      const postId = listCommunityData.data.createPostAndTimeline;
+    if (postTimelineCreationData.data?.createPostAndTimeline) {
+      const postId = postTimelineCreationData.data.createPostAndTimeline;
 
       /**
        * increment total posts in current user and community
@@ -547,12 +573,46 @@ const MetricsQueryPicker = {
 };
 
 /**
- * Todo-3: validation for poll questions, poll answers, poll purpose, start and end date.
- * Todo-4: start date will be now and end date will picked date
  * Todo-4: update metrics in community, users while create
  * Todo-3: graphql query and types and fetch
  * Todo-5: survey screen
  */
+
+interface createSurveyAndTimelineFetch_ {
+  answers: string[];
+  communityId: string;
+  endDate: Date;
+  startDate: Date;
+  userId: string;
+  surveyPurpose: string;
+  question: string;
+}
+
+const createSurveyAndTimelineFetch = async (
+  input: createSurveyAndTimelineFetch_
+) => {
+  try {
+    const surveyTimelineCreationData = (await API.graphql({
+      query: createSurveyAndTimeline,
+      variables: input,
+      authMode: "AMAZON_COGNITO_USER_POOLS",
+    })) as GraphQLResult<createSurveyAndTimeline_>;
+
+    if (surveyTimelineCreationData.data?.createSurveyAndTimeline) {
+      const surveyId = surveyTimelineCreationData.data.createSurveyAndTimeline;
+
+      return surveyId;
+    }
+  } catch (err) {
+    console.error("Error occured while creating a survey", err);
+  }
+};
+
+type createSurveyAndTimeline_ = {
+  createSurveyAndTimeline?: {
+    id: string;
+  };
+};
 
 const createSurveyAndTimeline = /* GraphQL */ `
   mutation createSurveyAndTimeline(
@@ -560,6 +620,7 @@ const createSurveyAndTimeline = /* GraphQL */ `
     $communityId: ID!
     $endDate: AWSDateTime!
     $question: String!
+    $surveyPurpose: String!
     $startDate: AWSDateTime!
     $userId: ID!
   ) {
@@ -569,18 +630,10 @@ const createSurveyAndTimeline = /* GraphQL */ `
       endDate: $endDate
       startDate: $startDate
       userId: $userId
+      surveyPurpose: $surveyPurpose
       question: $question
     ) {
       id
     }
   }
 `;
-
-// {
-//   "question": "Your daily routine contains",
-//   "answers": ["jogging","bathing","sleeping"],
-//   "communityId": "48e035e2-1907-4c54-939c-1eb42448f370",
-//   "userId": "be7cb66a-9a35-4581-b570-a791cb1c3e0b",
-//   "startDate": "2021-12-14T11:12:34.826Z",
-//   "endDate": "2021-12-18T11:12:34.826Z"
-// }
