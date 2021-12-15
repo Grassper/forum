@@ -91,7 +91,10 @@ export const RegisterUserInDb = async (
       setAuthState("LOGGEDIN");
     }
   } catch (err) {
-    console.log("Error occured while registering user in db", err);
+    console.log(
+      "Error occured while registering user in db",
+      JSON.stringify(err)
+    );
   }
 };
 

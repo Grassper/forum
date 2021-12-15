@@ -91,6 +91,21 @@ export const BottomSheet: React.FC<Props_> = ({ isOpen, onClose }) => {
               iconSize="22px"
               postType="audio"
             />
+            <Item
+              onPress={() => {
+                navigation.navigate("Application", {
+                  screen: "StackNav",
+                  params: {
+                    screen: "ChooseSubForum",
+                    params: { postType: "Poll", action: "Add" },
+                  },
+                });
+                onClose();
+              }}
+              iconName="ios-library"
+              iconSize="22px"
+              postType="Survey"
+            />
           </HStack>
           <Box>
             <Pressable onPress={onClose}>
@@ -109,7 +124,7 @@ export const BottomSheet: React.FC<Props_> = ({ isOpen, onClose }) => {
 
 interface Items_ {
   onPress: () => void;
-  iconName: "stats-chart" | "ios-text" | "ios-image" | "mic" | "ios-videocam";
+  iconName: "ios-library" | "ios-text" | "ios-image" | "mic" | "ios-videocam";
   iconSize: string;
   postType: string;
 }
