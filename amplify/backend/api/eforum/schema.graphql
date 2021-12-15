@@ -78,6 +78,7 @@ type Mutation {
     @auth(rules: [{ allow: private, provider: userPools }])
   createSurveyAndTimeline(
     question: String!
+    surveyPurpose: String!
     answers: [String!]!
     startDate: AWSDateTime!
     endDate: AWSDateTime!
@@ -493,6 +494,7 @@ type SurveyQuestion
   @key(name: "byCommunity", fields: ["communityId", "createdAt"]) {
   id: ID!
   content: String!
+  surveyPurpose: String!
   userId: ID!
   communityId: ID!
   startDate: AWSDateTime!

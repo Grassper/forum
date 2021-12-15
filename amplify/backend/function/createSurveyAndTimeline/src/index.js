@@ -32,7 +32,7 @@ const validateContent = async (Content, minLength, maxLength) => {
     validator.isLength(Content, { min: minLength, max: maxLength }) &&
     validator.matches(
       Content,
-      `^[A-Za-z][A-Za-z0-9 _|.,!]{${minLength},${maxLength}}$`,
+      `^[A-Za-z][A-Za-z0-9 _|.,!?]{${minLength},${maxLength}}$`,
       "m"
     )
   ) {
@@ -49,6 +49,7 @@ exports.handler = async (event, context, callback) => {
   let endDate = "";
   let userId = "";
   let communityId = "";
+  let surveyPurpose = "";
 
   /**
    * question
@@ -56,6 +57,7 @@ exports.handler = async (event, context, callback) => {
    * startDate
    * endDate
    * userId
+   * surveyPurpose
    * communityId
    */
 
@@ -98,6 +100,23 @@ exports.handler = async (event, context, callback) => {
       `Survey should contain arrays for survey answers length between 2 and 5`,
       null
     );
+  }
+
+  // survey purpose validation
+
+  if (event.arguments.surveyPurpose) {
+    if (validateContent(event.arguments.surveyPurpose, 10, 2200)) {
+      surveyPurpose = event.arguments.surveyPurpose;
+    } else {
+      callback(
+        `Survey surveyPurpose should be mininum 10 characters and
+       maximum 2200 characters and shouldn't contain
+       special characters other than _|.,!`,
+        null
+      );
+    }
+  } else {
+    callback(`Survey should contain Purpose`, null);
   }
 
   // start date and end date validation.
@@ -155,6 +174,7 @@ exports.handler = async (event, context, callback) => {
     const createSurveyQuestionInput = {
       content: surveyQuestion,
       userId: userId,
+      surveyPurpose: surveyPurpose,
       communityId: communityId,
       startDate: startDate,
       endDate: endDate,
