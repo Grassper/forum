@@ -1,5 +1,5 @@
 import { GraphQLResult } from "@aws-amplify/api-graphql";
-import { AntDesign, Ionicons } from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
 import { DrawerNavigationProp } from "@react-navigation/drawer";
 import { CompositeNavigationProp, RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
@@ -18,7 +18,6 @@ import {
 } from "native-base";
 import React from "react";
 import { Alert, StyleSheet } from "react-native";
-import DatePicker from "react-native-date-picker";
 import isLength from "validator/es/lib/isLength";
 import matches from "validator/es/lib/matches";
 
@@ -64,9 +63,6 @@ export const AddAndEditPost: React.FC<Props_> = ({ navigation, route }) => {
 
   const [isPollQuestionValid, setPollQuestionValid] = React.useState(false);
   const [pollQuestionErrorMsg, setPollQuestionErrorMsg] = React.useState("");
-
-  const [endDate, setDate] = React.useState<Date>(new Date());
-  const [isDateModalOpen, setDateModalOpen] = React.useState(false);
 
   const currentUser = React.useContext(UserContext).user;
 
@@ -127,7 +123,7 @@ export const AddAndEditPost: React.FC<Props_> = ({ navigation, route }) => {
     } else {
       if (isPollQuestionValid) {
         if (isPollAnswersValid) {
-          if (isContentValid && endDate) {
+          if (isContentValid) {
             setLoading(true);
             const surveyInput = {
               question: PollQuestion,
@@ -136,7 +132,7 @@ export const AddAndEditPost: React.FC<Props_> = ({ navigation, route }) => {
               surveyPurpose: Content,
               userId: currentUser.id,
               startDate: new Date(),
-              endDate: addDays(endDate, 2),
+              endDate: addDays(new Date(), 2),
             };
 
             const createdSurveyId = await createSurveyAndTimelineFetch(
@@ -169,7 +165,6 @@ export const AddAndEditPost: React.FC<Props_> = ({ navigation, route }) => {
     PollQuestion,
     contentErrorMsg,
     currentUser.id,
-    endDate,
     isContentValid,
     isPollAnswersValid,
     isPollQuestionValid,
@@ -217,9 +212,9 @@ export const AddAndEditPost: React.FC<Props_> = ({ navigation, route }) => {
 
   React.useEffect(() => {
     const validatePollAnswer = () => {
-      if (PollOption.length === 0) {
+      if (PollOption.length < 2) {
         setPollAnswersValid(false);
-        setPollAnswerErrorMsg("Survey answers shouldn't be empty");
+        setPollAnswerErrorMsg("Survey answers should be atleast two");
         return;
       }
 
@@ -361,36 +356,6 @@ export const AddAndEditPost: React.FC<Props_> = ({ navigation, route }) => {
                 </Pressable>
               </HStack>
             )}
-            {/* <>
-              <Pressable
-                bg="eGreen.400"
-                width="40px"
-                height="40px"
-                mt="3"
-                alignItems="center"
-                justifyContent="center"
-                onPress={() => setDateModalOpen(true)}
-              >
-                <Icon
-                  as={<Ionicons name="ios-browsers-sharp" />}
-                  size={4}
-                  color="white"
-                />
-              </Pressable>
-              <DatePicker
-                title="Pick Survey End Date"
-                modal
-                open={isDateModalOpen}
-                date={endDate}
-                onConfirm={(date) => {
-                  setDateModalOpen(false);
-                  setDate(date);
-                }}
-                onCancel={() => {
-                  setDateModalOpen(false);
-                }}
-              />
-            </> */}
             <Input
               mt="2"
               maxLength={140}
