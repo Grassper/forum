@@ -60,12 +60,14 @@ export const Survey: React.FC = () => {
 
   const PostCardRenderer: ListRenderItem<SurveyTimeLineItem_> = ({ item }) => {
     const { surveyQuestion } = item;
-
+    let votedPollId = "";
     let totalVotes = 0;
 
     const surveyAnswers = surveyQuestion.surveyAnswer.items.map((entry) => {
       totalVotes = +entry.voteCount;
-
+      if (entry.userSurveyMetric.items.length !== 0) {
+        votedPollId = entry.userSurveyMetric.items[0].id;
+      }
       return {
         id: entry.id,
         content: entry.content,
@@ -78,7 +80,7 @@ export const Survey: React.FC = () => {
       pollArr: surveyAnswers,
       totalVotes: totalVotes,
       timeStamp: surveyQuestion.endDate,
-      votedPollId: "VotedPollId_Goes_Here",
+      votedPollId: votedPollId, //optional
     };
 
     return (
@@ -289,3 +291,10 @@ const listSurveyTimelineByUserId = /* GraphQL */ `
     }
   }
 `;
+
+/**
+ * Todo-4: update metrics in community, users while create
+ * Todo-5: survey screen
+ * Todo-6: report poll
+ * Todo-7: update poll
+ */

@@ -537,11 +537,6 @@ const MetricsQueryPicker = {
   },
 };
 
-/**
- * Todo-4: update metrics in community, users while create
- * Todo-5: survey screen
- */
-
 interface createSurveyAndTimelineFetch_ {
   answers: string[];
   communityId: string;

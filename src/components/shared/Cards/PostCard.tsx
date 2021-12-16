@@ -2,7 +2,7 @@ import { GraphQLResult } from "@aws-amplify/api-graphql";
 import { Feather, Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { API } from "aws-amplify";
-import { format } from "date-fns";
+import { format, formatDistanceToNowStrict } from "date-fns";
 import { Video } from "expo-av";
 import { Box, Flex, HStack, Icon, Image, Pressable, Text } from "native-base";
 import React, { useState } from "react";
@@ -34,7 +34,7 @@ export interface Props_ {
     title: string;
     totalVotes: number;
     timeStamp: Date;
-    votedPollId: string;
+    votedPollId?: string;
     pollArr: Poll_[];
   };
   userPostMetric?: UserPostMetric;
@@ -288,12 +288,67 @@ const PostInfo: React.FC<PostInfo_> = ({
   );
 };
 
-const Poll: React.FC<Props_["poll"]> = ({ title, pollArr, totalVotes }) => {
+const Poll: React.FC<Props_["poll"]> = (props) => {
   const [voted, setVoted] = React.useState(false);
+
+  const [totalVotes, setTotalVotes] = React.useState(0);
+  const [votedPollId, setVotedPollId] = React.useState("");
+  const [pollArr, setPollArr] = React.useState<Poll_[]>([]);
+
+  React.useEffect(() => {
+    if (props.totalVotes) {
+      setTotalVotes(props.totalVotes);
+    }
+  }, [props.totalVotes]);
+
+  React.useEffect(() => {
+    if (props.votedPollId) {
+      setVotedPollId(props.votedPollId);
+    }
+  }, [props.votedPollId]);
+
+  React.useEffect(() => {
+    if (props.pollArr) {
+      setPollArr(props.pollArr);
+    }
+  }, [props.pollArr]);
+
+  const votingHandler = (func: "ADD" | "REMOVE", pollAnswerId: string) => {
+    // iterate through poll answers and increment count
+    // increment total count
+    // when click undo reset the counter
+
+    if (func === "ADD") {
+      const incrementedVotesPolls = pollArr.map((entry) => {
+        if (entry.id === pollAnswerId) {
+          return { ...entry, votes: entry.votes + 1 };
+        }
+        return entry;
+      });
+      setPollArr(incrementedVotesPolls);
+      setVotedPollId(pollAnswerId);
+      setTotalVotes((prev) => prev + 1);
+      setVoted(true);
+    } else {
+      if (voted === true) {
+        const decrementedVotesPolls = pollArr.map((entry) => {
+          if (entry.id === pollAnswerId) {
+            return { ...entry, votes: entry.votes - 1 };
+          }
+          return entry;
+        });
+        setPollArr(decrementedVotesPolls);
+        setVotedPollId("");
+        setTotalVotes((prev) => prev - 1);
+        setVoted(false);
+      }
+    }
+  };
+
   return (
     <Box bg="green.50" px="3" py="4" mb="4">
       <Text fontSize="14.5" fontWeight="500" mb="2">
-        {title}
+        {props.title}
       </Text>
       <Box mt="2">
         {/**
@@ -305,13 +360,10 @@ const Poll: React.FC<Props_["poll"]> = ({ title, pollArr, totalVotes }) => {
               return (
                 <Pressable
                   key={entry.id}
-                  onPress={() => {
-                    setVoted(true);
-                  }}
+                  onPress={() => votingHandler("ADD", entry.id)}
                 >
                   <Flex
                     p="3"
-                    py="2"
                     bg="white"
                     mb="2"
                     alignItems="center"
@@ -333,7 +385,6 @@ const Poll: React.FC<Props_["poll"]> = ({ title, pollArr, totalVotes }) => {
                 <Flex
                   key={entry.id}
                   p="3"
-                  py="2"
                   bg="white"
                   position="relative"
                   overflow="hidden"
@@ -361,14 +412,12 @@ const Poll: React.FC<Props_["poll"]> = ({ title, pollArr, totalVotes }) => {
         <HStack alignItems="center">
           <Text fontSize="xs">{totalVotes} votes</Text>
           <Box bg="blueGray.500" style={styles.separatorDot} />
-          <Text fontSize="xs">1 day Left</Text>
+          <Text fontSize="xs">
+            {formatDistanceToNowStrict(new Date(props.timeStamp))} left
+          </Text>
         </HStack>
         {voted && (
-          <Pressable
-            onPress={() => {
-              setVoted(false);
-            }}
-          >
+          <Pressable onPress={() => votingHandler("REMOVE", votedPollId)}>
             <Text fontSize="xs" fontWeight="500">
               Undo
             </Text>
