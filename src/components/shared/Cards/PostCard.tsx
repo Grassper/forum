@@ -32,8 +32,8 @@ export interface Props_ {
   mediaS3Key?: null | string;
   poll?: {
     title: string;
-    totalVotes: string;
-    timeStamp: string;
+    totalVotes: number;
+    timeStamp: Date;
     votedPollId: string;
     pollArr: Poll_[];
   };
@@ -54,7 +54,7 @@ interface UserPostMetricItem {
 interface Poll_ {
   id: string;
   content: string;
-  votes: string;
+  votes: number;
 }
 
 export const PostCard: React.FC<Props_> = ({
@@ -348,10 +348,7 @@ const Poll: React.FC<Props_["poll"]> = ({ title, pollArr, totalVotes }) => {
                     position="absolute"
                     bg="green.200"
                     height="100"
-                    width={`${
-                      (parseInt(entry.votes, 10) / parseInt(totalVotes, 10)) *
-                      100
-                    }%`}
+                    width={`${(entry.votes / totalVotes) * 100}%`}
                   />
                   <Text fontWeight="500">{entry.content}</Text>
                 </Flex>
