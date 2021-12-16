@@ -130,6 +130,8 @@ type User
     @connection(keyName: "byUser", fields: ["id"])
   userMetrics: UserMetrics @connection(fields: ["id"])
   timeLine: [Timeline] @connection(keyName: "byUser", fields: ["id"])
+  surveyTimeLine: [SurveyTimeline]
+    @connection(keyName: "byUser", fields: ["id"])
 }
 
 type UserMetrics
