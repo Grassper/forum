@@ -159,6 +159,8 @@ export const PostCard: React.FC<Props_> = ({
             pollArr={poll.pollArr}
             totalVotes={poll.totalVotes}
             votedPollId={poll.votedPollId}
+            communityId={subForumId}
+            surveyQuestionId={id}
           />
         )}
 
@@ -288,12 +290,24 @@ const PostInfo: React.FC<PostInfo_> = ({
   );
 };
 
-const Poll: React.FC<Props_["poll"]> = (props) => {
+interface PollProps_ {
+  title: string;
+  totalVotes: number;
+  timeStamp: Date;
+  votedPollId?: string;
+  surveyQuestionId?: string;
+  communityId?: string;
+  pollArr: Poll_[];
+}
+
+const Poll: React.FC<PollProps_> = (props) => {
   const [voted, setVoted] = React.useState(false);
 
   const [totalVotes, setTotalVotes] = React.useState(0);
   const [votedPollId, setVotedPollId] = React.useState("");
   const [pollArr, setPollArr] = React.useState<Poll_[]>([]);
+
+  const { user } = React.useContext(UserContext);
 
   React.useEffect(() => {
     if (props.totalVotes) {
@@ -304,6 +318,7 @@ const Poll: React.FC<Props_["poll"]> = (props) => {
   React.useEffect(() => {
     if (props.votedPollId) {
       setVotedPollId(props.votedPollId);
+      setVoted(true);
     }
   }, [props.votedPollId]);
 
@@ -329,8 +344,24 @@ const Poll: React.FC<Props_["poll"]> = (props) => {
       setVotedPollId(pollAnswerId);
       setTotalVotes((prev) => prev + 1);
       setVoted(true);
+
+      if (
+        props.surveyQuestionId &&
+        props.communityId &&
+        pollAnswerId &&
+        user.id
+      ) {
+        const surveyUserActionInput: SurveyUserActionFetchInput_ = {
+          userId: user.id,
+          surveyAnswerId: pollAnswerId,
+          surveyQuestionId: props.surveyQuestionId,
+          communityId: props.communityId,
+        };
+
+        SurveyUserActionFetch(surveyUserActionInput, "ADD");
+      }
     } else {
-      if (voted === true) {
+      if (voted === true && func === "REMOVE") {
         const decrementedVotesPolls = pollArr.map((entry) => {
           if (entry.id === pollAnswerId) {
             return { ...entry, votes: entry.votes - 1 };
@@ -341,6 +372,22 @@ const Poll: React.FC<Props_["poll"]> = (props) => {
         setVotedPollId("");
         setTotalVotes((prev) => prev - 1);
         setVoted(false);
+
+        if (
+          props.surveyQuestionId &&
+          props.communityId &&
+          pollAnswerId &&
+          user.id
+        ) {
+          const surveyUserActionInput: SurveyUserActionFetchInput_ = {
+            userId: user.id,
+            surveyAnswerId: pollAnswerId,
+            surveyQuestionId: props.surveyQuestionId,
+            communityId: props.communityId,
+          };
+
+          SurveyUserActionFetch(surveyUserActionInput, "DELETE");
+        }
       }
     }
   };
@@ -1180,3 +1227,131 @@ const MetricsQueryPicker = {
     },
   },
 };
+
+/**
+ * Todo-1: when user clicks the poll answer
+ * Todo-2: create the userSurveyMetric relationship for add action and increment current voted answer count
+ * Todo-3: delete the userSurveyMetric relationship from remove actions and decrement current voted answer count
+ */
+
+interface SurveyUserActionFetchInput_ {
+  surveyQuestionId: string;
+  userId: string;
+  communityId: string;
+  surveyAnswerId: string;
+}
+
+const SurveyUserActionFetch = async (
+  input: SurveyUserActionFetchInput_,
+  action: "ADD" | "DELETE"
+) => {
+  try {
+    // retriving existing survey user action
+
+    const isSurveyUserActionExist = (await API.graphql({
+      query: CheckSurveyUserAction,
+      variables: { userId: input.userId, surveyAnswerId: input.surveyAnswerId },
+      authMode: "AMAZON_COGNITO_USER_POOLS",
+    })) as GraphQLResult<CheckSurveyUserAction_>;
+
+    if (action === "ADD") {
+      if (
+        isSurveyUserActionExist.data?.listUserSurveyMetricsRelationShips &&
+        isSurveyUserActionExist.data.listUserSurveyMetricsRelationShips.items
+          .length === 0
+      ) {
+        const createdSurveyUserAction = (await API.graphql({
+          query: CreateUserSurveyMetricsRelationship,
+          variables: { input },
+          authMode: "AMAZON_COGNITO_USER_POOLS",
+        })) as GraphQLResult<CreateUserSurveyMetricsRelationship_>;
+
+        if (createdSurveyUserAction.data?.createUserSurveyMetricsRelationShip) {
+          return createdSurveyUserAction.data
+            .createUserSurveyMetricsRelationShip.id;
+        }
+      }
+    } else {
+      if (
+        isSurveyUserActionExist.data?.listUserSurveyMetricsRelationShips &&
+        isSurveyUserActionExist.data.listUserSurveyMetricsRelationShips.items
+          .length === 1
+      ) {
+        const deletionInput = {
+          id: isSurveyUserActionExist.data.listUserSurveyMetricsRelationShips
+            .items[0].id,
+          ...input,
+          isDeleted: true,
+        };
+
+        const deletedSurveyUserAction = (await API.graphql({
+          query: UpdateUserSurveyMetricsRelationShip,
+          variables: { input: deletionInput },
+          authMode: "AMAZON_COGNITO_USER_POOLS",
+        })) as GraphQLResult<UpdateUserSurveyMetricsRelationShip_>;
+
+        if (deletedSurveyUserAction.data?.updateUserSurveyMetricsRelationShip) {
+          return deletedSurveyUserAction.data
+            .updateUserSurveyMetricsRelationShip.id;
+        }
+      }
+    }
+  } catch (err) {
+    console.error(
+      "Error occured while creating or deleting user action for survey",
+      err
+    );
+  }
+};
+
+interface CheckSurveyUserAction_ {
+  listUserSurveyMetricsRelationShips?: {
+    items: {
+      id: string;
+    }[];
+  };
+}
+
+const CheckSurveyUserAction = /* GraphQL */ `
+  query CheckSurveyUserAction($userId: ID!, $surveyAnswerId: ID!) {
+    listUserSurveyMetricsRelationShips(
+      filter: {
+        isDeleted: { attributeExists: false }
+        surveyAnswerId: { eq: $surveyAnswerId }
+        userId: { eq: $userId }
+      }
+    ) {
+      items {
+        id
+      }
+    }
+  }
+`;
+
+interface CreateUserSurveyMetricsRelationship_ {
+  createUserSurveyMetricsRelationShip?: { id: string };
+}
+
+const CreateUserSurveyMetricsRelationship = /* GraphQL */ `
+  mutation createUserSurveyMetricsRelationShip(
+    $input: CreateUserSurveyMetricsRelationShipInput!
+  ) {
+    createUserSurveyMetricsRelationShip(input: $input) {
+      id
+    }
+  }
+`;
+
+interface UpdateUserSurveyMetricsRelationShip_ {
+  updateUserSurveyMetricsRelationShip?: { id: string };
+}
+
+const UpdateUserSurveyMetricsRelationShip = /* GraphQL */ `
+  mutation updateUserSurveyMetricsRelationShip(
+    $input: UpdateUserSurveyMetricsRelationShipInput!
+  ) {
+    updateUserSurveyMetricsRelationShip(input: $input) {
+      id
+    }
+  }
+`;

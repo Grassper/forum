@@ -66,7 +66,7 @@ export const Survey: React.FC = () => {
     const surveyAnswers = surveyQuestion.surveyAnswer.items.map((entry) => {
       totalVotes = +entry.voteCount;
       if (entry.userSurveyMetric.items.length !== 0) {
-        votedPollId = entry.userSurveyMetric.items[0].id;
+        votedPollId = entry.userSurveyMetric.items[0].surveyAnswerId;
       }
       return {
         id: entry.id,
@@ -224,7 +224,7 @@ interface SurveyAnswerItem_ {
   id: string;
   content: string;
   voteCount: number;
-  userSurveyMetric: SurveyAnswer_;
+  userSurveyMetric: { items: { surveyAnswerId: string }[] };
 }
 
 interface SurveyAnswer_ {
@@ -271,7 +271,7 @@ const listSurveyTimelineByUserId = /* GraphQL */ `
                   }
                 ) {
                   items {
-                    id
+                    surveyAnswerId
                   }
                 }
               }
