@@ -1266,6 +1266,14 @@ const SurveyUserActionFetch = async (
           authMode: "AMAZON_COGNITO_USER_POOLS",
         })) as GraphQLResult<CreateUserSurveyMetricsRelationship_>;
 
+        // increment vote count
+
+        await API.graphql({
+          query: SurveyMetricsQueryPicker.INCREMENT,
+          variables: { id: input.surveyAnswerId },
+          authMode: "AMAZON_COGNITO_USER_POOLS",
+        });
+
         if (createdSurveyUserAction.data?.createUserSurveyMetricsRelationShip) {
           return createdSurveyUserAction.data
             .createUserSurveyMetricsRelationShip.id;
@@ -1289,6 +1297,14 @@ const SurveyUserActionFetch = async (
           variables: { input: deletionInput },
           authMode: "AMAZON_COGNITO_USER_POOLS",
         })) as GraphQLResult<UpdateUserSurveyMetricsRelationShip_>;
+
+        // decrement vote count
+
+        await API.graphql({
+          query: SurveyMetricsQueryPicker.DECREMENT,
+          variables: { id: input.surveyAnswerId },
+          authMode: "AMAZON_COGNITO_USER_POOLS",
+        });
 
         if (deletedSurveyUserAction.data?.updateUserSurveyMetricsRelationShip) {
           return deletedSurveyUserAction.data
@@ -1355,3 +1371,24 @@ const UpdateUserSurveyMetricsRelationShip = /* GraphQL */ `
     }
   }
 `;
+
+const IncrementVoteCountSurveyAnswer = /* GraphQL */ `
+  mutation incrementVoteCountSurveyAnswer($id: ID!) {
+    incrementVoteCountSurveyAnswer(id: $id) {
+      id
+    }
+  }
+`;
+
+const DecrementVoteCountSurveyAnswer = /* GraphQL */ `
+  mutation decrementVoteCountSurveyAnswer($id: ID!) {
+    decrementVoteCountSurveyAnswer(id: $id) {
+      id
+    }
+  }
+`;
+
+const SurveyMetricsQueryPicker = {
+  INCREMENT: IncrementVoteCountSurveyAnswer,
+  DECREMENT: DecrementVoteCountSurveyAnswer,
+};
