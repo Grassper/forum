@@ -220,8 +220,8 @@ export const AddAndEditPost: React.FC<Props_> = ({ navigation, route }) => {
 
       const PollAnswersValid = PollOption.every(
         (entry) =>
-          isLength(entry.content, { min: 3, max: 30 }) &&
-          matches(entry.content, "^[A-Za-z0-9 _|.,!]{3,30}$", "m")
+          isLength(entry.content, { min: 2, max: 30 }) &&
+          matches(entry.content, "^[A-Za-z0-9 _|.,!]{2,30}$", "m")
       );
 
       if (PollAnswersValid) {
@@ -229,7 +229,7 @@ export const AddAndEditPost: React.FC<Props_> = ({ navigation, route }) => {
         setPollAnswerErrorMsg("");
       } else {
         setPollAnswersValid(false);
-        setPollAnswerErrorMsg("Survey answer should between min 3 and max 30");
+        setPollAnswerErrorMsg("Survey answer should between min 2 and max 30");
       }
     };
     validatePollAnswer();

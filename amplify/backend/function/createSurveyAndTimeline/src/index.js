@@ -85,11 +85,11 @@ exports.handler = async (event, context, callback) => {
     event.arguments.answers.length <= 5
   ) {
     event.arguments.answers.forEach((entry) => {
-      if (validateContent(entry, 3, 30)) {
+      if (validateContent(entry, 2, 30)) {
         surveyAnswers.push(entry);
       } else {
         callback(
-          `Survey answers should be minimum 3 characters and maximum 30 characters and shouldn't contain
+          `Survey answers should be minimum 2 characters and maximum 30 characters and shouldn't contain
           special characters other than _|.,!`,
           null
         );
