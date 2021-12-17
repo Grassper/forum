@@ -2,7 +2,7 @@ import { GraphQLResult } from "@aws-amplify/api-graphql";
 import { Feather, Ionicons } from "@expo/vector-icons";
 import { StackActions, useNavigation } from "@react-navigation/native";
 import { API } from "aws-amplify";
-import { format, formatDistanceToNowStrict } from "date-fns";
+import { format, formatDistanceToNowStrict, isPast } from "date-fns";
 import { Video } from "expo-av";
 import { Box, Flex, HStack, Icon, Image, Pressable, Text } from "native-base";
 import React, { useState } from "react";
@@ -320,6 +320,8 @@ interface PollProps_ {
 const Poll: React.FC<PollProps_> = (props) => {
   const [voted, setVoted] = React.useState(false);
 
+  const isPollDateCompleted = isPast(new Date(props.timeStamp));
+
   const [totalVotes, setTotalVotes] = React.useState(0);
   const [votedPollId, setVotedPollId] = React.useState("");
   const [pollArr, setPollArr] = React.useState<Poll_[]>([]);
@@ -350,45 +352,18 @@ const Poll: React.FC<PollProps_> = (props) => {
     // increment total count
     // when click undo reset the counter
 
-    if (func === "ADD") {
-      const incrementedVotesPolls = pollArr.map((entry) => {
-        if (entry.id === pollAnswerId) {
-          return { ...entry, votes: entry.votes + 1 };
-        }
-        return entry;
-      });
-      setPollArr(incrementedVotesPolls);
-      setVotedPollId(pollAnswerId);
-      setTotalVotes((prev) => prev + 1);
-      setVoted(true);
-
-      if (
-        props.surveyQuestionId &&
-        props.communityId &&
-        pollAnswerId &&
-        user.id
-      ) {
-        const surveyUserActionInput: SurveyUserActionFetchInput_ = {
-          userId: user.id,
-          surveyAnswerId: pollAnswerId,
-          surveyQuestionId: props.surveyQuestionId,
-          communityId: props.communityId,
-        };
-
-        SurveyUserActionFetch(surveyUserActionInput, "ADD");
-      }
-    } else {
-      if (voted === true && func === "REMOVE") {
-        const decrementedVotesPolls = pollArr.map((entry) => {
+    if (!isPollDateCompleted) {
+      if (func === "ADD") {
+        const incrementedVotesPolls = pollArr.map((entry) => {
           if (entry.id === pollAnswerId) {
-            return { ...entry, votes: entry.votes - 1 };
+            return { ...entry, votes: entry.votes + 1 };
           }
           return entry;
         });
-        setPollArr(decrementedVotesPolls);
-        setVotedPollId("");
-        setTotalVotes((prev) => prev - 1);
-        setVoted(false);
+        setPollArr(incrementedVotesPolls);
+        setVotedPollId(pollAnswerId);
+        setTotalVotes((prev) => prev + 1);
+        setVoted(true);
 
         if (
           props.surveyQuestionId &&
@@ -403,7 +378,36 @@ const Poll: React.FC<PollProps_> = (props) => {
             communityId: props.communityId,
           };
 
-          SurveyUserActionFetch(surveyUserActionInput, "DELETE");
+          SurveyUserActionFetch(surveyUserActionInput, "ADD");
+        }
+      } else {
+        if (voted === true && func === "REMOVE") {
+          const decrementedVotesPolls = pollArr.map((entry) => {
+            if (entry.id === pollAnswerId) {
+              return { ...entry, votes: entry.votes - 1 };
+            }
+            return entry;
+          });
+          setPollArr(decrementedVotesPolls);
+          setVotedPollId("");
+          setTotalVotes((prev) => prev - 1);
+          setVoted(false);
+
+          if (
+            props.surveyQuestionId &&
+            props.communityId &&
+            pollAnswerId &&
+            user.id
+          ) {
+            const surveyUserActionInput: SurveyUserActionFetchInput_ = {
+              userId: user.id,
+              surveyAnswerId: pollAnswerId,
+              surveyQuestionId: props.surveyQuestionId,
+              communityId: props.communityId,
+            };
+
+            SurveyUserActionFetch(surveyUserActionInput, "DELETE");
+          }
         }
       }
     }
@@ -418,7 +422,7 @@ const Poll: React.FC<PollProps_> = (props) => {
         {/**
          * before user is voted
          */}
-        {!voted ? (
+        {!voted && !isPollDateCompleted ? (
           <Box mb="2">
             {pollArr.map((entry) => {
               return (
@@ -480,12 +484,17 @@ const Poll: React.FC<PollProps_> = (props) => {
             {formatDistanceToNowStrict(new Date(props.timeStamp))} left
           </Text>
         </HStack>
-        {voted && (
+        {voted && !isPollDateCompleted && (
           <Pressable onPress={() => votingHandler("REMOVE", votedPollId)}>
             <Text fontSize="xs" fontWeight="500">
               Undo
             </Text>
           </Pressable>
+        )}
+        {isPollDateCompleted && (
+          <Text fontSize="xs" fontWeight="500">
+            Closed
+          </Text>
         )}
       </HStack>
     </Box>
@@ -1246,7 +1255,6 @@ const MetricsQueryPicker = {
 };
 
 /**
- * if end date if passed close the poll and show result
  * report in poll
  * show current voted poll with check mark and percentage
  * increment total survey metrics in users and community
