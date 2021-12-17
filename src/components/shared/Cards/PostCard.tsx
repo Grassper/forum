@@ -1,6 +1,6 @@
 import { GraphQLResult } from "@aws-amplify/api-graphql";
 import { Feather, Ionicons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import { StackActions, useNavigation } from "@react-navigation/native";
 import { API } from "aws-amplify";
 import { format, formatDistanceToNowStrict } from "date-fns";
 import { Video } from "expo-av";
@@ -99,6 +99,7 @@ export const PostCard: React.FC<Props_> = ({
         timeStamp={timeStamp}
         avatarUrl={avatarUrl}
         postId={id}
+        authorId={authorId}
       />
       {/**
        * video post
@@ -203,23 +204,39 @@ interface PostInfo_ {
   avatarUrl?: string;
   subForum?: string;
   timeStamp?: Date;
+  authorId?: string;
 }
 
 const PostInfo: React.FC<PostInfo_> = ({
   username,
   subForum,
+  authorId,
   timeStamp,
   avatarUrl,
   postId,
 }) => {
   const [reportModal, setReportModal] = React.useState(false);
-
+  const navigation = useNavigation();
   return (
     <Box width="90%">
       <HStack alignItems="center" justifyContent="space-between" mb="3">
         <HStack alignItems="center" space="3">
           {avatarUrl ? (
-            <Pressable onPress={() => {}}>
+            <Pressable
+              onPress={() => {
+                navigation.dispatch(
+                  StackActions.push("Application", {
+                    screen: "StackNav",
+                    params: {
+                      screen: "Profile",
+                      params: {
+                        userId: authorId,
+                      },
+                    },
+                  })
+                );
+              }}
+            >
               <Box
                 width="40px"
                 height="40px"
