@@ -20,8 +20,8 @@ import matches from "validator/es/lib/matches";
 
 import {
   DrawerParamList_,
-  ProfileStackParamList_,
   RootStackParamList_,
+  StackParamList_,
 } from "@/root/src/components/navigations/Navigation";
 import { AvatorPicker } from "@/root/src/components/shared/Avatar";
 import { colors } from "@/root/src/constants";
@@ -29,14 +29,14 @@ import { UserContext } from "@/root/src/context";
 import { useDebounce } from "@/root/src/hooks";
 
 type NavigationProp_ = CompositeNavigationProp<
-  StackNavigationProp<ProfileStackParamList_, "EditProfile">,
+  StackNavigationProp<StackParamList_, "EditProfile">,
   CompositeNavigationProp<
-    DrawerNavigationProp<DrawerParamList_, "ProfileStack">,
+    DrawerNavigationProp<DrawerParamList_, "StackNav">,
     StackNavigationProp<RootStackParamList_, "Application">
   >
 >;
 
-type RouteProp_ = RouteProp<ProfileStackParamList_, "EditProfile">;
+type RouteProp_ = RouteProp<StackParamList_, "EditProfile">;
 
 interface Props_ {
   navigation: NavigationProp_;

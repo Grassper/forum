@@ -13,20 +13,20 @@ import { FlatList, ListRenderItem, ScrollView, StyleSheet } from "react-native";
 
 import {
   DrawerParamList_,
-  ProfileStackParamList_,
   RootStackParamList_,
+  StackParamList_,
 } from "@/root/src/components/navigations/Navigation";
 import { FollowCard } from "@/root/src/components/shared/Cards";
 
 type NavigationProp_ = CompositeNavigationProp<
-  StackNavigationProp<ProfileStackParamList_, "Follow">,
+  StackNavigationProp<StackParamList_, "Follow">,
   CompositeNavigationProp<
-    DrawerNavigationProp<DrawerParamList_, "ProfileStack">,
+    DrawerNavigationProp<DrawerParamList_, "StackNav">,
     StackNavigationProp<RootStackParamList_, "Application">
   >
 >;
 
-type RouteProp_ = RouteProp<ProfileStackParamList_, "Follow">;
+type RouteProp_ = RouteProp<StackParamList_, "Follow">;
 
 interface Props_ {
   navigation: NavigationProp_;

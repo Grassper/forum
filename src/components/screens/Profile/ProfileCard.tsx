@@ -1,9 +1,5 @@
 import { GraphQLResult } from "@aws-amplify/api-graphql";
-import {
-  StackActions,
-  useFocusEffect,
-  useNavigation,
-} from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { API } from "aws-amplify";
 import { format } from "date-fns";
 import { Box, Button, HStack, Pressable, Text, VStack } from "native-base";
@@ -161,15 +157,13 @@ export const ProfileCard: React.FC<Props_> = ({ routeUserId }) => {
         {profile?.userMetrics && profile.userMetrics.followers >= 0 ? (
           <StatsCard
             onPress={() => {
-              navigation.dispatch(
-                StackActions.push("Application", {
-                  screen: "ProfileStack",
-                  params: {
-                    screen: "Follow",
-                    params: { title: "Followers", routeUserId },
-                  },
-                })
-              );
+              navigation.navigate("Application", {
+                screen: "StackNav",
+                params: {
+                  screen: "Follow",
+                  params: { title: "Followers", routeUserId },
+                },
+              });
             }}
             count={profile.userMetrics.followers}
             countName="Followers"
@@ -181,15 +175,13 @@ export const ProfileCard: React.FC<Props_> = ({ routeUserId }) => {
         {profile?.userMetrics && profile.userMetrics.following >= 0 ? (
           <StatsCard
             onPress={() => {
-              navigation.dispatch(
-                StackActions.push("Application", {
-                  screen: "ProfileStack",
-                  params: {
-                    screen: "Follow",
-                    params: { title: "Following", routeUserId },
-                  },
-                })
-              );
+              navigation.navigate("Application", {
+                screen: "StackNav",
+                params: {
+                  screen: "Follow",
+                  params: { title: "Following", routeUserId },
+                },
+              });
             }}
             count={profile.userMetrics.following}
             countName="Following"

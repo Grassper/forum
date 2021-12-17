@@ -18,16 +18,6 @@ export type AuthStackParamList_ = {
   AccountRecovery: undefined;
 };
 
-export type ProfileStackParamList_ = {
-  // * User
-  Profile: { userId: string };
-  EditProfile: undefined;
-  Follow: {
-    title: "Followers" | "Following";
-    routeUserId: string;
-  };
-};
-
 export type SubForumStackParamList_ = {
   // * SubForum
   SubForum: { subForumId: string; title: string };
@@ -55,6 +45,14 @@ interface UserPostMetricItem {
 
 export type StackParamList_ = {
   BottomTabNav: NavigatorScreenParams<BottomTabParamList_>;
+
+  // * User
+  Profile: { userId: string };
+  EditProfile: undefined;
+  Follow: {
+    title: "Followers" | "Following";
+    routeUserId: string;
+  };
 
   // * Post
   Post: {
@@ -131,7 +129,6 @@ export type StackParamList_ = {
 
 export type DrawerParamList_ = {
   StackNav: NavigatorScreenParams<StackParamList_>;
-  ProfileStack: NavigatorScreenParams<ProfileStackParamList_>;
   SubForumStack: NavigatorScreenParams<SubForumStackParamList_>;
 };
 

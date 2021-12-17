@@ -22,7 +22,6 @@ import { SvgUri } from "react-native-svg";
 
 import { DrawerParamList_ } from "@/root/src/components/navigations/Navigation";
 import {
-  ProfileStackNavigator,
   StackNavigator,
   SubForumStackNavigator,
 } from "@/root/src/components/navigations/StackNavigator";
@@ -35,7 +34,7 @@ const CustomDrawerContent = (props: DrawerContentComponentProps) => {
   const { setAuthState } = React.useContext(AuthContext);
 
   const {
-    user: { profileImageUrl, username },
+    user: { profileImageUrl, username, id },
   } = React.useContext(UserContext);
 
   return (
@@ -48,15 +47,9 @@ const CustomDrawerContent = (props: DrawerContentComponentProps) => {
           borderRadius="full"
           overflow="hidden"
         >
-          <SvgUri
-            uri={
-              profileImageUrl ||
-              "https://avatars.dicebear.com/api/micah/default.svg"
-            }
-            width="100%"
-            height="100%"
-          />
+          <SvgUri uri={profileImageUrl} width="100%" height="100%" />
         </Box>
+
         <Text
           fontSize="xl"
           fontFamily="heading"
@@ -86,6 +79,39 @@ const CustomDrawerContent = (props: DrawerContentComponentProps) => {
 
       <Box mt="8">
         <DrawerItemList {...props} />
+        <DrawerItem
+          style={styles.drawerItem}
+          label={({ color }) => (
+            <Text
+              fontSize="sm"
+              fontFamily="body"
+              fontWeight="500"
+              color={color}
+              ml="-4"
+            >
+              Profile
+            </Text>
+          )}
+          onPress={() =>
+            props.navigation.navigate("Application", {
+              screen: "StackNav",
+              params: {
+                screen: "Profile",
+                params: {
+                  userId: id,
+                },
+              },
+            })
+          }
+          icon={({ color }) => (
+            <Icon
+              as={<AntDesign name="profile" size={24} color="black" />}
+              size={"20px"}
+              ml="3"
+              color={color}
+            />
+          )}
+        />
         <DrawerItem
           style={styles.drawerItem}
           label={({ color }) => (
@@ -201,23 +227,6 @@ export const SideDrawerNavigator = () => {
           drawerIcon: ({ color }) => (
             <Icon
               as={<AntDesign name="home" />}
-              size={5}
-              ml="3"
-              color={color}
-            />
-          ),
-        }}
-      />
-      <DrawerNavigator.Screen
-        name="ProfileStack"
-        component={ProfileStackNavigator}
-        options={{
-          drawerLabel: "Profile",
-          title: "Profile",
-          headerShown: false,
-          drawerIcon: ({ color }) => (
-            <Icon
-              as={<AntDesign name="profile" />}
               size={5}
               ml="3"
               color={color}

@@ -8,10 +8,9 @@ import { Dimensions, StyleSheet, View } from "react-native";
 
 import {
   DrawerParamList_,
-  ProfileStackParamList_,
   RootStackParamList_,
+  StackParamList_,
 } from "@/root/src/components/navigations/Navigation";
-import { HeaderProfileIcon } from "@/root/src/components/shared/HeaderProfileIcon";
 import { ReportUser } from "@/root/src/components/shared/Report";
 import { colors } from "@/root/src/constants";
 import { UserContext } from "@/root/src/context";
@@ -22,14 +21,14 @@ import { Posts } from "./Post";
 import { ProfileCard } from "./ProfileCard";
 
 type NavigationProp_ = CompositeNavigationProp<
-  StackNavigationProp<ProfileStackParamList_, "Profile">,
+  StackNavigationProp<StackParamList_, "Profile">,
   CompositeNavigationProp<
-    DrawerNavigationProp<DrawerParamList_, "ProfileStack">,
+    DrawerNavigationProp<DrawerParamList_, "StackNav">,
     StackNavigationProp<RootStackParamList_, "Application">
   >
 >;
 
-type RouteProp_ = RouteProp<ProfileStackParamList_, "Profile">;
+type RouteProp_ = RouteProp<StackParamList_, "Profile">;
 
 interface Props_ {
   navigation: NavigationProp_;
@@ -69,7 +68,6 @@ export const Profile: React.FC<Props_> = ({ navigation, route }) => {
             Edit
           </Button>
         ),
-      headerLeft: () => <HeaderProfileIcon />,
     });
   }, [id, navigation, routeUserId]);
 

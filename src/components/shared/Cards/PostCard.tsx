@@ -1229,9 +1229,10 @@ const MetricsQueryPicker = {
 };
 
 /**
- * Todo-1: when user clicks the poll answer
- * Todo-2: create the userSurveyMetric relationship for add action and increment current voted answer count
- * Todo-3: delete the userSurveyMetric relationship from remove actions and decrement current voted answer count
+ * if end date if passed close the poll and show result
+ * report in poll
+ * show current voted poll with check mark and percentage
+ * increment total survey metrics in users and community
  */
 
 interface SurveyUserActionFetchInput_ {

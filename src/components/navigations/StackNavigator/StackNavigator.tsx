@@ -4,7 +4,6 @@ import React from "react";
 import { BottomTabNavigator } from "@/root/src/components/navigations/BottomTabNavigator";
 import {
   AuthStackParamList_,
-  ProfileStackParamList_,
   StackParamList_,
   SubForumStackParamList_,
 } from "@/root/src/components/navigations/Navigation";
@@ -34,7 +33,6 @@ import { colors } from "@/root/src/constants";
 import { UserContext } from "@/root/src/context";
 
 const Stack = createStackNavigator<StackParamList_>();
-const ProfileStack = createStackNavigator<ProfileStackParamList_>();
 const SubForumStack = createStackNavigator<SubForumStackParamList_>();
 const AuthStack = createStackNavigator<AuthStackParamList_>();
 
@@ -88,36 +86,10 @@ export const SubForumStackNavigator = () => {
   );
 };
 
-export const ProfileStackNavigator = () => {
+export const StackNavigator = () => {
   const {
     user: { id },
   } = React.useContext(UserContext);
-  return (
-    <ProfileStack.Navigator
-      screenOptions={defaultStackOptions}
-      initialRouteName="Profile"
-    >
-      <ProfileStack.Screen
-        name="Profile"
-        component={Profile}
-        initialParams={{ userId: id }} //passing current user id
-        options={{
-          title: "",
-        }}
-      />
-      <ProfileStack.Screen
-        name="Follow"
-        component={Follow}
-        options={({ route }) => ({
-          title: route.params.title,
-        })}
-      />
-      <ProfileStack.Screen name="EditProfile" component={EditProfile} />
-    </ProfileStack.Navigator>
-  );
-};
-
-export const StackNavigator = () => {
   return (
     <Stack.Navigator
       screenOptions={defaultStackOptions}
@@ -131,7 +103,22 @@ export const StackNavigator = () => {
           headerShown: false,
         }}
       />
-
+      <Stack.Screen
+        name="Profile"
+        component={Profile}
+        initialParams={{ userId: id }} //passing current user id
+        options={{
+          title: "",
+        }}
+      />
+      <Stack.Screen
+        name="Follow"
+        component={Follow}
+        options={({ route }) => ({
+          title: route.params.title,
+        })}
+      />
+      <Stack.Screen name="EditProfile" component={EditProfile} />
       <Stack.Screen
         name="AddAndEditComment"
         component={AddAndEditComment}
