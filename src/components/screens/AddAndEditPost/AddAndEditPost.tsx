@@ -560,6 +560,23 @@ const createSurveyAndTimelineFetch = async (
     if (surveyTimelineCreationData.data?.createSurveyAndTimeline) {
       const surveyId = surveyTimelineCreationData.data.createSurveyAndTimeline;
 
+      // increment total survey in users metrics and community
+      await API.graphql({
+        query: SurveyMetricsQueryPicker.USERMETRICS.TOTALSURVEY.INCREMENT,
+        variables: {
+          id: input.userId,
+        },
+        authMode: "AMAZON_COGNITO_USER_POOLS",
+      });
+
+      await API.graphql({
+        query: SurveyMetricsQueryPicker.COMMUNITY.TOTALSURVEY.INCREMENT,
+        variables: {
+          id: input.communityId,
+        },
+        authMode: "AMAZON_COGNITO_USER_POOLS",
+      });
+
       return surveyId;
     }
   } catch (err) {
@@ -596,3 +613,32 @@ const createSurveyAndTimeline = /* GraphQL */ `
     }
   }
 `;
+
+const IncrementTotalSurveysUserMetrics = /* GraphQL */ `
+  mutation incrementTotalSurveysUserMetrics($id: ID!) {
+    incrementTotalSurveysUserMetrics(id: $id) {
+      id
+    }
+  }
+`;
+
+const IncrementTotalSurveysCommunity = /* GraphQL */ `
+  mutation incrementTotalSurveysCommunity($id: ID!) {
+    incrementTotalSurveysCommunity(id: $id) {
+      id
+    }
+  }
+`;
+
+const SurveyMetricsQueryPicker = {
+  COMMUNITY: {
+    TOTALSURVEY: {
+      INCREMENT: IncrementTotalSurveysCommunity,
+    },
+  },
+  USERMETRICS: {
+    TOTALSURVEY: {
+      INCREMENT: IncrementTotalSurveysUserMetrics,
+    },
+  },
+};

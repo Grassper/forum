@@ -465,8 +465,8 @@ const Poll: React.FC<PollProps_> = (props) => {
                    */}
                   <Box
                     position="absolute"
-                    bg="green.200"
                     height="100"
+                    bg="green.200"
                     width={`${(entry.votes / totalVotes) * 100}%`}
                   />
                   <Text fontWeight="500">{entry.content}</Text>
@@ -1257,7 +1257,6 @@ const MetricsQueryPicker = {
 /**
  * report in poll
  * show current voted poll with check mark and percentage
- * increment total survey metrics in users and community
  */
 
 interface SurveyUserActionFetchInput_ {
