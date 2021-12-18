@@ -7,7 +7,6 @@ import {
 } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { API } from "aws-amplify";
-import { Image } from "native-base";
 import React, { useState } from "react";
 import {
   FlatList,
@@ -18,6 +17,8 @@ import {
   View,
 } from "react-native";
 
+// @ts-ignore
+import logo from "@/root/assets/images/logo.png";
 import {
   BottomTabParamList_,
   DrawerParamList_,
@@ -31,6 +32,7 @@ import {
 } from "@/root/src/components/shared/Cards/PostCard";
 import { FloatingActionButton } from "@/root/src/components/shared/FabButton";
 import { HeaderProfileIcon } from "@/root/src/components/shared/HeaderProfileIcon";
+import { Image } from "@/root/src/components/shared/Image";
 import { UserContext } from "@/root/src/context";
 
 type NavigationProp_ = CompositeNavigationProp<
@@ -86,7 +88,10 @@ export const Home: React.FC<Props_> = ({ navigation }) => {
         populateContent();
         setStateReady(true);
       });
-      return () => task.cancel();
+      return () => {
+        task.cancel();
+        setPosts([]);
+      };
     }, [populateContent])
   );
 
@@ -120,8 +125,7 @@ export const Home: React.FC<Props_> = ({ navigation }) => {
           size="30px"
           resizeMode={"contain"}
           borderRadius={100}
-          source={require("@/root/assets/images/logo.png")}
-          alt="Eforum logo"
+          source={logo}
         />
       ),
     });

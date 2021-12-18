@@ -101,7 +101,9 @@ export const ChatRoom: React.FC<Props_> = ({ route, navigation }) => {
       const task = InteractionManager.runAfterInteractions(() => {
         populateContent();
       });
-      return () => task.cancel();
+      return () => {
+        task.cancel();
+      };
     }, [populateContent])
   );
 

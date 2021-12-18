@@ -2,12 +2,7 @@ import { GraphQLResult } from "@aws-amplify/api-graphql";
 import { useFocusEffect } from "@react-navigation/native";
 import { API } from "aws-amplify";
 import React from "react";
-import {
-  FlatList,
-  InteractionManager,
-  ListRenderItem,
-  ScrollView,
-} from "react-native";
+import { FlatList, ListRenderItem, ScrollView } from "react-native";
 
 import {
   PostCard,
@@ -22,13 +17,16 @@ export const Posts: React.FC = () => {
 
   const [posts, setPosts] = React.useState<Item[]>([]);
   const [nextToken, setNextToken] = React.useState<string>("");
-  const [isStateReady, setStateReady] = React.useState(false);
+
+  const [loading, setLoading] = React.useState(false);
+
   const currentUser = React.useContext(UserContext).user;
 
-  const memoPost = React.useMemo(() => posts, [posts]);
-
   const populateContent = React.useCallback(() => {
+    let isActive = true;
+
     const fetchCall = async () => {
+      setLoading(true);
       const listPostInput: listPostByUserIdFetchInput_ = {
         id: routeUserId,
         currentUserId: currentUser.id,
@@ -37,23 +35,23 @@ export const Posts: React.FC = () => {
       };
 
       const responseData = await listPostByUserIdFetch(listPostInput);
-      if (responseData) {
+      if (responseData && isActive) {
         setPosts(responseData.items);
         setNextToken(responseData.nextToken);
       }
+      if (isActive) {
+        setLoading(false);
+      }
     };
     fetchCall();
+
+    return () => {
+      isActive = false;
+      setPosts([]);
+    };
   }, [currentUser.id, routeUserId]);
 
-  useFocusEffect(
-    React.useCallback(() => {
-      const task = InteractionManager.runAfterInteractions(() => {
-        populateContent();
-        setStateReady(true);
-      });
-      return () => task.cancel();
-    }, [populateContent])
-  );
+  useFocusEffect(populateContent);
 
   const handlePagination = React.useCallback(async () => {
     if (nextToken) {
@@ -97,7 +95,7 @@ export const Posts: React.FC = () => {
 
   const keyExtractor = React.useCallback((item) => item.id, []);
 
-  if (!isStateReady) {
+  if (loading) {
     return (
       <ScrollView>
         <PostCard />
@@ -113,7 +111,7 @@ export const Posts: React.FC = () => {
 
   return (
     <FlatList
-      data={memoPost}
+      data={posts}
       initialNumToRender={3}
       maxToRenderPerBatch={5}
       windowSize={5}

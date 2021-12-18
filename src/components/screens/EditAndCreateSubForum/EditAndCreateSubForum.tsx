@@ -13,7 +13,6 @@ import {
   Button,
   FormControl,
   Icon,
-  Image,
   Input,
   Spinner,
   WarningOutlineIcon,
@@ -27,6 +26,7 @@ import {
   RootStackParamList_,
   StackParamList_,
 } from "@/root/src/components/navigations/Navigation";
+import { Image } from "@/root/src/components/shared/Image";
 import { ImagePickerButton } from "@/root/src/components/shared/Picker";
 import { UserContext } from "@/root/src/context";
 import { useToggle } from "@/root/src/hooks";
@@ -275,7 +275,6 @@ export const EditAndCreateSubForum: React.FC<Props_> = ({
             key={signedCover}
             width="100%"
             height="100%"
-            alt="Cover Image"
             source={{
               uri: signedCover,
             }}

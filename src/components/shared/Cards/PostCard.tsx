@@ -4,15 +4,15 @@ import { StackActions, useNavigation } from "@react-navigation/native";
 import { API } from "aws-amplify";
 import { format, formatDistanceToNowStrict, isPast } from "date-fns";
 import { Video } from "expo-av";
-import { Box, Factory, Flex, HStack, Icon, Pressable, Text } from "native-base";
+import { Box, Flex, HStack, Icon, Pressable, Text } from "native-base";
 import React, { useState } from "react";
 import { StyleSheet } from "react-native";
-import FastImage from "react-native-fast-image";
 import { SvgUri } from "react-native-svg";
 import Tooltip from "react-native-walkthrough-tooltip";
 
 import { AudioComponent } from "@/root/src/components/shared/Audio";
 import * as ActionIcons from "@/root/src/components/shared/Icons";
+import { Image } from "@/root/src/components/shared/Image";
 import { ReportPost } from "@/root/src/components/shared/Report";
 import { Skeleton } from "@/root/src/components/shared/Skeleton";
 import { colors } from "@/root/src/constants";
@@ -76,7 +76,6 @@ export const PostCard: React.FC<Props_> = ({
   hidePostUserActions,
 }) => {
   const videoRef = React.useRef(null);
-  const NativeBaseFastImage = Factory(FastImage);
   const [signedMediaUrl, setSignedMediaUrl] = React.useState("");
 
   const signImage = React.useCallback(async () => {
@@ -137,7 +136,7 @@ export const PostCard: React.FC<Props_> = ({
        */}
       {type === "Image" &&
         (signedMediaUrl ? (
-          <NativeBaseFastImage
+          <Image
             width="100%"
             height="350"
             source={{

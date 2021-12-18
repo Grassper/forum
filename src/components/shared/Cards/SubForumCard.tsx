@@ -8,13 +8,13 @@ import {
   Button,
   HStack,
   Icon,
-  Image,
   Pressable,
   Text,
 } from "native-base";
 import React from "react";
 import { Dimensions, StyleSheet } from "react-native";
 
+import { Image } from "@/root/src/components/shared/Image";
 import { Skeleton } from "@/root/src/components/shared/Skeleton";
 import { UserContext } from "@/root/src/context";
 import { SignS3ImageKey } from "@/root/src/utils/helpers";
@@ -124,7 +124,6 @@ export const SubForumCard: React.FC<Props_> = ({
           <Image
             width="100%"
             height="100%"
-            alt="Cover Image"
             source={{
               uri: signedCover,
             }}
