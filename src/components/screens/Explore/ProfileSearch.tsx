@@ -3,7 +3,13 @@ import { useFocusEffect } from "@react-navigation/native";
 import { API } from "aws-amplify";
 import { Box } from "native-base";
 import React from "react";
-import { FlatList, ListRenderItem, ScrollView, StyleSheet } from "react-native";
+import {
+  FlatList,
+  InteractionManager,
+  ListRenderItem,
+  ScrollView,
+  StyleSheet,
+} from "react-native";
 
 import { FollowCard } from "@/root/src/components/shared/Cards";
 import { colors } from "@/root/src/constants";
@@ -15,38 +21,35 @@ export const ProfileSearch: React.FC = () => {
 
   const [profiles, setProfiles] = React.useState<Item[]>([]);
   const [nextToken, setNextToken] = React.useState<string>("");
-
-  const [loading, setLoading] = React.useState(false);
+  const [isStateReady, setStateReady] = React.useState(false);
 
   const populateContent = React.useCallback(() => {
-    let isActive = true;
-
     const fetchCall = async () => {
       if (searchValue) {
-        setLoading(true);
         const searchUsersInput: searchUsersFetchInput_ = {
           limit: 10,
           username: searchValue,
         };
 
         const responseData = await searchUsersFetch(searchUsersInput);
-        if (responseData && isActive) {
+        if (responseData) {
           setProfiles(responseData.items);
           setNextToken(responseData.nextToken);
-        }
-        if (isActive) {
-          setLoading(false);
         }
       }
     };
     fetchCall();
-
-    return () => {
-      isActive = false;
-    };
   }, [searchValue]);
 
-  useFocusEffect(populateContent);
+  useFocusEffect(
+    React.useCallback(() => {
+      const task = InteractionManager.runAfterInteractions(() => {
+        populateContent();
+        setStateReady(true);
+      });
+      return () => task.cancel();
+    }, [populateContent])
+  );
 
   const handlePagination = async () => {
     if (nextToken && searchValue) {
@@ -73,32 +76,36 @@ export const ProfileSearch: React.FC = () => {
       />
     );
   };
+
+  if (!isStateReady) {
+    return (
+      <ScrollView>
+        <FollowCard />
+        <FollowCard />
+        <FollowCard />
+        <FollowCard />
+        <FollowCard />
+        <FollowCard />
+        <FollowCard />
+        <FollowCard />
+        <FollowCard />
+        <FollowCard />
+        <FollowCard />
+        <FollowCard />
+        <FollowCard />
+        <FollowCard />
+      </ScrollView>
+    );
+  }
+
   return (
     <Box style={styles.container} bg={colors.white} pt="4">
-      {!loading ? (
-        <FlatList
-          data={profiles}
-          renderItem={ProfileCardRenderer}
-          keyExtractor={(item) => item.id}
-          onEndReached={() => handlePagination()}
-        />
-      ) : (
-        <ScrollView>
-          <FollowCard />
-          <FollowCard />
-          <FollowCard />
-          <FollowCard />
-          <FollowCard />
-          <FollowCard />
-          <FollowCard />
-          <FollowCard />
-          <FollowCard />
-          <FollowCard />
-          <FollowCard />
-          <FollowCard />
-          <FollowCard />
-        </ScrollView>
-      )}
+      <FlatList
+        data={profiles}
+        renderItem={ProfileCardRenderer}
+        keyExtractor={(item) => item.id}
+        onEndReached={() => handlePagination()}
+      />
     </Box>
   );
 };

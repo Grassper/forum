@@ -4,6 +4,7 @@ import { API } from "aws-amplify";
 import React from "react";
 import {
   FlatList,
+  InteractionManager,
   ListRenderItem,
   ScrollView,
   StyleSheet,
@@ -23,14 +24,11 @@ export const Survey: React.FC = () => {
 
   const [surveys, setSurveys] = React.useState<SurveyTimeLineItem_[]>([]);
   const [nextToken, setNextToken] = React.useState<string>("");
-  const [loading, setLoading] = React.useState(false);
+  const [isStateReady, setStateReady] = React.useState(false);
 
   const populateContent = React.useCallback(() => {
-    let isActive = true;
-
     const fetchCall = async () => {
       if (id) {
-        setLoading(true);
         const listSurveyInput: listSurveyTimelineByUserIdFetchInput_ = {
           id: id,
           limit: 10,
@@ -40,23 +38,24 @@ export const Survey: React.FC = () => {
         const responseData = await listSurveyTimelineByUserIdFetch(
           listSurveyInput
         );
-        if (responseData && isActive) {
+        if (responseData) {
           setSurveys(responseData.items);
           setNextToken(responseData.nextToken);
-        }
-        if (isActive) {
-          setLoading(false);
         }
       }
     };
     fetchCall();
-
-    return () => {
-      isActive = false;
-    };
   }, [id]);
 
-  useFocusEffect(populateContent);
+  useFocusEffect(
+    React.useCallback(() => {
+      const task = InteractionManager.runAfterInteractions(() => {
+        populateContent();
+        setStateReady(true);
+      });
+      return () => task.cancel();
+    }, [populateContent])
+  );
 
   const PostCardRenderer: ListRenderItem<SurveyTimeLineItem_> = ({ item }) => {
     const { surveyQuestion } = item;
@@ -121,26 +120,27 @@ export const Survey: React.FC = () => {
     }
   };
 
+  if (!isStateReady) {
+    return (
+      <ScrollView>
+        <PostCard />
+        <PostCard />
+        <PostCard />
+        <PostCard />
+        <PostCard />
+        <PostCard />
+        <PostCard />
+      </ScrollView>
+    );
+  }
   return (
     <View style={styles.container}>
-      {!loading ? (
-        <FlatList
-          data={surveys}
-          renderItem={PostCardRenderer}
-          keyExtractor={(item) => item.surveyQuestion.id}
-          onEndReached={() => handlePagination()}
-        />
-      ) : (
-        <ScrollView>
-          <PostCard />
-          <PostCard />
-          <PostCard />
-          <PostCard />
-          <PostCard />
-          <PostCard />
-          <PostCard />
-        </ScrollView>
-      )}
+      <FlatList
+        data={surveys}
+        renderItem={PostCardRenderer}
+        keyExtractor={(item) => item.surveyQuestion.id}
+        onEndReached={() => handlePagination()}
+      />
     </View>
   );
 };

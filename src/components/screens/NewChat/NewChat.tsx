@@ -7,7 +7,12 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { API } from "aws-amplify";
 import { Box } from "native-base";
 import React from "react";
-import { FlatList, ListRenderItem, StyleSheet } from "react-native";
+import {
+  FlatList,
+  InteractionManager,
+  ListRenderItem,
+  StyleSheet,
+} from "react-native";
 
 import {
   RootStackParamList_,
@@ -38,12 +43,9 @@ export const NewChat: React.FC<Props_> = ({ navigation }) => {
   const [profiles, setProfiles] = React.useState<Item[]>([]);
   const [nextToken, setNextToken] = React.useState<string>("");
   const debouncedSearchTerm = useDebounce(searchValue, 1000);
-
   const currentUser = React.useContext(UserContext).user;
 
   const populateContent = React.useCallback(() => {
-    let isActive = true;
-
     const fetchCall = async () => {
       if (debouncedSearchTerm) {
         const searchUsersInput: searchUsersFetchInput_ = {
@@ -52,20 +54,23 @@ export const NewChat: React.FC<Props_> = ({ navigation }) => {
         };
 
         const responseData = await searchUsersFetch(searchUsersInput);
-        if (responseData && isActive) {
+        if (responseData) {
           setProfiles(responseData.items);
           setNextToken(responseData.nextToken);
         }
       }
     };
     fetchCall();
-
-    return () => {
-      isActive = false;
-    };
   }, [debouncedSearchTerm]);
 
-  useFocusEffect(populateContent);
+  useFocusEffect(
+    React.useCallback(() => {
+      const task = InteractionManager.runAfterInteractions(() => {
+        populateContent();
+      });
+      return () => task.cancel();
+    }, [populateContent])
+  );
 
   const handlePagination = async () => {
     if (nextToken && debouncedSearchTerm) {

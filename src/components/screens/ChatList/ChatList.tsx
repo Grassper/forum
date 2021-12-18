@@ -8,7 +8,13 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { API } from "aws-amplify";
 import { Box } from "native-base";
 import React from "react";
-import { FlatList, ListRenderItem, StyleSheet } from "react-native";
+import {
+  FlatList,
+  InteractionManager,
+  ListRenderItem,
+  ScrollView,
+  StyleSheet,
+} from "react-native";
 
 import {
   BottomTabParamList_,
@@ -17,6 +23,7 @@ import {
 } from "@/root/src/components/navigations/Navigation";
 import { UserCard } from "@/root/src/components/shared/Cards/UserCard";
 import { FloatingActionButton } from "@/root/src/components/shared/FabButton";
+import { CommunityTile } from "@/root/src/components/shared/Tile";
 import { UserContext } from "@/root/src/context";
 
 type NavigationProp_ = CompositeNavigationProp<
@@ -34,12 +41,10 @@ interface Props_ {
 export const ChatList: React.FC<Props_> = ({ navigation }) => {
   const [chatRooms, setChatRooms] = React.useState<ChatRooms_["items"]>([]);
   const [nextToken, setNextToken] = React.useState<string>("");
-
+  const [isStateReady, setStateReady] = React.useState(false);
   const currentUser = React.useContext(UserContext).user;
 
   const populateContent = React.useCallback(() => {
-    let isActive = true;
-
     const fetchCall = async () => {
       if (currentUser.id) {
         const ListChatRoomInput: ListChatRoomFetchInput_ = {
@@ -48,17 +53,13 @@ export const ChatList: React.FC<Props_> = ({ navigation }) => {
         };
 
         const responseData = await ListChatRoom(ListChatRoomInput);
-        if (responseData && isActive) {
+        if (responseData) {
           setChatRooms(responseData.items);
           setNextToken(responseData.nextToken);
         }
       }
     };
     fetchCall();
-
-    return () => {
-      isActive = false;
-    };
   }, [currentUser.id]);
 
   const handlePagination = async () => {
@@ -78,7 +79,15 @@ export const ChatList: React.FC<Props_> = ({ navigation }) => {
     }
   };
 
-  useFocusEffect(populateContent);
+  useFocusEffect(
+    React.useCallback(() => {
+      const task = InteractionManager.runAfterInteractions(() => {
+        populateContent();
+        setStateReady(true);
+      });
+      return () => task.cancel();
+    }, [populateContent])
+  );
 
   const ChatCardRenderer: ListRenderItem<ChatRoomsItem_> = ({ item }) => {
     const pickOppositeUser = item.chatRoom.users.items.filter(
@@ -101,6 +110,18 @@ export const ChatList: React.FC<Props_> = ({ navigation }) => {
     );
   };
 
+  if (!isStateReady) {
+    return (
+      <ScrollView>
+        <CommunityTile hideDivider />
+        <CommunityTile hideDivider />
+        <CommunityTile hideDivider />
+        <CommunityTile hideDivider />
+        <CommunityTile hideDivider />
+        <CommunityTile hideDivider />
+      </ScrollView>
+    );
+  }
   return (
     <Box style={styles.container} bg="white" alignItems="center">
       <Box alignItems="center" width="95%" py="15px">
@@ -113,7 +134,6 @@ export const ChatList: React.FC<Props_> = ({ navigation }) => {
           />
         </Box>
       </Box>
-
       <FloatingActionButton
         onPress={() => navigation.push("NewChat")}
         screen="ChatList"

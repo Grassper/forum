@@ -4,9 +4,10 @@ import { StackActions, useNavigation } from "@react-navigation/native";
 import { API } from "aws-amplify";
 import { format, formatDistanceToNowStrict, isPast } from "date-fns";
 import { Video } from "expo-av";
-import { Box, Flex, HStack, Icon, Image, Pressable, Text } from "native-base";
+import { Box, Factory, Flex, HStack, Icon, Pressable, Text } from "native-base";
 import React, { useState } from "react";
 import { Platform, StatusBar, StyleSheet } from "react-native";
+import FastImage from "react-native-fast-image";
 import { SvgUri } from "react-native-svg";
 import Tooltip from "react-native-walkthrough-tooltip";
 
@@ -75,7 +76,7 @@ export const PostCard: React.FC<Props_> = ({
   hidePostUserActions,
 }) => {
   const videoRef = React.useRef(null);
-
+  const NativeBaseFastImage = Factory(FastImage);
   const [signedMediaUrl, setSignedMediaUrl] = React.useState("");
 
   const signImage = React.useCallback(async () => {
@@ -136,10 +137,9 @@ export const PostCard: React.FC<Props_> = ({
        */}
       {type === "Image" &&
         (signedMediaUrl ? (
-          <Image
+          <NativeBaseFastImage
             width="100%"
             height="350"
-            alt="fallback text"
             source={{
               uri: signedMediaUrl,
             }}

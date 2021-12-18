@@ -12,6 +12,7 @@ import React from "react";
 import {
   FlatList,
   ImageBackground,
+  InteractionManager,
   ListRenderItem,
   StyleSheet,
 } from "react-native";
@@ -102,7 +103,14 @@ export const ChatRoom: React.FC<Props_> = ({ route, navigation }) => {
     };
   }, [roomId]);
 
-  useFocusEffect(populateContent);
+  useFocusEffect(
+    React.useCallback(() => {
+      const task = InteractionManager.runAfterInteractions(() => {
+        populateContent();
+      });
+      return () => task.cancel();
+    }, [populateContent])
+  );
 
   const ChatCardRenderer: ListRenderItem<Item> = ({ item }) => {
     return (

@@ -4,6 +4,7 @@ import { API } from "aws-amplify";
 import { format } from "date-fns";
 import { Box, Button, HStack, Pressable, Text, VStack } from "native-base";
 import React, { useState } from "react";
+import { InteractionManager } from "react-native";
 import { SvgUri } from "react-native-svg";
 
 import { Skeleton } from "@/root/src/components/shared/Skeleton";
@@ -44,8 +45,6 @@ export const ProfileCard: React.FC<Props_> = ({ routeUserId }) => {
   const [profile, setProfile] = React.useState<State_>();
 
   const populateContent = React.useCallback(() => {
-    let isActive = true;
-
     const fetchCall = async () => {
       try {
         // check user data for user id passed using route params
@@ -55,7 +54,7 @@ export const ProfileCard: React.FC<Props_> = ({ routeUserId }) => {
           authMode: "AMAZON_COGNITO_USER_POOLS",
         })) as GraphQLResult<getUser_>;
 
-        if (userData.data?.getUser && isActive) {
+        if (userData.data?.getUser) {
           setProfile(userData.data.getUser);
           const followersItems = userData.data.getUser.followers.items;
           if (
@@ -71,13 +70,16 @@ export const ProfileCard: React.FC<Props_> = ({ routeUserId }) => {
     };
 
     fetchCall();
-
-    return () => {
-      isActive = false;
-    };
   }, [id, routeUserId]);
 
-  useFocusEffect(populateContent);
+  useFocusEffect(
+    React.useCallback(() => {
+      const task = InteractionManager.runAfterInteractions(() => {
+        populateContent();
+      });
+      return () => task.cancel();
+    }, [populateContent])
+  );
 
   const RelationshipHandler = () => {
     if (routeUserId && id && routeUserId !== id) {

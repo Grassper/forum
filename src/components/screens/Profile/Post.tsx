@@ -2,7 +2,12 @@ import { GraphQLResult } from "@aws-amplify/api-graphql";
 import { useFocusEffect } from "@react-navigation/native";
 import { API } from "aws-amplify";
 import React from "react";
-import { FlatList, ListRenderItem, ScrollView } from "react-native";
+import {
+  FlatList,
+  InteractionManager,
+  ListRenderItem,
+  ScrollView,
+} from "react-native";
 
 import {
   PostCard,
@@ -17,16 +22,11 @@ export const Posts: React.FC = () => {
 
   const [posts, setPosts] = React.useState<Item[]>([]);
   const [nextToken, setNextToken] = React.useState<string>("");
-
-  const [loading, setLoading] = React.useState(false);
-
+  const [isStateReady, setStateReady] = React.useState(false);
   const currentUser = React.useContext(UserContext).user;
 
   const populateContent = React.useCallback(() => {
-    let isActive = true;
-
     const fetchCall = async () => {
-      setLoading(true);
       const listPostInput: listPostByUserIdFetchInput_ = {
         id: routeUserId,
         currentUserId: currentUser.id,
@@ -35,22 +35,23 @@ export const Posts: React.FC = () => {
       };
 
       const responseData = await listPostByUserIdFetch(listPostInput);
-      if (responseData && isActive) {
+      if (responseData) {
         setPosts(responseData.items);
         setNextToken(responseData.nextToken);
       }
-      if (isActive) {
-        setLoading(false);
-      }
     };
     fetchCall();
-
-    return () => {
-      isActive = false;
-    };
   }, [currentUser.id, routeUserId]);
 
-  useFocusEffect(populateContent);
+  useFocusEffect(
+    React.useCallback(() => {
+      const task = InteractionManager.runAfterInteractions(() => {
+        populateContent();
+        setStateReady(true);
+      });
+      return () => task.cancel();
+    }, [populateContent])
+  );
 
   const handlePagination = React.useCallback(async () => {
     if (nextToken) {
@@ -92,27 +93,27 @@ export const Posts: React.FC = () => {
     );
   };
 
+  if (!isStateReady) {
+    return (
+      <ScrollView>
+        <PostCard />
+        <PostCard />
+        <PostCard />
+        <PostCard />
+        <PostCard />
+        <PostCard />
+        <PostCard />
+      </ScrollView>
+    );
+  }
+
   return (
-    <>
-      {!loading ? (
-        <FlatList
-          data={posts}
-          renderItem={PostCardRenderer}
-          keyExtractor={(item) => item.id}
-          onEndReached={() => handlePagination()}
-        />
-      ) : (
-        <ScrollView>
-          <PostCard />
-          <PostCard />
-          <PostCard />
-          <PostCard />
-          <PostCard />
-          <PostCard />
-          <PostCard />
-        </ScrollView>
-      )}
-    </>
+    <FlatList
+      data={posts}
+      renderItem={PostCardRenderer}
+      keyExtractor={(item) => item.id}
+      onEndReached={() => handlePagination()}
+    />
   );
 };
 

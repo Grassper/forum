@@ -9,7 +9,13 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { API } from "aws-amplify";
 import { Box, Button } from "native-base";
 import React from "react";
-import { FlatList, ListRenderItem, ScrollView, StyleSheet } from "react-native";
+import {
+  FlatList,
+  InteractionManager,
+  ListRenderItem,
+  ScrollView,
+  StyleSheet,
+} from "react-native";
 
 import {
   BottomTabParamList_,
@@ -41,8 +47,7 @@ export const JoinedSubForum: React.FC<Props_> = ({ navigation }) => {
 
   const [communities, setCommunities] = React.useState<Item[]>([]);
   const [nextToken, setNextToken] = React.useState<string>("");
-
-  const [loading, setLoading] = React.useState(false);
+  const [isStateReady, setStateReady] = React.useState(false);
 
   const handlePagination = async () => {
     if (nextToken) {
@@ -63,10 +68,7 @@ export const JoinedSubForum: React.FC<Props_> = ({ navigation }) => {
   };
 
   const populateContent = React.useCallback(() => {
-    let isActive = true;
-
     const fetchCall = async () => {
-      setLoading(true);
       const listCommunityInput: listCommunityByUserIdFetchInput_ = {
         id: currentUser.id,
         limit: 10,
@@ -74,22 +76,23 @@ export const JoinedSubForum: React.FC<Props_> = ({ navigation }) => {
       };
 
       const responseData = await listCommunityByUserIdFetch(listCommunityInput);
-      if (responseData && isActive) {
+      if (responseData) {
         setCommunities(responseData.items);
         setNextToken(responseData.nextToken);
       }
-      if (isActive) {
-        setLoading(false);
-      }
     };
     fetchCall();
-
-    return () => {
-      isActive = false;
-    };
   }, [currentUser]);
 
-  useFocusEffect(populateContent);
+  useFocusEffect(
+    React.useCallback(() => {
+      const task = InteractionManager.runAfterInteractions(() => {
+        populateContent();
+        setStateReady(true);
+      });
+      return () => task.cancel();
+    }, [populateContent])
+  );
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -129,32 +132,34 @@ export const JoinedSubForum: React.FC<Props_> = ({ navigation }) => {
     );
   };
 
+  if (!isStateReady) {
+    return (
+      <ScrollView>
+        <CommunityTile hideDivider />
+        <CommunityTile hideDivider />
+        <CommunityTile hideDivider />
+        <CommunityTile hideDivider />
+        <CommunityTile hideDivider />
+        <CommunityTile hideDivider />
+        <CommunityTile hideDivider />
+        <CommunityTile hideDivider />
+        <CommunityTile hideDivider />
+        <CommunityTile hideDivider />
+        <CommunityTile hideDivider />
+        <CommunityTile hideDivider />
+      </ScrollView>
+    );
+  }
+
   return (
     <Box bg="white" alignItems="center" style={styles.container}>
       <Box width="100%" style={styles.container}>
-        {!loading ? (
-          <FlatList
-            data={communities}
-            renderItem={CommunityTileRenderer}
-            keyExtractor={(item) => item.community.id}
-            onEndReached={() => handlePagination()}
-          />
-        ) : (
-          <ScrollView>
-            <CommunityTile hideDivider />
-            <CommunityTile hideDivider />
-            <CommunityTile hideDivider />
-            <CommunityTile hideDivider />
-            <CommunityTile hideDivider />
-            <CommunityTile hideDivider />
-            <CommunityTile hideDivider />
-            <CommunityTile hideDivider />
-            <CommunityTile hideDivider />
-            <CommunityTile hideDivider />
-            <CommunityTile hideDivider />
-            <CommunityTile hideDivider />
-          </ScrollView>
-        )}
+        <FlatList
+          data={communities}
+          renderItem={CommunityTileRenderer}
+          keyExtractor={(item) => item.community.id}
+          onEndReached={() => handlePagination()}
+        />
       </Box>
     </Box>
   );

@@ -8,7 +8,13 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { API } from "aws-amplify";
 import { Box, Flex, HStack, Text } from "native-base";
 import React from "react";
-import { FlatList, ListRenderItem, ScrollView, StyleSheet } from "react-native";
+import {
+  FlatList,
+  InteractionManager,
+  ListRenderItem,
+  ScrollView,
+  StyleSheet,
+} from "react-native";
 
 import {
   RootStackParamList_,
@@ -65,15 +71,11 @@ export const Comment: React.FC<Props_> = ({ route }) => {
 
   const [childComments, setChildComments] = React.useState<Item[]>([]);
   const [nextToken, setNextToken] = React.useState<string>("");
-
-  const [loading, setLoading] = React.useState(false);
+  const [isStateReady, setStateReady] = React.useState(false);
 
   const populateContent = React.useCallback(() => {
-    let isActive = true;
-
     const fetchCall = async () => {
       if (comment.commentId) {
-        setLoading(true);
         const listCommentInput: listChildCommentsByParentCommentIdFetch_ = {
           parentCommentId: comment.commentId,
           limit: 10,
@@ -82,23 +84,24 @@ export const Comment: React.FC<Props_> = ({ route }) => {
           listCommentInput
         );
 
-        if (commentData && isActive) {
+        if (commentData) {
           setChildComments(commentData.items);
           setNextToken(commentData.nextToken);
-        }
-        if (isActive) {
-          setLoading(false);
         }
       }
     };
     fetchCall();
-
-    return () => {
-      isActive = false;
-    };
   }, [comment.commentId]);
 
-  useFocusEffect(populateContent);
+  useFocusEffect(
+    React.useCallback(() => {
+      const task = InteractionManager.runAfterInteractions(() => {
+        populateContent();
+        setStateReady(true);
+      });
+      return () => task.cancel();
+    }, [populateContent])
+  );
 
   const handlePagination = async () => {
     if (nextToken && comment.commentId) {
@@ -137,38 +140,35 @@ export const Comment: React.FC<Props_> = ({ route }) => {
     );
   };
 
+  if (!isStateReady) {
+    return (
+      <ScrollView>
+        <CommentCard {...comment} hideReplyButton hideCommentUserActions />
+        <Box alignItems="center" bg="white" mt="2" pt="4">
+          <Flex width="100%">
+            <CommentCard />
+            <CommentCard />
+            <CommentCard />
+            <CommentCard />
+            <CommentCard />
+            <CommentCard />
+            <CommentCard />
+            <CommentCard />
+          </Flex>
+        </Box>
+      </ScrollView>
+    );
+  }
+
   return (
     <Box style={styles.container}>
-      {!loading ? (
-        <FlatList
-          data={childComments}
-          renderItem={CommentCardRenderer}
-          keyExtractor={(item) => item.childComment.id}
-          onEndReached={() => handlePagination()}
-          ListHeaderComponent={() => <CommentHeader {...comment} />}
-        />
-      ) : (
-        <ScrollView>
-          <CommentCard {...comment} hideReplyButton hideCommentUserActions />
-          <Box alignItems="center" bg="white" mt="2" pt="4">
-            <Flex width="100%">
-              <CommentCard />
-              <CommentCard />
-              <CommentCard />
-              <CommentCard />
-              <CommentCard />
-              <CommentCard />
-              <CommentCard />
-              <CommentCard />
-              <CommentCard />
-              <CommentCard />
-              <CommentCard />
-              <CommentCard />
-              <CommentCard />
-            </Flex>
-          </Box>
-        </ScrollView>
-      )}
+      <FlatList
+        data={childComments}
+        renderItem={CommentCardRenderer}
+        keyExtractor={(item) => item.childComment.id}
+        onEndReached={() => handlePagination()}
+        ListHeaderComponent={() => <CommentHeader {...comment} />}
+      />
     </Box>
   );
 };

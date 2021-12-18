@@ -10,6 +10,7 @@ import { Button } from "native-base";
 import React from "react";
 import {
   FlatList,
+  InteractionManager,
   ListRenderItem,
   ScrollView,
   StyleSheet,
@@ -49,15 +50,11 @@ export const SubForum: React.FC<Props_> = ({ navigation, route }) => {
   const [posts, setPosts] = React.useState<Item[]>([]);
   const [nextToken, setNextToken] = React.useState<string>("");
 
-  const [loading, setLoading] = React.useState(false);
-
+  const [isStateReady, setStateReady] = React.useState(false);
   const currentUser = React.useContext(UserContext).user;
 
   const populateContent = React.useCallback(() => {
-    let isActive = true;
-
     const fetchCall = async () => {
-      setLoading(true);
       const listPostInput: listPostByCommunityIdFetchInput_ = {
         id: subForumId,
         currentUserId: currentUser.id,
@@ -73,27 +70,27 @@ export const SubForum: React.FC<Props_> = ({ navigation, route }) => {
       const getCommunityData = await getCommunityFetch(getCommunityInput);
       const listPostData = await listPostByCommunityIdFetch(listPostInput);
 
-      if (getCommunityData && isActive) {
+      if (getCommunityData) {
         getSubForum(getCommunityData);
       }
 
-      if (listPostData && isActive) {
+      if (listPostData) {
         setPosts(listPostData.items);
         setNextToken(listPostData.nextToken);
       }
-
-      if (isActive) {
-        setLoading(false);
-      }
     };
     fetchCall();
-
-    return () => {
-      isActive = false;
-    };
   }, [currentUser.id, subForumId]);
 
-  useFocusEffect(populateContent);
+  useFocusEffect(
+    React.useCallback(() => {
+      const task = InteractionManager.runAfterInteractions(() => {
+        populateContent();
+        setStateReady(true);
+      });
+      return () => task.cancel();
+    }, [populateContent])
+  );
 
   const handlePagination = async () => {
     if (nextToken) {
@@ -162,50 +159,50 @@ export const SubForum: React.FC<Props_> = ({ navigation, route }) => {
     );
   };
 
+  if (!isStateReady) {
+    return (
+      <ScrollView>
+        <SubForumCard />
+        <PostCard />
+        <PostCard />
+        <PostCard />
+        <PostCard />
+        <PostCard />
+        <PostCard />
+        <PostCard />
+      </ScrollView>
+    );
+  }
+
   return (
     <View style={styles.container}>
-      {!loading ? (
-        <>
-          {subForum && (
-            <ReportCommunity
-              communityId={subForum.id}
-              reportModal={reportModal}
-              setReportModal={setReportModal}
-            />
-          )}
-          <FlatList
-            data={posts}
-            renderItem={PostCardRenderer}
-            ListHeaderComponent={() => (
-              <SubForumCard
-                id={subForum?.id}
-                name={subForum?.name}
-                description={subForum?.description}
-                profileImageS3Key={subForum?.profileImageS3Key}
-                coverImageS3Key={subForum?.bannerImageS3Key}
-                _version={subForum?._version}
-                creatorId={subForum?.creatorId}
-                totalMembers={subForum?.totalMembers}
-                totalPosts={subForum?.totalPosts}
-                members={subForum?.members}
-              />
-            )}
-            keyExtractor={(item) => item.id}
-            onEndReached={() => handlePagination()}
-          />
-        </>
-      ) : (
-        <ScrollView>
-          <SubForumCard />
-          <PostCard />
-          <PostCard />
-          <PostCard />
-          <PostCard />
-          <PostCard />
-          <PostCard />
-          <PostCard />
-        </ScrollView>
+      {subForum && (
+        <ReportCommunity
+          communityId={subForum.id}
+          reportModal={reportModal}
+          setReportModal={setReportModal}
+        />
       )}
+      <FlatList
+        data={posts}
+        renderItem={PostCardRenderer}
+        ListHeaderComponent={() => (
+          <SubForumCard
+            id={subForum?.id}
+            name={subForum?.name}
+            description={subForum?.description}
+            profileImageS3Key={subForum?.profileImageS3Key}
+            coverImageS3Key={subForum?.bannerImageS3Key}
+            _version={subForum?._version}
+            creatorId={subForum?.creatorId}
+            totalMembers={subForum?.totalMembers}
+            totalPosts={subForum?.totalPosts}
+            members={subForum?.members}
+          />
+        )}
+        keyExtractor={(item) => item.id}
+        onEndReached={() => handlePagination()}
+      />
     </View>
   );
 };

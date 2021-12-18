@@ -8,7 +8,13 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { API } from "aws-amplify";
 import { Box, Flex, HStack, Text } from "native-base";
 import React from "react";
-import { FlatList, ListRenderItem, ScrollView, StyleSheet } from "react-native";
+import {
+  FlatList,
+  InteractionManager,
+  ListRenderItem,
+  ScrollView,
+  StyleSheet,
+} from "react-native";
 
 import {
   RootStackParamList_,
@@ -87,16 +93,12 @@ export const Post: React.FC<Props_> = ({ route }) => {
 
   const [comments, setComments] = React.useState<Item[]>([]);
   const [nextToken, setNextToken] = React.useState<string>("");
-
+  const [isStateReady, setStateReady] = React.useState(false);
   const currentUser = React.useContext(UserContext).user;
-  const [loading, setLoading] = React.useState(false);
 
   const populateContent = React.useCallback(() => {
-    let isActive = true;
-
     const fetchCall = async () => {
       if (postData.id) {
-        setLoading(true);
         const listCommentInput: listCommentsByPostIdFetch_ = {
           postId: postData.id,
           currentUserId: currentUser.id,
@@ -104,24 +106,25 @@ export const Post: React.FC<Props_> = ({ route }) => {
         };
         const commentData = await listCommentsByPostIdFetch(listCommentInput);
 
-        if (commentData && isActive) {
+        if (commentData) {
           setComments(commentData.items);
           setNextToken(commentData.nextToken);
-        }
-        if (isActive) {
-          setLoading(false);
         }
       }
     };
 
     fetchCall();
-
-    return () => {
-      isActive = false;
-    };
   }, [currentUser.id, postData.id]);
 
-  useFocusEffect(populateContent);
+  useFocusEffect(
+    React.useCallback(() => {
+      const task = InteractionManager.runAfterInteractions(() => {
+        populateContent();
+        setStateReady(true);
+      });
+      return () => task.cancel();
+    }, [populateContent])
+  );
 
   const handlePagination = async () => {
     if (nextToken && postData.id) {
@@ -160,38 +163,40 @@ export const Post: React.FC<Props_> = ({ route }) => {
     );
   };
 
+  if (!isStateReady) {
+    return (
+      <ScrollView>
+        <PostCard postPage hidePostNavigation {...postData} />
+        <Box alignItems="center" bg="white" mt="2" pt="4">
+          <Flex width="100%">
+            <CommentCard />
+            <CommentCard />
+            <CommentCard />
+            <CommentCard />
+            <CommentCard />
+            <CommentCard />
+            <CommentCard />
+            <CommentCard />
+            <CommentCard />
+            <CommentCard />
+            <CommentCard />
+            <CommentCard />
+            <CommentCard />
+          </Flex>
+        </Box>
+      </ScrollView>
+    );
+  }
+
   return (
     <Box style={styles.container}>
-      {!loading ? (
-        <FlatList
-          data={comments}
-          renderItem={CommentCardRenderer}
-          keyExtractor={(item) => item.childComment.id}
-          onEndReached={() => handlePagination()}
-          ListHeaderComponent={() => <PostHeader {...postData} />}
-        />
-      ) : (
-        <ScrollView>
-          <PostCard postPage hidePostNavigation {...postData} />
-          <Box alignItems="center" bg="white" mt="2" pt="4">
-            <Flex width="100%">
-              <CommentCard />
-              <CommentCard />
-              <CommentCard />
-              <CommentCard />
-              <CommentCard />
-              <CommentCard />
-              <CommentCard />
-              <CommentCard />
-              <CommentCard />
-              <CommentCard />
-              <CommentCard />
-              <CommentCard />
-              <CommentCard />
-            </Flex>
-          </Box>
-        </ScrollView>
-      )}
+      <FlatList
+        data={comments}
+        renderItem={CommentCardRenderer}
+        keyExtractor={(item) => item.childComment.id}
+        onEndReached={() => handlePagination()}
+        ListHeaderComponent={() => <PostHeader {...postData} />}
+      />
     </Box>
   );
 };

@@ -8,7 +8,13 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { API } from "aws-amplify";
 import { Box } from "native-base";
 import React from "react";
-import { FlatList, ListRenderItem, ScrollView, StyleSheet } from "react-native";
+import {
+  FlatList,
+  InteractionManager,
+  ListRenderItem,
+  ScrollView,
+  StyleSheet,
+} from "react-native";
 
 import {
   RootStackParamList_,
@@ -35,15 +41,11 @@ export const Follow: React.FC<Props_> = ({ route }) => {
     (FollowersItems_ | FollowingItems_)[]
   >([]);
   const [nextToken, setNextToken] = React.useState<string>("");
-
-  const [loading, setLoading] = React.useState(false);
+  const [isStateReady, setStateReady] = React.useState(false);
 
   const populateContent = React.useCallback(() => {
-    let isActive = true;
-
     const fetchCall = async () => {
       if (routeUserId) {
-        setLoading(true);
         if (title === "Following") {
           const followingInput: UserRelationshipFetchInput_ = {
             limit: 10,
@@ -53,12 +55,9 @@ export const Follow: React.FC<Props_> = ({ route }) => {
 
           const responseData = await UserRelationshipFetch(followingInput);
 
-          if (responseData && isActive) {
+          if (responseData) {
             setUsersList(responseData.items);
             setNextToken(responseData.nextToken);
-          }
-          if (isActive) {
-            setLoading(false);
           }
         } else if (title === "Followers") {
           const followersInput: UserRelationshipFetchInput_ = {
@@ -69,24 +68,25 @@ export const Follow: React.FC<Props_> = ({ route }) => {
 
           const responseData = await UserRelationshipFetch(followersInput);
 
-          if (responseData && isActive) {
+          if (responseData) {
             setUsersList(responseData.items);
             setNextToken(responseData.nextToken);
-          }
-          if (isActive) {
-            setLoading(false);
           }
         }
       }
     };
     fetchCall();
-
-    return () => {
-      isActive = false;
-    };
   }, [routeUserId, title]);
 
-  useFocusEffect(populateContent);
+  useFocusEffect(
+    React.useCallback(() => {
+      const task = InteractionManager.runAfterInteractions(() => {
+        populateContent();
+        setStateReady(true);
+      });
+      return () => task.cancel();
+    }, [populateContent])
+  );
 
   const FollowerCardRenderer: ListRenderItem<FollowersItems_> = ({ item }) => {
     return (
@@ -141,46 +141,45 @@ export const Follow: React.FC<Props_> = ({ route }) => {
     }
   };
 
+  if (!isStateReady) {
+    return (
+      <ScrollView>
+        <FollowCard />
+        <FollowCard />
+        <FollowCard />
+        <FollowCard />
+        <FollowCard />
+        <FollowCard />
+        <FollowCard />
+        <FollowCard />
+        <FollowCard />
+        <FollowCard />
+        <FollowCard />
+        <FollowCard />
+        <FollowCard />
+        <FollowCard />
+        <FollowCard />
+        <FollowCard />
+      </ScrollView>
+    );
+  }
+
   return (
     <Box style={styles.container} bg="white" pt="4">
-      {!loading ? (
-        <>
-          {title === "Following" ? (
-            <FlatList
-              data={usersList as FollowingItems_[]}
-              renderItem={FollowingCardRenderer}
-              keyExtractor={(item) => item.followee.id}
-              onEndReached={() => handlePagination()}
-            />
-          ) : (
-            <FlatList
-              data={usersList as FollowersItems_[]}
-              renderItem={FollowerCardRenderer}
-              keyExtractor={(item) => item.follower.id}
-              onEndReached={() => handlePagination()}
-            />
-          )}
-        </>
+      {title === "Following" ? (
+        <FlatList
+          data={usersList as FollowingItems_[]}
+          renderItem={FollowingCardRenderer}
+          keyExtractor={(item) => item.followee.id}
+          onEndReached={() => handlePagination()}
+        />
       ) : (
-        <ScrollView>
-          <FollowCard />
-          <FollowCard />
-          <FollowCard />
-          <FollowCard />
-          <FollowCard />
-          <FollowCard />
-          <FollowCard />
-          <FollowCard />
-          <FollowCard />
-          <FollowCard />
-          <FollowCard />
-          <FollowCard />
-          <FollowCard />
-          <FollowCard />
-          <FollowCard />
-          <FollowCard />
-          <FollowCard />
-        </ScrollView>
+        <FlatList
+          data={usersList as FollowersItems_[]}
+          renderItem={FollowerCardRenderer}
+          keyExtractor={(item) => item.follower.id}
+          onEndReached={() => handlePagination()}
+        />
       )}
     </Box>
   );

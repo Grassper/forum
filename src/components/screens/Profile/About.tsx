@@ -3,7 +3,7 @@ import { useFocusEffect } from "@react-navigation/native";
 import { API } from "aws-amplify";
 import { Box, HStack, Text, VStack } from "native-base";
 import React from "react";
-import { ScrollView, StyleSheet } from "react-native";
+import { InteractionManager, ScrollView, StyleSheet } from "react-native";
 
 import { Skeleton } from "@/root/src/components/shared/Skeleton";
 
@@ -32,8 +32,6 @@ export const About: React.FC = () => {
    */
 
   const populateContent = React.useCallback(() => {
-    let isActive = true;
-
     const fetchCall = async () => {
       try {
         // check user data for user id passed using route params
@@ -43,7 +41,7 @@ export const About: React.FC = () => {
           authMode: "AMAZON_COGNITO_USER_POOLS",
         })) as GraphQLResult<getUser_>;
 
-        if (userData.data?.getUser && isActive) {
+        if (userData.data?.getUser) {
           setAbout(userData.data.getUser);
         }
       } catch (err) {
@@ -55,13 +53,16 @@ export const About: React.FC = () => {
     };
 
     fetchCall();
-
-    return () => {
-      isActive = false;
-    };
   }, [routeUserId]);
 
-  useFocusEffect(populateContent);
+  useFocusEffect(
+    React.useCallback(() => {
+      const task = InteractionManager.runAfterInteractions(() => {
+        populateContent();
+      });
+      return () => task.cancel();
+    }, [populateContent])
+  );
 
   return (
     <Box style={styles.wrapper} alignItems="center" bg="white">

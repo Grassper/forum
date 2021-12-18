@@ -7,7 +7,13 @@ import {
 import { API } from "aws-amplify";
 import { Box } from "native-base";
 import React from "react";
-import { FlatList, ListRenderItem, ScrollView, StyleSheet } from "react-native";
+import {
+  FlatList,
+  InteractionManager,
+  ListRenderItem,
+  ScrollView,
+  StyleSheet,
+} from "react-native";
 
 import { CommunityTile } from "@/root/src/components/shared/Tile";
 import { colors } from "@/root/src/constants";
@@ -18,40 +24,38 @@ export const CommunitySearch: React.FC = () => {
   const searchValue = React.useContext(TabNavigatorExploreContext);
   const [community, setCommunity] = React.useState<Item[]>([]);
   const [nextToken, setNextToken] = React.useState<string>("");
-
-  const [loading, setLoading] = React.useState(false);
+  const [isStateReady, setStateReady] = React.useState(false);
 
   const navigation = useNavigation();
 
   const populateContent = React.useCallback(() => {
-    let isActive = true;
-
     const fetchCall = async () => {
       if (searchValue) {
-        setLoading(true);
         const searchUsersInput: searchCommunityFetchInput_ = {
           limit: 10,
           searchcommunityvalue: searchValue,
         };
 
         const responseData = await searchCommunityFetch(searchUsersInput);
-        if (responseData && isActive) {
+        if (responseData) {
           setCommunity(responseData.items);
           setNextToken(responseData.nextToken);
-        }
-        if (isActive) {
-          setLoading(false);
         }
       }
     };
     fetchCall();
-
-    return () => {
-      isActive = false;
-    };
   }, [searchValue]);
 
-  useFocusEffect(populateContent);
+  useFocusEffect(
+    React.useCallback(() => {
+      const task = InteractionManager.runAfterInteractions(() => {
+        populateContent();
+        setStateReady(true);
+      });
+      return () => task.cancel();
+    }, [populateContent])
+  );
+
   const handlePagination = async () => {
     if (nextToken && searchValue) {
       const searchUsersInput: searchCommunityFetchInput_ = {
@@ -90,31 +94,30 @@ export const CommunitySearch: React.FC = () => {
     );
   };
 
+  if (!isStateReady) {
+    return (
+      <ScrollView>
+        <CommunityTile hideDivider />
+        <CommunityTile hideDivider />
+        <CommunityTile hideDivider />
+        <CommunityTile hideDivider />
+        <CommunityTile hideDivider />
+        <CommunityTile hideDivider />
+        <CommunityTile hideDivider />
+        <CommunityTile hideDivider />
+        <CommunityTile hideDivider />
+      </ScrollView>
+    );
+  }
+
   return (
     <Box style={styles.container} bg={colors.white} pt="4">
-      {!loading ? (
-        <FlatList
-          data={community}
-          renderItem={CommunityCardRenderer}
-          keyExtractor={(item) => item.id}
-          onEndReached={() => handlePagination()}
-        />
-      ) : (
-        <ScrollView>
-          <CommunityTile hideDivider />
-          <CommunityTile hideDivider />
-          <CommunityTile hideDivider />
-          <CommunityTile hideDivider />
-          <CommunityTile hideDivider />
-          <CommunityTile hideDivider />
-          <CommunityTile hideDivider />
-          <CommunityTile hideDivider />
-          <CommunityTile hideDivider />
-          <CommunityTile hideDivider />
-          <CommunityTile hideDivider />
-          <CommunityTile hideDivider />
-        </ScrollView>
-      )}
+      <FlatList
+        data={community}
+        renderItem={CommunityCardRenderer}
+        keyExtractor={(item) => item.id}
+        onEndReached={() => handlePagination()}
+      />
     </Box>
   );
 };

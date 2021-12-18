@@ -57,14 +57,11 @@ export const Home: React.FC<Props_> = ({ navigation }) => {
 
   const [posts, setPosts] = React.useState<Item[]>([]);
   const [nextToken, setNextToken] = React.useState<string>("");
-  const [loading, setLoading] = React.useState(false);
+  const [isStateReady, setStateReady] = React.useState(false);
 
   const populateContent = React.useCallback(() => {
-    let isActive = true;
-
     const fetchCall = async () => {
       if (id) {
-        setLoading(true);
         const listPostInput: listTimelineByUserIdFetchInput_ = {
           id: id,
           limit: 10,
@@ -72,31 +69,24 @@ export const Home: React.FC<Props_> = ({ navigation }) => {
         };
 
         const responseData = await listTimelineByUserIdFetch(listPostInput);
-        if (responseData && isActive) {
+        if (responseData) {
           setPosts(responseData.items);
           setNextToken(responseData.nextToken);
-        }
-        if (isActive) {
-          setLoading(false);
         }
       }
     };
     fetchCall();
-
-    return () => {
-      isActive = false;
-    };
   }, [id]);
 
-  // useFocusEffect(
-  //   React.useCallback(() => {
-  //     const task = InteractionManager.runAfterInteractions(populateContent);
-
-  //     return () => task.cancel();
-  //   }, [])
-  // );
-
-  // useFocusEffect(populateContent);
+  useFocusEffect(
+    React.useCallback(() => {
+      const task = InteractionManager.runAfterInteractions(() => {
+        populateContent();
+        setStateReady(true);
+      });
+      return () => task.cancel();
+    }, [populateContent])
+  );
 
   const handlePagination = async () => {
     if (nextToken && id) {
@@ -156,31 +146,31 @@ export const Home: React.FC<Props_> = ({ navigation }) => {
     );
   };
 
+  if (!isStateReady) {
+    return (
+      <ScrollView>
+        <PostCard />
+        <PostCard />
+        <PostCard />
+        <PostCard />
+        <PostCard />
+      </ScrollView>
+    );
+  }
+
   return (
     <View style={styles.container}>
-      {/* <PostCard /> */}
-      {!loading ? (
-        <>
-          <BottomSheet isOpen={isOpen} onClose={HandleBottomSheet} />
-          <FlatList
-            data={posts}
-            renderItem={PostCardRenderer}
-            keyExtractor={(item) => item.post.id}
-            onEndReached={() => handlePagination()}
-          />
-          <FloatingActionButton onPress={HandleBottomSheet} screen="Home" />
-        </>
-      ) : (
-        <ScrollView>
-          <PostCard />
-          <PostCard />
-          <PostCard />
-          <PostCard />
-          <PostCard />
-          <PostCard />
-          <PostCard />
-        </ScrollView>
-      )}
+      <BottomSheet isOpen={isOpen} onClose={HandleBottomSheet} />
+      <FlatList
+        data={posts}
+        renderItem={PostCardRenderer}
+        initialNumToRender={5}
+        maxToRenderPerBatch={5}
+        updateCellsBatchingPeriod={100}
+        keyExtractor={(item) => item.post.id}
+        onEndReached={() => handlePagination()}
+      />
+      <FloatingActionButton onPress={HandleBottomSheet} screen="Home" />
     </View>
   );
 };
