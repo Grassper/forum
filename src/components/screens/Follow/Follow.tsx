@@ -170,12 +170,18 @@ export const Follow: React.FC<Props_> = ({ route }) => {
         <FlatList
           data={usersList as FollowingItems_[]}
           renderItem={FollowingCardRenderer}
+          initialNumToRender={5}
+          maxToRenderPerBatch={5}
+          updateCellsBatchingPeriod={100}
           keyExtractor={(item) => item.followee.id}
           onEndReached={() => handlePagination()}
         />
       ) : (
         <FlatList
           data={usersList as FollowersItems_[]}
+          initialNumToRender={5}
+          maxToRenderPerBatch={5}
+          updateCellsBatchingPeriod={100}
           renderItem={FollowerCardRenderer}
           keyExtractor={(item) => item.follower.id}
           onEndReached={() => handlePagination()}

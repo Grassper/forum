@@ -114,6 +114,9 @@ export const CommunitySearch: React.FC = () => {
     <Box style={styles.container} bg={colors.white} pt="4">
       <FlatList
         data={community}
+        initialNumToRender={5}
+        maxToRenderPerBatch={5}
+        updateCellsBatchingPeriod={100}
         renderItem={CommunityCardRenderer}
         keyExtractor={(item) => item.id}
         onEndReached={() => handlePagination()}

@@ -110,6 +110,9 @@ export const Posts: React.FC = () => {
   return (
     <FlatList
       data={posts}
+      initialNumToRender={5}
+      maxToRenderPerBatch={5}
+      updateCellsBatchingPeriod={100}
       renderItem={PostCardRenderer}
       keyExtractor={(item) => item.id}
       onEndReached={() => handlePagination()}

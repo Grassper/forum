@@ -185,6 +185,9 @@ export const SubForum: React.FC<Props_> = ({ navigation, route }) => {
       )}
       <FlatList
         data={posts}
+        initialNumToRender={5}
+        maxToRenderPerBatch={5}
+        updateCellsBatchingPeriod={100}
         renderItem={PostCardRenderer}
         ListHeaderComponent={() => (
           <SubForumCard

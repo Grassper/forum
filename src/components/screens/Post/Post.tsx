@@ -192,6 +192,9 @@ export const Post: React.FC<Props_> = ({ route }) => {
     <Box style={styles.container}>
       <FlatList
         data={comments}
+        initialNumToRender={5}
+        maxToRenderPerBatch={5}
+        updateCellsBatchingPeriod={100}
         renderItem={CommentCardRenderer}
         keyExtractor={(item) => item.childComment.id}
         onEndReached={() => handlePagination()}

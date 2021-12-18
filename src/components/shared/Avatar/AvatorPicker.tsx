@@ -107,6 +107,7 @@ export const AvatorPicker: React.FC<Props_> = ({ about, setProfileUrl }) => {
   return (
     <Box height="100px" overflow="hidden" mt="4">
       <FlatList
+        updateCellsBatchingPeriod={100}
         showsHorizontalScrollIndicator={false}
         data={AvatorCollection}
         renderItem={RenderItem}

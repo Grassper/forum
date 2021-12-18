@@ -131,6 +131,9 @@ export const ChooseSubForum: React.FC<Props_> = ({ navigation, route }) => {
       <Box width="100%" style={styles.container}>
         <FlatList
           data={communities}
+          initialNumToRender={5}
+          maxToRenderPerBatch={5}
+          updateCellsBatchingPeriod={100}
           renderItem={CommunityTileRenderer}
           keyExtractor={(item) => item.community.id}
           onEndReached={() => handlePagination()}

@@ -122,6 +122,9 @@ export const NewChat: React.FC<Props_> = ({ navigation }) => {
         <Box my="4" width="100%">
           <FlatList
             data={profiles}
+            initialNumToRender={5}
+            maxToRenderPerBatch={5}
+            updateCellsBatchingPeriod={100}
             renderItem={UserCardRenderer}
             keyExtractor={(item) => item.id}
             onEndReached={() => handlePagination()}

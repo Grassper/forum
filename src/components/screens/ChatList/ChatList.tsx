@@ -129,6 +129,9 @@ export const ChatList: React.FC<Props_> = ({ navigation }) => {
           <FlatList
             data={chatRooms}
             renderItem={ChatCardRenderer}
+            initialNumToRender={5}
+            maxToRenderPerBatch={5}
+            updateCellsBatchingPeriod={100}
             keyExtractor={(item) => item.chatRoom.id}
             onEndReached={() => handlePagination()}
           />

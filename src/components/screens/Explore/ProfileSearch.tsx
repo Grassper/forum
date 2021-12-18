@@ -102,6 +102,9 @@ export const ProfileSearch: React.FC = () => {
     <Box style={styles.container} bg={colors.white} pt="4">
       <FlatList
         data={profiles}
+        initialNumToRender={5}
+        maxToRenderPerBatch={5}
+        updateCellsBatchingPeriod={100}
         renderItem={ProfileCardRenderer}
         keyExtractor={(item) => item.id}
         onEndReached={() => handlePagination()}

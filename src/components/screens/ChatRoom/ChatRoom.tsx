@@ -189,6 +189,9 @@ export const ChatRoom: React.FC<Props_> = ({ route, navigation }) => {
               ref={flatListRef}
               data={messages}
               inverted
+              initialNumToRender={5}
+              maxToRenderPerBatch={5}
+              updateCellsBatchingPeriod={100}
               renderItem={ChatCardRenderer}
               keyExtractor={(item) => item.id}
               onEndReached={handlePagination}
