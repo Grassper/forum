@@ -59,6 +59,8 @@ export const Home: React.FC<Props_> = ({ navigation }) => {
   const [nextToken, setNextToken] = React.useState<string>("");
   const [isStateReady, setStateReady] = React.useState(false);
 
+  const memoPost = React.useMemo(() => posts, [posts]);
+
   const populateContent = React.useCallback(() => {
     const fetchCall = async () => {
       if (id) {
@@ -145,6 +147,7 @@ export const Home: React.FC<Props_> = ({ navigation }) => {
       />
     );
   };
+  const keyExtractor = React.useCallback((item) => item.post.id, []);
 
   if (!isStateReady) {
     return (
@@ -162,13 +165,14 @@ export const Home: React.FC<Props_> = ({ navigation }) => {
     <View style={styles.container}>
       <BottomSheet isOpen={isOpen} onClose={HandleBottomSheet} />
       <FlatList
-        data={posts}
+        data={memoPost}
         renderItem={PostCardRenderer}
         initialNumToRender={5}
         maxToRenderPerBatch={5}
         updateCellsBatchingPeriod={100}
-        keyExtractor={(item) => item.post.id}
-        onEndReached={() => handlePagination()}
+        windowSize={5}
+        keyExtractor={keyExtractor}
+        onEndReached={handlePagination}
       />
       <FloatingActionButton onPress={HandleBottomSheet} screen="Home" />
     </View>

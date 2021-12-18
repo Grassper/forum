@@ -110,6 +110,8 @@ export const ChatList: React.FC<Props_> = ({ navigation }) => {
     );
   };
 
+  const keyExtractor = React.useCallback((item) => item.chatRoom.id, []);
+
   if (!isStateReady) {
     return (
       <ScrollView>
@@ -122,6 +124,7 @@ export const ChatList: React.FC<Props_> = ({ navigation }) => {
       </ScrollView>
     );
   }
+
   return (
     <Box style={styles.container} bg="white" alignItems="center">
       <Box alignItems="center" width="95%" py="15px">
@@ -129,11 +132,11 @@ export const ChatList: React.FC<Props_> = ({ navigation }) => {
           <FlatList
             data={chatRooms}
             renderItem={ChatCardRenderer}
-            initialNumToRender={5}
-            maxToRenderPerBatch={5}
+            initialNumToRender={10}
+            maxToRenderPerBatch={10}
             updateCellsBatchingPeriod={100}
-            keyExtractor={(item) => item.chatRoom.id}
-            onEndReached={() => handlePagination()}
+            keyExtractor={keyExtractor}
+            onEndReached={handlePagination}
           />
         </Box>
       </Box>

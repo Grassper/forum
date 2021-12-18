@@ -41,6 +41,9 @@ export const CommunitySearch: React.FC = () => {
           setCommunity(responseData.items);
           setNextToken(responseData.nextToken);
         }
+      } else {
+        setCommunity([]);
+        setNextToken("");
       }
     };
     fetchCall();

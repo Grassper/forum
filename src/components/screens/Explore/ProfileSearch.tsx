@@ -36,6 +36,9 @@ export const ProfileSearch: React.FC = () => {
           setProfiles(responseData.items);
           setNextToken(responseData.nextToken);
         }
+      } else {
+        setProfiles([]);
+        setNextToken("");
       }
     };
     fetchCall();

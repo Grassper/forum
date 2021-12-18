@@ -11,7 +11,6 @@ import { Box, HStack, Text } from "native-base";
 import React from "react";
 import {
   FlatList,
-  ImageBackground,
   InteractionManager,
   ListRenderItem,
   StyleSheet,
@@ -80,8 +79,6 @@ export const ChatRoom: React.FC<Props_> = ({ route, navigation }) => {
   }, [roomId]);
 
   const populateContent = React.useCallback(() => {
-    let isActive = true;
-
     const fetchCall = async () => {
       if (roomId) {
         const listMessageInput: ListMessageFetchInput_ = {
@@ -90,17 +87,13 @@ export const ChatRoom: React.FC<Props_> = ({ route, navigation }) => {
         };
 
         const responseData = await ListMessageFetch(listMessageInput);
-        if (responseData && isActive) {
+        if (responseData) {
           setMessages(responseData.items);
           setNextToken(responseData.nextToken);
         }
       }
     };
     fetchCall();
-
-    return () => {
-      isActive = false;
-    };
   }, [roomId]);
 
   useFocusEffect(
@@ -177,31 +170,25 @@ export const ChatRoom: React.FC<Props_> = ({ route, navigation }) => {
   }, [imageUri, navigation, title]);
 
   return (
-    <Box flex="1">
-      <ImageBackground
-        source={require("@/root/assets/images/chatroomWallpaper.jpg")}
-        resizeMode="cover"
-        style={styles.container}
-      >
-        <Box alignItems="center" style={styles.container} py="4">
-          <Box width="95%">
-            <FlatList
-              ref={flatListRef}
-              data={messages}
-              inverted
-              initialNumToRender={5}
-              maxToRenderPerBatch={5}
-              updateCellsBatchingPeriod={100}
-              renderItem={ChatCardRenderer}
-              keyExtractor={(item) => item.id}
-              onEndReached={handlePagination}
-              showsHorizontalScrollIndicator={false}
-              showsVerticalScrollIndicator={false}
-            />
-          </Box>
+    <Box flex="1" bg="green.900">
+      <Box alignItems="center" style={styles.container} py="4">
+        <Box width="95%">
+          <FlatList
+            ref={flatListRef}
+            data={messages}
+            inverted
+            initialNumToRender={10}
+            maxToRenderPerBatch={10}
+            updateCellsBatchingPeriod={100}
+            renderItem={ChatCardRenderer}
+            keyExtractor={(item) => item.id}
+            onEndReached={handlePagination}
+            showsHorizontalScrollIndicator={false}
+            showsVerticalScrollIndicator={false}
+          />
         </Box>
-        <InputField chatRoomId={roomId} />
-      </ImageBackground>
+      </Box>
+      <InputField chatRoomId={roomId} />
     </Box>
   );
 };

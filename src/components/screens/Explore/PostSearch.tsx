@@ -28,16 +28,21 @@ export const PostSearch: React.FC = () => {
 
   const populateContent = React.useCallback(() => {
     const fetchCall = async () => {
-      const searchPostInput: searchPostsFetchInput_ = {
-        limit: 10,
-        currentUserId: currentUser.id,
-        searchcontent: searchValue,
-      };
+      if (searchValue) {
+        const searchPostInput: searchPostsFetchInput_ = {
+          limit: 10,
+          currentUserId: currentUser.id,
+          searchcontent: searchValue,
+        };
 
-      const responseData = await searchPostsFetch(searchPostInput);
-      if (responseData) {
-        setPosts(responseData.items);
-        setNextToken(responseData.nextToken);
+        const responseData = await searchPostsFetch(searchPostInput);
+        if (responseData) {
+          setPosts(responseData.items);
+          setNextToken(responseData.nextToken);
+        }
+      } else {
+        setPosts([]);
+        setNextToken("");
       }
     };
     fetchCall();

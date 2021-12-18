@@ -25,6 +25,8 @@ export const Posts: React.FC = () => {
   const [isStateReady, setStateReady] = React.useState(false);
   const currentUser = React.useContext(UserContext).user;
 
+  const memoPost = React.useMemo(() => posts, [posts]);
+
   const populateContent = React.useCallback(() => {
     const fetchCall = async () => {
       const listPostInput: listPostByUserIdFetchInput_ = {
@@ -93,6 +95,8 @@ export const Posts: React.FC = () => {
     );
   };
 
+  const keyExtractor = React.useCallback((item) => item.id, []);
+
   if (!isStateReady) {
     return (
       <ScrollView>
@@ -109,13 +113,14 @@ export const Posts: React.FC = () => {
 
   return (
     <FlatList
-      data={posts}
-      initialNumToRender={5}
+      data={memoPost}
+      initialNumToRender={3}
       maxToRenderPerBatch={5}
+      windowSize={5}
       updateCellsBatchingPeriod={100}
       renderItem={PostCardRenderer}
-      keyExtractor={(item) => item.id}
-      onEndReached={() => handlePagination()}
+      keyExtractor={keyExtractor}
+      onEndReached={handlePagination}
     />
   );
 };

@@ -6,7 +6,7 @@ import { format, formatDistanceToNowStrict, isPast } from "date-fns";
 import { Video } from "expo-av";
 import { Box, Factory, Flex, HStack, Icon, Pressable, Text } from "native-base";
 import React, { useState } from "react";
-import { Platform, StatusBar, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import FastImage from "react-native-fast-image";
 import { SvgUri } from "react-native-svg";
 import Tooltip from "react-native-walkthrough-tooltip";
@@ -715,11 +715,6 @@ const UserActionToolTip: React.FC<UserActionToolTip_> = ({
         setTip(false);
       }}
       placement="top"
-      topAdjustment={
-        Platform.OS === "android" && StatusBar.currentHeight
-          ? -StatusBar.currentHeight + 23
-          : 0
-      }
       arrowSize={{ width: 0, height: 0 }}
       contentStyle={styles.tooltipContainer}
       backgroundColor="transparent"
