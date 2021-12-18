@@ -34,7 +34,6 @@ const Stack = createStackNavigator<StackParamList_>();
 const AuthStack = createStackNavigator<AuthStackParamList_>();
 
 const defaultStackOptions = {
-  headerBackTitleVisible: false,
   headerTintColor: colors.green,
   headerTitleStyle: {
     fontFamily: "lr",

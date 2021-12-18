@@ -11,7 +11,6 @@ import { colors } from "@/root/src/constants";
 import { AuthContext } from "@/root/src/context";
 
 const defaultStackOptions = {
-  headerBackTitleVisible: false,
   headerTintColor: colors.green,
   headerTitleStyle: {
     fontFamily: "lm",
