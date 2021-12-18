@@ -1,5 +1,4 @@
 import { GraphQLResult } from "@aws-amplify/api-graphql";
-import { DrawerNavigationProp } from "@react-navigation/drawer";
 import {
   CompositeNavigationProp,
   RouteProp,
@@ -12,7 +11,6 @@ import React from "react";
 import { FlatList, ListRenderItem, ScrollView, StyleSheet } from "react-native";
 
 import {
-  DrawerParamList_,
   RootStackParamList_,
   StackParamList_,
 } from "@/root/src/components/navigations/Navigation";
@@ -20,10 +18,7 @@ import { FollowCard } from "@/root/src/components/shared/Cards";
 
 type NavigationProp_ = CompositeNavigationProp<
   StackNavigationProp<StackParamList_, "Follow">,
-  CompositeNavigationProp<
-    DrawerNavigationProp<DrawerParamList_, "StackNav">,
-    StackNavigationProp<RootStackParamList_, "Application">
-  >
+  StackNavigationProp<RootStackParamList_, "Application">
 >;
 
 type RouteProp_ = RouteProp<StackParamList_, "Follow">;

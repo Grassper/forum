@@ -1,5 +1,4 @@
 import { GraphQLResult } from "@aws-amplify/api-graphql";
-import { DrawerNavigationProp } from "@react-navigation/drawer";
 import {
   CompositeNavigationProp,
   RouteProp,
@@ -18,9 +17,8 @@ import {
 } from "react-native";
 
 import {
-  DrawerParamList_,
   RootStackParamList_,
-  SubForumStackParamList_,
+  StackParamList_,
 } from "@/root/src/components/navigations/Navigation";
 import { SubForumCard } from "@/root/src/components/shared/Cards";
 import {
@@ -31,14 +29,11 @@ import { ReportCommunity } from "@/root/src/components/shared/Report";
 import { UserContext } from "@/root/src/context";
 
 type NavigationProp_ = CompositeNavigationProp<
-  StackNavigationProp<SubForumStackParamList_, "SubForum">,
-  CompositeNavigationProp<
-    DrawerNavigationProp<DrawerParamList_, "SubForumStack">,
-    StackNavigationProp<RootStackParamList_, "Application">
-  >
+  StackNavigationProp<StackParamList_, "SubForum">,
+  StackNavigationProp<RootStackParamList_, "Application">
 >;
 
-type RouteProp_ = RouteProp<SubForumStackParamList_, "SubForum">;
+type RouteProp_ = RouteProp<StackParamList_, "SubForum">;
 
 interface Props_ {
   navigation: NavigationProp_;

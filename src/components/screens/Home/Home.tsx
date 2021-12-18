@@ -11,6 +11,7 @@ import { Image } from "native-base";
 import React, { useState } from "react";
 import {
   FlatList,
+  InteractionManager,
   ListRenderItem,
   ScrollView,
   StyleSheet,
@@ -33,11 +34,11 @@ import { HeaderProfileIcon } from "@/root/src/components/shared/HeaderProfileIco
 import { UserContext } from "@/root/src/context";
 
 type NavigationProp_ = CompositeNavigationProp<
-  BottomTabNavigationProp<BottomTabParamList_, "Explore">,
+  DrawerNavigationProp<DrawerParamList_, "Home">,
   CompositeNavigationProp<
-    StackNavigationProp<StackParamList_, "BottomTabNav">,
+    BottomTabNavigationProp<BottomTabParamList_, "HomeDrawer">,
     CompositeNavigationProp<
-      DrawerNavigationProp<DrawerParamList_, "StackNav">,
+      StackNavigationProp<StackParamList_, "BottomTabNav">,
       StackNavigationProp<RootStackParamList_, "Application">
     >
   >
@@ -87,7 +88,15 @@ export const Home: React.FC<Props_> = ({ navigation }) => {
     };
   }, [id]);
 
-  useFocusEffect(populateContent);
+  // useFocusEffect(
+  //   React.useCallback(() => {
+  //     const task = InteractionManager.runAfterInteractions(populateContent);
+
+  //     return () => task.cancel();
+  //   }, [])
+  // );
+
+  // useFocusEffect(populateContent);
 
   const handlePagination = async () => {
     if (nextToken && id) {

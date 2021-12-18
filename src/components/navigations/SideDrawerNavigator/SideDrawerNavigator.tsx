@@ -21,10 +21,8 @@ import { Linking, StyleSheet } from "react-native";
 import { SvgUri } from "react-native-svg";
 
 import { DrawerParamList_ } from "@/root/src/components/navigations/Navigation";
-import {
-  StackNavigator,
-  SubForumStackNavigator,
-} from "@/root/src/components/navigations/StackNavigator";
+import { Home } from "@/root/src/components/screens/Home";
+import { JoinedSubForum } from "@/root/src/components/screens/JoinedSubForum";
 import { AuthContext, UserContext } from "@/root/src/context";
 
 const DrawerNavigator = createDrawerNavigator<DrawerParamList_>();
@@ -94,12 +92,9 @@ const CustomDrawerContent = (props: DrawerContentComponentProps) => {
           )}
           onPress={() =>
             props.navigation.navigate("Application", {
-              screen: "StackNav",
+              screen: "Profile",
               params: {
-                screen: "Profile",
-                params: {
-                  userId: id,
-                },
+                userId: id,
               },
             })
           }
@@ -219,11 +214,10 @@ export const SideDrawerNavigator = () => {
       drawerContent={(props) => <CustomDrawerContent {...props} />}
     >
       <DrawerNavigator.Screen
-        name="StackNav"
-        component={StackNavigator}
+        name="Home"
+        component={Home}
         options={{
           drawerLabel: "Home",
-          headerShown: false,
           drawerIcon: ({ color }) => (
             <Icon
               as={<AntDesign name="home" />}
@@ -235,12 +229,11 @@ export const SideDrawerNavigator = () => {
         }}
       />
       <DrawerNavigator.Screen
-        name="SubForumStack"
-        component={SubForumStackNavigator}
+        name="JoinedSubForum"
+        component={JoinedSubForum}
         options={() => ({
           drawerLabel: "Forums",
           title: "",
-          headerShown: false,
           drawerIcon: ({ color }) => (
             <Icon
               as={<AntDesign name="addusergroup" />}

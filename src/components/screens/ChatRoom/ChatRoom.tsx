@@ -1,11 +1,9 @@
 import { GraphQLResult } from "@aws-amplify/api-graphql";
 import { Feather } from "@expo/vector-icons";
-import { DrawerNavigationProp } from "@react-navigation/drawer";
 import {
   CompositeNavigationProp,
   RouteProp,
   useFocusEffect,
-  useNavigation,
 } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { API } from "aws-amplify";
@@ -21,7 +19,6 @@ import { SvgUri } from "react-native-svg";
 
 import { Observable } from "@/root/node_modules/zen-observable-ts";
 import {
-  DrawerParamList_,
   RootStackParamList_,
   StackParamList_,
 } from "@/root/src/components/navigations/Navigation";
@@ -32,10 +29,7 @@ import { InputField } from "./InputField";
 
 type NavigationProp_ = CompositeNavigationProp<
   StackNavigationProp<StackParamList_, "ChatRoom">,
-  CompositeNavigationProp<
-    DrawerNavigationProp<DrawerParamList_, "StackNav">,
-    StackNavigationProp<RootStackParamList_, "Application">
-  >
+  StackNavigationProp<RootStackParamList_, "Application">
 >;
 
 type RouteProp_ = RouteProp<StackParamList_, "ChatRoom">;
@@ -45,8 +39,7 @@ interface Props_ {
   route: RouteProp_;
 }
 
-export const ChatRoom: React.FC<Props_> = ({ route }) => {
-  const navigation = useNavigation();
+export const ChatRoom: React.FC<Props_> = ({ route, navigation }) => {
   const flatListRef: React.RefObject<FlatList> = React.createRef();
 
   const { imageUri, title, roomId } = route.params;

@@ -1,5 +1,4 @@
 import { GraphQLResult } from "@aws-amplify/api-graphql";
-import { DrawerNavigationProp } from "@react-navigation/drawer";
 import {
   CompositeNavigationProp,
   useFocusEffect,
@@ -11,7 +10,6 @@ import React from "react";
 import { FlatList, ListRenderItem, StyleSheet } from "react-native";
 
 import {
-  DrawerParamList_,
   RootStackParamList_,
   StackParamList_,
 } from "@/root/src/components/navigations/Navigation";
@@ -22,10 +20,7 @@ import { useDebounce } from "@/root/src/hooks";
 
 type NavigationProp_ = CompositeNavigationProp<
   StackNavigationProp<StackParamList_, "NewChat">,
-  CompositeNavigationProp<
-    DrawerNavigationProp<DrawerParamList_, "StackNav">,
-    StackNavigationProp<RootStackParamList_, "Application">
-  >
+  StackNavigationProp<RootStackParamList_, "Application">
 >;
 
 interface Props_ {

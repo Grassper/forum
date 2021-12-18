@@ -1,6 +1,5 @@
 import { GraphQLResult } from "@aws-amplify/api-graphql";
 import { Ionicons } from "@expo/vector-icons";
-import { DrawerNavigationProp } from "@react-navigation/drawer";
 import {
   CompositeNavigationProp,
   RouteProp,
@@ -25,23 +24,19 @@ import isLength from "validator/es/lib/isLength";
 import matches from "validator/es/lib/matches";
 
 import {
-  DrawerParamList_,
   RootStackParamList_,
-  SubForumStackParamList_,
+  StackParamList_,
 } from "@/root/src/components/navigations/Navigation";
 import { ImagePickerButton } from "@/root/src/components/shared/Picker";
 import { UserContext } from "@/root/src/context";
 import { useToggle } from "@/root/src/hooks";
 import { SignS3ImageKey } from "@/root/src/utils/helpers";
 
-type RouteProp_ = RouteProp<SubForumStackParamList_, "EditAndCreateSubForum">;
+type RouteProp_ = RouteProp<StackParamList_, "EditAndCreateSubForum">;
 
 type NavigationProp_ = CompositeNavigationProp<
-  StackNavigationProp<SubForumStackParamList_, "EditAndCreateSubForum">,
-  CompositeNavigationProp<
-    DrawerNavigationProp<DrawerParamList_, "SubForumStack">,
-    StackNavigationProp<RootStackParamList_, "Application">
-  >
+  StackNavigationProp<StackParamList_, "EditAndCreateSubForum">,
+  StackNavigationProp<RootStackParamList_, "Application">
 >;
 
 interface Props_ {
@@ -130,9 +125,12 @@ export const EditAndCreateSubForum: React.FC<Props_> = ({
 
         if (createdForumId) {
           navigation.navigate({
-            name: "SubForumStack",
+            name: "BottomTabNav",
             params: {
-              screen: "JoinedSubForum",
+              screen: "HomeDrawer",
+              params: {
+                screen: "JoinedSubForum",
+              },
             },
             merge: true,
           });
@@ -156,9 +154,12 @@ export const EditAndCreateSubForum: React.FC<Props_> = ({
 
         if (updatedForumId) {
           navigation.navigate({
-            name: "SubForumStack",
+            name: "BottomTabNav",
             params: {
-              screen: "JoinedSubForum",
+              screen: "HomeDrawer",
+              params: {
+                screen: "JoinedSubForum",
+              },
             },
             merge: true,
           });
@@ -303,7 +304,7 @@ export const EditAndCreateSubForum: React.FC<Props_> = ({
               aspectRatio={[4, 3]}
               setS3ImageKey={setBannerImageS3Key}
               setProgressPercentage={(value) => {
-                value == 100
+                value === 100
                   ? toggleCoverLoader(false)
                   : toggleCoverLoader(true);
               }} // percentage progress
@@ -359,7 +360,7 @@ export const EditAndCreateSubForum: React.FC<Props_> = ({
                 aspectRatio={[1, 1]}
                 setS3ImageKey={setProfileImageS3Key}
                 setProgressPercentage={(value) => {
-                  value == 100
+                  value === 100
                     ? toggleProfileLoader(false)
                     : toggleProfileLoader(true);
                 }} // percentage progress

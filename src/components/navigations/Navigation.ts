@@ -1,10 +1,34 @@
 import { NavigatorScreenParams } from "@react-navigation/native";
+
+interface UserPostMetric {
+  items: UserPostMetricItem[];
+}
+
+interface UserPostMetricItem {
+  type: "LIKE" | "LOVE" | "SUPPORT" | "DISLIKE";
+}
+
 /**
- * bottom tab navigator => stack navigator => tab navigator
+ * Bottom tab navigatior
+ * Home => tab navigator => home, subforum stack
+ * Explore
+ * Message
+ * Survey
  */
 
-export type BottomTabParamList_ = {
+// linkedin like
+
+/**
+ * Bottom tab navigator => Stack navigator
+ */
+
+export type DrawerParamList_ = {
   Home: undefined;
+  JoinedSubForum: undefined;
+};
+
+export type BottomTabParamList_ = {
+  HomeDrawer: NavigatorScreenParams<DrawerParamList_>;
   Explore: undefined;
   ChatList: undefined;
   Survey: undefined;
@@ -17,31 +41,6 @@ export type AuthStackParamList_ = {
   ForgotPassword: { username: string; email: string };
   AccountRecovery: undefined;
 };
-
-export type SubForumStackParamList_ = {
-  // * SubForum
-  SubForum: { subForumId: string; title: string };
-  SubForumMod: undefined;
-  JoinedSubForum: undefined;
-  EditAndCreateSubForum: {
-    title: "Edit Subforum" | "Create Subforum";
-    action: "Add" | "Edit";
-    subForumId?: string; // pass only for add action which means create subforum
-    name?: string;
-    description?: string;
-    profileImageS3Key?: string;
-    bannerImageS3Key?: string;
-    _version?: number;
-  };
-};
-
-interface UserPostMetric {
-  items: UserPostMetricItem[];
-}
-
-interface UserPostMetricItem {
-  type: "LIKE" | "LOVE" | "SUPPORT" | "DISLIKE";
-}
 
 export type StackParamList_ = {
   BottomTabNav: NavigatorScreenParams<BottomTabParamList_>;
@@ -125,16 +124,25 @@ export type StackParamList_ = {
   // * Message
   NewChat: undefined;
   ChatRoom: { title: string; imageUri: string; roomId: string };
-};
 
-export type DrawerParamList_ = {
-  StackNav: NavigatorScreenParams<StackParamList_>;
-  SubForumStack: NavigatorScreenParams<SubForumStackParamList_>;
+  // * SubForum
+  SubForum: { subForumId: string; title: string };
+  SubForumMod: undefined;
+  EditAndCreateSubForum: {
+    title: "Edit Subforum" | "Create Subforum";
+    action: "Add" | "Edit";
+    subForumId?: string; // pass only for add action which means create subforum
+    name?: string;
+    description?: string;
+    profileImageS3Key?: string;
+    bannerImageS3Key?: string;
+    _version?: number;
+  };
 };
 
 export type RootStackParamList_ = {
   Authentication: NavigatorScreenParams<AuthStackParamList_>;
-  Application: NavigatorScreenParams<DrawerParamList_>;
+  Application: NavigatorScreenParams<StackParamList_>;
 };
 
 declare global {

@@ -1,4 +1,5 @@
 import { GraphQLResult } from "@aws-amplify/api-graphql";
+import { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
 import { DrawerNavigationProp } from "@react-navigation/drawer";
 import {
   CompositeNavigationProp,
@@ -11,19 +12,23 @@ import React from "react";
 import { FlatList, ListRenderItem, ScrollView, StyleSheet } from "react-native";
 
 import {
+  BottomTabParamList_,
   DrawerParamList_,
   RootStackParamList_,
-  SubForumStackParamList_,
+  StackParamList_,
 } from "@/root/src/components/navigations/Navigation";
 import { HeaderProfileIcon } from "@/root/src/components/shared/HeaderProfileIcon";
 import { CommunityTile } from "@/root/src/components/shared/Tile";
 import { UserContext } from "@/root/src/context";
 
 type NavigationProp_ = CompositeNavigationProp<
-  StackNavigationProp<SubForumStackParamList_, "JoinedSubForum">,
+  DrawerNavigationProp<DrawerParamList_, "JoinedSubForum">,
   CompositeNavigationProp<
-    DrawerNavigationProp<DrawerParamList_, "SubForumStack">,
-    StackNavigationProp<RootStackParamList_, "Application">
+    BottomTabNavigationProp<BottomTabParamList_, "HomeDrawer">,
+    CompositeNavigationProp<
+      StackNavigationProp<StackParamList_, "BottomTabNav">,
+      StackNavigationProp<RootStackParamList_, "Application">
+    >
   >
 >;
 

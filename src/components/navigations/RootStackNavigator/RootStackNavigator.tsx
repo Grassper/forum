@@ -3,8 +3,10 @@ import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
 
 import { RootStackParamList_ } from "@/root/src/components/navigations/Navigation";
-import { SideDrawerNavigator } from "@/root/src/components/navigations/SideDrawerNavigator";
-import { AuthStackNavigator } from "@/root/src/components/navigations/StackNavigator";
+import {
+  AuthStackNavigator,
+  StackNavigator,
+} from "@/root/src/components/navigations/StackNavigator";
 import { colors } from "@/root/src/constants";
 import { AuthContext } from "@/root/src/context";
 
@@ -26,7 +28,7 @@ export const RootStackNavigator = () => {
         {authState === "LOGGEDIN" ? (
           <RootStack.Screen
             name="Application"
-            component={SideDrawerNavigator}
+            component={StackNavigator}
             options={() => ({
               headerShown: false,
             })}

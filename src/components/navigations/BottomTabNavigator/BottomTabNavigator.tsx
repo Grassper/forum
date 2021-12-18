@@ -3,9 +3,9 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import React from "react";
 
 import { BottomTabParamList_ } from "@/root/src/components/navigations/Navigation";
+import { SideDrawerNavigator } from "@/root/src/components/navigations/SideDrawerNavigator";
 import { ChatList } from "@/root/src/components/screens/ChatList";
 import { Explore } from "@/root/src/components/screens/Explore";
-import { Home } from "@/root/src/components/screens/Home";
 import { Survey } from "@/root/src/components/screens/Survey";
 
 const Tab = createBottomTabNavigator<BottomTabParamList_>();
@@ -18,10 +18,11 @@ export const BottomTabNavigator = () => {
   return (
     <Tab.Navigator>
       <Tab.Screen
-        name="Home"
-        component={Home}
+        name="HomeDrawer"
+        component={SideDrawerNavigator}
         options={{
           title: "",
+          headerShown: false,
           tabBarShowLabel: false,
           headerTitleAlign: "center",
           tabBarIconStyle: { alignItems: "center" },

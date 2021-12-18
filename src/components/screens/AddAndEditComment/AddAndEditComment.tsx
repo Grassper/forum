@@ -1,5 +1,4 @@
 import { GraphQLResult } from "@aws-amplify/api-graphql";
-import { DrawerNavigationProp } from "@react-navigation/drawer";
 import { CompositeNavigationProp, RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { API } from "aws-amplify";
@@ -18,7 +17,6 @@ import isLength from "validator/es/lib/isLength";
 import matches from "validator/es/lib/matches";
 
 import {
-  DrawerParamList_,
   RootStackParamList_,
   StackParamList_,
 } from "@/root/src/components/navigations/Navigation";
@@ -27,10 +25,7 @@ import { UserContext } from "@/root/src/context";
 
 type NavigationProp_ = CompositeNavigationProp<
   StackNavigationProp<StackParamList_, "AddAndEditComment">,
-  CompositeNavigationProp<
-    DrawerNavigationProp<DrawerParamList_, "StackNav">,
-    StackNavigationProp<RootStackParamList_, "Application">
-  >
+  StackNavigationProp<RootStackParamList_, "Application">
 >;
 
 type RouteProp_ = RouteProp<StackParamList_, "AddAndEditComment">;

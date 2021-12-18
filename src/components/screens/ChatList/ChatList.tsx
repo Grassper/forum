@@ -1,6 +1,5 @@
 import { GraphQLResult } from "@aws-amplify/api-graphql";
 import { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
-import { DrawerNavigationProp } from "@react-navigation/drawer";
 import {
   CompositeNavigationProp,
   useFocusEffect,
@@ -13,7 +12,6 @@ import { FlatList, ListRenderItem, StyleSheet } from "react-native";
 
 import {
   BottomTabParamList_,
-  DrawerParamList_,
   RootStackParamList_,
   StackParamList_,
 } from "@/root/src/components/navigations/Navigation";
@@ -25,10 +23,7 @@ type NavigationProp_ = CompositeNavigationProp<
   BottomTabNavigationProp<BottomTabParamList_, "ChatList">,
   CompositeNavigationProp<
     StackNavigationProp<StackParamList_, "BottomTabNav">,
-    CompositeNavigationProp<
-      DrawerNavigationProp<DrawerParamList_, "StackNav">,
-      StackNavigationProp<RootStackParamList_, "Application">
-    >
+    StackNavigationProp<RootStackParamList_, "Application">
   >
 >;
 

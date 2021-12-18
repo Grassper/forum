@@ -25,12 +25,9 @@ export const FollowCard: React.FC<FollowCard_> = ({
         if (id) {
           navigation.dispatch(
             StackActions.push("Application", {
-              screen: "StackNav",
+              screen: "Profile",
               params: {
-                screen: "Profile",
-                params: {
-                  userId: id,
-                },
+                userId: id,
               },
             })
           );

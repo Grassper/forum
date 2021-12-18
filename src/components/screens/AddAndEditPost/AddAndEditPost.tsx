@@ -1,6 +1,5 @@
 import { GraphQLResult } from "@aws-amplify/api-graphql";
 import { AntDesign } from "@expo/vector-icons";
-import { DrawerNavigationProp } from "@react-navigation/drawer";
 import { CompositeNavigationProp, RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { API } from "aws-amplify";
@@ -22,7 +21,6 @@ import isLength from "validator/es/lib/isLength";
 import matches from "validator/es/lib/matches";
 
 import {
-  DrawerParamList_,
   RootStackParamList_,
   StackParamList_,
 } from "@/root/src/components/navigations/Navigation";
@@ -34,10 +32,7 @@ type RouteProp_ = RouteProp<StackParamList_, "AddAndEditPost">;
 
 type NavigationProp_ = CompositeNavigationProp<
   StackNavigationProp<StackParamList_, "AddAndEditPost">,
-  CompositeNavigationProp<
-    DrawerNavigationProp<DrawerParamList_, "StackNav">,
-    StackNavigationProp<RootStackParamList_, "Application">
-  >
+  StackNavigationProp<RootStackParamList_, "Application">
 >;
 interface Props_ {
   navigation: NavigationProp_;
@@ -87,7 +82,10 @@ export const AddAndEditPost: React.FC<Props_> = ({ navigation, route }) => {
             navigation.navigate({
               name: "BottomTabNav",
               params: {
-                screen: "Home",
+                screen: "HomeDrawer",
+                params: {
+                  screen: "Home",
+                },
               },
               merge: true,
             });
@@ -105,7 +103,10 @@ export const AddAndEditPost: React.FC<Props_> = ({ navigation, route }) => {
               navigation.navigate({
                 name: "BottomTabNav",
                 params: {
-                  screen: "Home",
+                  screen: "HomeDrawer",
+                  params: {
+                    screen: "Home",
+                  },
                 },
                 merge: true,
               });
@@ -143,7 +144,10 @@ export const AddAndEditPost: React.FC<Props_> = ({ navigation, route }) => {
               navigation.navigate({
                 name: "BottomTabNav",
                 params: {
-                  screen: "Home",
+                  screen: "HomeDrawer",
+                  params: {
+                    screen: "Home",
+                  },
                 },
                 merge: true,
               });

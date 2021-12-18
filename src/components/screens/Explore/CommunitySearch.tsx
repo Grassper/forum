@@ -74,13 +74,10 @@ export const CommunitySearch: React.FC = () => {
         onPress={() => {
           navigation.dispatch(
             StackActions.push("Application", {
-              screen: "SubForumStack",
+              screen: "SubForum",
               params: {
-                screen: "SubForum",
-                params: {
-                  subForumId: item.id,
-                  title: item.name,
-                },
+                subForumId: item.id,
+                title: item.name,
               },
             })
           );

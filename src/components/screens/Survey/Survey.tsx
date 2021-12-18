@@ -64,7 +64,8 @@ export const Survey: React.FC = () => {
     let totalVotes = 0;
 
     const surveyAnswers = surveyQuestion.surveyAnswer.items.map((entry) => {
-      totalVotes = +entry.voteCount;
+      totalVotes += entry.voteCount;
+
       if (entry.userSurveyMetric.items.length !== 0) {
         votedPollId = entry.userSurveyMetric.items[0].surveyAnswerId;
       }

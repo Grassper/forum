@@ -26,14 +26,11 @@ export const BottomSheet: React.FC<Props_> = ({ isOpen, onClose }) => {
             <Item
               onPress={() => {
                 navigation.navigate("Application", {
-                  screen: "StackNav",
+                  screen: "ChooseSubForum",
                   params: {
-                    screen: "ChooseSubForum",
-                    params: {
-                      postType: "Text",
-                      action: "Add",
-                      hideUpload: true,
-                    },
+                    postType: "Text",
+                    action: "Add",
+                    hideUpload: true,
                   },
                 });
                 onClose();
@@ -45,11 +42,8 @@ export const BottomSheet: React.FC<Props_> = ({ isOpen, onClose }) => {
             <Item
               onPress={() => {
                 navigation.navigate("Application", {
-                  screen: "StackNav",
-                  params: {
-                    screen: "ChooseSubForum",
-                    params: { postType: "Image", action: "Add" },
-                  },
+                  screen: "ChooseSubForum",
+                  params: { postType: "Image", action: "Add" },
                 });
                 onClose();
               }}
@@ -60,13 +54,10 @@ export const BottomSheet: React.FC<Props_> = ({ isOpen, onClose }) => {
             <Item
               onPress={() => {
                 navigation.navigate("Application", {
-                  screen: "StackNav",
+                  screen: "ChooseSubForum",
                   params: {
-                    screen: "ChooseSubForum",
-                    params: {
-                      postType: "Video",
-                      action: "Add",
-                    },
+                    postType: "Video",
+                    action: "Add",
                   },
                 });
 
@@ -79,11 +70,8 @@ export const BottomSheet: React.FC<Props_> = ({ isOpen, onClose }) => {
             <Item
               onPress={() => {
                 navigation.navigate("Application", {
-                  screen: "StackNav",
-                  params: {
-                    screen: "ChooseSubForum",
-                    params: { postType: "Audio", action: "Add" },
-                  },
+                  screen: "ChooseSubForum",
+                  params: { postType: "Audio", action: "Add" },
                 });
                 onClose();
               }}
@@ -94,14 +82,11 @@ export const BottomSheet: React.FC<Props_> = ({ isOpen, onClose }) => {
             <Item
               onPress={() => {
                 navigation.navigate("Application", {
-                  screen: "StackNav",
+                  screen: "ChooseSubForum",
                   params: {
-                    screen: "ChooseSubForum",
-                    params: {
-                      postType: "Poll",
-                      action: "Add",
-                      hideUpload: true,
-                    },
+                    postType: "Poll",
+                    action: "Add",
+                    hideUpload: true,
                   },
                 });
                 onClose();

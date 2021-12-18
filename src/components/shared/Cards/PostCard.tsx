@@ -226,12 +226,9 @@ const PostInfo: React.FC<PostInfo_> = ({
               onPress={() => {
                 navigation.dispatch(
                   StackActions.push("Application", {
-                    screen: "StackNav",
+                    screen: "Profile",
                     params: {
-                      screen: "Profile",
-                      params: {
-                        userId: authorId,
-                      },
+                      userId: authorId,
                     },
                   })
                 );
@@ -562,11 +559,8 @@ const PostUserActions: React.FC<PostUserActions_> = ({
           <Pressable
             onPress={() =>
               navigation.navigate("Application", {
-                screen: "StackNav",
-                params: {
-                  screen: "AddAndEditComment",
-                  params: { ...post, action: "Add" },
-                },
+                screen: "AddAndEditComment",
+                params: { ...post, action: "Add" },
               })
             }
           >
@@ -581,11 +575,8 @@ const PostUserActions: React.FC<PostUserActions_> = ({
           <Pressable
             onPress={() =>
               navigation.navigate("Application", {
-                screen: "StackNav",
-                params: {
-                  screen: "Post",
-                  params: { ...post },
-                },
+                screen: "Post",
+                params: { ...post },
               })
             }
           >

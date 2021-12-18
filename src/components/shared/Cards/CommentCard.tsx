@@ -239,21 +239,18 @@ export const CommentCard: React.FC<Props_> = ({
                   <Pressable
                     onPress={() => {
                       navigation.navigate("Application", {
-                        screen: "StackNav",
+                        screen: "AddAndEditReplies",
                         params: {
-                          screen: "AddAndEditReplies",
-                          params: {
-                            username,
-                            avatarUrl,
-                            subForum,
-                            commentAuthorId,
-                            postId,
-                            subForumId,
-                            contentText,
-                            commentId,
-                            timeStamp,
-                            action: "Add",
-                          },
+                          username,
+                          avatarUrl,
+                          subForum,
+                          commentAuthorId,
+                          postId,
+                          subForumId,
+                          contentText,
+                          commentId,
+                          timeStamp,
+                          action: "Add",
                         },
                       });
                     }}
@@ -274,21 +271,18 @@ export const CommentCard: React.FC<Props_> = ({
                 <Pressable
                   onPress={() => {
                     navigation.navigate("Application", {
-                      screen: "StackNav",
+                      screen: "Comment",
                       params: {
-                        screen: "Comment",
-                        params: {
-                          username,
-                          avatarUrl,
-                          subForum,
-                          postId,
-                          commentAuthorId,
-                          subForumId,
-                          contentText,
-                          commentId,
-                          timeStamp,
-                          repliesCount,
-                        },
+                        username,
+                        avatarUrl,
+                        subForum,
+                        postId,
+                        commentAuthorId,
+                        subForumId,
+                        contentText,
+                        commentId,
+                        timeStamp,
+                        repliesCount,
                       },
                     });
                   }}

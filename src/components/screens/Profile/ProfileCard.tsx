@@ -158,11 +158,8 @@ export const ProfileCard: React.FC<Props_> = ({ routeUserId }) => {
           <StatsCard
             onPress={() => {
               navigation.navigate("Application", {
-                screen: "StackNav",
-                params: {
-                  screen: "Follow",
-                  params: { title: "Followers", routeUserId },
-                },
+                screen: "Follow",
+                params: { title: "Followers", routeUserId },
               });
             }}
             count={profile.userMetrics.followers}
@@ -176,11 +173,8 @@ export const ProfileCard: React.FC<Props_> = ({ routeUserId }) => {
           <StatsCard
             onPress={() => {
               navigation.navigate("Application", {
-                screen: "StackNav",
-                params: {
-                  screen: "Follow",
-                  params: { title: "Following", routeUserId },
-                },
+                screen: "Follow",
+                params: { title: "Following", routeUserId },
               });
             }}
             count={profile.userMetrics.following}

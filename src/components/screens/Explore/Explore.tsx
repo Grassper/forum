@@ -1,5 +1,4 @@
 import { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
-import { DrawerNavigationProp } from "@react-navigation/drawer";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { CompositeNavigationProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
@@ -9,7 +8,6 @@ import { Dimensions, StyleSheet } from "react-native";
 
 import {
   BottomTabParamList_,
-  DrawerParamList_,
   RootStackParamList_,
   StackParamList_,
 } from "@/root/src/components/navigations/Navigation";
@@ -26,10 +24,7 @@ type NavigationProp_ = CompositeNavigationProp<
   BottomTabNavigationProp<BottomTabParamList_, "Explore">,
   CompositeNavigationProp<
     StackNavigationProp<StackParamList_, "BottomTabNav">,
-    CompositeNavigationProp<
-      DrawerNavigationProp<DrawerParamList_, "StackNav">,
-      StackNavigationProp<RootStackParamList_, "Application">
-    >
+    StackNavigationProp<RootStackParamList_, "Application">
   >
 >;
 

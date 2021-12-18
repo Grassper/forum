@@ -181,19 +181,16 @@ export const SubForumCard: React.FC<Props_> = ({
                 <Pressable
                   onPress={() => {
                     navigation.navigate("Application", {
-                      screen: "SubForumStack",
+                      screen: "EditAndCreateSubForum",
                       params: {
-                        screen: "EditAndCreateSubForum",
-                        params: {
-                          title: "Edit Subforum",
-                          action: "Edit",
-                          subForumId: id,
-                          name,
-                          description,
-                          profileImageS3Key,
-                          bannerImageS3Key: coverImageS3Key,
-                          _version,
-                        },
+                        title: "Edit Subforum",
+                        action: "Edit",
+                        subForumId: id,
+                        name,
+                        description,
+                        profileImageS3Key,
+                        bannerImageS3Key: coverImageS3Key,
+                        _version,
                       },
                     });
                   }}
