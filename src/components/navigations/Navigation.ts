@@ -22,16 +22,11 @@ interface UserPostMetricItem {
  * Bottom tab navigator => Stack navigator
  */
 
-export type DrawerParamList_ = {
-  Home: undefined;
-  JoinedSubForum: undefined;
-};
-
 export type BottomTabParamList_ = {
-  HomeDrawer: NavigatorScreenParams<DrawerParamList_>;
+  Home: undefined;
   Explore: undefined;
-  ChatList: undefined;
   Survey: undefined;
+  JoinedSubForum: undefined;
 };
 
 export type AuthStackParamList_ = {
@@ -123,6 +118,7 @@ export type StackParamList_ = {
 
   // * Message
   NewChat: undefined;
+  ChatList: undefined;
   ChatRoom: { title: string; imageUri: string; roomId: string };
 
   // * SubForum
@@ -138,6 +134,8 @@ export type StackParamList_ = {
     bannerImageS3Key?: string;
     _version?: number;
   };
+
+  Info: undefined;
 };
 
 export type RootStackParamList_ = {

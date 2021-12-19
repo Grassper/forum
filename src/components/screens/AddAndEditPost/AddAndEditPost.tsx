@@ -82,10 +82,7 @@ export const AddAndEditPost: React.FC<Props_> = ({ navigation, route }) => {
             navigation.navigate({
               name: "BottomTabNav",
               params: {
-                screen: "HomeDrawer",
-                params: {
-                  screen: "Home",
-                },
+                screen: "Home",
               },
               merge: true,
             });
@@ -103,10 +100,7 @@ export const AddAndEditPost: React.FC<Props_> = ({ navigation, route }) => {
               navigation.navigate({
                 name: "BottomTabNav",
                 params: {
-                  screen: "HomeDrawer",
-                  params: {
-                    screen: "Home",
-                  },
+                  screen: "Home",
                 },
                 merge: true,
               });
@@ -144,10 +138,7 @@ export const AddAndEditPost: React.FC<Props_> = ({ navigation, route }) => {
               navigation.navigate({
                 name: "BottomTabNav",
                 params: {
-                  screen: "HomeDrawer",
-                  params: {
-                    screen: "Home",
-                  },
+                  screen: "Survey",
                 },
                 merge: true,
               });

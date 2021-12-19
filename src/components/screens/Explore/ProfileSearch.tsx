@@ -1,5 +1,9 @@
 import { GraphQLResult } from "@aws-amplify/api-graphql";
-import { useFocusEffect } from "@react-navigation/native";
+import {
+  StackActions,
+  useFocusEffect,
+  useNavigation,
+} from "@react-navigation/native";
 import { API } from "aws-amplify";
 import { Box } from "native-base";
 import React from "react";
@@ -18,7 +22,7 @@ import { TabNavigatorExploreContext } from "./context";
 
 export const ProfileSearch: React.FC = () => {
   const searchValue = React.useContext(TabNavigatorExploreContext);
-
+  const navigation = useNavigation();
   const [profiles, setProfiles] = React.useState<Item[]>([]);
   const [nextToken, setNextToken] = React.useState<string>("");
   const [isStateReady, setStateReady] = React.useState(false);
@@ -76,6 +80,14 @@ export const ProfileSearch: React.FC = () => {
         id={item.id}
         username={item.username}
         avatarUrl={item.profileImageUrl}
+        onPress={() =>
+          navigation.dispatch(
+            StackActions.push("Application", {
+              screen: "Profile",
+              params: { userId: item.id },
+            })
+          )
+        }
       />
     );
   };

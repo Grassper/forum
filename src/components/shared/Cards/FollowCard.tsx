@@ -1,5 +1,4 @@
 import { Entypo } from "@expo/vector-icons";
-import { StackActions, useNavigation } from "@react-navigation/native";
 import { Box, HStack, Pressable, Text } from "native-base";
 import React from "react";
 import { SvgUri } from "react-native-svg";
@@ -10,30 +9,17 @@ interface FollowCard_ {
   id?: string;
   username?: string;
   avatarUrl?: string;
+  onPress?: () => void;
 }
 
 export const FollowCard: React.FC<FollowCard_> = ({
   username,
   id,
+  onPress,
   avatarUrl,
 }) => {
-  const navigation = useNavigation();
-
   return (
-    <Pressable
-      onPress={() => {
-        if (id) {
-          navigation.dispatch(
-            StackActions.push("Application", {
-              screen: "Profile",
-              params: {
-                userId: id,
-              },
-            })
-          );
-        }
-      }}
-    >
+    <Pressable onPress={onPress}>
       <Box alignItems="center" bg="white">
         <Box width="90%">
           <HStack alignItems="center" justifyContent="space-between" mb="4">

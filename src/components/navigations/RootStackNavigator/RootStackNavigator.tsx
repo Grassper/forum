@@ -12,6 +12,8 @@ import { AuthContext } from "@/root/src/context";
 
 const defaultStackOptions = {
   headerTintColor: colors.green,
+  headerBackTitleVisible: false,
+  headerShown: false,
   headerTitleStyle: {
     fontFamily: "lm",
   },
@@ -25,20 +27,11 @@ export const RootStackNavigator = () => {
     <NavigationContainer>
       <RootStack.Navigator screenOptions={defaultStackOptions}>
         {authState === "LOGGEDIN" ? (
-          <RootStack.Screen
-            name="Application"
-            component={StackNavigator}
-            options={() => ({
-              headerShown: false,
-            })}
-          />
+          <RootStack.Screen name="Application" component={StackNavigator} />
         ) : (
           <RootStack.Screen
             name="Authentication"
             component={AuthStackNavigator}
-            options={() => ({
-              headerShown: false,
-            })}
           />
         )}
       </RootStack.Navigator>

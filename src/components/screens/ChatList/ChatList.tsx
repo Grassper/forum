@@ -1,5 +1,4 @@
 import { GraphQLResult } from "@aws-amplify/api-graphql";
-import { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
 import {
   CompositeNavigationProp,
   useFocusEffect,
@@ -17,7 +16,6 @@ import {
 } from "react-native";
 
 import {
-  BottomTabParamList_,
   RootStackParamList_,
   StackParamList_,
 } from "@/root/src/components/navigations/Navigation";
@@ -27,11 +25,8 @@ import { CommunityTile } from "@/root/src/components/shared/Tile";
 import { UserContext } from "@/root/src/context";
 
 type NavigationProp_ = CompositeNavigationProp<
-  BottomTabNavigationProp<BottomTabParamList_, "ChatList">,
-  CompositeNavigationProp<
-    StackNavigationProp<StackParamList_, "BottomTabNav">,
-    StackNavigationProp<RootStackParamList_, "Application">
-  >
+  StackNavigationProp<StackParamList_, "ChatList">,
+  StackNavigationProp<RootStackParamList_, "Application">
 >;
 
 interface Props_ {
@@ -115,6 +110,18 @@ export const ChatList: React.FC<Props_> = ({ navigation }) => {
   if (!isStateReady) {
     return (
       <ScrollView>
+        <CommunityTile hideDivider />
+        <CommunityTile hideDivider />
+        <CommunityTile hideDivider />
+        <CommunityTile hideDivider />
+        <CommunityTile hideDivider />
+        <CommunityTile hideDivider />
+        <CommunityTile hideDivider />
+        <CommunityTile hideDivider />
+        <CommunityTile hideDivider />
+        <CommunityTile hideDivider />
+        <CommunityTile hideDivider />
+        <CommunityTile hideDivider />
         <CommunityTile hideDivider />
         <CommunityTile hideDivider />
         <CommunityTile hideDivider />

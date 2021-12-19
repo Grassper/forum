@@ -1,10 +1,10 @@
 import { GraphQLResult } from "@aws-amplify/api-graphql";
 import { Feather, Ionicons } from "@expo/vector-icons";
-import { StackActions, useNavigation } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import { API } from "aws-amplify";
 import { format, formatDistanceToNowStrict, isPast } from "date-fns";
 import { Video } from "expo-av";
-import { Box, Flex, HStack, Icon, Pressable, Text } from "native-base";
+import { Box, Flex, HStack, Icon, Pressable, Spacer, Text } from "native-base";
 import React, { useState } from "react";
 import { StyleSheet } from "react-native";
 import { SvgUri } from "react-native-svg";
@@ -15,6 +15,7 @@ import * as ActionIcons from "@/root/src/components/shared/Icons";
 import { Image } from "@/root/src/components/shared/Image";
 import { ReportPost } from "@/root/src/components/shared/Report";
 import { Skeleton } from "@/root/src/components/shared/Skeleton";
+import { TextLessMoreView } from "@/root/src/components/shared/TextLessMore";
 import { colors } from "@/root/src/constants";
 import { UserContext } from "@/root/src/context";
 import { useToggle } from "@/root/src/hooks";
@@ -58,7 +59,49 @@ interface Poll_ {
   votes: number;
 }
 
-export const PostCard: React.FC<Props_> = ({
+interface PostInfo_ {
+  postId?: string;
+  username?: string;
+  avatarUrl?: string;
+  subForum?: string;
+  timeStamp?: Date;
+  authorId?: string;
+}
+
+interface PollProps_ {
+  title: string;
+  totalVotes: number;
+  timeStamp: Date;
+  votedPollId?: string;
+  surveyQuestionId?: string;
+  communityId?: string;
+  pollArr: Poll_[];
+}
+
+type IconsPicker_ = {
+  LIKE: () => React.FC;
+  LOVE: () => React.FC;
+  SUPPORT: () => React.FC;
+  DISLIKE: () => React.FC;
+  SUPPORTOUTLINE: () => React.FC;
+};
+
+interface UserActionToolTip_ {
+  postId?: string;
+  communityId?: string;
+  postAuthorId?: string;
+  userPostMetric?: UserPostMetric;
+}
+
+const IconsPicker = {
+  LIKE: ActionIcons.LikeIcon,
+  LOVE: ActionIcons.LoveIcon,
+  SUPPORT: ActionIcons.ChargeIcon,
+  DISLIKE: ActionIcons.DislikeIcon,
+  SUPPORTOUTLINE: ActionIcons.ChargeIconOutline,
+};
+
+const WithoutMemoPostCard: React.FC<Props_> = ({
   username,
   subForum,
   subForumId,
@@ -92,7 +135,7 @@ export const PostCard: React.FC<Props_> = ({
   }, [signImage]);
 
   return (
-    <Box bg="white" alignItems="center" py="4" mt={`${postPage ? "0" : "2"}`}>
+    <Box bg="white" alignItems="center" mt={`${postPage ? "0" : "2"}`}>
       <PostInfo
         username={username}
         subForum={subForum}
@@ -106,7 +149,7 @@ export const PostCard: React.FC<Props_> = ({
        */}
       {type === "Video" &&
         (signedMediaUrl ? (
-          <Box mb="4" width="100%">
+          <Box mb="4" width="100%" height="350px">
             <Video
               ref={videoRef}
               style={styles.video}
@@ -125,7 +168,13 @@ export const PostCard: React.FC<Props_> = ({
        */}
       {type === "Audio" &&
         (signedMediaUrl ? (
-          <Box mb="4" width="100%">
+          <Box
+            mb="4"
+            width="100%"
+            height="350px"
+            alignItems="center"
+            justifyContent="center"
+          >
             <AudioComponent audioUri={signedMediaUrl} />
           </Box>
         ) : (
@@ -138,7 +187,7 @@ export const PostCard: React.FC<Props_> = ({
         (signedMediaUrl ? (
           <Image
             width="100%"
-            height="350"
+            height="350px"
             source={{
               uri: signedMediaUrl,
             }}
@@ -168,7 +217,7 @@ export const PostCard: React.FC<Props_> = ({
          * text only post
          */}
         {contentText ? (
-          <Text mb="4">{contentText}</Text>
+          <TextLessMoreView text={contentText} targetLines={3} />
         ) : (
           <>
             <Skeleton height="20px" width="100%" mb="2" />
@@ -176,6 +225,7 @@ export const PostCard: React.FC<Props_> = ({
             <Skeleton height="20px" width="100%" mb="4" />
           </>
         )}
+        {type === "Poll" && poll && <Spacer mb="4" />}
         {!hidePostUserActions && id && (
           <PostUserActions
             hidePostNavigation={hidePostNavigation}
@@ -197,52 +247,30 @@ export const PostCard: React.FC<Props_> = ({
   );
 };
 
-interface PostInfo_ {
-  postId?: string;
-  username?: string;
-  avatarUrl?: string;
-  subForum?: string;
-  timeStamp?: Date;
-  authorId?: string;
-}
+export const PostCard = React.memo(WithoutMemoPostCard);
 
 const PostInfo: React.FC<PostInfo_> = ({
   username,
   subForum,
-  authorId,
   timeStamp,
   avatarUrl,
   postId,
 }) => {
   const [reportModal, setReportModal] = React.useState(false);
-  const navigation = useNavigation();
   return (
-    <Box width="90%">
-      <HStack alignItems="center" justifyContent="space-between" mb="3">
+    <Box width="90%" height="60px" justifyContent="center">
+      <HStack alignItems="center" justifyContent="space-between">
         <HStack alignItems="center" space="3">
           {avatarUrl ? (
-            <Pressable
-              onPress={() => {
-                navigation.dispatch(
-                  StackActions.push("Application", {
-                    screen: "Profile",
-                    params: {
-                      userId: authorId,
-                    },
-                  })
-                );
-              }}
+            <Box
+              width="40px"
+              height="40px"
+              bg="amber.100"
+              borderRadius="full"
+              overflow="hidden"
             >
-              <Box
-                width="40px"
-                height="40px"
-                bg="amber.100"
-                borderRadius="full"
-                overflow="hidden"
-              >
-                <SvgUri uri={avatarUrl} width="100%" height="100%" />
-              </Box>
-            </Pressable>
+              <SvgUri uri={avatarUrl} width="100%" height="100%" />
+            </Box>
           ) : (
             <Box
               width="40px"
@@ -303,16 +331,6 @@ const PostInfo: React.FC<PostInfo_> = ({
   );
 };
 
-interface PollProps_ {
-  title: string;
-  totalVotes: number;
-  timeStamp: Date;
-  votedPollId?: string;
-  surveyQuestionId?: string;
-  communityId?: string;
-  pollArr: Poll_[];
-}
-
 const Poll: React.FC<PollProps_> = (props) => {
   const [voted, setVoted] = React.useState(false);
 
@@ -344,10 +362,6 @@ const Poll: React.FC<PollProps_> = (props) => {
   }, [props.pollArr]);
 
   const votingHandler = (func: "ADD" | "REMOVE", pollAnswerId: string) => {
-    // iterate through poll answers and increment count
-    // increment total count
-    // when click undo reset the counter
-
     if (!isPollDateCompleted) {
       if (func === "ADD") {
         const incrementedVotesPolls = pollArr.map((entry) => {
@@ -456,9 +470,6 @@ const Poll: React.FC<PollProps_> = (props) => {
                   alignItems="flex-start"
                   borderRadius="5"
                 >
-                  {/**
-                   * in parseint second argument is radix number - here base 10
-                   */}
                   <Box
                     position="absolute"
                     height="100"
@@ -512,31 +523,6 @@ interface PostUserActions_ {
   userPostMetric?: UserPostMetric;
 }
 
-/**
- * like
- * love
- * support
- * dislike
- * up post
- * down vote
- */
-
-type IconsPicker_ = {
-  LIKE: () => React.FC;
-  LOVE: () => React.FC;
-  SUPPORT: () => React.FC;
-  DISLIKE: () => React.FC;
-  SUPPORTOUTLINE: () => React.FC;
-};
-
-const IconsPicker = {
-  LIKE: ActionIcons.LikeIcon,
-  LOVE: ActionIcons.LoveIcon,
-  SUPPORT: ActionIcons.ChargeIcon,
-  DISLIKE: ActionIcons.DislikeIcon,
-  SUPPORTOUTLINE: ActionIcons.ChargeIconOutline,
-};
-
 const PostUserActions: React.FC<PostUserActions_> = ({
   hidePostNavigation,
   ...post
@@ -546,7 +532,7 @@ const PostUserActions: React.FC<PostUserActions_> = ({
   const { id } = post;
 
   return (
-    <Box>
+    <Box height="60px" justifyContent="center">
       <HStack alignItems="center" justifyContent="space-between">
         <HStack space="6" alignItems="center">
           <UserActionToolTip
@@ -592,13 +578,6 @@ const PostUserActions: React.FC<PostUserActions_> = ({
     </Box>
   );
 };
-
-interface UserActionToolTip_ {
-  postId?: string;
-  communityId?: string;
-  postAuthorId?: string;
-  userPostMetric?: UserPostMetric;
-}
 
 const UserActionToolTip: React.FC<UserActionToolTip_> = ({
   postId,
@@ -764,7 +743,7 @@ const styles = StyleSheet.create({
   },
   video: {
     backgroundColor: colors.black,
-    height: 200,
+    height: 350,
   },
 });
 

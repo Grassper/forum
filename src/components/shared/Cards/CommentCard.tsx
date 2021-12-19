@@ -212,9 +212,9 @@ export const CommentCard: React.FC<Props_> = ({
                       size={5}
                       color={action === "UPVOTE" ? "green.500" : "muted.500"}
                     />
-                    <Text ml="1" fontSize="xs">
+                    {/* <Text ml="1" fontSize="xs">
                       1.5k
-                    </Text>
+                    </Text> */}
                   </HStack>
                 </Pressable>
                 <Pressable
@@ -230,9 +230,9 @@ export const CommentCard: React.FC<Props_> = ({
                         color={action === "DOWNVOTE" ? "red.500" : "muted.500"}
                       />
                     </Box>
-                    <Text ml="1" fontSize="xs">
+                    {/* <Text ml="1" fontSize="xs">
                       85k
-                    </Text>
+                    </Text> */}
                   </HStack>
                 </Pressable>
                 {!hideReplyButton && (

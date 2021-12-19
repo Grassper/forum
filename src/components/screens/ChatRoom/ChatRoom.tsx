@@ -1,5 +1,4 @@
 import { GraphQLResult } from "@aws-amplify/api-graphql";
-import { Feather } from "@expo/vector-icons";
 import {
   CompositeNavigationProp,
   RouteProp,
@@ -136,15 +135,6 @@ export const ChatRoom: React.FC<Props_> = ({ route, navigation }) => {
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
-      headerLeft: () => (
-        <Feather
-          name="chevron-left"
-          size={30}
-          color="green"
-          mr="100"
-          onPress={() => navigation.goBack()}
-        />
-      ),
       headerTitle: () => (
         <Box>
           <HStack alignItems="center">

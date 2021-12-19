@@ -1,6 +1,5 @@
 import { GraphQLResult } from "@aws-amplify/api-graphql";
 import { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
-import { DrawerNavigationProp } from "@react-navigation/drawer";
 import {
   CompositeNavigationProp,
   useFocusEffect,
@@ -19,22 +18,17 @@ import {
 
 import {
   BottomTabParamList_,
-  DrawerParamList_,
   RootStackParamList_,
   StackParamList_,
 } from "@/root/src/components/navigations/Navigation";
-import { HeaderProfileIcon } from "@/root/src/components/shared/HeaderProfileIcon";
 import { CommunityTile } from "@/root/src/components/shared/Tile";
 import { UserContext } from "@/root/src/context";
 
 type NavigationProp_ = CompositeNavigationProp<
-  DrawerNavigationProp<DrawerParamList_, "JoinedSubForum">,
+  BottomTabNavigationProp<BottomTabParamList_, "JoinedSubForum">,
   CompositeNavigationProp<
-    BottomTabNavigationProp<BottomTabParamList_, "HomeDrawer">,
-    CompositeNavigationProp<
-      StackNavigationProp<StackParamList_, "BottomTabNav">,
-      StackNavigationProp<RootStackParamList_, "Application">
-    >
+    StackNavigationProp<StackParamList_, "BottomTabNav">,
+    StackNavigationProp<RootStackParamList_, "Application">
   >
 >;
 
@@ -96,7 +90,6 @@ export const JoinedSubForum: React.FC<Props_> = ({ navigation }) => {
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
-      headerLeft: () => <HeaderProfileIcon />,
       headerRight: () => (
         <Button
           size="md"

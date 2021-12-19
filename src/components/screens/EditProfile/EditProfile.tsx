@@ -92,7 +92,8 @@ export const EditProfile: React.FC<Props_> = ({ navigation }) => {
         name: "Profile",
         params: { userId: currentUser.id },
         merge: true,
-      }); // pass id of current user
+      });
+      // pass id of current user
       setLoading(false);
     }
   }, [about, currentUser, isAboutValid, navigation, setUser, profileUrl]);

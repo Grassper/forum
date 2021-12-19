@@ -23,7 +23,7 @@ import config from "./aws-exports";
 
 Amplify.configure({ ...config, Analytics: { disabled: true } });
 
-enableScreens();
+enableScreens(true);
 
 const fetchFonts = (): Promise<void> => {
   return Font.loadAsync({

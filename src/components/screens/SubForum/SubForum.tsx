@@ -138,6 +138,17 @@ export const SubForum: React.FC<Props_> = ({ navigation, route }) => {
     });
   }, [currentUser.id, navigation, reportModal, subForum]);
 
+  // const getItemLayout = React.useCallback(
+  //   (data: Item[] | null | undefined, index: number) => {
+  //     return {
+  //       length: 500,
+  //       offset: 500 * index,
+  //       index,
+  //     };
+  //   },
+  //   []
+  // );
+
   const PostCardRenderer: ListRenderItem<Item> = ({ item }) => {
     return (
       <PostCard
@@ -187,7 +198,6 @@ export const SubForum: React.FC<Props_> = ({ navigation, route }) => {
         data={posts}
         initialNumToRender={5}
         maxToRenderPerBatch={5}
-        updateCellsBatchingPeriod={100}
         renderItem={PostCardRenderer}
         ListHeaderComponent={() => (
           <SubForumCard

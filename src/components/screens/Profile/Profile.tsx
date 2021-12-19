@@ -1,7 +1,9 @@
+import { Ionicons } from "@expo/vector-icons";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { CompositeNavigationProp, RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { Button } from "native-base";
+import { Auth } from "aws-amplify";
+import { Button, Icon, Menu, Pressable } from "native-base";
 import React from "react";
 import { Dimensions, StyleSheet, View } from "react-native";
 
@@ -11,7 +13,7 @@ import {
 } from "@/root/src/components/navigations/Navigation";
 import { ReportUser } from "@/root/src/components/shared/Report";
 import { colors } from "@/root/src/constants";
-import { UserContext } from "@/root/src/context";
+import { AuthContext, UserContext } from "@/root/src/context";
 
 import { About } from "./About";
 import { TabNavigatorUserContext } from "./Context";
@@ -40,7 +42,7 @@ export const Profile: React.FC<Props_> = ({ navigation, route }) => {
   const {
     user: { id },
   } = React.useContext(UserContext); // this context provided current login user
-
+  const { setAuthState } = React.useContext(AuthContext);
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () =>
@@ -54,14 +56,36 @@ export const Profile: React.FC<Props_> = ({ navigation, route }) => {
             Report
           </Button>
         ) : (
-          <Button
-            size="md"
-            _text={{ fontWeight: "600", color: "eGreen.400" }}
-            variant="unstyled"
-            onPress={() => navigation.navigate("EditProfile")}
+          <Menu
+            width="125px"
+            trigger={(triggerProps) => {
+              return (
+                <Pressable {...triggerProps}>
+                  <Icon
+                    as={<Ionicons name="ellipsis-vertical" />}
+                    size={5}
+                    mr="2"
+                    color="black"
+                  />
+                </Pressable>
+              );
+            }}
           >
-            Edit
-          </Button>
+            <Menu.Item onPress={() => navigation.navigate("EditProfile")}>
+              Edit Profile
+            </Menu.Item>
+            <Menu.Item onPress={() => navigation.navigate("Info")}>
+              Info
+            </Menu.Item>
+            <Menu.Item
+              onPress={async () => {
+                await Auth.signOut();
+                setAuthState("LOGGEDOUT");
+              }}
+            >
+              Sign out
+            </Menu.Item>
+          </Menu>
         ),
     });
   }, [id, navigation, routeUserId]);

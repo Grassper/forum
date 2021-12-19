@@ -20,12 +20,10 @@ import React, { useState } from "react";
 import { Linking, StyleSheet } from "react-native";
 import { SvgUri } from "react-native-svg";
 
-import { DrawerParamList_ } from "@/root/src/components/navigations/Navigation";
 import { Home } from "@/root/src/components/screens/Home";
-import { JoinedSubForum } from "@/root/src/components/screens/JoinedSubForum";
 import { AuthContext, UserContext } from "@/root/src/context";
 
-const DrawerNavigator = createDrawerNavigator<DrawerParamList_>();
+const DrawerNavigator = createDrawerNavigator();
 
 const CustomDrawerContent = (props: DrawerContentComponentProps) => {
   const [lightMode, setLightMode] = useState(true);
@@ -227,22 +225,6 @@ export const SideDrawerNavigator = () => {
             />
           ),
         }}
-      />
-      <DrawerNavigator.Screen
-        name="JoinedSubForum"
-        component={JoinedSubForum}
-        options={() => ({
-          drawerLabel: "Forums",
-          title: "",
-          drawerIcon: ({ color }) => (
-            <Icon
-              as={<AntDesign name="addusergroup" />}
-              size={"18px"}
-              ml="3"
-              color={color}
-            />
-          ),
-        })}
       />
     </DrawerNavigator.Navigator>
   );

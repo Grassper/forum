@@ -1,6 +1,5 @@
 import { GraphQLResult } from "@aws-amplify/api-graphql";
 import { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
-import { DrawerNavigationProp } from "@react-navigation/drawer";
 import {
   CompositeNavigationProp,
   useFocusEffect,
@@ -17,11 +16,9 @@ import {
   View,
 } from "react-native";
 
-// @ts-ignore
 import logo from "@/root/assets/images/logo.png";
 import {
   BottomTabParamList_,
-  DrawerParamList_,
   RootStackParamList_,
   StackParamList_,
 } from "@/root/src/components/navigations/Navigation";
@@ -31,18 +28,18 @@ import {
   Props_ as PostCardProps_,
 } from "@/root/src/components/shared/Cards/PostCard";
 import { FloatingActionButton } from "@/root/src/components/shared/FabButton";
-import { HeaderProfileIcon } from "@/root/src/components/shared/HeaderProfileIcon";
+import {
+  MessageIcon,
+  ProfileIcon,
+} from "@/root/src/components/shared/HeaderIcon";
 import { Image } from "@/root/src/components/shared/Image";
 import { UserContext } from "@/root/src/context";
 
 type NavigationProp_ = CompositeNavigationProp<
-  DrawerNavigationProp<DrawerParamList_, "Home">,
+  BottomTabNavigationProp<BottomTabParamList_, "Home">,
   CompositeNavigationProp<
-    BottomTabNavigationProp<BottomTabParamList_, "HomeDrawer">,
-    CompositeNavigationProp<
-      StackNavigationProp<StackParamList_, "BottomTabNav">,
-      StackNavigationProp<RootStackParamList_, "Application">
-    >
+    StackNavigationProp<StackParamList_, "BottomTabNav">,
+    StackNavigationProp<RootStackParamList_, "Application">
   >
 >;
 
@@ -90,7 +87,6 @@ export const Home: React.FC<Props_> = ({ navigation }) => {
       });
       return () => {
         task.cancel();
-        setPosts([]);
       };
     }, [populateContent])
   );
@@ -119,7 +115,7 @@ export const Home: React.FC<Props_> = ({ navigation }) => {
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
-      headerLeft: () => <HeaderProfileIcon />,
+      headerLeft: () => <ProfileIcon />,
       headerTitle: () => (
         <Image
           size="30px"
@@ -128,6 +124,7 @@ export const Home: React.FC<Props_> = ({ navigation }) => {
           source={logo}
         />
       ),
+      headerRight: () => <MessageIcon />,
     });
   }, [navigation, profileImageUrl]);
 
@@ -152,7 +149,6 @@ export const Home: React.FC<Props_> = ({ navigation }) => {
     );
   };
   const keyExtractor = React.useCallback((item) => item.post.id, []);
-
   if (!isStateReady) {
     return (
       <ScrollView>
@@ -171,9 +167,8 @@ export const Home: React.FC<Props_> = ({ navigation }) => {
       <FlatList
         data={memoPost}
         renderItem={PostCardRenderer}
-        initialNumToRender={5}
-        maxToRenderPerBatch={5}
-        updateCellsBatchingPeriod={100}
+        initialNumToRender={8}
+        maxToRenderPerBatch={8}
         windowSize={5}
         keyExtractor={keyExtractor}
         onEndReached={handlePagination}

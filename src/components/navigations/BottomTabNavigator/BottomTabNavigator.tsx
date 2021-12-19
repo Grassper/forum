@@ -3,13 +3,12 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import React from "react";
 
 import { BottomTabParamList_ } from "@/root/src/components/navigations/Navigation";
-import { SideDrawerNavigator } from "@/root/src/components/navigations/SideDrawerNavigator";
-import { ChatList } from "@/root/src/components/screens/ChatList";
 import { Explore } from "@/root/src/components/screens/Explore";
+import { Home } from "@/root/src/components/screens/Home";
+import { JoinedSubForum } from "@/root/src/components/screens/JoinedSubForum";
 import { Survey } from "@/root/src/components/screens/Survey";
 
 const Tab = createBottomTabNavigator<BottomTabParamList_>();
-
 /**
  * Todo change icons color when it is focused
  */
@@ -18,11 +17,10 @@ export const BottomTabNavigator = () => {
   return (
     <Tab.Navigator>
       <Tab.Screen
-        name="HomeDrawer"
-        component={SideDrawerNavigator}
+        name="Home"
+        component={Home}
         options={{
           title: "",
-          headerShown: false,
           tabBarShowLabel: false,
           headerTitleAlign: "center",
           tabBarIconStyle: { alignItems: "center" },
@@ -31,7 +29,7 @@ export const BottomTabNavigator = () => {
               <AntDesign
                 name="home"
                 size={24}
-                color={focused ? "#17D7A0" : "black"}
+                color={focused ? "#17D7A0" : "#4b5563"}
               />
             );
           },
@@ -50,29 +48,7 @@ export const BottomTabNavigator = () => {
               <AntDesign
                 name="find"
                 size={24}
-                color={focused ? "#17D7A0" : "black"}
-              />
-            );
-          },
-        }}
-      />
-      <Tab.Screen
-        name="ChatList"
-        component={ChatList}
-        options={{
-          title: "Discussions",
-          tabBarShowLabel: false,
-          tabBarIconStyle: { alignItems: "center" },
-          headerTitleStyle: {
-            fontFamily: "lr",
-            fontSize: 16,
-          },
-          tabBarIcon: ({ focused }) => {
-            return (
-              <AntDesign
-                name="message1"
-                size={21}
-                color={focused ? "#17D7A0" : "black"}
+                color={focused ? "#17D7A0" : "#4b5563"}
               />
             );
           },
@@ -92,9 +68,31 @@ export const BottomTabNavigator = () => {
           tabBarIcon: ({ focused }) => {
             return (
               <AntDesign
-                name="barchart"
-                size={21}
-                color={focused ? "#17D7A0" : "black"}
+                name="solution1"
+                size={22}
+                color={focused ? "#17D7A0" : "#4b5563"}
+              />
+            );
+          },
+        }}
+      />
+      <Tab.Screen
+        name="JoinedSubForum"
+        component={JoinedSubForum}
+        options={{
+          title: "Forums",
+          tabBarShowLabel: false,
+          tabBarIconStyle: { alignItems: "center" },
+          headerTitleStyle: {
+            fontFamily: "lr",
+            fontSize: 16,
+          },
+          tabBarIcon: ({ focused }) => {
+            return (
+              <AntDesign
+                name="laptop"
+                size={23}
+                color={focused ? "#17D7A0" : "#4b5563"}
               />
             );
           },

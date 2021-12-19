@@ -127,10 +127,8 @@ export const EditAndCreateSubForum: React.FC<Props_> = ({
           navigation.navigate({
             name: "BottomTabNav",
             params: {
-              screen: "HomeDrawer",
-              params: {
-                screen: "JoinedSubForum",
-              },
+              screen: "JoinedSubForum",
+              params: undefined,
             },
             merge: true,
           });
@@ -156,10 +154,8 @@ export const EditAndCreateSubForum: React.FC<Props_> = ({
           navigation.navigate({
             name: "BottomTabNav",
             params: {
-              screen: "HomeDrawer",
-              params: {
-                screen: "JoinedSubForum",
-              },
+              screen: "JoinedSubForum",
+              params: undefined,
             },
             merge: true,
           });

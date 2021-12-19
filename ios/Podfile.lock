@@ -349,6 +349,8 @@ PODS:
     - React-Core
   - RNCAsyncStorage (1.15.14):
     - React-Core
+  - RNCMaskedView (0.2.6):
+    - React-Core
   - RNCPicker (2.1.0):
     - React-Core
   - RNFastImage (8.5.11):
@@ -458,6 +460,7 @@ DEPENDENCIES:
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - RNAWSCognito (from `../node_modules/amazon-cognito-identity-js`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
+  - "RNCMaskedView (from `../node_modules/@react-native-masked-view/masked-view`)"
   - "RNCPicker (from `../node_modules/@react-native-picker/picker`)"
   - RNFastImage (from `../node_modules/react-native-fast-image`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
@@ -582,6 +585,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/amazon-cognito-identity-js"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-async-storage/async-storage"
+  RNCMaskedView:
+    :path: "../node_modules/@react-native-masked-view/masked-view"
   RNCPicker:
     :path: "../node_modules/@react-native-picker/picker"
   RNFastImage:
@@ -655,6 +660,7 @@ SPEC CHECKSUMS:
   ReactCommon: 8fea6422328e2fc093e25c9fac67adbcf0f04fb4
   RNAWSCognito: fd5136ee9e4db912be13a84fa00cd849137e0d3c
   RNCAsyncStorage: ea6b5c280997b2b32a587793163b1f10e580c4f7
+  RNCMaskedView: c298b644a10c0c142055b3ae24d83879ecb13ccd
   RNCPicker: f7a40b21b915b7a187624d52f52b7bc2f73ea413
   RNFastImage: 1f2cab428712a4baaf78d6169eaec7f622556dd7
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211

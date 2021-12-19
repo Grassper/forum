@@ -16,12 +16,14 @@ import {
   SignUp,
   Verification,
 } from "@/root/src/components/screens/Authentication";
+import { ChatList } from "@/root/src/components/screens/ChatList";
 import { ChatRoom } from "@/root/src/components/screens/ChatRoom";
 import { ChooseSubForum } from "@/root/src/components/screens/ChooseSubForum";
 import { Comment } from "@/root/src/components/screens/Comment";
 import { EditAndCreateSubForum } from "@/root/src/components/screens/EditAndCreateSubForum";
 import { EditProfile } from "@/root/src/components/screens/EditProfile";
 import { Follow } from "@/root/src/components/screens/Follow";
+import { Info } from "@/root/src/components/screens/Info";
 import { NewChat } from "@/root/src/components/screens/NewChat";
 import { Post } from "@/root/src/components/screens/Post";
 import { Profile } from "@/root/src/components/screens/Profile";
@@ -35,6 +37,7 @@ const AuthStack = createStackNavigator<AuthStackParamList_>();
 
 const defaultStackOptions = {
   headerTintColor: colors.green,
+  headerBackTitleVisible: false,
   headerTitleStyle: {
     fontFamily: "lr",
     fontSize: 16,
@@ -74,6 +77,13 @@ export const StackNavigator = () => {
         })}
       />
       <Stack.Screen
+        name="Info"
+        component={Info}
+        options={() => ({
+          title: "Info",
+        })}
+      />
+      <Stack.Screen
         name="EditAndCreateSubForum"
         component={EditAndCreateSubForum}
         initialParams={{ title: "Create Subforum", action: "Add" }}
@@ -81,14 +91,6 @@ export const StackNavigator = () => {
           title: route.params.title,
           headerTintColor: colors.green,
         })}
-      />
-      <Stack.Screen
-        name="Profile"
-        component={Profile}
-        initialParams={{ userId: id }} //passing current user id
-        options={{
-          title: "",
-        }}
       />
       <Stack.Screen
         name="Follow"
@@ -147,11 +149,13 @@ export const StackNavigator = () => {
           headerTintColor: colors.green,
         })}
       />
+      <Stack.Screen name="ChatRoom" component={ChatRoom} />
       <Stack.Screen
-        name="ChatRoom"
-        component={ChatRoom}
+        name="Profile"
+        component={Profile}
+        initialParams={{ userId: id }}
         options={() => ({
-          headerTintColor: colors.white,
+          title: "",
         })}
       />
       <Stack.Screen
@@ -159,6 +163,13 @@ export const StackNavigator = () => {
         component={NewChat}
         options={{
           title: "Search Your Friends",
+        }}
+      />
+      <Stack.Screen
+        name="ChatList"
+        component={ChatList}
+        options={{
+          title: "Discussions",
         }}
       />
       <Stack.Screen

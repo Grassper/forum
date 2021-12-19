@@ -34,7 +34,7 @@ interface Props_ {
   route: RouteProp_;
 }
 
-export const Follow: React.FC<Props_> = ({ route }) => {
+export const Follow: React.FC<Props_> = ({ route, navigation }) => {
   const title = route.params?.title;
   const routeUserId = route.params?.routeUserId;
   const [usersList, setUsersList] = React.useState<
@@ -94,6 +94,7 @@ export const Follow: React.FC<Props_> = ({ route }) => {
         id={item.follower.id}
         username={item.follower.username}
         avatarUrl={item.follower.profileImageUrl}
+        onPress={() => navigation.push("Profile", { userId: item.follower.id })}
       />
     );
   };
@@ -104,6 +105,7 @@ export const Follow: React.FC<Props_> = ({ route }) => {
         id={item.followee.id}
         username={item.followee.username}
         avatarUrl={item.followee.profileImageUrl}
+        onPress={() => navigation.push("Profile", { userId: item.followee.id })}
       />
     );
   };
