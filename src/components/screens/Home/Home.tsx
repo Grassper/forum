@@ -166,7 +166,6 @@ export const Home: React.FC<Props_> = ({ navigation }) => {
       <BottomSheet isOpen={isOpen} onClose={HandleBottomSheet} />
       <FlatList
         data={memoPost}
-        initialNumToRender={8}
         keyExtractor={keyExtractor}
         maxToRenderPerBatch={8}
         onEndReached={handlePagination}
