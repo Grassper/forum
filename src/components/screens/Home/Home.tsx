@@ -16,7 +16,7 @@ import {
   View,
 } from "react-native";
 
-import logo from "@/root/assets/images/logo.png";
+import logo from "@/root/assets/images/splash.png";
 import {
   BottomTabParamList_,
   RootStackParamList_,

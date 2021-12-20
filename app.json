@@ -2,13 +2,11 @@
   "expo": {
     "name": "eforum",
     "slug": "eforum",
-    "version": "1.0.0",
+    "version": "1.0.5",
     "orientation": "portrait",
-
-    "privacy": "hidden",
-    "icon": "./assets/appIcons/drawable-hdpi/logo.png",
+    "icon": "./assets/images/icon.png",
     "splash": {
-      "image": "./assets/appIcons/ios/splash_screen@1x.png",
+      "image": "./assets/images/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -18,30 +16,14 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "splash": {
-        "image": "./assets/appIcons/drawable-hdpi/splash_screen.png",
-        "resizeMode": "contain",
-        "backgroundColor": "#ffffff"
-      },
       "bundleIdentifier": "com.nodeberry.eforum",
-      "buildNumber": "1.0.0"
+      "buildNumber": "1.0.5"
     },
     "android": {
       "package": "com.nodeberry.eforum",
-      "versionCode": 1,
-      "splash": {
-        "ldpi": "./assets/appIcons/drawable-ldpi/splash_screen.png",
-        "hdpi": "./assets/appIcons/drawable-hdpi/splash_screen.png",
-        "mdpi": "./assets/appIcons/drawable-mdpi/splash_screen.png",
-        "xdpi": "./assets/appIcons/drawable-xdpi/splash_screen.png",
-        "xxdpi": "./assets/appIcons/drawable-xxdpi/splash_screen.png",
-        "xxhdpi": "./assets/appIcons/drawable-xxhdpi/splash_screen.png",
-        "xxxhdpi": "./assets/appIcons/drawable-xxxhdpi/splash_screen.png",
-        "resizeMode": "contain",
-        "backgroundColor": "#ffffff"
-      },
+      "versionCode": 2,
       "adaptiveIcon": {
-        "foregroundImage": "./assets/appIcons/drawable-ldpi/logo.png",
+        "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
       "permissions": [
@@ -51,7 +33,7 @@
       ]
     },
     "web": {
-      "favicon": "./assets/appIcons/drawable-ldpi/logo.png"
+      "favicon": "./assets/images/icon.png"
     },
     "jsEngine": "hermes",
     "plugins": [
