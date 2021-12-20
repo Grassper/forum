@@ -149,12 +149,11 @@ export const JoinedSubForum: React.FC<Props_> = ({ navigation }) => {
       <Box style={styles.container} width="100%">
         <FlatList
           data={communities}
-          initialNumToRender={5}
           keyExtractor={(item) => item.community.id}
-          maxToRenderPerBatch={5}
+          maxToRenderPerBatch={8}
           onEndReached={() => handlePagination()}
           renderItem={CommunityTileRenderer}
-          updateCellsBatchingPeriod={100}
+          windowSize={5}
         />
       </Box>
     </Box>

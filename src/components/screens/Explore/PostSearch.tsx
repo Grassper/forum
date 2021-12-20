@@ -115,12 +115,11 @@ export const PostSearch: React.FC = () => {
     <Box bg="white">
       <FlatList
         data={posts}
-        initialNumToRender={5}
         keyExtractor={(item) => item.id}
-        maxToRenderPerBatch={5}
+        maxToRenderPerBatch={8}
         onEndReached={() => handlePagination()}
         renderItem={PostCardRenderer}
-        updateCellsBatchingPeriod={100}
+        windowSize={5}
       />
     </Box>
   );

@@ -168,15 +168,14 @@ export const ChatRoom: React.FC<Props_> = ({ route, navigation }) => {
           <FlatList
             ref={flatListRef}
             data={messages}
-            initialNumToRender={10}
             inverted
             keyExtractor={(item) => item.id}
-            maxToRenderPerBatch={10}
+            maxToRenderPerBatch={8}
             onEndReached={handlePagination}
             renderItem={ChatCardRenderer}
             showsHorizontalScrollIndicator={false}
             showsVerticalScrollIndicator={false}
-            updateCellsBatchingPeriod={100}
+            windowSize={5}
           />
         </Box>
       </Box>

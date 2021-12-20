@@ -164,13 +164,12 @@ export const Comment: React.FC<Props_> = ({ route }) => {
     <Box style={styles.container}>
       <FlatList
         data={childComments}
-        initialNumToRender={5}
         keyExtractor={(item) => item.childComment.id}
         ListHeaderComponent={() => <CommentHeader {...comment} />}
-        maxToRenderPerBatch={5}
+        maxToRenderPerBatch={8}
         onEndReached={() => handlePagination()}
         renderItem={CommentCardRenderer}
-        updateCellsBatchingPeriod={100}
+        windowSize={5}
       />
     </Box>
   );

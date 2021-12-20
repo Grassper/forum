@@ -137,12 +137,11 @@ export const Survey: React.FC = () => {
     <View style={styles.container}>
       <FlatList
         data={surveys}
-        initialNumToRender={3}
         keyExtractor={(item) => item.surveyQuestion.id}
-        maxToRenderPerBatch={3}
+        maxToRenderPerBatch={8}
         onEndReached={() => handlePagination()}
         renderItem={PostCardRenderer}
-        updateCellsBatchingPeriod={100}
+        windowSize={5}
       />
     </View>
   );

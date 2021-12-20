@@ -163,6 +163,13 @@ export const Post: React.FC<Props_> = ({ route }) => {
     );
   };
 
+  const keyExtractor = React.useCallback((item) => item.childComment.id, []);
+
+  const ListHeaderComponent = React.useCallback(
+    () => <PostHeader {...postData} />,
+    [postData]
+  );
+
   if (!isStateReady) {
     return (
       <ScrollView>
@@ -192,13 +199,13 @@ export const Post: React.FC<Props_> = ({ route }) => {
     <Box style={styles.container}>
       <FlatList
         data={comments}
-        initialNumToRender={5}
-        keyExtractor={(item) => item.childComment.id}
-        ListHeaderComponent={() => <PostHeader {...postData} />}
-        maxToRenderPerBatch={5}
+        keyExtractor={keyExtractor}
+        ListHeaderComponent={ListHeaderComponent}
+        maxToRenderPerBatch={8}
         onEndReached={() => handlePagination()}
         renderItem={CommentCardRenderer}
-        updateCellsBatchingPeriod={100}
+        showsVerticalScrollIndicator={false}
+        windowSize={5}
       />
     </Box>
   );

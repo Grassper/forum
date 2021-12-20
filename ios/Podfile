@@ -22,7 +22,6 @@ target 'eforum' do
   #   use_flipper!('Flipper' => '0.75.1', 'Flipper-Folly' => '2.5.3', 'Flipper-RSocket' => '1.3.1')
   # end
 
-  pod 'RNAWSCognito', :path => '../node_modules/amazon-cognito-identity-js'
 
   post_install do |installer|
     react_native_post_install(installer)

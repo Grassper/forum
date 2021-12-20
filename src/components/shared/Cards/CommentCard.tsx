@@ -32,7 +32,7 @@ interface userCommentMetric_ {
   items: { type: "UPVOTE" | "DOWNVOTE" }[];
 }
 
-export const CommentCard: React.FC<Props_> = ({
+const WithoutMemoCommentCard: React.FC<Props_> = ({
   repliesCount,
   hideReplyButton,
   subForum,
@@ -303,6 +303,8 @@ export const CommentCard: React.FC<Props_> = ({
     </Box>
   );
 };
+
+export const CommentCard = React.memo(WithoutMemoCommentCard);
 
 const styles = StyleSheet.create({
   downVoteIcon: {

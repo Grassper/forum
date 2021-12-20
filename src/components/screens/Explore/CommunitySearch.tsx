@@ -117,12 +117,11 @@ export const CommunitySearch: React.FC = () => {
     <Box bg={colors.white} pt="4" style={styles.container}>
       <FlatList
         data={community}
-        initialNumToRender={5}
         keyExtractor={(item) => item.id}
-        maxToRenderPerBatch={5}
+        maxToRenderPerBatch={8}
         onEndReached={() => handlePagination()}
         renderItem={CommunityCardRenderer}
-        updateCellsBatchingPeriod={100}
+        windowSize={5}
       />
     </Box>
   );

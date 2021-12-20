@@ -138,12 +138,11 @@ export const ChatList: React.FC<Props_> = ({ navigation }) => {
         <Box width="100%">
           <FlatList
             data={chatRooms}
-            initialNumToRender={10}
             keyExtractor={keyExtractor}
-            maxToRenderPerBatch={10}
+            maxToRenderPerBatch={8}
             onEndReached={handlePagination}
             renderItem={ChatCardRenderer}
-            updateCellsBatchingPeriod={100}
+            windowSize={5}
           />
         </Box>
       </Box>

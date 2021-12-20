@@ -109,12 +109,11 @@ export const AvatorPicker: React.FC<Props_> = ({ about, setProfileUrl }) => {
       <FlatList
         data={AvatorCollection}
         horizontal
-        initialNumToRender={3}
         keyExtractor={(item) => item.id}
-        maxToRenderPerBatch={3}
+        maxToRenderPerBatch={5}
         renderItem={RenderItem}
         showsHorizontalScrollIndicator={false}
-        updateCellsBatchingPeriod={100}
+        windowSize={5}
       />
     </Box>
   );

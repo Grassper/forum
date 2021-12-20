@@ -196,7 +196,6 @@ export const SubForum: React.FC<Props_> = ({ navigation, route }) => {
       )}
       <FlatList
         data={posts}
-        initialNumToRender={5}
         keyExtractor={(item) => item.id}
         ListHeaderComponent={() => (
           <SubForumCard
@@ -212,9 +211,10 @@ export const SubForum: React.FC<Props_> = ({ navigation, route }) => {
             totalPosts={subForum?.totalPosts}
           />
         )}
-        maxToRenderPerBatch={5}
+        maxToRenderPerBatch={8}
         onEndReached={() => handlePagination()}
         renderItem={PostCardRenderer}
+        windowSize={5}
       />
     </View>
   );
