@@ -120,7 +120,7 @@ export const Home: React.FC<Props_> = ({ navigation }) => {
         <Image
           borderRadius={100}
           resizeMode={"contain"}
-          size="30px"
+          size="100px"
           source={logo}
         />
       ),
