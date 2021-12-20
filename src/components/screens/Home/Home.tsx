@@ -16,7 +16,6 @@ import {
   View,
 } from "react-native";
 
-import logo from "@/root/assets/images/splash.png";
 import {
   BottomTabParamList_,
   RootStackParamList_,
@@ -32,7 +31,7 @@ import {
   MessageIcon,
   ProfileIcon,
 } from "@/root/src/components/shared/HeaderIcon";
-import { Image } from "@/root/src/components/shared/Image";
+import { AppIcon } from "@/root/src/components/shared/Icons";
 import { UserContext } from "@/root/src/context";
 
 type NavigationProp_ = CompositeNavigationProp<
@@ -116,14 +115,7 @@ export const Home: React.FC<Props_> = ({ navigation }) => {
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => <ProfileIcon />,
-      headerTitle: () => (
-        <Image
-          borderRadius={100}
-          resizeMode={"contain"}
-          size="100px"
-          source={logo}
-        />
-      ),
+      headerTitle: () => <AppIcon />,
       headerRight: () => <MessageIcon />,
     });
   }, [navigation, profileImageUrl]);

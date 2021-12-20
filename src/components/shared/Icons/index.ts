@@ -1,3 +1,4 @@
+export * from "./AppIcon";
 export * from "./ChargeIcon";
 export * from "./ChargeIconOutline";
 export * from "./DislikeIcon";
