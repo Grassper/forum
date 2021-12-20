@@ -64,77 +64,77 @@ export const About: React.FC = () => {
   useFocusEffect(populateContent);
 
   return (
-    <Box style={styles.wrapper} alignItems="center" bg="white">
+    <Box alignItems="center" bg="white" style={styles.wrapper}>
       <ScrollView style={styles.container}>
         <Box>
           {about?.about ? (
-            <Text numberOfLines={4} mb="8">
+            <Text mb="8" numberOfLines={4}>
               {about?.about}
             </Text>
           ) : (
             <Box alignItems="center">
-              <Skeleton height="20px" width="85%" mb="5px" />
-              <Skeleton height="20px" width="95%" mb="5px" />
-              <Skeleton height="20px" width="70%" mb="5px" />
+              <Skeleton height="20px" mb="5px" width="85%" />
+              <Skeleton height="20px" mb="5px" width="95%" />
+              <Skeleton height="20px" mb="5px" width="70%" />
             </Box>
           )}
         </Box>
 
         <HStack flexWrap="wrap" justifyContent="space-between" mb="5">
           {about?.userMetrics && about.userMetrics.postLikes >= 0 ? (
-            <StatsItem value={about.userMetrics.postLikes} name="Post Likes" />
+            <StatsItem name="Post Likes" value={about.userMetrics.postLikes} />
           ) : (
             <StatsItem />
           )}
           {about?.userMetrics && about.userMetrics.postLoves >= 0 ? (
-            <StatsItem value={about.userMetrics.postLoves} name="Post Loves" />
+            <StatsItem name="Post Loves" value={about.userMetrics.postLoves} />
           ) : (
             <StatsItem />
           )}
           {about?.userMetrics && about.userMetrics.postSupports >= 0 ? (
             <StatsItem
-              value={about.userMetrics.postSupports}
               name="Post Supports"
+              value={about.userMetrics.postSupports}
             />
           ) : (
             <StatsItem />
           )}
           {about?.userMetrics && about.userMetrics.postDislikes >= 0 ? (
             <StatsItem
-              value={about.userMetrics.postDislikes}
               name="Post Dislikes"
+              value={about.userMetrics.postDislikes}
             />
           ) : (
             <StatsItem />
           )}
           {about?.userMetrics && about.userMetrics.commentUpvotes >= 0 ? (
             <StatsItem
-              value={about.userMetrics.commentUpvotes}
               name="Comment Ups"
+              value={about.userMetrics.commentUpvotes}
             />
           ) : (
             <StatsItem />
           )}
           {about?.userMetrics && about.userMetrics.commentDownvotes >= 0 ? (
             <StatsItem
-              value={about.userMetrics.commentDownvotes}
               name="Comment Downs"
+              value={about.userMetrics.commentDownvotes}
             />
           ) : (
             <StatsItem />
           )}
           {about?.userMetrics && about.userMetrics.commentDownvotes >= 0 ? (
             <StatsItem
-              value={about.userMetrics.commentDownvotes}
               name="Comment Downs"
+              value={about.userMetrics.commentDownvotes}
             />
           ) : (
             <StatsItem />
           )}
           {about?.userMetrics && about.userMetrics.activeDays >= 0 ? (
             <StatsItem
-              value={about.userMetrics.activeDays}
               name="Active Days"
+              value={about.userMetrics.activeDays}
             />
           ) : (
             <StatsItem />
@@ -152,26 +152,26 @@ interface StatsItem_ {
 
 const StatsItem: React.FC<StatsItem_> = ({ value, name }) => {
   return (
-    <VStack width="50%" alignItems="center" mb="3">
+    <VStack alignItems="center" mb="3" width="50%">
       <Box>
         {value !== undefined && value >= 0 ? (
           <Text
             color="eGreen.400"
-            fontWeight="600"
             fontSize="md"
+            fontWeight="600"
             marginBottom="1"
           >
             {value}
           </Text>
         ) : (
-          <Skeleton height="20px" width="80px" mb="5px" />
+          <Skeleton height="20px" mb="5px" width="80px" />
         )}
       </Box>
       <Box>
         {name ? (
           <Text color="coolGray.700">{name}</Text>
         ) : (
-          <Skeleton height="20px" width="150px" mb="5px" />
+          <Skeleton height="20px" mb="5px" width="150px" />
         )}
       </Box>
     </VStack>

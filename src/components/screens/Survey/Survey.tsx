@@ -85,17 +85,17 @@ export const Survey: React.FC = () => {
 
     return (
       <PostCard
-        id={surveyQuestion.id}
-        subForum={surveyQuestion.community.name}
-        subForumId={surveyQuestion.community.id}
-        type="Poll"
-        poll={surveyInput}
-        username={surveyQuestion.user.username}
         authorId={surveyQuestion.user.id}
         avatarUrl={surveyQuestion.user.profileImageUrl}
-        timeStamp={surveyQuestion.createdAt}
         contentText={surveyQuestion.surveyPurpose}
         hidePostUserActions
+        id={surveyQuestion.id}
+        poll={surveyInput}
+        subForum={surveyQuestion.community.name}
+        subForumId={surveyQuestion.community.id}
+        timeStamp={surveyQuestion.createdAt}
+        type="Poll"
+        username={surveyQuestion.user.username}
       />
     );
   };
@@ -138,11 +138,11 @@ export const Survey: React.FC = () => {
       <FlatList
         data={surveys}
         initialNumToRender={3}
-        maxToRenderPerBatch={3}
-        updateCellsBatchingPeriod={100}
-        renderItem={PostCardRenderer}
         keyExtractor={(item) => item.surveyQuestion.id}
+        maxToRenderPerBatch={3}
         onEndReached={() => handlePagination()}
+        renderItem={PostCardRenderer}
+        updateCellsBatchingPeriod={100}
       />
     </View>
   );

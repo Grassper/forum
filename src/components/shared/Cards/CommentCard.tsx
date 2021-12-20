@@ -104,9 +104,9 @@ export const CommentCard: React.FC<Props_> = ({
     <Box
       alignItems="center"
       bg="white"
-      py="4"
-      borderBottomWidth="1"
       borderBottomColor="border.400"
+      borderBottomWidth="1"
+      py="4"
     >
       <Box width="90%">
         <HStack alignItems="center" justifyContent="space-between" mb="3">
@@ -114,50 +114,50 @@ export const CommentCard: React.FC<Props_> = ({
             {avatarUrl ? (
               <Pressable onPress={() => {}}>
                 <Box
-                  width="40px"
-                  height="40px"
                   bg="amber.100"
                   borderRadius="full"
+                  height="40px"
                   overflow="hidden"
+                  width="40px"
                 >
-                  <SvgUri uri={avatarUrl} width="100%" height="100%" />
+                  <SvgUri height="100%" uri={avatarUrl} width="100%" />
                 </Box>
               </Pressable>
             ) : (
               <Box
-                width="40px"
-                height="40px"
                 bg="amber.100"
                 borderRadius="full"
+                height="40px"
                 overflow="hidden"
+                width="40px"
               >
-                <Skeleton width="100%" height="100%" />
+                <Skeleton height="100%" width="100%" />
               </Box>
             )}
             <Box>
               {username ? (
                 <Text fontWeight="500">{username}</Text>
               ) : (
-                <Skeleton height="20px" width="250px" mb="5px" />
+                <Skeleton height="20px" mb="5px" width="250px" />
               )}
               <HStack alignItems="center">
                 {subForum ? (
                   <>
-                    <Text fontSize="xs" color="blueGray.500">
+                    <Text color="blueGray.500" fontSize="xs">
                       in e/{subForum}
                     </Text>
                     <Box bg="blueGray.500" style={styles.separatorDot} />
                   </>
                 ) : (
-                  <Skeleton height="20px" width="75px" mb="5px" mr="2" />
+                  <Skeleton height="20px" mb="5px" mr="2" width="75px" />
                 )}
 
                 {timeStamp ? (
-                  <Text fontSize="xs" color="blueGray.500">
+                  <Text color="blueGray.500" fontSize="xs">
                     {format(new Date(timeStamp), "MMM dd")}
                   </Text>
                 ) : (
-                  <Skeleton height="20px" width="75px" mb="5px" />
+                  <Skeleton height="20px" mb="5px" width="75px" />
                 )}
               </HStack>
             </Box>
@@ -170,9 +170,9 @@ export const CommentCard: React.FC<Props_> = ({
                     <Pressable {...triggerProps}>
                       <Icon
                         as={<Ionicons name="ellipsis-vertical" />}
-                        size={5}
-                        mr="2"
                         color="black"
+                        mr="2"
+                        size={5}
                       />
                     </Pressable>
                   );
@@ -194,13 +194,13 @@ export const CommentCard: React.FC<Props_> = ({
           <Text mb="4">{contentText}</Text>
         ) : (
           <>
-            <Skeleton height="20px" width="95%" mb="2" />
+            <Skeleton height="20px" mb="2" width="95%" />
           </>
         )}
         {!hideCommentUserActions && commentId && (
           <Box>
             <HStack alignItems="center" justifyContent="space-between">
-              <HStack space="3" alignItems="center">
+              <HStack alignItems="center" space="3">
                 <Pressable
                   onPress={() => {
                     voteHandler("UPVOTE");
@@ -209,8 +209,8 @@ export const CommentCard: React.FC<Props_> = ({
                   <HStack alignItems="flex-end">
                     <Icon
                       as={<AntDesign name="caretcircleoup" />}
-                      size={5}
                       color={action === "UPVOTE" ? "green.500" : "muted.500"}
+                      size={5}
                     />
                     {/* <Text ml="1" fontSize="xs">
                       1.5k
@@ -226,8 +226,8 @@ export const CommentCard: React.FC<Props_> = ({
                     <Box style={styles.downVoteIcon}>
                       <Icon
                         as={<AntDesign name="caretcircleoup" />}
-                        size={5}
                         color={action === "DOWNVOTE" ? "red.500" : "muted.500"}
+                        size={5}
                       />
                     </Box>
                     {/* <Text ml="1" fontSize="xs">
@@ -259,8 +259,8 @@ export const CommentCard: React.FC<Props_> = ({
                       <Box>
                         <Icon
                           as={<Entypo name="reply" />}
-                          size={5}
                           color={"muted.500"}
+                          size={5}
                         />
                       </Box>
                     </HStack>
@@ -290,7 +290,7 @@ export const CommentCard: React.FC<Props_> = ({
                   {/**
                    * show replies only if replies exist */}
                   <Box>
-                    <Text fontWeight="500" fontSize="xs" color="info.600">
+                    <Text color="info.600" fontSize="xs" fontWeight="500">
                       {repliesCount} Reply
                     </Text>
                   </Box>

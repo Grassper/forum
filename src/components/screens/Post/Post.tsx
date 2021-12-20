@@ -62,24 +62,24 @@ const PostHeader: React.FC<PostHeader_> = (post) => {
   return (
     <Box>
       <PostCard
-        id={post.id}
-        subForum={post.subForum}
-        subForumId={post.subForumId}
-        type={post.type}
-        username={post.username}
         authorId={post.authorId}
-        contentText={post.contentText}
         avatarUrl={post.avatarUrl}
-        timeStamp={post.timeStamp}
-        userPostMetric={post.userPostMetric}
+        contentText={post.contentText}
+        hidePostNavigation
+        id={post.id}
         mediaS3Key={post.mediaS3Key}
         postPage
-        hidePostNavigation
+        subForum={post.subForum}
+        subForumId={post.subForumId}
+        timeStamp={post.timeStamp}
+        type={post.type}
+        username={post.username}
+        userPostMetric={post.userPostMetric}
       />
 
       <Box alignItems="center" bg="white" mt="2" pt="4">
-        <HStack width="90%" alignItems="flex-end">
-          <Text fontWeight="500" color="eGreen.400">
+        <HStack alignItems="flex-end" width="90%">
+          <Text color="eGreen.400" fontWeight="500">
             Comments
           </Text>
         </HStack>
@@ -148,17 +148,17 @@ export const Post: React.FC<Props_> = ({ route }) => {
     const comment = item.childComment;
     return (
       <CommentCard
-        username={comment.author.username}
         avatarUrl={comment.author.profileImageUrl}
-        subForum={comment.community.name}
-        subForumId={comment.community.id}
+        commentAuthorId={comment.author.id}
+        commentId={comment.id}
         contentText={comment.content}
         postId={comment.postId}
-        commentId={comment.id}
-        timeStamp={comment.commentedDate}
         repliesCount={comment.repliesCount}
-        commentAuthorId={comment.author.id}
+        subForum={comment.community.name}
+        subForumId={comment.community.id}
+        timeStamp={comment.commentedDate}
         userCommentMetric={comment.userCommentMetric}
+        username={comment.author.username}
       />
     );
   };
@@ -166,7 +166,7 @@ export const Post: React.FC<Props_> = ({ route }) => {
   if (!isStateReady) {
     return (
       <ScrollView>
-        <PostCard postPage hidePostNavigation {...postData} />
+        <PostCard hidePostNavigation postPage {...postData} />
         <Box alignItems="center" bg="white" mt="2" pt="4">
           <Flex width="100%">
             <CommentCard />
@@ -193,12 +193,12 @@ export const Post: React.FC<Props_> = ({ route }) => {
       <FlatList
         data={comments}
         initialNumToRender={5}
-        maxToRenderPerBatch={5}
-        updateCellsBatchingPeriod={100}
-        renderItem={CommentCardRenderer}
         keyExtractor={(item) => item.childComment.id}
-        onEndReached={() => handlePagination()}
         ListHeaderComponent={() => <PostHeader {...postData} />}
+        maxToRenderPerBatch={5}
+        onEndReached={() => handlePagination()}
+        renderItem={CommentCardRenderer}
+        updateCellsBatchingPeriod={100}
       />
     </Box>
   );

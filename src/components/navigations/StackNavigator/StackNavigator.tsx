@@ -51,58 +51,58 @@ export const StackNavigator = () => {
   } = React.useContext(UserContext);
   return (
     <Stack.Navigator
-      screenOptions={defaultStackOptions}
       initialRouteName="BottomTabNav"
+      screenOptions={defaultStackOptions}
     >
       <Stack.Screen
-        name="BottomTabNav"
         component={BottomTabNavigator}
+        name="BottomTabNav"
         options={{
           title: "",
           headerShown: false,
         }}
       />
       <Stack.Screen
-        name="SubForum"
         component={SubForum}
+        name="SubForum"
         options={({ route }) => ({
           title: `e/${route.params.title}`,
         })}
       />
       <Stack.Screen
-        name="SubForumMod"
         component={SubForumMod}
+        name="SubForumMod"
         options={() => ({
           title: "Manage",
         })}
       />
       <Stack.Screen
-        name="Info"
         component={Info}
+        name="Info"
         options={() => ({
           title: "Info",
         })}
       />
       <Stack.Screen
-        name="EditAndCreateSubForum"
         component={EditAndCreateSubForum}
         initialParams={{ title: "Create Subforum", action: "Add" }}
+        name="EditAndCreateSubForum"
         options={({ route }) => ({
           title: route.params.title,
           headerTintColor: colors.green,
         })}
       />
       <Stack.Screen
-        name="Follow"
         component={Follow}
+        name="Follow"
         options={({ route }) => ({
           title: route.params.title,
         })}
       />
-      <Stack.Screen name="EditProfile" component={EditProfile} />
+      <Stack.Screen component={EditProfile} name="EditProfile" />
       <Stack.Screen
-        name="AddAndEditComment"
         component={AddAndEditComment}
+        name="AddAndEditComment"
         options={() => ({
           title: "Add Comment",
           headerStyle: {
@@ -112,8 +112,8 @@ export const StackNavigator = () => {
         })}
       />
       <Stack.Screen
-        name="Comment"
         component={Comment}
+        name="Comment"
         options={() => ({
           title: "",
           headerStyle: {
@@ -123,8 +123,8 @@ export const StackNavigator = () => {
         })}
       />
       <Stack.Screen
-        name="AddAndEditReplies"
         component={AddAndEditReplies}
+        name="AddAndEditReplies"
         options={() => ({
           title: "",
           headerStyle: {
@@ -134,47 +134,47 @@ export const StackNavigator = () => {
         })}
       />
       <Stack.Screen
-        name="AddAndEditPost"
         component={AddAndEditPost}
+        name="AddAndEditPost"
         options={({ route }) => ({
           title: route.params.title,
           headerTintColor: colors.green,
         })}
       />
       <Stack.Screen
-        name="ChooseSubForum"
         component={ChooseSubForum}
+        name="ChooseSubForum"
         options={() => ({
           title: "Select Sub-Forum",
           headerTintColor: colors.green,
         })}
       />
-      <Stack.Screen name="ChatRoom" component={ChatRoom} />
+      <Stack.Screen component={ChatRoom} name="ChatRoom" />
       <Stack.Screen
-        name="Profile"
         component={Profile}
         initialParams={{ userId: id }}
+        name="Profile"
         options={() => ({
           title: "",
         })}
       />
       <Stack.Screen
-        name="NewChat"
         component={NewChat}
+        name="NewChat"
         options={{
           title: "Search Your Friends",
         }}
       />
       <Stack.Screen
-        name="ChatList"
         component={ChatList}
+        name="ChatList"
         options={{
           title: "Discussions",
         }}
       />
       <Stack.Screen
-        name="Post"
         component={Post}
+        name="Post"
         options={() => ({
           title: "",
         })}
@@ -187,40 +187,40 @@ export const AuthStackNavigator = () => {
   return (
     <AuthStack.Navigator>
       <AuthStack.Screen
-        name="SignIn"
         component={SignIn}
+        name="SignIn"
         options={() => ({
           title: "",
           headerShown: false,
         })}
       />
       <AuthStack.Screen
-        name="SignUp"
         component={SignUp}
+        name="SignUp"
         options={() => ({
           title: "",
           headerShown: false,
         })}
       />
       <AuthStack.Screen
-        name="Verification"
         component={Verification}
+        name="Verification"
         options={() => ({
           title: "",
           headerShown: false,
         })}
       />
       <AuthStack.Screen
-        name="ForgotPassword"
         component={ForgotPassword}
+        name="ForgotPassword"
         options={() => ({
           title: "",
           headerShown: false,
         })}
       />
       <AuthStack.Screen
-        name="AccountRecovery"
         component={AccountRecovery}
+        name="AccountRecovery"
         options={() => ({
           title: "",
           headerShown: false,

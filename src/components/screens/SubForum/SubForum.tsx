@@ -116,21 +116,21 @@ export const SubForum: React.FC<Props_> = ({ navigation, route }) => {
       headerRight: () =>
         subForum?.creatorId && currentUser.id === subForum.creatorId ? (
           <Button
-            size="md"
             _text={{ fontWeight: "600", color: "eGreen.400" }}
-            variant="unstyled"
             onPress={() => {
               navigation.navigate("SubForumMod");
             }}
+            size="md"
+            variant="unstyled"
           >
             Manage
           </Button>
         ) : (
           <Button
-            size="md"
             _text={{ fontWeight: "600", color: "eGreen.400" }}
-            variant="unstyled"
             onPress={() => setReportModal(true)}
+            size="md"
+            variant="unstyled"
           >
             Help
           </Button>
@@ -152,19 +152,19 @@ export const SubForum: React.FC<Props_> = ({ navigation, route }) => {
   const PostCardRenderer: ListRenderItem<Item> = ({ item }) => {
     return (
       <PostCard
+        authorId={item.author.id}
+        avatarUrl={item.author.profileImageUrl}
+        contentText={item.content}
         id={item.id}
+        mediaS3Key={item.mediaS3Key}
         subForum={item.community.name}
         subForumId={item.community.id}
+        timeStamp={item.postedDate}
         type={
           (item.type.charAt(0) +
             item.type.slice(1).toLowerCase()) as PostCardProps_["type"]
         }
         username={item.author.username}
-        authorId={item.author.id}
-        contentText={item.content}
-        avatarUrl={item.author.profileImageUrl}
-        timeStamp={item.postedDate}
-        mediaS3Key={item.mediaS3Key}
         userPostMetric={item.userPostMetric}
       />
     );
@@ -197,24 +197,24 @@ export const SubForum: React.FC<Props_> = ({ navigation, route }) => {
       <FlatList
         data={posts}
         initialNumToRender={5}
-        maxToRenderPerBatch={5}
-        renderItem={PostCardRenderer}
+        keyExtractor={(item) => item.id}
         ListHeaderComponent={() => (
           <SubForumCard
-            id={subForum?.id}
-            name={subForum?.name}
-            description={subForum?.description}
-            profileImageS3Key={subForum?.profileImageS3Key}
-            coverImageS3Key={subForum?.bannerImageS3Key}
             _version={subForum?._version}
+            coverImageS3Key={subForum?.bannerImageS3Key}
             creatorId={subForum?.creatorId}
+            description={subForum?.description}
+            id={subForum?.id}
+            members={subForum?.members}
+            name={subForum?.name}
+            profileImageS3Key={subForum?.profileImageS3Key}
             totalMembers={subForum?.totalMembers}
             totalPosts={subForum?.totalPosts}
-            members={subForum?.members}
           />
         )}
-        keyExtractor={(item) => item.id}
+        maxToRenderPerBatch={5}
         onEndReached={() => handlePagination()}
+        renderItem={PostCardRenderer}
       />
     </View>
   );

@@ -145,11 +145,11 @@ export const ImagePickerButton: React.FC<Props_> = ({
   };
 
   return (
-    <Pressable bg="eGreen.400" p="2" borderRadius="full" onPress={pickImage}>
+    <Pressable bg="eGreen.400" borderRadius="full" onPress={pickImage} p="2">
       <Icon
         as={<MaterialIcons name="motion-photos-on" />}
-        size={18}
         color="white"
+        size={18}
       />
     </Pressable>
   );

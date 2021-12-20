@@ -61,22 +61,22 @@ export const CommunityTile: React.FC<Props_> = ({
                 }}
               >
                 <Text
-                  fontSize="sm"
-                  fontFamily="body"
-                  fontWeight="600"
                   color="white"
+                  fontFamily="body"
+                  fontSize="sm"
+                  fontWeight="600"
                 >
                   "Ef"
                 </Text>
               </Avatar>
             ) : (
-              <Skeleton width="40px" height="40px" borderRadius="full" />
+              <Skeleton borderRadius="full" height="40px" width="40px" />
             )}
             <VStack>
               {name ? (
                 <Text
-                  color="coolGray.800"
                   _dark={{ color: "warmGray.50" }}
+                  color="coolGray.800"
                   fontWeight="500"
                 >
                   {name}
@@ -88,14 +88,14 @@ export const CommunityTile: React.FC<Props_> = ({
                 <>
                   {members ? (
                     <Text
-                      color="coolGray.600"
                       _dark={{ color: "warmGray.200" }}
+                      color="coolGray.600"
                       fontSize="xs"
                     >
                       {members} Members
                     </Text>
                   ) : (
-                    <Skeleton height="20px" width="150px" mt="2" />
+                    <Skeleton height="20px" mt="2" width="150px" />
                   )}
                 </>
               )}
@@ -105,8 +105,8 @@ export const CommunityTile: React.FC<Props_> = ({
               <HStack space="4">
                 <Icon
                   as={<Entypo name="chevron-small-right" />}
-                  size={"20px"}
                   color="black"
+                  size={"20px"}
                 />
               </HStack>
             )}

@@ -118,9 +118,9 @@ export const Home: React.FC<Props_> = ({ navigation }) => {
       headerLeft: () => <ProfileIcon />,
       headerTitle: () => (
         <Image
-          size="30px"
-          resizeMode={"contain"}
           borderRadius={100}
+          resizeMode={"contain"}
+          size="30px"
           source={logo}
         />
       ),
@@ -131,19 +131,19 @@ export const Home: React.FC<Props_> = ({ navigation }) => {
   const PostCardRenderer: ListRenderItem<Item> = ({ item }) => {
     return (
       <PostCard
+        authorId={item.post.author.id}
+        avatarUrl={item.post.author.profileImageUrl}
+        contentText={item.post.content}
         id={item.post.id}
+        mediaS3Key={item.post.mediaS3Key}
         subForum={item.post.community.name}
         subForumId={item.post.community.id}
+        timeStamp={item.post.postedDate}
         type={
           (item.post.type.charAt(0) +
             item.post.type.slice(1).toLowerCase()) as PostCardProps_["type"]
         }
         username={item.post.author.username}
-        authorId={item.post.author.id}
-        contentText={item.post.content}
-        avatarUrl={item.post.author.profileImageUrl}
-        timeStamp={item.post.postedDate}
-        mediaS3Key={item.post.mediaS3Key}
         userPostMetric={item.post.userPostMetric}
       />
     );
@@ -166,12 +166,12 @@ export const Home: React.FC<Props_> = ({ navigation }) => {
       <BottomSheet isOpen={isOpen} onClose={HandleBottomSheet} />
       <FlatList
         data={memoPost}
-        renderItem={PostCardRenderer}
         initialNumToRender={8}
-        maxToRenderPerBatch={8}
-        windowSize={5}
         keyExtractor={keyExtractor}
+        maxToRenderPerBatch={8}
         onEndReached={handlePagination}
+        renderItem={PostCardRenderer}
+        windowSize={5}
       />
       <FloatingActionButton onPress={HandleBottomSheet} screen="Home" />
     </View>

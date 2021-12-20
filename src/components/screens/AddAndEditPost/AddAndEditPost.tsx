@@ -234,10 +234,10 @@ export const AddAndEditPost: React.FC<Props_> = ({ navigation, route }) => {
     navigation.setOptions({
       headerRight: () => (
         <Button
-          size="md"
           _text={{ fontWeight: "600", color: "eGreen.400" }}
-          variant="unstyled"
           onPress={!loading ? handleSubmit : null}
+          size="md"
+          variant="unstyled"
         >
           {!loading ? "Post" : <Spinner color="eGreen.400" />}
         </Button>
@@ -261,9 +261,9 @@ export const AddAndEditPost: React.FC<Props_> = ({ navigation, route }) => {
 
   return (
     <VStack
-      style={styles.container}
       bg="white"
       justifyContent={postType !== "Poll" ? "space-between" : "flex-start"}
+      style={styles.container}
     >
       <CommunityTile
         hideDivider
@@ -274,17 +274,17 @@ export const AddAndEditPost: React.FC<Props_> = ({ navigation, route }) => {
       />
       {/* if poll exist */}
       {postType === "Poll" && (
-        <Box bg="white" alignItems="center">
+        <Box alignItems="center" bg="white">
           <Box width="90%">
             <Input
+              fontSize="md"
+              maxLength={100}
               multiline
               numberOfLines={2}
-              maxLength={100}
-              value={PollQuestion}
               onChangeText={setPollQuestion}
               placeholder="Question"
               placeholderTextColor="muted.400"
-              fontSize="md"
+              value={PollQuestion}
               variant="unstyled"
             />
             <Box mt="2">
@@ -293,31 +293,31 @@ export const AddAndEditPost: React.FC<Props_> = ({ navigation, route }) => {
                   <HStack alignItems="center">
                     <Text
                       key={`poll-${index}`}
-                      p="3"
-                      width="85%"
+                      alignItems="center"
                       bg="muted.100"
+                      borderRadius="5"
                       mb="2"
                       minHeight="50px"
-                      alignItems="center"
-                      borderRadius="5"
+                      p="3"
+                      width="85%"
                     >
                       {entry.content}
                     </Text>
 
                     <Pressable
-                      bg="danger.400"
-                      width="15%"
-                      height="50px"
-                      mb="2"
                       alignItems="center"
+                      bg="danger.400"
+                      height="50px"
                       justifyContent="center"
+                      mb="2"
                       onPress={() => pollRemovalHandler(entry.content)}
+                      width="15%"
                     >
                       <Icon
                         as={<AntDesign name="plus" />}
+                        color="white"
                         size={4}
                         style={styles.cancelIcon}
-                        color="white"
                       />
                     </Pressable>
                   </HStack>
@@ -329,54 +329,54 @@ export const AddAndEditPost: React.FC<Props_> = ({ navigation, route }) => {
               <HStack alignItems="center">
                 <Input
                   bg="muted.100"
-                  p="4"
+                  fontSize="sm"
                   maxLength={30}
-                  width="85%"
-                  value={Option}
                   onChangeText={setOption}
+                  p="4"
                   placeholder="Add Option"
                   placeholderTextColor="muted.400"
-                  fontSize="sm"
+                  value={Option}
                   variant="unstyled"
+                  width="85%"
                 />
                 <Pressable
-                  bg="eGreen.400"
-                  width="15%"
-                  height="50px"
                   alignItems="center"
+                  bg="eGreen.400"
+                  height="50px"
                   justifyContent="center"
                   onPress={pollAdditionHandler}
+                  width="15%"
                 >
-                  <Icon as={<AntDesign name="plus" />} size={4} color="white" />
+                  <Icon as={<AntDesign name="plus" />} color="white" size={4} />
                 </Pressable>
               </HStack>
             )}
             <Input
-              mt="2"
+              fontSize="sm"
               maxLength={140}
+              mt="2"
               multiline
-              value={Content}
               onChangeText={setContent}
               placeholder="Purpose of this poll"
               placeholderTextColor="muted.400"
-              fontSize="sm"
+              value={Content}
               variant="unstyled"
             />
           </Box>
         </Box>
       )}
       {postType !== "Poll" && (
-        <Box bg="white" alignItems="center" height={"90%"}>
+        <Box alignItems="center" bg="white" height={"90%"}>
           <Input
-            multiline
-            value={Content}
-            width="90%"
-            onChangeText={setContent}
             borderRadius="md"
+            fontSize="sm"
+            multiline
+            onChangeText={setContent}
             placeholder="Craft your post!"
             placeholderTextColor="muted.400"
-            fontSize="sm"
+            value={Content}
             variant="unstyled"
+            width="90%"
           />
         </Box>
       )}

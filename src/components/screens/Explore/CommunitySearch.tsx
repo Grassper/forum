@@ -78,6 +78,9 @@ export const CommunitySearch: React.FC = () => {
   const CommunityCardRenderer: ListRenderItem<Item> = ({ item }) => {
     return (
       <CommunityTile
+        hideDivider
+        members={item.totalMembers}
+        name={item.name}
         onPress={() => {
           navigation.dispatch(
             StackActions.push("Application", {
@@ -89,10 +92,7 @@ export const CommunitySearch: React.FC = () => {
             })
           );
         }}
-        hideDivider
         profileImageS3Key={item.profileImageS3Key}
-        name={item.name}
-        members={item.totalMembers}
       />
     );
   };
@@ -114,15 +114,15 @@ export const CommunitySearch: React.FC = () => {
   }
 
   return (
-    <Box style={styles.container} bg={colors.white} pt="4">
+    <Box bg={colors.white} pt="4" style={styles.container}>
       <FlatList
         data={community}
         initialNumToRender={5}
-        maxToRenderPerBatch={5}
-        updateCellsBatchingPeriod={100}
-        renderItem={CommunityCardRenderer}
         keyExtractor={(item) => item.id}
+        maxToRenderPerBatch={5}
         onEndReached={() => handlePagination()}
+        renderItem={CommunityCardRenderer}
+        updateCellsBatchingPeriod={100}
       />
     </Box>
   );

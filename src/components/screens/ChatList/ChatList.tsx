@@ -91,9 +91,8 @@ export const ChatList: React.FC<Props_> = ({ navigation }) => {
 
     return (
       <UserCard
-        id={item.chatRoom.id}
-        username={pickOppositeUser[0].user.username}
         avatarUrl={pickOppositeUser[0].user.profileImageUrl}
+        id={item.chatRoom.id}
         onPress={() => {
           navigation.push("ChatRoom", {
             title: pickOppositeUser[0].user.username,
@@ -101,6 +100,7 @@ export const ChatList: React.FC<Props_> = ({ navigation }) => {
             roomId: item.chatRoom.id,
           });
         }}
+        username={pickOppositeUser[0].user.username}
       />
     );
   };
@@ -133,17 +133,17 @@ export const ChatList: React.FC<Props_> = ({ navigation }) => {
   }
 
   return (
-    <Box style={styles.container} bg="white" alignItems="center">
-      <Box alignItems="center" width="95%" py="15px">
+    <Box alignItems="center" bg="white" style={styles.container}>
+      <Box alignItems="center" py="15px" width="95%">
         <Box width="100%">
           <FlatList
             data={chatRooms}
-            renderItem={ChatCardRenderer}
             initialNumToRender={10}
-            maxToRenderPerBatch={10}
-            updateCellsBatchingPeriod={100}
             keyExtractor={keyExtractor}
+            maxToRenderPerBatch={10}
             onEndReached={handlePagination}
+            renderItem={ChatCardRenderer}
+            updateCellsBatchingPeriod={100}
           />
         </Box>
       </Box>

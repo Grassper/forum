@@ -56,10 +56,10 @@ export const AccountRecovery: React.FC<Props_> = ({ navigation }) => {
     }
   };
   return (
-    <Box height="100%" alignItems="center" bg="white">
+    <Box alignItems="center" bg="white" height="100%">
       <VStack
-        justifyContent="space-between"
         height="100%"
+        justifyContent="space-between"
         safeAreaY
         width="90%"
       >
@@ -69,68 +69,68 @@ export const AccountRecovery: React.FC<Props_> = ({ navigation }) => {
               <Icon
                 as={<Ionicons name="ios-arrow-back" />}
                 color="eGreen.400"
-                size={"24px"}
                 mr="3"
+                size={"24px"}
               />
             </Pressable>
           </Box>
           <Text
-            fontSize="3xl"
-            fontWeight="bold"
             color={colors.black}
             fontFamily="heading"
-            pt="5"
+            fontSize="3xl"
+            fontWeight="bold"
             pb="3"
+            pt="5"
           >
             Forget Password
           </Text>
           <Box>
-            <Text fontSize="sm" pb="6" color={colors.gray}>
+            <Text color={colors.gray} fontSize="sm" pb="6">
               It's fine that happens ! Click on the button below to reset your
               password
             </Text>
           </Box>
 
           <Input
-            width="100%"
-            value={userName}
-            onChangeText={setUserName}
-            autoCapitalize="none"
-            borderRadius="full"
-            placeholder="username"
-            placeholderTextColor="coolGray.400"
-            borderColor="coolGray.200"
             _focus={{
               borderColor: colors.green,
             }}
-            p="4"
+            autoCapitalize="none"
+            borderColor="coolGray.200"
+            borderRadius="full"
             mb="5"
+            onChangeText={setUserName}
+            p="4"
+            placeholder="username"
+            placeholderTextColor="coolGray.400"
             type="text"
+            value={userName}
+            width="100%"
           />
         </Box>
-        <Box width="100%" justifyContent="flex-end">
+        <Box justifyContent="flex-end" width="100%">
           {!loading ? (
             <Pressable
-              onPress={forgotPassword}
+              alignItems="center"
               bg={colors.green}
               borderRadius="full"
-              justifyContent="center"
               height="50px"
-              alignItems="center"
+              justifyContent="center"
+              onPress={forgotPassword}
             >
-              <Text fontSize="md" fontWeight="600" color={buttonContrast}>
+              <Text color={buttonContrast} fontSize="md" fontWeight="600">
                 Continue
               </Text>
             </Pressable>
           ) : (
             <Flex
-              fontSize="md"
-              fontWeight="600"
+              alignItems="center"
               bg={colors.green}
               borderRadius="full"
-              justifyContent="center"
-              alignItems="center"
+              fontSize="md"
+              fontWeight="600"
               height="50px"
+              justifyContent="center"
             >
               <Spinner color="white" />
             </Flex>

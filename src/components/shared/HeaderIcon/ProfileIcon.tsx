@@ -20,20 +20,20 @@ export const ProfileIcon: React.FC = () => {
       }
     >
       <Box
-        ml="4"
-        width="8"
-        height="8"
         bg="amber.100"
         borderRadius="full"
+        height="8"
+        ml="4"
         overflow="hidden"
+        width="8"
       >
         <SvgUri
+          height="100%"
           uri={
             profileImageUrl ||
             "https://avatars.dicebear.com/api/micah/default.svg"
           }
           width="100%"
-          height="100%"
         />
       </Box>
     </Pressable>

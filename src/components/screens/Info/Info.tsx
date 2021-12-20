@@ -34,17 +34,17 @@ interface Items_ {
 const Items: React.FC<Items_> = ({ onPress, name, hideBordered, isDanger }) => {
   return (
     <HStack
-      justifyContent="center"
-      borderBottomWidth={hideBordered ? 0 : 0.25}
       borderBottomColor="border.400"
+      borderBottomWidth={hideBordered ? 0 : 0.25}
+      justifyContent="center"
     >
       <Box width="90%">
         <Pressable onPress={onPress}>
           <Text
-            fontSize="sm"
-            py="3"
-            fontWeight="medium"
             color={isDanger ? "danger.600" : "coolGray.900"}
+            fontSize="sm"
+            fontWeight="medium"
+            py="3"
           >
             {name}
           </Text>

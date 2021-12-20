@@ -124,10 +124,10 @@ export const EditProfile: React.FC<Props_> = ({ navigation }) => {
     navigation.setOptions({
       headerRight: () => (
         <Button
-          size="md"
           _text={{ fontWeight: "600", color: "eGreen.400" }}
-          variant="unstyled"
           onPress={!loading ? handleSubmit : null}
+          size="md"
+          variant="unstyled"
         >
           {!loading ? "Save" : <Spinner color="eGreen.400" />}
         </Button>
@@ -141,30 +141,30 @@ export const EditProfile: React.FC<Props_> = ({ navigation }) => {
       <Box style={styles.container}>
         <Box alignItems="center" justifyContent="center" my="4">
           <Box
-            width="100px"
-            height="100px"
             bg="amber.100"
             borderRadius="full"
+            height="100px"
             overflow="hidden"
+            width="100px"
           >
-            <SvgUri uri={profileUrl} width="100%" height="100%" />
+            <SvgUri height="100%" uri={profileUrl} width="100%" />
           </Box>
         </Box>
-        <FormControl mt="4" isInvalid={!isAboutValid}>
+        <FormControl isInvalid={!isAboutValid} mt="4">
           <FormControl.Label mb="3">About</FormControl.Label>
           <Input
             bg="muted.100"
-            p="4"
-            mb="2"
+            borderRadius="md"
+            fontSize="sm"
             height="175"
+            mb="2"
             multiline
             numberOfLines={4}
-            value={about}
             onChangeText={setAbout}
-            borderRadius="md"
+            p="4"
             placeholder="Express yourself"
             placeholderTextColor="muted.400"
-            fontSize="sm"
+            value={about}
             variant="unstyled"
           />
           <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>

@@ -21,9 +21,11 @@ export const BottomSheet: React.FC<Props_> = ({ isOpen, onClose }) => {
   return (
     <Actionsheet isOpen={isOpen} onClose={onClose}>
       <Actionsheet.Content bg="white">
-        <VStack alignItems="center" space="4" mt="5">
-          <HStack width="100%" space="8">
+        <VStack alignItems="center" mt="5" space="4">
+          <HStack space="8" width="100%">
             <Item
+              iconName="ios-text"
+              iconSize="20px"
               onPress={() => {
                 navigation.navigate("Application", {
                   screen: "ChooseSubForum",
@@ -35,11 +37,11 @@ export const BottomSheet: React.FC<Props_> = ({ isOpen, onClose }) => {
                 });
                 onClose();
               }}
-              iconName="ios-text"
-              iconSize="20px"
               postType="Write"
             />
             <Item
+              iconName="ios-image"
+              iconSize="20px"
               onPress={() => {
                 navigation.navigate("Application", {
                   screen: "ChooseSubForum",
@@ -47,11 +49,11 @@ export const BottomSheet: React.FC<Props_> = ({ isOpen, onClose }) => {
                 });
                 onClose();
               }}
-              iconName="ios-image"
-              iconSize="20px"
               postType="Image"
             />
             <Item
+              iconName="ios-videocam"
+              iconSize="20px"
               onPress={() => {
                 navigation.navigate("Application", {
                   screen: "ChooseSubForum",
@@ -63,11 +65,11 @@ export const BottomSheet: React.FC<Props_> = ({ isOpen, onClose }) => {
 
                 onClose();
               }}
-              iconName="ios-videocam"
-              iconSize="20px"
               postType="Video"
             />
             <Item
+              iconName="mic"
+              iconSize="22px"
               onPress={() => {
                 navigation.navigate("Application", {
                   screen: "ChooseSubForum",
@@ -75,11 +77,11 @@ export const BottomSheet: React.FC<Props_> = ({ isOpen, onClose }) => {
                 });
                 onClose();
               }}
-              iconName="mic"
-              iconSize="22px"
               postType="audio"
             />
             <Item
+              iconName="ios-library"
+              iconSize="22px"
               onPress={() => {
                 navigation.navigate("Application", {
                   screen: "ChooseSubForum",
@@ -91,8 +93,6 @@ export const BottomSheet: React.FC<Props_> = ({ isOpen, onClose }) => {
                 });
                 onClose();
               }}
-              iconName="ios-library"
-              iconSize="22px"
               postType="Survey"
             />
           </HStack>
@@ -120,20 +120,20 @@ interface Items_ {
 
 const Item: React.FC<Items_> = ({ onPress, iconName, postType, iconSize }) => {
   return (
-    <VStack space="1.5" alignItems="center">
+    <VStack alignItems="center" space="1.5">
       <Pressable onPress={onPress}>
         <Box
-          bg="green.200"
           alignItems="center"
-          width="50px"
+          bg="green.200"
+          borderRadius="full"
           height="50px"
           justifyContent="center"
-          borderRadius="full"
+          width="50px"
         >
           <Icon
             as={<Ionicons name={iconName} />}
-            size={iconSize}
             color="coolGray.800"
+            size={iconSize}
           />
         </Box>
       </Pressable>

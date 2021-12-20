@@ -17,8 +17,8 @@ export const BottomTabNavigator = () => {
   return (
     <Tab.Navigator>
       <Tab.Screen
-        name="Home"
         component={Home}
+        name="Home"
         options={{
           title: "",
           tabBarShowLabel: false,
@@ -27,17 +27,17 @@ export const BottomTabNavigator = () => {
           tabBarIcon: ({ focused }) => {
             return (
               <AntDesign
+                color={focused ? "#17D7A0" : "#4b5563"}
                 name="home"
                 size={24}
-                color={focused ? "#17D7A0" : "#4b5563"}
               />
             );
           },
         }}
       />
       <Tab.Screen
-        name="Explore"
         component={Explore}
+        name="Explore"
         options={{
           title: "",
           headerShown: false,
@@ -46,17 +46,17 @@ export const BottomTabNavigator = () => {
           tabBarIcon: ({ focused }) => {
             return (
               <AntDesign
+                color={focused ? "#17D7A0" : "#4b5563"}
                 name="find"
                 size={24}
-                color={focused ? "#17D7A0" : "#4b5563"}
               />
             );
           },
         }}
       />
       <Tab.Screen
-        name="Survey"
         component={Survey}
+        name="Survey"
         options={{
           title: "Surveys",
           tabBarShowLabel: false,
@@ -68,17 +68,17 @@ export const BottomTabNavigator = () => {
           tabBarIcon: ({ focused }) => {
             return (
               <AntDesign
+                color={focused ? "#17D7A0" : "#4b5563"}
                 name="solution1"
                 size={22}
-                color={focused ? "#17D7A0" : "#4b5563"}
               />
             );
           },
         }}
       />
       <Tab.Screen
-        name="JoinedSubForum"
         component={JoinedSubForum}
+        name="JoinedSubForum"
         options={{
           title: "Forums",
           tabBarShowLabel: false,
@@ -90,9 +90,9 @@ export const BottomTabNavigator = () => {
           tabBarIcon: ({ focused }) => {
             return (
               <AntDesign
+                color={focused ? "#17D7A0" : "#4b5563"}
                 name="laptop"
                 size={23}
-                color={focused ? "#17D7A0" : "#4b5563"}
               />
             );
           },

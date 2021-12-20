@@ -92,15 +92,15 @@ export const JoinedSubForum: React.FC<Props_> = ({ navigation }) => {
     navigation.setOptions({
       headerRight: () => (
         <Button
-          size="md"
           _text={{ fontWeight: "600", color: "eGreen.400" }}
-          variant="unstyled"
           onPress={() =>
             navigation.push("EditAndCreateSubForum", {
               title: "Create Subforum",
               action: "Add",
             })
           }
+          size="md"
+          variant="unstyled"
         >
           Create
         </Button>
@@ -111,16 +111,16 @@ export const JoinedSubForum: React.FC<Props_> = ({ navigation }) => {
   const CommunityTileRenderer: ListRenderItem<Item> = ({ item }) => {
     return (
       <CommunityTile
-        name={item.community.name}
-        profileImageS3Key={item.community.profileImageS3Key}
-        members={item.community.totalMembers}
         hideDivider
+        members={item.community.totalMembers}
+        name={item.community.name}
         onPress={() =>
           navigation.navigate("SubForum", {
             subForumId: item.community.id,
             title: item.community.name,
           })
         }
+        profileImageS3Key={item.community.profileImageS3Key}
       />
     );
   };
@@ -145,16 +145,16 @@ export const JoinedSubForum: React.FC<Props_> = ({ navigation }) => {
   }
 
   return (
-    <Box bg="white" alignItems="center" style={styles.container}>
-      <Box width="100%" style={styles.container}>
+    <Box alignItems="center" bg="white" style={styles.container}>
+      <Box style={styles.container} width="100%">
         <FlatList
           data={communities}
           initialNumToRender={5}
-          maxToRenderPerBatch={5}
-          updateCellsBatchingPeriod={100}
-          renderItem={CommunityTileRenderer}
           keyExtractor={(item) => item.community.id}
+          maxToRenderPerBatch={5}
           onEndReached={() => handlePagination()}
+          renderItem={CommunityTileRenderer}
+          updateCellsBatchingPeriod={100}
         />
       </Box>
     </Box>

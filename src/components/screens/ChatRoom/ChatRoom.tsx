@@ -109,9 +109,9 @@ export const ChatRoom: React.FC<Props_> = ({ route, navigation }) => {
   const ChatCardRenderer: ListRenderItem<Item> = ({ item }) => {
     return (
       <ChatCard
+        align={item.userId === currentUser.id ? "right" : "left"}
         content={item.content}
         timeStamp={item.createdAt}
-        align={item.userId === currentUser.id ? "right" : "left"}
       />
     );
   };
@@ -139,13 +139,13 @@ export const ChatRoom: React.FC<Props_> = ({ route, navigation }) => {
         <Box>
           <HStack alignItems="center">
             <Box
-              width="35px"
-              height="35px"
               bg="amber.100"
               borderRadius="full"
+              height="35px"
               overflow="hidden"
+              width="35px"
             >
-              <SvgUri uri={imageUri} width="100%" height="100%" />
+              <SvgUri height="100%" uri={imageUri} width="100%" />
             </Box>
             <Text
               fontSize="sm"
@@ -162,21 +162,21 @@ export const ChatRoom: React.FC<Props_> = ({ route, navigation }) => {
   }, [imageUri, navigation, title]);
 
   return (
-    <Box flex="1" bg="green.900">
-      <Box alignItems="center" style={styles.container} py="4">
+    <Box bg="green.900" flex="1">
+      <Box alignItems="center" py="4" style={styles.container}>
         <Box width="95%">
           <FlatList
             ref={flatListRef}
             data={messages}
-            inverted
             initialNumToRender={10}
-            maxToRenderPerBatch={10}
-            updateCellsBatchingPeriod={100}
-            renderItem={ChatCardRenderer}
+            inverted
             keyExtractor={(item) => item.id}
+            maxToRenderPerBatch={10}
             onEndReached={handlePagination}
+            renderItem={ChatCardRenderer}
             showsHorizontalScrollIndicator={false}
             showsVerticalScrollIndicator={false}
+            updateCellsBatchingPeriod={100}
           />
         </Box>
       </Box>

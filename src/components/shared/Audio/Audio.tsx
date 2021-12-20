@@ -54,11 +54,11 @@ export const AudioComponent: React.FC<props> = ({ audioUri }) => {
 
   return (
     <View style={styles.outerContainer}>
-      <Pressable onPress={audioActionHandler} mr="1">
+      <Pressable mr="1" onPress={audioActionHandler}>
         {isplaying === "PLAYING" ? (
-          <Ionicons name="ios-pause" size={50} color="#17D7A0" />
+          <Ionicons color="#17D7A0" name="ios-pause" size={50} />
         ) : (
-          <Ionicons name="ios-play" size={50} color="#17D7A0" />
+          <Ionicons color="#17D7A0" name="ios-play" size={50} />
         )}
       </Pressable>
     </View>

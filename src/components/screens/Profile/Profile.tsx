@@ -48,28 +48,28 @@ export const Profile: React.FC<Props_> = ({ navigation, route }) => {
       headerRight: () =>
         routeUserId && routeUserId !== id ? ( // checking our user id with incoming user id
           <Button
-            size="md"
             _text={{ fontWeight: "600", color: "eGreen.400" }}
-            variant="unstyled"
             onPress={() => setReportModal(true)}
+            size="md"
+            variant="unstyled"
           >
             Report
           </Button>
         ) : (
           <Menu
-            width="125px"
             trigger={(triggerProps) => {
               return (
                 <Pressable {...triggerProps}>
                   <Icon
                     as={<Ionicons name="ellipsis-vertical" />}
-                    size={5}
-                    mr="2"
                     color="black"
+                    mr="2"
+                    size={5}
                   />
                 </Pressable>
               );
             }}
+            width="125px"
           >
             <Menu.Item onPress={() => navigation.navigate("EditProfile")}>
               Edit Profile
@@ -88,15 +88,15 @@ export const Profile: React.FC<Props_> = ({ navigation, route }) => {
           </Menu>
         ),
     });
-  }, [id, navigation, routeUserId]);
+  }, [id, navigation, routeUserId, setAuthState]);
 
   return (
     <View style={styles.container}>
       {routeUserId && (
         <ReportUser
-          userId={routeUserId}
           reportModal={reportModal}
           setReportModal={setReportModal}
+          userId={routeUserId}
         />
       )}
       <ProfileCard routeUserId={routeUserId} />
@@ -121,15 +121,15 @@ export const Profile: React.FC<Props_> = ({ navigation, route }) => {
           }}
         >
           <Tab.Screen
-            name="profilePosts"
             component={Posts}
+            name="profilePosts"
             options={() => ({
               title: "Posts",
             })}
           />
           <Tab.Screen
-            name="profileAbout"
             component={About}
+            name="profileAbout"
             options={() => ({
               title: "About",
             })}

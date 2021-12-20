@@ -97,10 +97,10 @@ export const AddAndEditReplies: React.FC<Props_> = ({ navigation, route }) => {
     navigation.setOptions({
       headerRight: () => (
         <Button
-          size="md"
           _text={{ fontWeight: "600", color: "white" }}
-          variant="unstyled"
           onPress={!loading ? handleSubmit : null}
+          size="md"
+          variant="unstyled"
         >
           {!loading ? (
             action === "Add" ? (
@@ -117,23 +117,23 @@ export const AddAndEditReplies: React.FC<Props_> = ({ navigation, route }) => {
   }, [action, handleSubmit, navigation, loading]);
 
   return (
-    <Box style={styles.container} bg="white">
+    <Box bg="white" style={styles.container}>
       <Box>
-        <CommentCard hideReplyButton hideCommentUserActions {...comment} />
+        <CommentCard hideCommentUserActions hideReplyButton {...comment} />
         <Divider />
       </Box>
-      <Box bg="white" py="4" mt="2">
+      <Box bg="white" mt="2" py="4">
         <HStack alignItems="flex-start" justifyContent="center">
           <Input
-            width="90%"
-            multiline
-            value={reply}
-            onChangeText={setReply}
             borderRadius="md"
+            fontSize="sm"
+            multiline
+            onChangeText={setReply}
             placeholder="Type some goods!"
             placeholderTextColor="muted.400"
-            fontSize="sm"
+            value={reply}
             variant="unstyled"
+            width="90%"
           />
         </HStack>
       </Box>

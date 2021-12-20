@@ -33,59 +33,59 @@ export const ReportPost: React.FC<Props_> = ({
     setReportModal(false);
   };
   return (
-    <Modal isOpen={reportModal} onClose={() => setReportModal(false)} mt={12}>
+    <Modal isOpen={reportModal} mt={12} onClose={() => setReportModal(false)}>
       <Modal.Content maxWidth="350">
         <Modal.CloseButton />
         <Modal.Header>Report Post</Modal.Header>
         <Modal.Body>
           <Radio.Group
-            name="report"
             accessibilityLabel="report post"
-            value={value}
+            name="report"
             onChange={(nextValue) => {
               setValue(nextValue);
             }}
+            value={value}
           >
-            <Radio value="Sexual content" my={1} colorScheme="warning">
+            <Radio colorScheme="warning" my={1} value="Sexual content">
               Sexual content
             </Radio>
             <Radio
-              value="Violent or repulsive content"
-              my={1}
               colorScheme="warning"
+              my={1}
+              value="Violent or repulsive content"
             >
               Violent or repulsive content
             </Radio>
             <Radio
-              value="Hateful or abusive content"
-              my={1}
               colorScheme="warning"
+              my={1}
+              value="Hateful or abusive content"
             >
               Hateful or abusive content
             </Radio>
-            <Radio value="Harassment or bullying" my={1} colorScheme="warning">
+            <Radio colorScheme="warning" my={1} value="Harassment or bullying">
               Harassment or bullying
             </Radio>
             <Radio
-              value="Harmful or dangerous acts"
-              my={1}
               colorScheme="warning"
+              my={1}
+              value="Harmful or dangerous acts"
             >
               Harmful or dangerous acts
             </Radio>
-            <Radio value="Child abuse" my={1} colorScheme="warning">
+            <Radio colorScheme="warning" my={1} value="Child abuse">
               Child abuse
             </Radio>
-            <Radio value="Promotes terrorism" my={1} colorScheme="warning">
+            <Radio colorScheme="warning" my={1} value="Promotes terrorism">
               Promotes terrorism
             </Radio>
-            <Radio value="Spam or misleading" my={1} colorScheme="warning">
+            <Radio colorScheme="warning" my={1} value="Spam or misleading">
               Spam or misleading
             </Radio>
-            <Radio value="Infringes my rights" my={1} colorScheme="warning">
+            <Radio colorScheme="warning" my={1} value="Infringes my rights">
               Infringes my rights
             </Radio>
-            <Radio value="Captions issue" my={1} colorScheme="warning">
+            <Radio colorScheme="warning" my={1} value="Captions issue">
               Captions issue
             </Radio>
           </Radio.Group>
@@ -93,18 +93,18 @@ export const ReportPost: React.FC<Props_> = ({
         <Modal.Footer>
           <Button.Group space={2}>
             <Button
-              variant="ghost"
               colorScheme="blueGray"
               onPress={() => {
                 setReportModal(false);
               }}
+              variant="ghost"
             >
               Cancel
             </Button>
             <Button
               bg="rose.600"
-              variant="unstyled"
               onPress={HandlerPostSubmit}
+              variant="unstyled"
             >
               Submit
             </Button>

@@ -11,22 +11,15 @@ export const SearchBar: React.FC<Props_> = ({ value, setValue }) => {
   return (
     <>
       <Input
-        py="3"
-        value={value}
-        onChangeText={setValue}
-        borderRadius="md"
-        placeholder="Search"
-        placeholderTextColor="muted.400"
         autoCapitalize="none"
+        borderRadius="md"
         fontSize="sm"
-        variant="unstyled"
-        textTransform="none"
         InputLeftElement={
           <Icon
             as={<Ionicons name="search-outline" />}
-            size={18}
-            ml="3"
             color="muted.400"
+            ml="3"
+            size={18}
           />
         }
         InputRightElement={
@@ -34,15 +27,22 @@ export const SearchBar: React.FC<Props_> = ({ value, setValue }) => {
             <Pressable onPress={() => setValue("")}>
               <Icon
                 as={<MaterialIcons name="clear" />}
-                size={18}
-                mr="3"
                 color="muted.400"
+                mr="3"
+                size={18}
               />
             </Pressable>
           ) : (
             <></>
           )
         }
+        onChangeText={setValue}
+        placeholder="Search"
+        placeholderTextColor="muted.400"
+        py="3"
+        textTransform="none"
+        value={value}
+        variant="unstyled"
       />
     </>
   );

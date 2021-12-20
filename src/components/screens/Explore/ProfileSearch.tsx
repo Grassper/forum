@@ -77,9 +77,8 @@ export const ProfileSearch: React.FC = () => {
   const ProfileCardRenderer: ListRenderItem<Item> = ({ item }) => {
     return (
       <FollowCard
-        id={item.id}
-        username={item.username}
         avatarUrl={item.profileImageUrl}
+        id={item.id}
         onPress={() =>
           navigation.dispatch(
             StackActions.push("Application", {
@@ -88,6 +87,7 @@ export const ProfileSearch: React.FC = () => {
             })
           )
         }
+        username={item.username}
       />
     );
   };
@@ -114,15 +114,15 @@ export const ProfileSearch: React.FC = () => {
   }
 
   return (
-    <Box style={styles.container} bg={colors.white} pt="4">
+    <Box bg={colors.white} pt="4" style={styles.container}>
       <FlatList
         data={profiles}
         initialNumToRender={5}
-        maxToRenderPerBatch={5}
-        updateCellsBatchingPeriod={100}
-        renderItem={ProfileCardRenderer}
         keyExtractor={(item) => item.id}
+        maxToRenderPerBatch={5}
         onEndReached={() => handlePagination()}
+        renderItem={ProfileCardRenderer}
+        updateCellsBatchingPeriod={100}
       />
     </Box>
   );

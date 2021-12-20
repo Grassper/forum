@@ -23,26 +23,26 @@ export const FollowCard: React.FC<FollowCard_> = ({
       <Box alignItems="center" bg="white">
         <Box width="90%">
           <HStack alignItems="center" justifyContent="space-between" mb="4">
-            <HStack space={3} alignItems="center">
+            <HStack alignItems="center" space={3}>
               {avatarUrl ? (
                 <Box
-                  width="40px"
-                  height="40px"
                   bg="amber.100"
                   borderRadius="full"
+                  height="40px"
                   overflow="hidden"
+                  width="40px"
                 >
-                  <SvgUri uri={avatarUrl} width="100%" height="100%" />
+                  <SvgUri height="100%" uri={avatarUrl} width="100%" />
                 </Box>
               ) : (
-                <Skeleton width="40px" height="40px" borderRadius="full" />
+                <Skeleton borderRadius="full" height="40px" width="40px" />
               )}
               {username ? (
                 <Text
-                  fontSize="sm"
-                  fontFamily="body"
-                  fontWeight="500"
                   color="muted.900"
+                  fontFamily="body"
+                  fontSize="sm"
+                  fontWeight="500"
                 >
                   {username}
                 </Text>
@@ -51,7 +51,7 @@ export const FollowCard: React.FC<FollowCard_> = ({
               )}
             </HStack>
             {id && (
-              <Entypo name="chevron-small-right" size={24} color="black" />
+              <Entypo color="black" name="chevron-small-right" size={24} />
             )}
           </HStack>
         </Box>

@@ -90,10 +90,9 @@ export const ChooseSubForum: React.FC<Props_> = ({ navigation, route }) => {
   const CommunityTileRenderer: ListRenderItem<Item> = ({ item }) => {
     return (
       <CommunityTile
-        name={item.community.name}
-        profileImageS3Key={item.community.profileImageS3Key}
-        members={item.community.totalMembers}
         hideDivider
+        members={item.community.totalMembers}
+        name={item.community.name}
         onPress={() => {
           navigation.navigate("AddAndEditPost", {
             ...route.params,
@@ -103,6 +102,7 @@ export const ChooseSubForum: React.FC<Props_> = ({ navigation, route }) => {
             title: "Add new post",
           });
         }}
+        profileImageS3Key={item.community.profileImageS3Key}
       />
     );
   };
@@ -127,16 +127,16 @@ export const ChooseSubForum: React.FC<Props_> = ({ navigation, route }) => {
   }
 
   return (
-    <Box style={styles.container} bg="white" alignItems="center">
-      <Box width="100%" style={styles.container}>
+    <Box alignItems="center" bg="white" style={styles.container}>
+      <Box style={styles.container} width="100%">
         <FlatList
           data={communities}
           initialNumToRender={5}
-          maxToRenderPerBatch={5}
-          updateCellsBatchingPeriod={100}
-          renderItem={CommunityTileRenderer}
           keyExtractor={(item) => item.community.id}
+          maxToRenderPerBatch={5}
           onEndReached={() => handlePagination()}
+          renderItem={CommunityTileRenderer}
+          updateCellsBatchingPeriod={100}
         />
       </Box>
     </Box>

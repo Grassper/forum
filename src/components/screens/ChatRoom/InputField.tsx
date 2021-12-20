@@ -45,37 +45,37 @@ export const InputField: React.FC<Props_> = ({ chatRoomId }) => {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       keyboardVerticalOffset={60}
     >
-      <Box bg="transparent" py="1" justifyContent="center" safeAreaBottom>
+      <Box bg="transparent" justifyContent="center" py="1" safeAreaBottom>
         <HStack
           alignItems="center"
-          justifyContent="center"
           bgColor="transparent"
+          justifyContent="center"
         >
           <Input
             bg="white"
-            p="3"
-            width="80%"
-            multiline
-            value={message}
-            onChangeText={setMessage}
             borderRadius="md"
+            fontSize="sm"
+            multiline
+            onChangeText={setMessage}
+            p="3"
             placeholder="Type here.."
             placeholderTextColor="muted.400"
-            fontSize="sm"
+            value={message}
             variant="unstyled"
+            width="80%"
           />
           <Pressable onPress={!sending ? handleSubmitMessage : () => {}}>
             <Flex
-              bg="eGreen.400"
-              width="10"
-              ml="2"
-              height="10"
               alignItems="center"
-              justifyContent="center"
+              bg="eGreen.400"
               borderRadius="full"
+              height="10"
+              justifyContent="center"
+              ml="2"
+              width="10"
             >
               {!sending ? (
-                <Icon as={<Feather name="send" />} size={4} color="white" />
+                <Icon as={<Feather name="send" />} color="white" size={4} />
               ) : (
                 <Spinner color="white" />
               )}

@@ -58,10 +58,10 @@ export const SignUp: React.FC<Props_> = ({ navigation }) => {
     }
   };
   return (
-    <Box height="100%" alignItems="center" bg="white">
+    <Box alignItems="center" bg="white" height="100%">
       <VStack
-        justifyContent="space-between"
         height="100%"
+        justifyContent="space-between"
         safeAreaY
         width="90%"
       >
@@ -71,22 +71,22 @@ export const SignUp: React.FC<Props_> = ({ navigation }) => {
               <Icon
                 as={<Ionicons name="ios-arrow-back" />}
                 color="eGreen.400"
-                size={"24px"}
                 mr="3"
+                size={"24px"}
               />
             </Pressable>
           </Box>
           <Text
-            fontSize="3xl"
-            fontWeight="bold"
             color={colors.black}
             fontFamily="heading"
-            pt="5"
+            fontSize="3xl"
+            fontWeight="bold"
             pb="3"
+            pt="5"
           >
             Sign up
           </Text>
-          <Text pt="2" pb="8" color={colors.gray}>
+          <Text color={colors.gray} pb="8" pt="2">
             By continuing you agree to our{" "}
             <Text color={colors.green} fontWeight="500">
               User Agreement{" "}
@@ -97,52 +97,43 @@ export const SignUp: React.FC<Props_> = ({ navigation }) => {
             </Text>
           </Text>
           <Input
-            width="100%"
-            value={emailId}
+            _focus={{
+              borderColor: colors.green,
+            }}
+            autoCapitalize="none"
+            borderColor="coolGray.200"
+            borderRadius="full"
+            mb="5"
             onChangeText={setEmailId}
-            borderRadius="full"
+            p="4"
             placeholder="E-mail"
-            autoCapitalize="none"
             placeholderTextColor="coolGray.400"
-            borderColor="coolGray.200"
+            value={emailId}
+            width="100%"
+          />
+          <Input
             _focus={{
               borderColor: colors.green,
             }}
-            p="4"
+            autoCapitalize="none"
+            borderColor="coolGray.200"
+            borderRadius="full"
             mb="5"
-          />
-          <Input
-            width="100%"
-            value={userName}
             onChangeText={setUserName}
-            borderRadius="full"
-            placeholder="Username"
-            autoCapitalize="none"
-            placeholderTextColor="coolGray.400"
-            borderColor="coolGray.200"
             p="4"
-            _focus={{
-              borderColor: colors.green,
-            }}
-            mb="5"
+            placeholder="Username"
+            placeholderTextColor="coolGray.400"
+            value={userName}
+            width="100%"
           />
           <Input
-            width="100%"
-            value={password}
-            onChangeText={setPassword}
-            borderRadius="full"
-            placeholder="Password"
-            autoCapitalize="none"
-            placeholderTextColor="coolGray.400"
-            borderColor="coolGray.200"
-            type="password"
-            autoCompleteType="password"
-            secureTextEntry={hidePass ? true : false}
             _focus={{
               borderColor: colors.green,
             }}
-            p="4"
-            mb="5"
+            autoCapitalize="none"
+            autoCompleteType="password"
+            borderColor="coolGray.200"
+            borderRadius="full"
             InputRightElement={
               <Icon
                 as={
@@ -150,51 +141,60 @@ export const SignUp: React.FC<Props_> = ({ navigation }) => {
                     name={hidePass ? "visibility-off" : "visibility"}
                   />
                 }
-                size={18}
-                mr="3"
                 color="muted.400"
+                mr="3"
                 onPress={() => setHidePass(!hidePass)}
+                size={18}
               />
             }
+            mb="5"
+            onChangeText={setPassword}
+            p="4"
+            placeholder="Password"
+            placeholderTextColor="coolGray.400"
+            secureTextEntry={hidePass ? true : false}
+            type="password"
+            value={password}
+            width="100%"
           />
           <Input
-            width="100%"
-            value={phoneNumber}
-            onChangeText={setPhoneNumber}
-            placeholderTextColor="coolGray.400"
-            borderColor="coolGray.200"
-            borderRadius="full"
             _focus={{
               borderColor: colors.green,
             }}
-            placeholder="phoneNumber"
-            p="4"
+            borderColor="coolGray.200"
+            borderRadius="full"
             mb="5"
+            onChangeText={setPhoneNumber}
+            p="4"
+            placeholder="phoneNumber"
+            placeholderTextColor="coolGray.400"
+            value={phoneNumber}
+            width="100%"
           />
         </Box>
-        <Box width="100%" justifyContent="flex-end">
+        <Box justifyContent="flex-end" width="100%">
           {!loading ? (
             <Pressable
-              onPress={signUp}
+              alignItems="center"
               bg={colors.green}
               borderRadius="full"
-              justifyContent="center"
               height="50px"
-              alignItems="center"
+              justifyContent="center"
+              onPress={signUp}
             >
-              <Text fontSize="md" fontWeight="600" color={buttonContrast}>
+              <Text color={buttonContrast} fontSize="md" fontWeight="600">
                 Register
               </Text>
             </Pressable>
           ) : (
             <Flex
-              fontSize="md"
-              fontWeight="600"
+              alignItems="center"
               bg={colors.green}
               borderRadius="full"
-              justifyContent="center"
-              alignItems="center"
+              fontSize="md"
+              fontWeight="600"
               height="50px"
+              justifyContent="center"
             >
               <Spinner color="white" />
             </Flex>

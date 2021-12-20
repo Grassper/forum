@@ -119,41 +119,41 @@ export const SubForumCard: React.FC<Props_> = ({
 
   return (
     <Box>
-      <Box position="relative" height="115px">
+      <Box height="115px" position="relative">
         {signedCover ? (
           <Image
-            width="100%"
             height="100%"
             source={{
               uri: signedCover,
             }}
+            width="100%"
           />
         ) : (
-          <Skeleton width="100%" alignItems="center" height="100%" />
+          <Skeleton alignItems="center" height="100%" width="100%" />
         )}
       </Box>
-      <Box alignItems="flex-start" justifyContent="center" bg="white">
+      <Box alignItems="flex-start" bg="white" justifyContent="center">
         <Box position="relative">
           {signedProfile ? (
             <Avatar
-              mt="-20"
-              ml={windowWidth * 0.025}
-              width="100px"
               height="100px"
+              ml={windowWidth * 0.025}
+              mt="-20"
               source={{
                 uri: signedProfile,
               }}
+              width="100px"
             />
           ) : (
             <Skeleton
-              bg="coolGray.200"
-              mt="-20"
-              ml={windowWidth * 0.025}
-              width="100px"
-              height="100px"
               alignItems="center"
-              justifyContent="center"
+              bg="coolGray.200"
               borderRadius="full"
+              height="100px"
+              justifyContent="center"
+              ml={windowWidth * 0.025}
+              mt="-20"
+              width="100px"
             />
           )}
         </Box>
@@ -161,9 +161,9 @@ export const SubForumCard: React.FC<Props_> = ({
       <HStack bg="white" justifyContent="center" pb="4">
         <Box width="90%">
           <HStack
-            mb="2"
             alignItems="flex-end"
             justifyContent="space-between"
+            mb="2"
             mt="0"
           >
             <HStack alignItems="center" space="2.5">
@@ -173,7 +173,7 @@ export const SubForumCard: React.FC<Props_> = ({
                     e/{name}
                   </Text>
                 ) : (
-                  <Skeleton height="20px" width="150px" mt="2" />
+                  <Skeleton height="20px" mt="2" width="150px" />
                 )}
               </Box>
               {id && creatorId && creatorId === currentUser.id && (
@@ -196,8 +196,8 @@ export const SubForumCard: React.FC<Props_> = ({
                 >
                   <Icon
                     as={<Foundation name="pencil" />}
-                    size={18}
                     color="eGreen.400"
+                    size={18}
                   />
                 </Pressable>
               )}
@@ -205,13 +205,13 @@ export const SubForumCard: React.FC<Props_> = ({
 
             {id && creatorId && creatorId !== currentUser.id && (
               <Button
-                onPress={RelationshipHandler}
                 bg={
                   relationship === "NOTJOINED" ? "tertiary.500" : "danger.500"
                 }
-                variant="unstyled"
-                minWidth="24"
                 borderRadius="50"
+                minWidth="24"
+                onPress={RelationshipHandler}
+                variant="unstyled"
               >
                 {relationship === "NOTJOINED" ? "Join" : "Exit"}
               </Button>
@@ -219,19 +219,19 @@ export const SubForumCard: React.FC<Props_> = ({
           </HStack>
           <HStack alignItems="center" mb="2">
             {totalMembers ? (
-              <Text fontSize="sm" color="blueGray.500">
+              <Text color="blueGray.500" fontSize="sm">
                 {totalMembers} Members
               </Text>
             ) : (
-              <Skeleton height="20px" width="150px" mt="2" />
+              <Skeleton height="20px" mt="2" width="150px" />
             )}
             <Box bg="blueGray.500" style={styles.separatorDot} />
             {totalPosts ? (
-              <Text fontSize="sm" color="blueGray.500">
+              <Text color="blueGray.500" fontSize="sm">
                 {totalPosts} Posts
               </Text>
             ) : (
-              <Skeleton height="20px" width="150px" mt="2" />
+              <Skeleton height="20px" mt="2" width="150px" />
             )}
           </HStack>
           <Box>
@@ -239,8 +239,8 @@ export const SubForumCard: React.FC<Props_> = ({
               <Text fontSize="sm">{description}</Text>
             ) : (
               <>
-                <Skeleton height="20px" width="100%" mb="2" />
-                <Skeleton height="20px" width="80%" mb="2" />
+                <Skeleton height="20px" mb="2" width="100%" />
+                <Skeleton height="20px" mb="2" width="80%" />
                 <Skeleton height="20px" width="85%" />
               </>
             )}

@@ -33,50 +33,50 @@ export const ReportComment: React.FC<Props_> = ({
   };
 
   return (
-    <Modal isOpen={reportModal} onClose={() => setReportModal(false)} mt={12}>
+    <Modal isOpen={reportModal} mt={12} onClose={() => setReportModal(false)}>
       <Modal.Content maxWidth="350">
         <Modal.CloseButton />
         <Modal.Header>Report Comment</Modal.Header>
         <Modal.Body>
           <Radio.Group
-            name="report"
             accessibilityLabel="report comment"
-            value={value}
+            name="report"
             onChange={(nextValue) => {
               setValue(nextValue);
             }}
+            value={value}
           >
             <Radio
-              value="Unwanted commercial content"
-              my={1}
               colorScheme="warning"
+              my={1}
+              value="Unwanted commercial content"
             >
               Unwanted commercial content
             </Radio>
-            <Radio value=" spam" my={1} colorScheme="warning">
+            <Radio colorScheme="warning" my={1} value=" spam">
               Spam
             </Radio>
-            <Radio value="Pornography" my={1} colorScheme="warning">
+            <Radio colorScheme="warning" my={1} value="Pornography">
               Pornography
             </Radio>
             <Radio
-              value="sexually explicit material"
-              my={1}
               colorScheme="warning"
+              my={1}
+              value="sexually explicit material"
             >
               sexually explicit material
             </Radio>
-            <Radio value="Child abuse" my={1} colorScheme="warning">
+            <Radio colorScheme="warning" my={1} value="Child abuse">
               Child abuse
             </Radio>
             <Radio
-              value="Hate speech or graphic violence"
-              my={1}
               colorScheme="warning"
+              my={1}
+              value="Hate speech or graphic violence"
             >
               Hate speech or graphic violence
             </Radio>
-            <Radio value="Harassment or bullying" my={1} colorScheme="warning">
+            <Radio colorScheme="warning" my={1} value="Harassment or bullying">
               Harassment or bullying
             </Radio>
           </Radio.Group>
@@ -84,15 +84,15 @@ export const ReportComment: React.FC<Props_> = ({
         <Modal.Footer>
           <Button.Group space={2}>
             <Button
-              variant="ghost"
               colorScheme="blueGray"
               onPress={() => {
                 setReportModal(false);
               }}
+              variant="ghost"
             >
               Cancel
             </Button>
-            <Button bg="rose.600" variant="unstyled" onPress={SubmitHandler}>
+            <Button bg="rose.600" onPress={SubmitHandler} variant="unstyled">
               Submit
             </Button>
           </Button.Group>

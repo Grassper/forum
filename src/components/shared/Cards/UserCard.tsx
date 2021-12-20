@@ -17,28 +17,28 @@ export const UserCard: React.FC<UserCard_> = ({
 }) => {
   return (
     <Box>
-      <Pressable onPress={onPress} bg="white">
+      <Pressable bg="white" onPress={onPress}>
         <HStack alignItems="center" justifyContent="space-between" mb="4">
-          <HStack space={3} alignItems="center">
+          <HStack alignItems="center" space={3}>
             <Box
-              width="40px"
-              height="40px"
               bg="amber.100"
               borderRadius="full"
+              height="40px"
               overflow="hidden"
+              width="40px"
             >
-              <SvgUri uri={avatarUrl} width="100%" height="100%" />
+              <SvgUri height="100%" uri={avatarUrl} width="100%" />
             </Box>
             <Text
-              fontSize="sm"
-              fontFamily="body"
-              fontWeight="500"
               color="muted.900"
+              fontFamily="body"
+              fontSize="sm"
+              fontWeight="500"
             >
               {username}
             </Text>
           </HStack>
-          <Entypo name="chevron-small-right" size={24} color="black" />
+          <Entypo color="black" name="chevron-small-right" size={24} />
         </HStack>
       </Pressable>
     </Box>

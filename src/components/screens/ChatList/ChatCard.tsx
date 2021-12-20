@@ -8,53 +8,53 @@ export const ChatCard: React.FC = () => {
       <Box
         alignItems="center"
         bg="white"
-        py="4"
-        borderBottomWidth="1"
         borderBottomColor="border.400"
+        borderBottomWidth="1"
+        py="4"
       >
         <Box width="90%">
           <HStack alignItems="center" space={3}>
             <Box
-              width="40px"
-              height="40px"
               bg="amber.100"
               borderRadius="full"
+              height="40px"
               overflow="hidden"
+              width="40px"
             >
               <SvgUri
+                height="100%"
                 uri="https://avatars.dicebear.com/api/micah/ram.svg?mouth=smile&baseColor=apricot"
                 width="100%"
-                height="100%"
               />
             </Box>
             <VStack>
-              <Text color="coolGray.800" _dark={{ color: "warmGray.50" }} bold>
+              <Text _dark={{ color: "warmGray.50" }} bold color="coolGray.800">
                 Ferdinand
               </Text>
-              <Text color="coolGray.600" _dark={{ color: "warmGray.200" }}>
+              <Text _dark={{ color: "warmGray.200" }} color="coolGray.600">
                 Add me as your friend
               </Text>
             </VStack>
             <Spacer />
             <VStack>
               <Text
-                fontSize="xs"
-                color="coolGray.800"
                 _dark={{ color: "warmGray.50" }}
                 alignSelf="flex-start"
+                color="coolGray.800"
+                fontSize="xs"
               >
                 3.21 pm
               </Text>
               <Box
-                borderRadius="full"
-                bg="green.500"
-                width="20px"
                 alignItems="center"
-                justifyContent="center"
-                height="20px"
                 alignSelf="flex-end"
+                bg="green.500"
+                borderRadius="full"
+                height="20px"
+                justifyContent="center"
+                width="20px"
               >
-                <Text fontSize="xs" color="white" bold>
+                <Text bold color="white" fontSize="xs">
                   2
                 </Text>
               </Box>

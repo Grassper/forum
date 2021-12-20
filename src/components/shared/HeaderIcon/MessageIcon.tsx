@@ -7,11 +7,11 @@ export const MessageIcon: React.FC = () => {
   const navigation = useNavigation();
   return (
     <Icon
-      as={<FontAwesome name="send-o" size={24} color="black" />}
-      size={"20px"}
-      mr="4"
+      as={<FontAwesome color="black" name="send-o" size={24} />}
       color="coolGray.600"
+      mr="4"
       onPress={() => navigation.navigate("Application", { screen: "ChatList" })}
+      size={"20px"}
     />
   );
 };

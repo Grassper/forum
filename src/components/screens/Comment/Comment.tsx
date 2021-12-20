@@ -50,14 +50,14 @@ interface CommentHeader_ {
 const CommentHeader: React.FC<CommentHeader_> = (comment) => {
   return (
     <Box>
-      <CommentCard {...comment} hideReplyButton hideCommentUserActions />
+      <CommentCard {...comment} hideCommentUserActions hideReplyButton />
 
       <Box alignItems="center" bg="white" mt="2" pt="4">
-        <HStack width="90%" alignItems="flex-end">
-          <Text fontWeight="500" color="eGreen.400">
+        <HStack alignItems="flex-end" width="90%">
+          <Text color="eGreen.400" fontWeight="500">
             Replies
           </Text>
-          <Text fontWeight="500" color="eGreen.400" fontSize="xs" ml="1">
+          <Text color="eGreen.400" fontSize="xs" fontWeight="500" ml="1">
             {comment.repliesCount}
           </Text>
         </HStack>
@@ -126,16 +126,16 @@ export const Comment: React.FC<Props_> = ({ route }) => {
     const commentData = item.childComment;
     return (
       <CommentCard
-        commentAuthorId={commentData.author.id}
-        username={commentData.author.username}
         avatarUrl={commentData.author.profileImageUrl}
-        subForum={commentData.community.name}
-        subForumId={commentData.community.id}
+        commentAuthorId={commentData.author.id}
+        commentId={commentData.id}
         contentText={commentData.content}
         postId={commentData.postId}
-        commentId={commentData.id}
-        timeStamp={commentData.commentedDate}
         repliesCount={commentData.repliesCount}
+        subForum={commentData.community.name}
+        subForumId={commentData.community.id}
+        timeStamp={commentData.commentedDate}
+        username={commentData.author.username}
       />
     );
   };
@@ -143,7 +143,7 @@ export const Comment: React.FC<Props_> = ({ route }) => {
   if (!isStateReady) {
     return (
       <ScrollView>
-        <CommentCard {...comment} hideReplyButton hideCommentUserActions />
+        <CommentCard {...comment} hideCommentUserActions hideReplyButton />
         <Box alignItems="center" bg="white" mt="2" pt="4">
           <Flex width="100%">
             <CommentCard />
@@ -165,12 +165,12 @@ export const Comment: React.FC<Props_> = ({ route }) => {
       <FlatList
         data={childComments}
         initialNumToRender={5}
-        maxToRenderPerBatch={5}
-        updateCellsBatchingPeriod={100}
-        renderItem={CommentCardRenderer}
         keyExtractor={(item) => item.childComment.id}
-        onEndReached={() => handlePagination()}
         ListHeaderComponent={() => <CommentHeader {...comment} />}
+        maxToRenderPerBatch={5}
+        onEndReached={() => handlePagination()}
+        renderItem={CommentCardRenderer}
+        updateCellsBatchingPeriod={100}
       />
     </Box>
   );

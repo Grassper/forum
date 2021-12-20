@@ -15,6 +15,13 @@
     "react-native/no-unused-styles": 2,
     "react-native/no-inline-styles": 2,
     "react-native/no-color-literals": 2,
+    "react/jsx-sort-props": [
+      "error",
+      {
+          "ignoreCase": true,
+          "reservedFirst": true
+      }
+    ],
     "react-native/sort-styles": [
       "error",
       "asc",
@@ -22,6 +29,6 @@
           "ignoreClassNames": false,
           "ignoreStyleProperties": false
       }
-  ],
+    ],
 }
 }

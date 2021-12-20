@@ -8,11 +8,11 @@ export const CommentListHeader: React.FC = () => {
     <Box>
       <CommentCard />
       <Box alignItems="center" bg="white" mt="2" pt="4">
-        <HStack width="90%" alignItems="flex-end">
-          <Text fontWeight="500" color="eGreen.400">
+        <HStack alignItems="flex-end" width="90%">
+          <Text color="eGreen.400" fontWeight="500">
             Replies
           </Text>
-          <Text fontWeight="500" color="eGreen.400" fontSize="xs" ml="1">
+          <Text color="eGreen.400" fontSize="xs" fontWeight="500" ml="1">
             24
           </Text>
         </HStack>

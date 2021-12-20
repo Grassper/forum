@@ -5,11 +5,11 @@ export const ChargeIconOutline: React.FC = () => {
   return (
     <Svg viewBox="0 0 64 64">
       <G
+        data-name="26-Charge"
         fill="none"
         stroke="#000"
         strokeLinejoin="round"
         strokeWidth="2"
-        data-name="26-Charge"
       >
         <Path d="M32 6a26 26 0 0126 26M40.906 28a2 2 0 011.806 3.008L39.665 36l-9.756 16 1.673-16h-8.488a2 2 0 01-1.806-3.008L24.335 28l9.756-16-1.673 16z" />
         <Path d="M58 34L58 36" />

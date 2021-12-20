@@ -80,18 +80,18 @@ export const PostSearch: React.FC = () => {
     return (
       <PostCard
         authorId={item.author.id}
+        avatarUrl={item.author.profileImageUrl}
+        contentText={item.content}
         id={item.id}
+        mediaS3Key={item.mediaS3Key}
         subForum={item.community.name}
         subForumId={item.community.id}
+        timeStamp={item.postedDate}
         type={
           (item.type.charAt(0) +
             item.type.slice(1).toLowerCase()) as PostCardProps_["type"]
         }
         username={item.author.username}
-        contentText={item.content}
-        avatarUrl={item.author.profileImageUrl}
-        timeStamp={item.postedDate}
-        mediaS3Key={item.mediaS3Key}
         userPostMetric={item.userPostMetric}
       />
     );
@@ -116,11 +116,11 @@ export const PostSearch: React.FC = () => {
       <FlatList
         data={posts}
         initialNumToRender={5}
-        maxToRenderPerBatch={5}
-        updateCellsBatchingPeriod={100}
-        renderItem={PostCardRenderer}
         keyExtractor={(item) => item.id}
+        maxToRenderPerBatch={5}
         onEndReached={() => handlePagination()}
+        renderItem={PostCardRenderer}
+        updateCellsBatchingPeriod={100}
       />
     </Box>
   );

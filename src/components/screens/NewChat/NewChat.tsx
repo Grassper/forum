@@ -92,9 +92,8 @@ export const NewChat: React.FC<Props_> = ({ navigation }) => {
   const UserCardRenderer: ListRenderItem<UserCard_> = ({ item }) => {
     return (
       <UserCard
-        id={item.id}
-        username={item.username}
         avatarUrl={item.profileImageUrl}
+        id={item.id}
         onPress={async () => {
           if (currentUser.id && item.id) {
             const chatRoomId = await ChatRoomCreationFetch({
@@ -111,23 +110,24 @@ export const NewChat: React.FC<Props_> = ({ navigation }) => {
             }
           }
         }}
+        username={item.username}
       />
     );
   };
 
   return (
-    <Box style={styles.container} bg="white" alignItems="center">
-      <Box alignItems="center" width="90%" py="15px">
-        <SearchBar value={searchValue} setValue={setSearchValue} />
+    <Box alignItems="center" bg="white" style={styles.container}>
+      <Box alignItems="center" py="15px" width="90%">
+        <SearchBar setValue={setSearchValue} value={searchValue} />
         <Box my="4" width="100%">
           <FlatList
             data={profiles}
             initialNumToRender={5}
-            maxToRenderPerBatch={5}
-            updateCellsBatchingPeriod={100}
-            renderItem={UserCardRenderer}
             keyExtractor={(item) => item.id}
+            maxToRenderPerBatch={5}
             onEndReached={() => handlePagination()}
+            renderItem={UserCardRenderer}
+            updateCellsBatchingPeriod={100}
           />
         </Box>
       </Box>

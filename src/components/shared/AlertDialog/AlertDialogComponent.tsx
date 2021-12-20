@@ -17,8 +17,8 @@ export const AlertDialogComponent: React.FC<Props_> = ({ body }) => {
           Delete Customer
         </Button>
         <AlertDialog
-          leastDestructiveRef={cancelRef}
           isOpen={isOpen}
+          leastDestructiveRef={cancelRef}
           onClose={onClose}
         >
           <AlertDialog.Content>
@@ -31,10 +31,10 @@ export const AlertDialogComponent: React.FC<Props_> = ({ body }) => {
             <AlertDialog.Footer>
               <Button.Group space={2}>
                 <Button
-                  variant="unstyled"
+                  ref={cancelRef}
                   colorScheme="coolGray"
                   onPress={onClose}
-                  ref={cancelRef}
+                  variant="unstyled"
                 >
                   Cancel
                 </Button>

@@ -24,13 +24,13 @@ export const TextLessMoreView: React.FC<PropTypes> = (props) => {
   return (
     <Box position="relative">
       <Text
-        onTextLayout={onTextLayout}
         numberOfLines={textShown ? undefined : props.targetLines || 1}
+        onTextLayout={onTextLayout}
       >
         {props.text || ""}
       </Text>
       {lengthMore ? (
-        <Text onPress={toggleNumberOfLines} color="green.700">
+        <Text color="green.700" onPress={toggleNumberOfLines}>
           {textShown ? "show less" : "show more"}
         </Text>
       ) : null}

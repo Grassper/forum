@@ -14,28 +14,28 @@ export const ChatCard: React.FC<ChatCard_> = ({
   timeStamp,
 }) => {
   return (
-    <Box pb="4" alignItems={align === "left" ? "flex-start" : "flex-end"}>
+    <Box alignItems={align === "left" ? "flex-start" : "flex-end"} pb="4">
       <Box
-        maxWidth="80%"
-        minWidth="30%"
-        px="3"
-        pt="2"
-        pb="3"
         bg={align === "left" ? "white" : "green.500"}
         borderRadius="10"
+        maxWidth="80%"
+        minWidth="30%"
+        pb="3"
+        pt="2"
+        px="3"
       >
         <VStack>
           <Text
             color={align === "left" ? "black" : "white"}
-            fontWeight="400"
             fontSize="sm"
+            fontWeight="400"
           >
             {content}
           </Text>
           <Text
-            fontSize="10px"
-            color={align === "left" ? "coolGray.600" : "white"}
             alignSelf="flex-end"
+            color={align === "left" ? "coolGray.600" : "white"}
+            fontSize="10px"
             mt="1"
           >
             {format(new Date(timeStamp), "p")}

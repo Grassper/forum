@@ -85,19 +85,19 @@ export const AvatorPicker: React.FC<Props_> = ({ about, setProfileUrl }) => {
     return (
       <Pressable mx="4" my="2" onPress={() => setProfileUrl(diceBearUrl)}>
         <Box
-          height="80px"
-          width="80px"
-          borderRadius="full"
-          bgColor="amber.50"
-          overflow="hidden"
           alignItems="center"
+          bgColor="amber.50"
+          borderRadius="full"
+          height="80px"
           justifyContent="center"
+          overflow="hidden"
+          width="80px"
         >
           <SvgUri
-            uri={diceBearUrl}
-            width="100%"
             height="100%"
             shouldRasterizeIOS
+            uri={diceBearUrl}
+            width="100%"
           />
         </Box>
       </Pressable>
@@ -105,16 +105,16 @@ export const AvatorPicker: React.FC<Props_> = ({ about, setProfileUrl }) => {
   };
 
   return (
-    <Box height="100px" overflow="hidden" mt="4">
+    <Box height="100px" mt="4" overflow="hidden">
       <FlatList
-        updateCellsBatchingPeriod={100}
-        showsHorizontalScrollIndicator={false}
         data={AvatorCollection}
-        renderItem={RenderItem}
-        keyExtractor={(item) => item.id}
         horizontal
         initialNumToRender={3}
+        keyExtractor={(item) => item.id}
         maxToRenderPerBatch={3}
+        renderItem={RenderItem}
+        showsHorizontalScrollIndicator={false}
+        updateCellsBatchingPeriod={100}
       />
     </Box>
   );

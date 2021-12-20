@@ -193,26 +193,26 @@ export const DocumentPickerButton: React.FC<Props_> = ({
   };
 
   return (
-    <Box position="absolute" bottom="35" left="25">
+    <Box bottom="35" left="25" position="absolute">
       <Pressable onPress={handlePicker}>
         <Box
+          alignItems="center"
           bg="eGreen.400"
           borderRadius="sm"
-          width="60"
           height="60"
-          alignItems="center"
           justifyContent="center"
+          width="60"
         >
           {!uploading && !uploadingError && progressPercentage !== 100 && (
-            <Icon as={<AntDesign name="plus" />} size="sm" color="white" />
+            <Icon as={<AntDesign name="plus" />} color="white" size="sm" />
           )}
           {uploading && !uploadingError && (
-            <Text color="white" fontWeight="semibold" fontSize="lg">
+            <Text color="white" fontSize="lg" fontWeight="semibold">
               {progressPercentage}%
             </Text>
           )}
           {!uploading && !uploadingError && progressPercentage === 100 && (
-            <Icon as={<AntDesign name="check" />} size="sm" color="white" />
+            <Icon as={<AntDesign name="check" />} color="white" size="sm" />
           )}
         </Box>
       </Pressable>

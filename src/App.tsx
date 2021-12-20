@@ -63,9 +63,9 @@ const App: React.FC = () => {
   if (!fontLoaded) {
     return (
       <AppLoading
-        startAsync={fetchFonts}
-        onFinish={() => setFontLoaded(true)}
         onError={console.warn}
+        onFinish={() => setFontLoaded(true)}
+        startAsync={fetchFonts}
       />
     );
   }

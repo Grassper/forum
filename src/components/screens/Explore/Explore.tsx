@@ -56,11 +56,11 @@ export const Explore: React.FC<Props_> = () => {
   const [searchValue, setSearchValue] = useState("");
   const debouncedSearchTerm = useDebounce(searchValue, 1000);
   return (
-    <Box style={styles.container} bg={colors.white}>
-      <Box style={styles.container} safeAreaTop>
-        <Box width="100%" alignItems="center" bg={colors.white}>
+    <Box bg={colors.white} style={styles.container}>
+      <Box safeAreaTop style={styles.container}>
+        <Box alignItems="center" bg={colors.white} width="100%">
           <Box py="15px" width="90%">
-            <SearchBar value={searchValue} setValue={setSearchValue} />
+            <SearchBar setValue={setSearchValue} value={searchValue} />
           </Box>
         </Box>
         <TabNavigatorExploreContext.Provider value={debouncedSearchTerm}>
@@ -84,22 +84,22 @@ export const Explore: React.FC<Props_> = () => {
             }}
           >
             <Tab.Screen
-              name="explorePost"
               component={PostSearch}
+              name="explorePost"
               options={() => ({
                 title: "Post",
               })}
             />
             <Tab.Screen
-              name="exploreCommunity"
               component={CommunitySearch}
+              name="exploreCommunity"
               options={() => ({
                 title: "Community",
               })}
             />
             <Tab.Screen
-              name="exploreProfile"
               component={ProfileSearch}
+              name="exploreProfile"
               options={() => ({
                 title: "Profiles",
               })}

@@ -26,8 +26,8 @@ export const Skeleton: React.FC<Props_> = (props) => {
     <Box bg="coolGray.100" overflow="hidden" {...props}>
       <AnimatedLG
         colors={["#b0b0b030", "#b0b0b030", "#b0b0b030", "#b0b0b030"]}
-        start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 0 }}
+        start={{ x: 0, y: 0 }}
         style={[
           styles.absoluteFill,
           { transform: [{ translateX: translateX }] },

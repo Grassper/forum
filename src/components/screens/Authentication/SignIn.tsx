@@ -53,10 +53,10 @@ export const SignIn: React.FC<Props_> = ({ navigation }) => {
     }
   };
   return (
-    <Box height="100%" alignItems="center" bg="white">
+    <Box alignItems="center" bg="white" height="100%">
       <VStack
-        justifyContent="space-between"
         height="100%"
+        justifyContent="space-between"
         safeAreaY
         width="90%"
       >
@@ -67,22 +67,22 @@ export const SignIn: React.FC<Props_> = ({ navigation }) => {
                 navigation.push("SignUp");
               }}
             >
-              <Text fontWeight="600" color="eGreen.400">
+              <Text color="eGreen.400" fontWeight="600">
                 Register
               </Text>
             </Pressable>
           </Box>
           <Text
-            fontSize="3xl"
-            fontWeight="bold"
             color={colors.black}
             fontFamily="heading"
-            pt="5"
+            fontSize="3xl"
+            fontWeight="bold"
             pb="3"
+            pt="5"
           >
             Sign in
           </Text>
-          <Text pt="2" pb="8" color={colors.gray}>
+          <Text color={colors.gray} pb="8" pt="2">
             By continuing you agree to our{" "}
             <Text color={colors.green} fontWeight="500">
               User Agreement{" "}
@@ -94,39 +94,30 @@ export const SignIn: React.FC<Props_> = ({ navigation }) => {
           </Text>
 
           <Input
-            width="100%"
-            value={userName}
-            onChangeText={setUserName}
-            autoCapitalize="none"
-            placeholderTextColor="coolGray.400"
-            borderColor="coolGray.200"
-            borderRadius="full"
             _focus={{
               borderColor: colors.green,
             }}
+            autoCapitalize="none"
+            borderColor="coolGray.200"
+            borderRadius="full"
             color={useContrastText("light.100")}
-            placeholder="Username"
-            p="4"
             mb="5"
+            onChangeText={setUserName}
+            p="4"
+            placeholder="Username"
+            placeholderTextColor="coolGray.400"
+            value={userName}
+            width="100%"
           />
           <Input
-            width="100%"
-            value={password}
-            onChangeText={setPassword}
-            autoCapitalize="none"
-            placeholderTextColor="coolGray.400"
-            borderColor="coolGray.200"
-            borderRadius="full"
-            placeholder="Password"
             _focus={{
               borderColor: colors.green,
             }}
-            type="password"
-            color={useContrastText("light.100")}
-            p="4"
-            mb="5"
+            autoCapitalize="none"
             autoCompleteType="password"
-            secureTextEntry={hidePass ? true : false}
+            borderColor="coolGray.200"
+            borderRadius="full"
+            color={useContrastText("light.100")}
             InputRightElement={
               <Icon
                 as={
@@ -134,12 +125,21 @@ export const SignIn: React.FC<Props_> = ({ navigation }) => {
                     name={hidePass ? "visibility-off" : "visibility"}
                   />
                 }
-                size={18}
-                mr="3"
                 color="muted.400"
+                mr="3"
                 onPress={() => setHidePass(!hidePass)}
+                size={18}
               />
             }
+            mb="5"
+            onChangeText={setPassword}
+            p="4"
+            placeholder="Password"
+            placeholderTextColor="coolGray.400"
+            secureTextEntry={hidePass ? true : false}
+            type="password"
+            value={password}
+            width="100%"
           />
           <Box px="3">
             <Pressable
@@ -153,29 +153,29 @@ export const SignIn: React.FC<Props_> = ({ navigation }) => {
             </Pressable>
           </Box>
         </Box>
-        <Box width="100%" justifyContent="flex-end">
+        <Box justifyContent="flex-end" width="100%">
           {!loading ? (
             <Pressable
-              onPress={signIn}
+              alignItems="center"
               bg={colors.green}
               borderRadius="full"
-              justifyContent="center"
-              alignItems="center"
               height="50px"
+              justifyContent="center"
+              onPress={signIn}
             >
-              <Text fontSize="md" fontWeight="600" color={buttonContrast}>
+              <Text color={buttonContrast} fontSize="md" fontWeight="600">
                 Log Me In
               </Text>
             </Pressable>
           ) : (
             <Flex
-              fontSize="md"
-              fontWeight="600"
+              alignItems="center"
               bg={colors.green}
               borderRadius="full"
-              justifyContent="center"
-              alignItems="center"
+              fontSize="md"
+              fontWeight="600"
               height="50px"
+              justifyContent="center"
             >
               <Spinner color="white" />
             </Flex>

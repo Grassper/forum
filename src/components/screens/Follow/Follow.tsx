@@ -91,10 +91,10 @@ export const Follow: React.FC<Props_> = ({ route, navigation }) => {
   const FollowerCardRenderer: ListRenderItem<FollowersItems_> = ({ item }) => {
     return (
       <FollowCard
-        id={item.follower.id}
-        username={item.follower.username}
         avatarUrl={item.follower.profileImageUrl}
+        id={item.follower.id}
         onPress={() => navigation.push("Profile", { userId: item.follower.id })}
+        username={item.follower.username}
       />
     );
   };
@@ -102,10 +102,10 @@ export const Follow: React.FC<Props_> = ({ route, navigation }) => {
   const FollowingCardRenderer: ListRenderItem<FollowingItems_> = ({ item }) => {
     return (
       <FollowCard
-        id={item.followee.id}
-        username={item.followee.username}
         avatarUrl={item.followee.profileImageUrl}
+        id={item.followee.id}
         onPress={() => navigation.push("Profile", { userId: item.followee.id })}
+        username={item.followee.username}
       />
     );
   };
@@ -167,26 +167,26 @@ export const Follow: React.FC<Props_> = ({ route, navigation }) => {
   }
 
   return (
-    <Box style={styles.container} bg="white" pt="4">
+    <Box bg="white" pt="4" style={styles.container}>
       {title === "Following" ? (
         <FlatList
           data={usersList as FollowingItems_[]}
-          renderItem={FollowingCardRenderer}
           initialNumToRender={5}
-          maxToRenderPerBatch={5}
-          updateCellsBatchingPeriod={100}
           keyExtractor={(item) => item.followee.id}
+          maxToRenderPerBatch={5}
           onEndReached={() => handlePagination()}
+          renderItem={FollowingCardRenderer}
+          updateCellsBatchingPeriod={100}
         />
       ) : (
         <FlatList
           data={usersList as FollowersItems_[]}
           initialNumToRender={5}
-          maxToRenderPerBatch={5}
-          updateCellsBatchingPeriod={100}
-          renderItem={FollowerCardRenderer}
           keyExtractor={(item) => item.follower.id}
+          maxToRenderPerBatch={5}
           onEndReached={() => handlePagination()}
+          renderItem={FollowerCardRenderer}
+          updateCellsBatchingPeriod={100}
         />
       )}
     </Box>

@@ -185,10 +185,10 @@ export const EditAndCreateSubForum: React.FC<Props_> = ({
     navigation.setOptions({
       headerRight: () => (
         <Button
-          size="md"
           _text={{ fontWeight: "600", color: "eGreen.400" }}
-          variant="unstyled"
           onPress={!loading ? handleSubmit : null}
+          size="md"
+          variant="unstyled"
         >
           {!loading ? (
             title === "Edit Subforum" ? (
@@ -265,122 +265,122 @@ export const EditAndCreateSubForum: React.FC<Props_> = ({
 
   return (
     <Box style={styles.container}>
-      <Box position="relative" height="115px">
+      <Box height="115px" position="relative">
         {signedCover ? (
           <Image
             key={signedCover}
-            width="100%"
             height="100%"
             source={{
               uri: signedCover,
             }}
+            width="100%"
           />
         ) : (
           <Box
-            width="100%"
             alignItems="center"
             height="100%"
             justifyContent="center"
+            width="100%"
           >
             <Icon
               as={<Ionicons name="ios-image" />}
-              size={6}
               color="muted.700"
+              size={6}
             />
           </Box>
         )}
 
-        <Box position="absolute" top="2" right="2">
+        <Box position="absolute" right="2" top="2">
           {!coverLoader ? (
             <ImagePickerButton
-              maxImageSize={15}
-              imageWidth={110}
-              imageHeight={110}
               aspectRatio={[4, 3]}
-              setS3ImageKey={setBannerImageS3Key}
+              imageHeight={110}
+              imageWidth={110}
+              maxImageSize={15}
               setProgressPercentage={(value) => {
                 value === 100
                   ? toggleCoverLoader(false)
                   : toggleCoverLoader(true);
-              }} // percentage progress
+              }}
+              setS3ImageKey={setBannerImageS3Key} // percentage progress
             />
           ) : (
-            <Box bg="eGreen.400" p="2" borderRadius="full">
-              <Spinner size="sm" color="white" />
+            <Box bg="eGreen.400" borderRadius="full" p="2">
+              <Spinner color="white" size="sm" />
             </Box>
           )}
         </Box>
       </Box>
       <Box bg="white">
         <Box
-          width="100px"
           height="100px"
-          position="relative"
-          marginTop="-50px"
           marginLeft="15px"
+          marginTop="-50px"
+          position="relative"
+          width="100px"
         >
           {signedProfile ? (
             <Avatar
-              bg="green.500"
-              width="100%"
-              height="100%"
               key={signedProfile}
+              bg="green.500"
+              height="100%"
               source={{
                 uri: signedProfile,
               }}
+              width="100%"
             />
           ) : (
             <Box
-              bg="coolGray.200"
-              width="100%"
-              height="100%"
               alignItems="center"
-              justifyContent="center"
+              bg="coolGray.200"
               borderRadius="full"
+              height="100%"
+              justifyContent="center"
+              width="100%"
             >
               <Icon
                 as={<Ionicons name="ios-image" />}
-                size={6}
                 color="muted.700"
+                size={6}
               />
             </Box>
           )}
 
-          <Box position="absolute" right="0" bottom="0">
+          <Box bottom="0" position="absolute" right="0">
             {!profileLoader ? (
               <ImagePickerButton
-                maxImageSize={5}
-                imageWidth={480}
-                imageHeight={360}
                 aspectRatio={[1, 1]}
-                setS3ImageKey={setProfileImageS3Key}
+                imageHeight={360}
+                imageWidth={480}
+                maxImageSize={5}
                 setProgressPercentage={(value) => {
                   value === 100
                     ? toggleProfileLoader(false)
                     : toggleProfileLoader(true);
-                }} // percentage progress
+                }}
+                setS3ImageKey={setProfileImageS3Key} // percentage progress
               />
             ) : (
-              <Box bg="eGreen.400" p="2" borderRadius="full">
-                <Spinner size="sm" color="white" />
+              <Box bg="eGreen.400" borderRadius="full" p="2">
+                <Spinner color="white" size="sm" />
               </Box>
             )}
           </Box>
         </Box>
       </Box>
-      <Box style={styles.wrapper} bg="white">
+      <Box bg="white" style={styles.wrapper}>
         <Box style={styles.inputContainer}>
-          <FormControl isRequired isInvalid={!isforumNameValid}>
+          <FormControl isInvalid={!isforumNameValid} isRequired>
             <FormControl.Label mb="3">Forum Name</FormControl.Label>
             <Input
               bg="coolGray.100"
-              p="4"
-              value={forumName}
-              onChangeText={setForumName}
               borderRadius="md"
+              fontSize="sm"
+              onChangeText={setForumName}
+              p="4"
               placeholder="Mechkeys"
               placeholderTextColor="muted.400"
-              fontSize="sm"
+              value={forumName}
               variant="unstyled"
             />
             <FormControl.ErrorMessage
@@ -389,23 +389,23 @@ export const EditAndCreateSubForum: React.FC<Props_> = ({
               {forumNameErrorMsg}
             </FormControl.ErrorMessage>
           </FormControl>
-          <FormControl mt="4" isRequired isInvalid={!isDescriptionValid}>
+          <FormControl isInvalid={!isDescriptionValid} isRequired mt="4">
             <FormControl.Label mb="3">Description</FormControl.Label>
             <Input
               bg="coolGray.100"
-              p="4"
+              borderRadius="md"
+              fontSize="sm"
+              maxHeight="150"
+              maxLength={140}
               mb="2"
               minHeight="125"
-              maxHeight="150"
               multiline
-              maxLength={140}
               numberOfLines={4}
-              value={description}
               onChangeText={setDescription}
-              borderRadius="md"
+              p="4"
               placeholder="We talk about keyboards"
               placeholderTextColor="muted.400"
-              fontSize="sm"
+              value={description}
               variant="unstyled"
             />
             <FormControl.ErrorMessage

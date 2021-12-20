@@ -135,33 +135,33 @@ const WithoutMemoPostCard: React.FC<Props_> = ({
   }, [signImage]);
 
   return (
-    <Box bg="white" alignItems="center" mt={`${postPage ? "0" : "2"}`}>
+    <Box alignItems="center" bg="white" mt={`${postPage ? "0" : "2"}`}>
       <PostInfo
-        username={username}
-        subForum={subForum}
-        timeStamp={timeStamp}
+        authorId={authorId}
         avatarUrl={avatarUrl}
         postId={id}
-        authorId={authorId}
+        subForum={subForum}
+        timeStamp={timeStamp}
+        username={username}
       />
       {/**
        * video post
        */}
       {type === "Video" &&
         (signedMediaUrl ? (
-          <Box mb="4" width="100%" height="350px">
+          <Box height="350px" mb="4" width="100%">
             <Video
               ref={videoRef}
-              style={styles.video}
+              resizeMode="cover"
               source={{
                 uri: signedMediaUrl,
               }}
+              style={styles.video}
               useNativeControls
-              resizeMode="cover"
             />
           </Box>
         ) : (
-          <Skeleton height="350px" width="100%" mb="2" />
+          <Skeleton height="350px" mb="2" width="100%" />
         ))}
       {/**
        * audio post
@@ -169,16 +169,16 @@ const WithoutMemoPostCard: React.FC<Props_> = ({
       {type === "Audio" &&
         (signedMediaUrl ? (
           <Box
+            alignItems="center"
+            height="350px"
+            justifyContent="center"
             mb="4"
             width="100%"
-            height="350px"
-            alignItems="center"
-            justifyContent="center"
           >
             <AudioComponent audioUri={signedMediaUrl} />
           </Box>
         ) : (
-          <Skeleton height="100px" width="100%" mb="2" />
+          <Skeleton height="100px" mb="2" width="100%" />
         ))}
       {/**
        * image post
@@ -186,15 +186,15 @@ const WithoutMemoPostCard: React.FC<Props_> = ({
       {type === "Image" &&
         (signedMediaUrl ? (
           <Image
-            width="100%"
             height="350px"
+            mb="4"
             source={{
               uri: signedMediaUrl,
             }}
-            mb="4"
+            width="100%"
           />
         ) : (
-          <Skeleton height="350px" width="100%" mb="2" />
+          <Skeleton height="350px" mb="2" width="100%" />
         ))}
 
       <Box width="90%">
@@ -203,13 +203,13 @@ const WithoutMemoPostCard: React.FC<Props_> = ({
          */}
         {type === "Poll" && poll && (
           <Poll
-            title={poll.title}
-            timeStamp={poll.timeStamp}
+            communityId={subForumId}
             pollArr={poll.pollArr}
+            surveyQuestionId={id}
+            timeStamp={poll.timeStamp}
+            title={poll.title}
             totalVotes={poll.totalVotes}
             votedPollId={poll.votedPollId}
-            communityId={subForumId}
-            surveyQuestionId={id}
           />
         )}
 
@@ -217,28 +217,28 @@ const WithoutMemoPostCard: React.FC<Props_> = ({
          * text only post
          */}
         {contentText ? (
-          <TextLessMoreView text={contentText} targetLines={3} />
+          <TextLessMoreView targetLines={3} text={contentText} />
         ) : (
           <>
-            <Skeleton height="20px" width="100%" mb="2" />
-            <Skeleton height="20px" width="85%" mb="2" />
-            <Skeleton height="20px" width="100%" mb="4" />
+            <Skeleton height="20px" mb="2" width="100%" />
+            <Skeleton height="20px" mb="2" width="85%" />
+            <Skeleton height="20px" mb="4" width="100%" />
           </>
         )}
         {type === "Poll" && poll && <Spacer mb="4" />}
         {!hidePostUserActions && id && (
           <PostUserActions
+            authorId={authorId}
+            avatarUrl={avatarUrl}
+            contentText={contentText}
             hidePostNavigation={hidePostNavigation}
             id={id}
-            type={type}
-            username={username}
-            avatarUrl={avatarUrl}
+            mediaS3Key={mediaS3Key}
             subForum={subForum}
             subForumId={subForumId}
             timeStamp={timeStamp}
-            authorId={authorId}
-            contentText={contentText}
-            mediaS3Key={mediaS3Key}
+            type={type}
+            username={username}
             userPostMetric={userPostMetric}
           />
         )}
@@ -258,54 +258,54 @@ const PostInfo: React.FC<PostInfo_> = ({
 }) => {
   const [reportModal, setReportModal] = React.useState(false);
   return (
-    <Box width="90%" height="60px" justifyContent="center">
+    <Box height="60px" justifyContent="center" width="90%">
       <HStack alignItems="center" justifyContent="space-between">
         <HStack alignItems="center" space="3">
           {avatarUrl ? (
             <Box
-              width="40px"
-              height="40px"
               bg="amber.100"
               borderRadius="full"
+              height="40px"
               overflow="hidden"
+              width="40px"
             >
-              <SvgUri uri={avatarUrl} width="100%" height="100%" />
+              <SvgUri height="100%" uri={avatarUrl} width="100%" />
             </Box>
           ) : (
             <Box
-              width="40px"
-              height="40px"
               bg="amber.100"
               borderRadius="full"
+              height="40px"
               overflow="hidden"
+              width="40px"
             >
-              <Skeleton width="100%" height="100%" />
+              <Skeleton height="100%" width="100%" />
             </Box>
           )}
           <Box>
             {username ? (
               <Text fontWeight="500">{username}</Text>
             ) : (
-              <Skeleton height="20px" width="250px" mb="5px" />
+              <Skeleton height="20px" mb="5px" width="250px" />
             )}
             <HStack alignItems="center">
               {subForum ? (
                 <>
-                  <Text fontSize="xs" color="blueGray.500">
+                  <Text color="blueGray.500" fontSize="xs">
                     in e/{subForum}
                   </Text>
                   <Box bg="blueGray.500" style={styles.separatorDot} />
                 </>
               ) : (
-                <Skeleton height="20px" width="75px" mb="5px" mr="2" />
+                <Skeleton height="20px" mb="5px" mr="2" width="75px" />
               )}
 
               {timeStamp ? (
-                <Text fontSize="xs" color="blueGray.500">
+                <Text color="blueGray.500" fontSize="xs">
                   {format(new Date(timeStamp), "MMM dd")}
                 </Text>
               ) : (
-                <Skeleton height="20px" width="75px" mb="5px" />
+                <Skeleton height="20px" mb="5px" width="75px" />
               )}
             </HStack>
           </Box>
@@ -315,8 +315,8 @@ const PostInfo: React.FC<PostInfo_> = ({
             <Pressable onPress={() => setReportModal(true)}>
               <Icon
                 as={<Feather name="more-vertical" />}
-                size={5}
                 color="coolGray.500"
+                size={5}
               />
             </Pressable>
             <ReportPost
@@ -424,7 +424,7 @@ const Poll: React.FC<PollProps_> = (props) => {
   };
 
   return (
-    <Box bg="green.50" px="3" py="4" mb="4">
+    <Box bg="green.50" mb="4" px="3" py="4">
       <Text fontSize="14.5" fontWeight="500" mb="2">
         {props.title}
       </Text>
@@ -441,11 +441,11 @@ const Poll: React.FC<PollProps_> = (props) => {
                   onPress={() => votingHandler("ADD", entry.id)}
                 >
                   <Flex
-                    p="3"
-                    bg="white"
-                    mb="2"
                     alignItems="center"
+                    bg="white"
                     borderRadius="5"
+                    mb="2"
+                    p="3"
                   >
                     <Text fontWeight="500">{entry.content}</Text>
                   </Flex>
@@ -462,18 +462,18 @@ const Poll: React.FC<PollProps_> = (props) => {
               return (
                 <Flex
                   key={entry.id}
-                  p="3"
-                  bg="white"
-                  position="relative"
-                  overflow="hidden"
-                  mb="2"
                   alignItems="flex-start"
+                  bg="white"
                   borderRadius="5"
+                  mb="2"
+                  overflow="hidden"
+                  p="3"
+                  position="relative"
                 >
                   <Box
-                    position="absolute"
-                    height="100"
                     bg="green.200"
+                    height="100"
+                    position="absolute"
                     width={`${(entry.votes / totalVotes) * 100}%`}
                   />
                   <Text fontWeight="500">{entry.content}</Text>
@@ -534,11 +534,11 @@ const PostUserActions: React.FC<PostUserActions_> = ({
   return (
     <Box height="60px" justifyContent="center">
       <HStack alignItems="center" justifyContent="space-between">
-        <HStack space="6" alignItems="center">
+        <HStack alignItems="center" space="6">
           <UserActionToolTip
-            postId={post.id}
             communityId={post.subForumId}
             postAuthorId={post.authorId}
+            postId={post.id}
             userPostMetric={post.userPostMetric}
           />
           <Pressable
@@ -551,8 +551,8 @@ const PostUserActions: React.FC<PostUserActions_> = ({
           >
             <Icon
               as={<Ionicons name="chatbubble-outline" />}
-              size={5}
               color="muted.500"
+              size={5}
             />
           </Pressable>
         </HStack>
@@ -568,8 +568,8 @@ const PostUserActions: React.FC<PostUserActions_> = ({
             <Box style={styles.openPostIcon}>
               <Icon
                 as={<Ionicons name="expand" />}
-                size={5}
                 color="muted.500"
+                size={5}
               />
             </Box>
           </Pressable>
@@ -648,15 +648,18 @@ const UserActionToolTip: React.FC<UserActionToolTip_> = ({
 
   return (
     <Tooltip
-      isVisible={showTip}
+      allowChildInteraction={false}
+      arrowSize={{ width: 0, height: 0 }}
+      backgroundColor="transparent"
+      childContentSpacing={0}
       content={
-        <HStack space="1" alignItems="center">
+        <HStack alignItems="center" space="1">
           <Pressable
             onPress={() => {
               PickIconHandler("SUPPORT");
             }}
           >
-            <Box width="30px" height="30px">
+            <Box height="30px" width="30px">
               <ActionIcons.ChargeIcon />
             </Box>
           </Pressable>
@@ -665,7 +668,7 @@ const UserActionToolTip: React.FC<UserActionToolTip_> = ({
               PickIconHandler("LIKE");
             }}
           >
-            <Box width="30px" height="30px">
+            <Box height="30px" width="30px">
               <ActionIcons.LikeIcon />
             </Box>
           </Pressable>
@@ -674,7 +677,7 @@ const UserActionToolTip: React.FC<UserActionToolTip_> = ({
               PickIconHandler("LOVE");
             }}
           >
-            <Box width="30px" height="30px">
+            <Box height="30px" width="30px">
               <ActionIcons.LoveIcon />
             </Box>
           </Pressable>
@@ -683,34 +686,31 @@ const UserActionToolTip: React.FC<UserActionToolTip_> = ({
               PickIconHandler("DISLIKE");
             }}
           >
-            <Box width="30px" height="30px">
+            <Box height="30px" width="30px">
               <ActionIcons.DislikeIcon />
             </Box>
           </Pressable>
         </HStack>
       }
-      onClose={() => {
-        setTip(false);
-      }}
-      placement="top"
-      arrowSize={{ width: 0, height: 0 }}
       contentStyle={styles.tooltipContainer}
-      backgroundColor="transparent"
       displayInsets={{
         top: 24,
         bottom: 34,
         left: 14,
         right: 14,
       }}
-      allowChildInteraction={false}
-      childContentSpacing={0}
+      isVisible={showTip}
+      onClose={() => {
+        setTip(false);
+      }}
+      placement="top"
     >
       <Pressable
         delayLongPress={500}
         onLongPress={() => setTip(true)}
         onPress={ResetPickedIcon}
       >
-        <Box width="20px" height="20px">
+        <Box height="20px" width="20px">
           <PickedIcon />
         </Box>
       </Pressable>

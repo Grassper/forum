@@ -116,10 +116,10 @@ export const ForgotPassword: React.FC<Props_> = ({ navigation, route }) => {
   };
 
   return (
-    <Box height="100%" alignItems="center" bg="white">
+    <Box alignItems="center" bg="white" height="100%">
       <VStack
-        justifyContent="space-between"
         height="100%"
+        justifyContent="space-between"
         safeAreaY
         width="90%"
       >
@@ -129,18 +129,18 @@ export const ForgotPassword: React.FC<Props_> = ({ navigation, route }) => {
               <Icon
                 as={<Ionicons name="ios-arrow-back" />}
                 color="eGreen.400"
-                size={"24px"}
                 mr="3"
+                size={"24px"}
               />
             </Pressable>
           </Box>
           <Text
-            fontSize="3xl"
-            fontWeight="bold"
             color={colors.black}
             fontFamily="heading"
-            pt="5"
+            fontSize="3xl"
+            fontWeight="bold"
             pb="3"
+            pt="5"
           >
             Password Recovery
           </Text>
@@ -155,173 +155,173 @@ export const ForgotPassword: React.FC<Props_> = ({ navigation, route }) => {
           <HStack justifyContent="space-between" py="4">
             <Input
               ref={pinRef1}
+              _focus={{
+                borderColor: colors.green,
+              }}
+              keyboardType="numeric"
+              maxLength={1}
               onChangeText={(value) => {
                 setVerificationPins((prevState) => ({
                   ...prevState,
                   pin1: value,
                 }));
               }}
-              value={verificationPins.pin1}
-              maxLength={1}
               style={styles.textInput}
-              keyboardType="numeric"
-              _focus={{
-                borderColor: colors.green,
-              }}
+              value={verificationPins.pin1}
             />
             <Input
               ref={pinRef2}
+              _focus={{
+                borderColor: colors.green,
+              }}
+              keyboardType="numeric"
+              maxLength={1}
               onChangeText={(value) => {
                 setVerificationPins((prevState) => ({
                   ...prevState,
                   pin2: value,
                 }));
               }}
-              value={verificationPins.pin2}
-              maxLength={1}
               style={styles.textInput}
-              keyboardType="numeric"
-              _focus={{
-                borderColor: colors.green,
-              }}
+              value={verificationPins.pin2}
             />
             <Input
               ref={pinRef3}
+              _focus={{
+                borderColor: colors.green,
+              }}
+              keyboardType="numeric"
+              maxLength={1}
               onChangeText={(value) => {
                 setVerificationPins((prevState) => ({
                   ...prevState,
                   pin3: value,
                 }));
               }}
-              value={verificationPins.pin3}
-              maxLength={1}
               style={styles.textInput}
-              keyboardType="numeric"
-              _focus={{
-                borderColor: colors.green,
-              }}
+              value={verificationPins.pin3}
             />
             <Input
               ref={pinRef4}
+              _focus={{
+                borderColor: colors.green,
+              }}
+              keyboardType="numeric"
+              maxLength={1}
               onChangeText={(value) => {
                 setVerificationPins((prevState) => ({
                   ...prevState,
                   pin4: value,
                 }));
               }}
-              value={verificationPins.pin4}
-              maxLength={1}
               style={styles.textInput}
-              keyboardType="numeric"
-              _focus={{
-                borderColor: colors.green,
-              }}
+              value={verificationPins.pin4}
             />
             <Input
               ref={pinRef5}
+              _focus={{
+                borderColor: colors.green,
+              }}
+              keyboardType="numeric"
+              maxLength={1}
               onChangeText={(value) => {
                 setVerificationPins((prevState) => ({
                   ...prevState,
                   pin5: value,
                 }));
               }}
-              value={verificationPins.pin5}
-              maxLength={1}
               style={styles.textInput}
-              keyboardType="numeric"
-              _focus={{
-                borderColor: colors.green,
-              }}
+              value={verificationPins.pin5}
             />
             <Input
               ref={pinRef6}
+              _focus={{
+                borderColor: colors.green,
+              }}
+              keyboardType="numeric"
+              maxLength={1}
               onChangeText={(value) => {
                 setVerificationPins((prevState) => ({
                   ...prevState,
                   pin6: value,
                 }));
               }}
-              value={verificationPins.pin6}
-              maxLength={1}
               style={styles.textInput}
-              keyboardType="numeric"
-              _focus={{
-                borderColor: colors.green,
-              }}
+              value={verificationPins.pin6}
             />
           </HStack>
           <Box py="4">
             <Input
-              width="100%"
-              value={newPassword}
-              onChangeText={setNewPassword}
+              _focus={{
+                borderColor: colors.green,
+              }}
+              borderColor="coolGray.200"
               borderRadius="full"
+              InputRightElement={
+                <Icon
+                  as={<MaterialIcons name="visibility" />}
+                  color="muted.400"
+                  mr="3"
+                  size={18}
+                />
+              }
+              mb="5"
+              onChangeText={setNewPassword}
+              p="4"
               placeholder="new password"
               placeholderTextColor="coolGray.400"
-              borderColor="coolGray.200"
               type="password"
-              _focus={{
-                borderColor: colors.green,
-              }}
-              p="4"
-              mb="5"
-              InputRightElement={
-                <Icon
-                  as={<MaterialIcons name="visibility" />}
-                  size={18}
-                  mr="3"
-                  color="muted.400"
-                />
-              }
+              value={newPassword}
+              width="100%"
             />
             <Input
-              width="100%"
-              value={confirmNewPassword}
-              onChangeText={setConfirmNewPassword}
-              borderRadius="full"
-              placeholderTextColor="coolGray.400"
-              borderColor="coolGray.200"
-              placeholder="confirm password"
-              p="4"
-              mb="5"
-              type="password"
               _focus={{
                 borderColor: colors.green,
               }}
+              borderColor="coolGray.200"
+              borderRadius="full"
               InputRightElement={
                 <Icon
                   as={<MaterialIcons name="visibility" />}
-                  size={18}
-                  mr="3"
                   color="muted.400"
+                  mr="3"
+                  size={18}
                 />
               }
+              mb="5"
+              onChangeText={setConfirmNewPassword}
+              p="4"
+              placeholder="confirm password"
+              placeholderTextColor="coolGray.400"
+              type="password"
+              value={confirmNewPassword}
+              width="100%"
             />
           </Box>
         </Box>
-        <Box width="100%" justifyContent="flex-end">
+        <Box justifyContent="flex-end" width="100%">
           {!loading ? (
             <Pressable
-              onPress={forgotPasswordSubmit}
+              alignItems="center"
               backgroundColor={colors.green}
               borderRadius="full"
-              alignItems="center"
               height="50px"
               justifyContent="center"
+              onPress={forgotPasswordSubmit}
             >
-              <Text fontSize="md" fontWeight="600" color={buttonContrast}>
+              <Text color={buttonContrast} fontSize="md" fontWeight="600">
                 Reset Password
               </Text>
             </Pressable>
           ) : (
             <Flex
-              fontSize="md"
-              fontWeight="600"
+              alignItems="center"
               bg={colors.green}
               borderRadius="full"
-              justifyContent="center"
-              alignItems="center"
+              fontSize="md"
+              fontWeight="600"
               height="50px"
+              justifyContent="center"
             >
               <Spinner color="white" />
             </Flex>

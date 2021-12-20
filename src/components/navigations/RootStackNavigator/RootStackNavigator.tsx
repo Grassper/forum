@@ -27,11 +27,11 @@ export const RootStackNavigator = () => {
     <NavigationContainer>
       <RootStack.Navigator screenOptions={defaultStackOptions}>
         {authState === "LOGGEDIN" ? (
-          <RootStack.Screen name="Application" component={StackNavigator} />
+          <RootStack.Screen component={StackNavigator} name="Application" />
         ) : (
           <RootStack.Screen
-            name="Authentication"
             component={AuthStackNavigator}
+            name="Authentication"
           />
         )}
       </RootStack.Navigator>

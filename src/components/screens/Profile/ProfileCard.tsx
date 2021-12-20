@@ -113,17 +113,17 @@ export const ProfileCard: React.FC<Props_> = ({ routeUserId }) => {
     <Box alignItems="center" mt="5">
       {
         <Box
-          width="80px"
-          height="80px"
           bg={profile?.profileImageUrl ? "amber.100" : "transparent"}
           borderRadius="full"
-          overflow="hidden"
+          height="80px"
           mb="10px"
+          overflow="hidden"
+          width="80px"
         >
           {profile?.profileImageUrl ? (
-            <SvgUri uri={profile.profileImageUrl} width="100%" height="100%" />
+            <SvgUri height="100%" uri={profile.profileImageUrl} width="100%" />
           ) : (
-            <Skeleton width="100%" height="100%" />
+            <Skeleton height="100%" width="100%" />
           )}
         </Box>
       }
@@ -133,7 +133,7 @@ export const ProfileCard: React.FC<Props_> = ({ routeUserId }) => {
             {profile.username}
           </Text>
         ) : (
-          <Skeleton height="20px" width="150px" mb="5px" />
+          <Skeleton height="20px" mb="5px" width="150px" />
         )}
       </Box>
       <Box>
@@ -142,19 +142,19 @@ export const ProfileCard: React.FC<Props_> = ({ routeUserId }) => {
             Joined {format(new Date(profile.createdAt), "MMM yyyy")}
           </Text>
         ) : (
-          <Skeleton height="20px" width="100px" mb="15px" />
+          <Skeleton height="20px" mb="15px" width="100px" />
         )}
       </Box>
 
       {routeUserId && routeUserId !== id && profile?.userMetrics && (
         // checking our user id with incoming user id to show follow button
         <Button
-          onPress={RelationshipHandler}
           bg={relationship === "NOTFOLLOW" ? "tertiary.500" : "danger.500"}
-          variant="unstyled"
+          borderRadius="50"
           mb="5"
           minWidth="24"
-          borderRadius="50"
+          onPress={RelationshipHandler}
+          variant="unstyled"
         >
           {relationship === "NOTFOLLOW" ? "Follow" : "Unfollow"}
         </Button>
@@ -162,6 +162,8 @@ export const ProfileCard: React.FC<Props_> = ({ routeUserId }) => {
       <HStack alignItems="center" justifyContent="center" mb="15px">
         {profile?.userMetrics && profile.userMetrics.followers >= 0 ? (
           <StatsCard
+            count={profile.userMetrics.followers}
+            countName="Followers"
             onPress={() => {
               navigation.dispatch(
                 StackActions.push("Application", {
@@ -170,8 +172,6 @@ export const ProfileCard: React.FC<Props_> = ({ routeUserId }) => {
                 })
               );
             }}
-            count={profile.userMetrics.followers}
-            countName="Followers"
           />
         ) : (
           <StatsCard />
@@ -179,6 +179,8 @@ export const ProfileCard: React.FC<Props_> = ({ routeUserId }) => {
 
         {profile?.userMetrics && profile.userMetrics.following >= 0 ? (
           <StatsCard
+            count={profile.userMetrics.following}
+            countName="Following"
             onPress={() => {
               navigation.dispatch(
                 StackActions.push("Application", {
@@ -187,8 +189,6 @@ export const ProfileCard: React.FC<Props_> = ({ routeUserId }) => {
                 })
               );
             }}
-            count={profile.userMetrics.following}
-            countName="Following"
           />
         ) : (
           <StatsCard />
@@ -225,21 +225,21 @@ const StatsCard: React.FC<StatsCard_> = ({ onPress, count, countName }) => {
               {count}
             </Text>
           ) : (
-            <Skeleton height="20px" width="80px" mb="5px" />
+            <Skeleton height="20px" mb="5px" width="80px" />
           )}
         </Box>
         <Box>
           {countName ? (
             <Text
+              color="eGreen.400"
               fontSize="14px"
               fontWeight="500"
               lineHeight="21px"
-              color="eGreen.400"
             >
               {countName}
             </Text>
           ) : (
-            <Skeleton height="20px" width="80px" mb="5px" />
+            <Skeleton height="20px" mb="5px" width="80px" />
           )}
         </Box>
       </VStack>

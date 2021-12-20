@@ -12,8 +12,8 @@ interface Props_ {
 export const PostTile: React.FC<Props_> = ({ pinned }) => {
   return (
     <Box
-      style={styles.container}
       bg={pinned ? colors.pinnedColor : colors.white}
+      style={styles.container}
     >
       <Text numberOfLines={2} style={styles.post}>
         I've managed to get the desired behavior by setting elevation: 0 inside
@@ -27,10 +27,10 @@ export const PostTile: React.FC<Props_> = ({ pinned }) => {
           <Text style={styles.metaText}>Nov 30</Text>
         </View>
         <Ionicons
-          style={styles.ellipsis}
+          color={colors.gray}
           name="ellipsis-horizontal"
           size={20}
-          color={colors.gray}
+          style={styles.ellipsis}
         />
       </View>
     </Box>

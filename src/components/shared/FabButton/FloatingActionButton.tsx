@@ -10,9 +10,9 @@ interface Props_ {
 export const FloatingActionButton: React.FC<Props_> = ({ onPress, screen }) => {
   return (
     <Pressable
+      bgColor="eGreen.400"
       onPress={onPress}
       style={styles.touchableOpacityStyle}
-      bgColor="eGreen.400"
     >
       <Icon
         as={
@@ -22,8 +22,8 @@ export const FloatingActionButton: React.FC<Props_> = ({ onPress, screen }) => {
             <Entypo name="feather" />
           )
         }
-        size="sm"
         color="white"
+        size="sm"
       />
     </Pressable>
   );
