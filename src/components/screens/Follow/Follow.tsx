@@ -20,6 +20,7 @@ import {
   RootStackParamList_,
   StackParamList_,
 } from "@/root/src/components/navigations/Navigation";
+import { BackButton } from "@/root/src/components/shared/Button";
 import { FollowCard } from "@/root/src/components/shared/Cards";
 
 type NavigationProp_ = CompositeNavigationProp<
@@ -77,6 +78,12 @@ export const Follow: React.FC<Props_> = ({ route, navigation }) => {
     };
     fetchCall();
   }, [routeUserId, title]);
+
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => <BackButton color="eGreen.400" />,
+    });
+  }, [navigation]);
 
   useFocusEffect(
     React.useCallback(() => {

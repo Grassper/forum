@@ -22,6 +22,7 @@ import {
   StackParamList_,
 } from "@/root/src/components/navigations/Navigation";
 import { AvatorPicker } from "@/root/src/components/shared/Avatar";
+import { BackButton } from "@/root/src/components/shared/Button";
 import { colors } from "@/root/src/constants";
 import { UserContext } from "@/root/src/context";
 import { useDebounce } from "@/root/src/hooks";
@@ -122,6 +123,7 @@ export const EditProfile: React.FC<Props_> = ({ navigation }) => {
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
+      headerLeft: () => <BackButton color="eGreen.400" />,
       headerRight: () => (
         <Button
           _text={{ fontWeight: "600", color: "eGreen.400" }}

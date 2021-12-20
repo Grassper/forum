@@ -12,6 +12,7 @@ import {
   RootStackParamList_,
   StackParamList_,
 } from "@/root/src/components/navigations/Navigation";
+import { BackButton } from "@/root/src/components/shared/Button";
 import { CommentCard } from "@/root/src/components/shared/Cards/CommentCard";
 import { UserContext } from "@/root/src/context";
 
@@ -95,6 +96,7 @@ export const AddAndEditReplies: React.FC<Props_> = ({ navigation, route }) => {
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
+      headerLeft: () => <BackButton />,
       headerRight: () => (
         <Button
           _text={{ fontWeight: "600", color: "white" }}

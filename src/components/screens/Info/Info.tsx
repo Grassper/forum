@@ -1,10 +1,31 @@
+import { CompositeNavigationProp } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
 import { Box, HStack, Pressable, Text } from "native-base";
 import React from "react";
 import { Linking, StyleSheet } from "react-native";
 
-interface Props_ {}
+import {
+  RootStackParamList_,
+  StackParamList_,
+} from "@/root/src/components/navigations/Navigation";
+import { BackButton } from "@/root/src/components/shared/Button";
 
-export const Info: React.FC<Props_> = () => {
+type NavigationProp_ = CompositeNavigationProp<
+  StackNavigationProp<StackParamList_, "Info">,
+  StackNavigationProp<RootStackParamList_, "Application">
+>;
+
+interface Props_ {
+  navigation: NavigationProp_;
+}
+
+export const Info: React.FC<Props_> = ({ navigation }) => {
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => <BackButton color="eGreen.400" />,
+    });
+  }, [navigation]);
+
   return (
     <Box bg="white" style={styles.container}>
       <Items

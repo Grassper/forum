@@ -21,6 +21,7 @@ import {
   RootStackParamList_,
   StackParamList_,
 } from "@/root/src/components/navigations/Navigation";
+import { BackButton } from "@/root/src/components/shared/Button";
 import { SubForumCard } from "@/root/src/components/shared/Cards";
 import {
   PostCard,
@@ -113,6 +114,7 @@ export const SubForum: React.FC<Props_> = ({ navigation, route }) => {
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
+      headerLeft: () => <BackButton color="eGreen.400" />,
       headerRight: () =>
         subForum?.creatorId && currentUser.id === subForum.creatorId ? (
           <Button

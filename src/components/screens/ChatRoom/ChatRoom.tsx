@@ -21,6 +21,7 @@ import {
   RootStackParamList_,
   StackParamList_,
 } from "@/root/src/components/navigations/Navigation";
+import { BackButton } from "@/root/src/components/shared/Button";
 import { UserContext } from "@/root/src/context";
 
 import { ChatCard } from "./ChatCard";
@@ -135,6 +136,7 @@ export const ChatRoom: React.FC<Props_> = ({ route, navigation }) => {
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
+      headerLeft: () => <BackButton color="eGreen.400" />,
       headerTitle: () => (
         <Box>
           <HStack alignItems="center">

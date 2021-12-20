@@ -20,6 +20,7 @@ import {
   RootStackParamList_,
   StackParamList_,
 } from "@/root/src/components/navigations/Navigation";
+import { BackButton } from "@/root/src/components/shared/Button";
 import { CommentCard } from "@/root/src/components/shared/Cards/CommentCard";
 import { PostCard } from "@/root/src/components/shared/Cards/PostCard";
 import { UserContext } from "@/root/src/context";
@@ -88,7 +89,7 @@ const PostHeader: React.FC<PostHeader_> = (post) => {
   );
 };
 
-export const Post: React.FC<Props_> = ({ route }) => {
+export const Post: React.FC<Props_> = ({ route, navigation }) => {
   const postData = route.params;
 
   const [comments, setComments] = React.useState<Item[]>([]);
@@ -162,6 +163,12 @@ export const Post: React.FC<Props_> = ({ route }) => {
       />
     );
   };
+
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => <BackButton color="eGreen.400" />,
+    });
+  }, [navigation]);
 
   const keyExtractor = React.useCallback((item) => item.childComment.id, []);
 

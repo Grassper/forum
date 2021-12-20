@@ -89,7 +89,6 @@ export const StackNavigator = () => {
         name="EditAndCreateSubForum"
         options={({ route }) => ({
           title: route.params.title,
-          headerTintColor: colors.green,
         })}
       />
       <Stack.Screen
@@ -107,6 +106,11 @@ export const StackNavigator = () => {
           title: "Add Comment",
           headerStyle: {
             backgroundColor: colors.green,
+          },
+          headerTitleStyle: {
+            fontFamily: "lr",
+            fontSize: 16,
+            color: colors.white,
           },
           headerTintColor: colors.white,
         })}

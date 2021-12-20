@@ -11,6 +11,7 @@ import {
   RootStackParamList_,
   StackParamList_,
 } from "@/root/src/components/navigations/Navigation";
+import { BackButton } from "@/root/src/components/shared/Button";
 import { ReportUser } from "@/root/src/components/shared/Report";
 import { colors } from "@/root/src/constants";
 import { AuthContext, UserContext } from "@/root/src/context";
@@ -45,6 +46,7 @@ export const Profile: React.FC<Props_> = ({ navigation, route }) => {
   const { setAuthState } = React.useContext(AuthContext);
   React.useLayoutEffect(() => {
     navigation.setOptions({
+      headerLeft: () => <BackButton color="eGreen.400" />,
       headerRight: () =>
         routeUserId && routeUserId !== id ? ( // checking our user id with incoming user id
           <Button

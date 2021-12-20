@@ -20,6 +20,7 @@ import {
   RootStackParamList_,
   StackParamList_,
 } from "@/root/src/components/navigations/Navigation";
+import { BackButton } from "@/root/src/components/shared/Button";
 import { CommunityTile } from "@/root/src/components/shared/Tile";
 import { UserContext } from "@/root/src/context";
 
@@ -87,6 +88,13 @@ export const ChooseSubForum: React.FC<Props_> = ({ navigation, route }) => {
       return () => task.cancel();
     }, [populateContent])
   );
+
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => <BackButton color="eGreen.400" />,
+    });
+  }, [navigation]);
+
   const CommunityTileRenderer: ListRenderItem<Item> = ({ item }) => {
     return (
       <CommunityTile

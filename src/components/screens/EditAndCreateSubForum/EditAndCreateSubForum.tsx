@@ -26,6 +26,7 @@ import {
   RootStackParamList_,
   StackParamList_,
 } from "@/root/src/components/navigations/Navigation";
+import { BackButton } from "@/root/src/components/shared/Button";
 import { Image } from "@/root/src/components/shared/Image";
 import { ImagePickerButton } from "@/root/src/components/shared/Picker";
 import { UserContext } from "@/root/src/context";
@@ -183,6 +184,7 @@ export const EditAndCreateSubForum: React.FC<Props_> = ({
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
+      headerLeft: () => <BackButton color="eGreen.400" />,
       headerRight: () => (
         <Button
           _text={{ fontWeight: "600", color: "eGreen.400" }}

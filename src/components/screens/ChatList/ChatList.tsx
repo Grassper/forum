@@ -19,6 +19,7 @@ import {
   RootStackParamList_,
   StackParamList_,
 } from "@/root/src/components/navigations/Navigation";
+import { BackButton } from "@/root/src/components/shared/Button";
 import { UserCard } from "@/root/src/components/shared/Cards/UserCard";
 import { FloatingActionButton } from "@/root/src/components/shared/FabButton";
 import { CommunityTile } from "@/root/src/components/shared/Tile";
@@ -83,6 +84,12 @@ export const ChatList: React.FC<Props_> = ({ navigation }) => {
       return () => task.cancel();
     }, [populateContent])
   );
+
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => <BackButton color="eGreen.400" />,
+    });
+  }, [navigation]);
 
   const ChatCardRenderer: ListRenderItem<ChatRoomsItem_> = ({ item }) => {
     const pickOppositeUser = item.chatRoom.users.items.filter(

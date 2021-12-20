@@ -20,6 +20,7 @@ import {
   RootStackParamList_,
   StackParamList_,
 } from "@/root/src/components/navigations/Navigation";
+import { BackButton } from "@/root/src/components/shared/Button";
 import { CommentCard } from "@/root/src/components/shared/Cards/CommentCard";
 
 type NavigationProp_ = CompositeNavigationProp<
@@ -66,7 +67,7 @@ const CommentHeader: React.FC<CommentHeader_> = (comment) => {
   );
 };
 
-export const Comment: React.FC<Props_> = ({ route }) => {
+export const Comment: React.FC<Props_> = ({ route, navigation }) => {
   const comment = route.params;
 
   const [childComments, setChildComments] = React.useState<Item[]>([]);
@@ -102,6 +103,12 @@ export const Comment: React.FC<Props_> = ({ route }) => {
       return () => task.cancel();
     }, [populateContent])
   );
+
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => <BackButton />,
+    });
+  }, [navigation]);
 
   const handlePagination = async () => {
     if (nextToken && comment.commentId) {

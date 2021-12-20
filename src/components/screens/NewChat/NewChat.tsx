@@ -18,6 +18,7 @@ import {
   RootStackParamList_,
   StackParamList_,
 } from "@/root/src/components/navigations/Navigation";
+import { BackButton } from "@/root/src/components/shared/Button";
 import { UserCard } from "@/root/src/components/shared/Cards/UserCard";
 import { SearchBar } from "@/root/src/components/shared/SearchBar";
 import { UserContext } from "@/root/src/context";
@@ -114,6 +115,12 @@ export const NewChat: React.FC<Props_> = ({ navigation }) => {
       />
     );
   };
+
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => <BackButton color="eGreen.400" />,
+    });
+  }, [navigation]);
 
   return (
     <Box alignItems="center" bg="white" style={styles.container}>
