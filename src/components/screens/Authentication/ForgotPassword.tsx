@@ -9,6 +9,7 @@ import {
   Icon,
   Input,
   Pressable,
+  ScrollView,
   Spinner,
   Text,
   useContrastText,
@@ -123,7 +124,7 @@ export const ForgotPassword: React.FC<Props_> = ({ navigation, route }) => {
         safeAreaY
         width="90%"
       >
-        <Box>
+        <ScrollView showsVerticalScrollIndicator={false}>
           <Box alignItems="flex-start" pt="2">
             <Pressable onPress={() => navigation.navigate("SignIn")}>
               <Icon
@@ -298,7 +299,7 @@ export const ForgotPassword: React.FC<Props_> = ({ navigation, route }) => {
               width="100%"
             />
           </Box>
-        </Box>
+        </ScrollView>
         <Box justifyContent="flex-end" width="100%">
           {!loading ? (
             <Pressable

@@ -7,6 +7,7 @@ import {
   HStack,
   Input,
   Pressable,
+  ScrollView,
   Spinner,
   Text,
   useContrastText,
@@ -113,7 +114,7 @@ export const Verification: React.FC<Props_> = ({ navigation, route }) => {
         safeAreaY
         width="90%"
       >
-        <Box>
+        <ScrollView showsVerticalScrollIndicator={false}>
           <Box alignItems="flex-end" pt="2">
             <Pressable onPress={() => navigation.navigate("SignIn")}>
               <Text color="eGreen.400" fontWeight="600">
@@ -243,7 +244,7 @@ export const Verification: React.FC<Props_> = ({ navigation, route }) => {
               </Pressable>
             </HStack>
           </Box>
-        </Box>
+        </ScrollView>
         <Box justifyContent="flex-end" width="100%">
           {!loading ? (
             <Pressable

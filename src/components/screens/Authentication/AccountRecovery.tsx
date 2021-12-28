@@ -7,6 +7,7 @@ import {
   Icon,
   Input,
   Pressable,
+  ScrollView,
   Spinner,
   Text,
   useContrastText,
@@ -63,7 +64,7 @@ export const AccountRecovery: React.FC<Props_> = ({ navigation }) => {
         safeAreaY
         width="90%"
       >
-        <Box>
+        <ScrollView showsVerticalScrollIndicator={false}>
           <Box alignItems="flex-start" pt="2">
             <Pressable onPress={() => navigation.navigate("SignIn")}>
               <Icon
@@ -107,7 +108,7 @@ export const AccountRecovery: React.FC<Props_> = ({ navigation }) => {
             value={userName}
             width="100%"
           />
-        </Box>
+        </ScrollView>
         <Box justifyContent="flex-end" width="100%">
           {!loading ? (
             <Pressable

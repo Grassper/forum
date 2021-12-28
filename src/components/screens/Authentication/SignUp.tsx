@@ -7,6 +7,7 @@ import {
   Icon,
   Input,
   Pressable,
+  ScrollView,
   Spinner,
   Text,
   useContrastText,
@@ -17,6 +18,7 @@ import { Alert } from "react-native";
 
 import { AuthStackParamList_ } from "@/root/src/components/navigations/Navigation";
 import { colors } from "@/root/src/constants";
+// import { ScrollView } from "react-native-gesture-handler";
 
 type NavigationProp_ = StackNavigationProp<AuthStackParamList_, "SignUp">;
 interface Props_ {
@@ -65,7 +67,7 @@ export const SignUp: React.FC<Props_> = ({ navigation }) => {
         safeAreaY
         width="90%"
       >
-        <Box>
+        <ScrollView showsVerticalScrollIndicator={false}>
           <Box alignItems="flex-start" pt="2">
             <Pressable onPress={() => navigation.navigate("SignIn")}>
               <Icon
@@ -164,6 +166,7 @@ export const SignUp: React.FC<Props_> = ({ navigation }) => {
             borderColor="coolGray.200"
             borderRadius="full"
             mb="5"
+            onBlur={() => (phoneNumber ? null : setPhoneNumber("+91"))}
             onChangeText={setPhoneNumber}
             p="4"
             placeholder="phoneNumber"
@@ -171,7 +174,7 @@ export const SignUp: React.FC<Props_> = ({ navigation }) => {
             value={phoneNumber}
             width="100%"
           />
-        </Box>
+        </ScrollView>
         <Box justifyContent="flex-end" width="100%">
           {!loading ? (
             <Pressable

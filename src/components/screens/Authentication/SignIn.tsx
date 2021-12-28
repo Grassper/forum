@@ -7,6 +7,7 @@ import {
   Icon,
   Input,
   Pressable,
+  ScrollView,
   Spinner,
   Text,
   useContrastText,
@@ -60,7 +61,7 @@ export const SignIn: React.FC<Props_> = ({ navigation }) => {
         safeAreaY
         width="90%"
       >
-        <Box>
+        <ScrollView showsVerticalScrollIndicator={false}>
           <Box alignItems="flex-end" pt="2">
             <Pressable
               onPress={() => {
@@ -152,7 +153,7 @@ export const SignIn: React.FC<Props_> = ({ navigation }) => {
               </Text>
             </Pressable>
           </Box>
-        </Box>
+        </ScrollView>
         <Box justifyContent="flex-end" width="100%">
           {!loading ? (
             <Pressable
