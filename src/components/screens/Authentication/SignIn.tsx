@@ -14,7 +14,7 @@ import {
   VStack,
 } from "native-base";
 import React from "react";
-import { Alert } from "react-native";
+import { Alert, KeyboardAvoidingView, Platform } from "react-native";
 
 import { AuthStackParamList_ } from "@/root/src/components/navigations/Navigation";
 import { colors } from "@/root/src/constants";
@@ -154,34 +154,39 @@ export const SignIn: React.FC<Props_> = ({ navigation }) => {
             </Pressable>
           </Box>
         </ScrollView>
-        <Box justifyContent="flex-end" width="100%">
-          {!loading ? (
-            <Pressable
-              alignItems="center"
-              bg={colors.green}
-              borderRadius="full"
-              height="50px"
-              justifyContent="center"
-              onPress={signIn}
-            >
-              <Text color={buttonContrast} fontSize="md" fontWeight="600">
-                Log Me In
-              </Text>
-            </Pressable>
-          ) : (
-            <Flex
-              alignItems="center"
-              bg={colors.green}
-              borderRadius="full"
-              fontSize="md"
-              fontWeight="600"
-              height="50px"
-              justifyContent="center"
-            >
-              <Spinner color="white" />
-            </Flex>
-          )}
-        </Box>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          keyboardVerticalOffset={60}
+        >
+          <Box justifyContent="flex-end" width="100%">
+            {!loading ? (
+              <Pressable
+                alignItems="center"
+                bg={colors.green}
+                borderRadius="full"
+                height="50px"
+                justifyContent="center"
+                onPress={signIn}
+              >
+                <Text color={buttonContrast} fontSize="md" fontWeight="600">
+                  Log Me In
+                </Text>
+              </Pressable>
+            ) : (
+              <Flex
+                alignItems="center"
+                bg={colors.green}
+                borderRadius="full"
+                fontSize="md"
+                fontWeight="600"
+                height="50px"
+                justifyContent="center"
+              >
+                <Spinner color="white" />
+              </Flex>
+            )}
+          </Box>
+        </KeyboardAvoidingView>
       </VStack>
     </Box>
   );

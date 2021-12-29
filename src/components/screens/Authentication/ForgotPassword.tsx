@@ -16,7 +16,13 @@ import {
   VStack,
 } from "native-base";
 import React, { useState } from "react";
-import { Alert, StyleSheet, TextInput } from "react-native";
+import {
+  Alert,
+  KeyboardAvoidingView,
+  Platform,
+  StyleSheet,
+  TextInput,
+} from "react-native";
 
 import { AuthStackParamList_ } from "@/root/src/components/navigations/Navigation";
 import { colors } from "@/root/src/constants";
@@ -300,34 +306,39 @@ export const ForgotPassword: React.FC<Props_> = ({ navigation, route }) => {
             />
           </Box>
         </ScrollView>
-        <Box justifyContent="flex-end" width="100%">
-          {!loading ? (
-            <Pressable
-              alignItems="center"
-              backgroundColor={colors.green}
-              borderRadius="full"
-              height="50px"
-              justifyContent="center"
-              onPress={forgotPasswordSubmit}
-            >
-              <Text color={buttonContrast} fontSize="md" fontWeight="600">
-                Reset Password
-              </Text>
-            </Pressable>
-          ) : (
-            <Flex
-              alignItems="center"
-              bg={colors.green}
-              borderRadius="full"
-              fontSize="md"
-              fontWeight="600"
-              height="50px"
-              justifyContent="center"
-            >
-              <Spinner color="white" />
-            </Flex>
-          )}
-        </Box>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          keyboardVerticalOffset={60}
+        >
+          <Box justifyContent="flex-end" width="100%">
+            {!loading ? (
+              <Pressable
+                alignItems="center"
+                backgroundColor={colors.green}
+                borderRadius="full"
+                height="50px"
+                justifyContent="center"
+                onPress={forgotPasswordSubmit}
+              >
+                <Text color={buttonContrast} fontSize="md" fontWeight="600">
+                  Reset Password
+                </Text>
+              </Pressable>
+            ) : (
+              <Flex
+                alignItems="center"
+                bg={colors.green}
+                borderRadius="full"
+                fontSize="md"
+                fontWeight="600"
+                height="50px"
+                justifyContent="center"
+              >
+                <Spinner color="white" />
+              </Flex>
+            )}
+          </Box>
+        </KeyboardAvoidingView>
       </VStack>
     </Box>
   );
