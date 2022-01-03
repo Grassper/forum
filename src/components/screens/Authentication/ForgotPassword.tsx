@@ -308,7 +308,7 @@ export const ForgotPassword: React.FC<Props_> = ({ navigation, route }) => {
         </ScrollView>
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : "height"}
-          keyboardVerticalOffset={60}
+          keyboardVerticalOffset={20}
         >
           <Box justifyContent="flex-end" width="100%">
             {!loading ? (

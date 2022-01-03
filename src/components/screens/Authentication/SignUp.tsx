@@ -18,7 +18,6 @@ import { Alert, KeyboardAvoidingView, Platform } from "react-native";
 
 import { AuthStackParamList_ } from "@/root/src/components/navigations/Navigation";
 import { colors } from "@/root/src/constants";
-// import { ScrollView } from "react-native-gesture-handler";
 
 type NavigationProp_ = StackNavigationProp<AuthStackParamList_, "SignUp">;
 interface Props_ {
@@ -31,10 +30,9 @@ export const SignUp: React.FC<Props_> = ({ navigation }) => {
   const [hidePass, setHidePass] = React.useState(true);
   const [loading, setLoading] = React.useState(false);
   const buttonContrast = useContrastText("green.500");
-  const [phoneNumber, setPhoneNumber] = React.useState("+91"); // for testing here used india country code
 
   const signUp = async () => {
-    if (userName && password && emailId && phoneNumber) {
+    if (userName && password && emailId) {
       try {
         setLoading(true);
         await Auth.signUp({
@@ -42,7 +40,6 @@ export const SignUp: React.FC<Props_> = ({ navigation }) => {
           password,
           attributes: {
             email: emailId,
-            phone_number: phoneNumber, // E.164 number convention
           },
         });
         setLoading(false);
@@ -159,25 +156,10 @@ export const SignUp: React.FC<Props_> = ({ navigation }) => {
             value={password}
             width="100%"
           />
-          <Input
-            _focus={{
-              borderColor: colors.green,
-            }}
-            borderColor="coolGray.200"
-            borderRadius="full"
-            mb="5"
-            onBlur={() => (phoneNumber ? null : setPhoneNumber("+91"))}
-            onChangeText={setPhoneNumber}
-            p="4"
-            placeholder="phoneNumber"
-            placeholderTextColor="coolGray.400"
-            value={phoneNumber}
-            width="100%"
-          />
         </ScrollView>
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : "height"}
-          keyboardVerticalOffset={60}
+          keyboardVerticalOffset={20}
         >
           <Box justifyContent="flex-end" width="100%">
             {!loading ? (
