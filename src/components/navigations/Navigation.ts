@@ -42,6 +42,8 @@ export type StackParamList_ = {
 
   // * User
   Profile: { userId: string };
+  Tipping: { userId: string };
+
   EditProfile: undefined;
   Follow: {
     title: "Followers" | "Following";
