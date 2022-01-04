@@ -156,7 +156,7 @@ export const SignIn: React.FC<Props_> = ({ navigation }) => {
         </ScrollView>
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : "height"}
-          keyboardVerticalOffset={60}
+          keyboardVerticalOffset={20}
         >
           <Box justifyContent="flex-end" width="100%">
             {!loading ? (

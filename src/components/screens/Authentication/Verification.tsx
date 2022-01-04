@@ -124,7 +124,7 @@ export const Verification: React.FC<Props_> = ({ navigation, route }) => {
           <Box alignItems="flex-end" pt="2">
             <Pressable onPress={() => navigation.navigate("SignIn")}>
               <Text color="eGreen.400" fontWeight="600">
-                Help
+                Back
               </Text>
             </Pressable>
           </Box>
@@ -253,7 +253,7 @@ export const Verification: React.FC<Props_> = ({ navigation, route }) => {
         </ScrollView>
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : "height"}
-          keyboardVerticalOffset={60}
+          keyboardVerticalOffset={20}
         >
           <Box justifyContent="flex-end" width="100%">
             {!loading ? (
