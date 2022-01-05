@@ -23,6 +23,14 @@ interface Props_ {}
 export const CoinTipping: React.FC<Props_> = () => {
   const [amount, setAmount] = React.useState("");
   const [message, setMessage] = React.useState("");
+  var amount1 = amount;
+  const inputRef = React.useRef();
+  React.useEffect(() => {
+    inputRef?.current.focus();
+  }, []);
+  function numberWithCommas(x: string) {
+    return x.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+  }
 
   return (
     <Box alignItems="center" bg="white" height="100%" style={styles.container}>
@@ -54,10 +62,12 @@ export const CoinTipping: React.FC<Props_> = () => {
             <Text
               alignItems="center"
               bg="muted.100"
-              fontSize="xl"
+              fontSize="2xl"
               minHeight="50px"
               mt="4"
               mx="3"
+              backgroundColor="transparent"
+              fontWeight="bold"
             >
               Test user
             </Text>
@@ -70,6 +80,7 @@ export const CoinTipping: React.FC<Props_> = () => {
                   minHeight="50px"
                   mt="4"
                   mx="3"
+                  backgroundColor="transparent"
                 >
                   $
                 </Text>
@@ -84,17 +95,19 @@ export const CoinTipping: React.FC<Props_> = () => {
                     color={useContrastText("light.100")}
                     keyboardType="number-pad"
                     minWidth="100"
+                    ref={inputRef}
                     onChangeText={setAmount}
                     p="1"
                     placeholder="0"
                     placeholderTextColor="coolGray.400"
                     style={styles.input}
-                    value={amount}
                     width="100%"
-                  />
+                  >
+                    {amount1.toLocaleString()}
+                  </Input>
                 </Box>
               </Flex>
-              <Box>
+              <Box mt="5">
                 <Input
                   borderColor={colors.green}
                   borderRadius="full"
@@ -129,7 +142,7 @@ export const CoinTipping: React.FC<Props_> = () => {
               onPress={() => console.log("payMe")}
             >
               <Text color="white" fontSize="md" fontWeight="600">
-                Log Me In
+                Proceed to Pay
               </Text>
             </Pressable>
           </Box>
@@ -141,5 +154,5 @@ export const CoinTipping: React.FC<Props_> = () => {
 const styles = StyleSheet.create({
   container: { flex: 1 },
   input: { fontSize: 40 },
-  message: { alignItems: "center" },
+  message: { alignItems: "center", paddingLeft: 20 },
 });
