@@ -5,7 +5,7 @@ import {
   useNavigation,
 } from "@react-navigation/native";
 import { API } from "aws-amplify";
-import { Box } from "native-base";
+import { Box, Image } from "native-base";
 import React from "react";
 import {
   FlatList,
@@ -115,14 +115,24 @@ export const ProfileSearch: React.FC = () => {
 
   return (
     <Box bg={colors.white} pt="4" style={styles.container}>
-      <FlatList
-        data={profiles}
-        keyExtractor={(item) => item.id}
-        maxToRenderPerBatch={8}
-        onEndReached={() => handlePagination()}
-        renderItem={ProfileCardRenderer}
-        windowSize={5}
-      />
+      {profiles.length ? (
+        <FlatList
+          data={profiles}
+          keyExtractor={(item) => item.id}
+          maxToRenderPerBatch={8}
+          onEndReached={() => handlePagination()}
+          renderItem={ProfileCardRenderer}
+          windowSize={5}
+        />
+      ) : (
+        <Image
+          alt="Alternate Text"
+          height="100%"
+          resizeMode="stretch"
+          source={require("@/root/assets/images/empty-data.jpg")}
+          width="100%"
+        />
+      )}
     </Box>
   );
 };

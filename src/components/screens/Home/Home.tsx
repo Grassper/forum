@@ -6,6 +6,7 @@ import {
 } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { API } from "aws-amplify";
+import { Image } from "native-base";
 import React, { useState } from "react";
 import {
   FlatList,
@@ -155,16 +156,28 @@ export const Home: React.FC<Props_> = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <BottomSheet isOpen={isOpen} onClose={HandleBottomSheet} />
-      <FlatList
-        data={memoPost}
-        keyExtractor={keyExtractor}
-        maxToRenderPerBatch={8}
-        onEndReached={handlePagination}
-        renderItem={PostCardRenderer}
-        windowSize={5}
-      />
-      <FloatingActionButton onPress={HandleBottomSheet} screen="Home" />
+      {posts.length ? (
+        <>
+          <BottomSheet isOpen={isOpen} onClose={HandleBottomSheet} />
+          <FlatList
+            data={memoPost}
+            keyExtractor={keyExtractor}
+            maxToRenderPerBatch={8}
+            onEndReached={handlePagination}
+            renderItem={PostCardRenderer}
+            windowSize={5}
+          />
+          <FloatingActionButton onPress={HandleBottomSheet} screen="Home" />
+        </>
+      ) : (
+        <Image
+          alt="Alternate Text"
+          height="100%"
+          resizeMode="stretch"
+          source={require("@/root/assets/images/empty-data.jpg")}
+          width="100%"
+        />
+      )}
     </View>
   );
 };
