@@ -65,6 +65,8 @@ type Mutation {
   decrementTotalSurveysCommunity(id: ID!): Community @aws_cognito_user_pools
   incrementVoteCountSurveyAnswer(id: ID!): SurveyAnswer @aws_cognito_user_pools
   decrementVoteCountSurveyAnswer(id: ID!): SurveyAnswer @aws_cognito_user_pools
+  incrementCoinsUser(id: ID!, value: Int!): User @aws_cognito_user_pools
+  decrementCoinsUser(id: ID!, value: Int!): User @aws_cognito_user_pools
   createPostAndTimeline(
     type: PostType!
     content: String!
@@ -104,6 +106,7 @@ type User
       { allow: owner }
       # allow all authenticated users to read posts
       { allow: private, operations: [read] }
+      { allow: private, provider: iam, operations: [read] }
     ]
   ) {
   id: ID!
@@ -556,4 +559,16 @@ type UserSurveyMetricsRelationShip
   community: Community! @connection(fields: ["communityId"])
   surveyQuestion: SurveyQuestion! @connection(fields: ["surveyQuestionId"])
   surveyAnswer: SurveyAnswer! @connection(fields: ["surveyAnswerId"])
+}
+
+type CoinTransaction
+  @model
+  @auth(rules: [{ allow: private, provider: iam, operations: [create] }]) {
+  id: ID!
+  value: Int!
+  reason: String
+  fromUserId: ID!
+  toUserId: ID!
+  fromUser: User! @connection(fields: ["fromUserId"])
+  toUser: User! @connection(fields: ["toUserId"])
 }
