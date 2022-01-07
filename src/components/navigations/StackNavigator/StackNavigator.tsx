@@ -19,6 +19,7 @@ import {
 import { ChatList } from "@/root/src/components/screens/ChatList";
 import { ChatRoom } from "@/root/src/components/screens/ChatRoom";
 import { ChooseSubForum } from "@/root/src/components/screens/ChooseSubForum";
+import { CoinTipping } from "@/root/src/components/screens/CoinTipping";
 import { Comment } from "@/root/src/components/screens/Comment";
 import { EditAndCreateSubForum } from "@/root/src/components/screens/EditAndCreateSubForum";
 import { EditProfile } from "@/root/src/components/screens/EditProfile";
@@ -158,6 +159,14 @@ export const StackNavigator = () => {
         component={Profile}
         initialParams={{ userId: id }}
         name="Profile"
+        options={() => ({
+          title: "",
+        })}
+      />
+      <Stack.Screen
+        component={CoinTipping}
+        initialParams={{ userId: id }}
+        name="Tipping"
         options={() => ({
           title: "",
         })}

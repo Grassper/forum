@@ -128,6 +128,19 @@ export const ProfileCard: React.FC<Props_> = ({ routeUserId }) => {
         </Box>
       }
       <Box>
+        <Pressable
+          onPress={() => {
+            navigation.dispatch(
+              StackActions.push("Tipping", {
+                params: { userId: routeUserId },
+              })
+            );
+          }}
+        >
+          <Text>Tips</Text>
+        </Pressable>
+      </Box>
+      <Box>
         {profile?.username ? (
           <Text fontFamily="heading" fontSize="22px" mb="5px">
             {profile.username}

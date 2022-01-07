@@ -6,7 +6,7 @@ import {
 } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { API } from "aws-amplify";
-import { Button } from "native-base";
+import { Button, Image } from "native-base";
 import React from "react";
 import {
   FlatList,
@@ -189,35 +189,47 @@ export const SubForum: React.FC<Props_> = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
-      {subForum && (
-        <ReportCommunity
-          communityId={subForum.id}
-          reportModal={reportModal}
-          setReportModal={setReportModal}
+      {posts.length ? (
+        <>
+          {subForum && (
+            <ReportCommunity
+              communityId={subForum.id}
+              reportModal={reportModal}
+              setReportModal={setReportModal}
+            />
+          )}
+          <FlatList
+            data={posts}
+            keyExtractor={(item) => item.id}
+            ListHeaderComponent={() => (
+              <SubForumCard
+                _version={subForum?._version}
+                coverImageS3Key={subForum?.bannerImageS3Key}
+                creatorId={subForum?.creatorId}
+                description={subForum?.description}
+                id={subForum?.id}
+                members={subForum?.members}
+                name={subForum?.name}
+                profileImageS3Key={subForum?.profileImageS3Key}
+                totalMembers={subForum?.totalMembers}
+                totalPosts={subForum?.totalPosts}
+              />
+            )}
+            maxToRenderPerBatch={8}
+            onEndReached={() => handlePagination()}
+            renderItem={PostCardRenderer}
+            windowSize={5}
+          />
+        </>
+      ) : (
+        <Image
+          alt="Alternate Text"
+          height="100%"
+          resizeMode="stretch"
+          source={require("@/root/assets/images/empty-data.jpg")}
+          width="100%"
         />
       )}
-      <FlatList
-        data={posts}
-        keyExtractor={(item) => item.id}
-        ListHeaderComponent={() => (
-          <SubForumCard
-            _version={subForum?._version}
-            coverImageS3Key={subForum?.bannerImageS3Key}
-            creatorId={subForum?.creatorId}
-            description={subForum?.description}
-            id={subForum?.id}
-            members={subForum?.members}
-            name={subForum?.name}
-            profileImageS3Key={subForum?.profileImageS3Key}
-            totalMembers={subForum?.totalMembers}
-            totalPosts={subForum?.totalPosts}
-          />
-        )}
-        maxToRenderPerBatch={8}
-        onEndReached={() => handlePagination()}
-        renderItem={PostCardRenderer}
-        windowSize={5}
-      />
     </View>
   );
 };
