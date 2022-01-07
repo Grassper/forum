@@ -1,3 +1,5 @@
+import { CompositeNavigationProp, RouteProp } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
 import {
   Box,
   FormControl,
@@ -19,13 +21,26 @@ import { SvgUri } from "react-native-svg";
 import isLength from "validator/es/lib/isLength";
 import matches from "validator/es/lib/matches";
 
+import {
+  RootStackParamList_,
+  StackParamList_,
+} from "@/root/src/components/navigations/Navigation";
 import { Skeleton } from "@/root/src/components/shared/Skeleton";
 import { colors } from "@/root/src/constants";
-import { UserContext } from "@/root/src/context";
 
-interface Props_ {}
+type NavigationProp_ = CompositeNavigationProp<
+  StackNavigationProp<StackParamList_, "Tipping">,
+  StackNavigationProp<RootStackParamList_, "Application">
+>;
 
-export const CoinTipping: React.FC<Props_> = () => {
+type RouteProp_ = RouteProp<StackParamList_, "Tipping">;
+
+interface Props_ {
+  navigation: NavigationProp_;
+  route: RouteProp_;
+}
+
+export const CoinTipping: React.FC<Props_> = ({ route }) => {
   const [amount, setAmount] = React.useState("0");
   const [reason, setReason] = React.useState("");
   const inputRef: React.RefObject<TextInput> = React.createRef();
@@ -40,9 +55,7 @@ export const CoinTipping: React.FC<Props_> = () => {
     inputRef.current?.focus();
   }, [inputRef]);
 
-  const {
-    user: { profileImageUrl, username },
-  } = React.useContext(UserContext);
+  const { profileImageUrl, username } = route.params;
 
   React.useEffect(() => {
     const validateAmount = () => {
@@ -192,7 +205,5 @@ const styles = StyleSheet.create({
 });
 
 /**
- * Todo-2: tipping icon
- * Todo-2: get username, profileImg, UserId from props
  * Todo-2: lamba function
  */

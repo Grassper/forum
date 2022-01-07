@@ -42,7 +42,7 @@ export type StackParamList_ = {
 
   // * User
   Profile: { userId: string };
-  Tipping: { userId: string };
+  Tipping: { userId: string; profileImageUrl: string; username: string };
 
   EditProfile: undefined;
   Follow: {
