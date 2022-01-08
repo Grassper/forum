@@ -203,3 +203,7 @@ const styles = StyleSheet.create({
   container: { flex: 1 },
   input: { fontSize: 28 },
 });
+
+/**
+ * Tipping- show coin balance
+ */

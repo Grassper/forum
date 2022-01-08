@@ -28,7 +28,7 @@
         },
         "tippingHandler": {
           "deploymentBucketName": "amplify-eforum-dev-151817-deployment",
-          "s3Key": "amplify-builds/tippingHandler-30664866785a73376b30-build.zip"
+          "s3Key": "amplify-builds/tippingHandler-39426f68594d76673475-build.zip"
         }
       }
     }
