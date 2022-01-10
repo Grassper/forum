@@ -1,28 +1,93 @@
+import { CompositeNavigationProp, RouteProp } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
 import {
   Box,
-  Button,
-  Flex,
-  HStack,
-  Icon,
+  FormControl,
   Input,
   Pressable,
-  ScrollView,
-  Spinner,
   Text,
   useContrastText,
   VStack,
+  WarningOutlineIcon,
 } from "native-base";
 import React from "react";
 import { KeyboardAvoidingView, Platform, StyleSheet } from "react-native";
 import { SvgUri } from "react-native-svg";
+import isLength from "validator/es/lib/isLength";
+import matches from "validator/es/lib/matches";
 
+import {
+  RootStackParamList_,
+  StackParamList_,
+} from "@/root/src/components/navigations/Navigation";
 import { Skeleton } from "@/root/src/components/shared/Skeleton";
 import { colors } from "@/root/src/constants";
+import { UserContext } from "@/root/src/context";
 
-interface Props_ {}
-export const CoinTipping: React.FC<Props_> = () => {
+type NavigationProp_ = CompositeNavigationProp<
+  StackNavigationProp<StackParamList_, "Tipping">,
+  StackNavigationProp<RootStackParamList_, "Application">
+>;
+
+type RouteProp_ = RouteProp<StackParamList_, "Tipping">;
+
+interface Props_ {
+  navigation: NavigationProp_;
+  route: RouteProp_;
+}
+
+export const CoinTipping: React.FC<Props_> = ({ route }) => {
   const [amount, setAmount] = React.useState("");
-  const [message, setMessage] = React.useState("");
+  const [reason, setReason] = React.useState("");
+
+  const [isAmountValid, setAmountValid] = React.useState(false);
+  const [amountErrorMsg, setAmountErrorMsg] = React.useState("");
+
+  const [isReasonValid, setReasonValid] = React.useState(false);
+  const [reasonErrorMsg, setReasonErrorMsg] = React.useState("");
+
+  const { profileImageUrl, username, id } = route.params;
+
+  const currentUser = React.useContext(UserContext).user;
+  React.useEffect(() => {
+    const validateAmount = () => {
+      if (Number(amount) < 1000 && Number(amount) !== 0) {
+        setAmountValid(true);
+        setAmountErrorMsg("");
+      } else {
+        setAmountValid(false);
+        setAmountErrorMsg("Max Coin 999 Ef");
+      }
+    };
+    validateAmount();
+  }, [amount]);
+
+  React.useEffect(() => {
+    const ValidateReason = () => {
+      if (
+        isLength(reason, { min: 0, max: 25 }) &&
+        matches(reason, "^[A-Za-z0-9 _|.,!]{0,25}$", "m")
+      ) {
+        setReasonValid(true);
+        setReasonErrorMsg("");
+      } else {
+        setReasonValid(false);
+        setReasonErrorMsg("Max 25 alphanumeric chars");
+      }
+    };
+    ValidateReason();
+  }, [reason]);
+
+  const tippingHandler = () => {
+    const TippingInput = {
+      fromUserId: currentUser.id,
+      toUserId: id,
+      amount: amount,
+      reason: reason,
+    };
+
+    console.log(TippingInput);
+  };
 
   return (
     <Box alignItems="center" bg="white" height="100%" style={styles.container}>
@@ -33,103 +98,97 @@ export const CoinTipping: React.FC<Props_> = () => {
         safeAreaY
         width="90%"
       >
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <Flex alignItems="center" direction="column" mt="10">
-            <Box
-              bg="amber.100"
-              borderRadius="full"
-              height="100px"
-              mb="10px"
-              overflow="hidden"
-              width="100px"
-            >
-              <SvgUri
-                height="100%"
-                uri={
-                  "https://avatars.dicebear.com/api/adventurer/your-custom-giriseed.svg"
-                }
+        <VStack alignItems="center" direction="column">
+          <Box
+            bg={profileImageUrl ? "amber.100" : "transparent"}
+            borderRadius="full"
+            height="80px"
+            mb="10px"
+            overflow="hidden"
+            width="80px"
+          >
+            {profileImageUrl ? (
+              <SvgUri height="100%" uri={profileImageUrl} width="100%" />
+            ) : (
+              <Skeleton height="100%" width="100%" />
+            )}
+          </Box>
+          <Box>
+            {username ? (
+              <Text fontFamily="heading" fontSize="md" mb="5px">
+                Tipping to {username}
+              </Text>
+            ) : (
+              <Skeleton height="20px" mb="5px" width="150px" />
+            )}
+          </Box>
+          <Box alignItems="center" justifyContent="center" mt="5">
+            <FormControl isInvalid={!isAmountValid} isRequired>
+              <Input
+                _focus={{
+                  borderColor: "transparent",
+                }}
+                autoCapitalize="none"
+                borderColor="transparent"
+                color={useContrastText("light.100")}
+                keyboardType="number-pad"
+                minWidth="100"
+                onChangeText={setAmount}
+                p="1"
+                placeholder="0 Ef"
+                placeholderTextColor="muted.400"
+                style={styles.input}
+                textAlign="center"
                 width="100%"
-              />
-            </Box>
-            <Text
-              alignItems="center"
-              bg="muted.100"
-              fontSize="xl"
-              minHeight="50px"
-              mt="4"
-              mx="3"
-            >
-              Test user
-            </Text>
-            <Box alignItems="center" justifyContent="center" py="5">
-              <Flex alignItems="center" direction="row" justifyContent="center">
-                <Text
-                  alignItems="center"
-                  bg="muted.100"
-                  fontSize="xl"
-                  minHeight="50px"
-                  mt="4"
-                  mx="3"
-                >
-                  $
-                </Text>
-                <Box>
-                  <Input
-                    _focus={{
-                      borderColor: "transparent",
-                    }}
-                    autoCapitalize="none"
-                    borderBottomColor={colors.green}
-                    borderColor="transparent"
-                    color={useContrastText("light.100")}
-                    keyboardType="number-pad"
-                    minWidth="100"
-                    onChangeText={setAmount}
-                    p="1"
-                    placeholder="0"
-                    placeholderTextColor="coolGray.400"
-                    style={styles.input}
-                    value={amount}
-                    width="100%"
-                  />
-                </Box>
-              </Flex>
-              <Box>
+              >
+                {amount.toLocaleString()}
+              </Input>
+              <FormControl.ErrorMessage
+                leftIcon={<WarningOutlineIcon size="xs" />}
+              >
+                {amountErrorMsg}
+              </FormControl.ErrorMessage>
+            </FormControl>
+            <Box mt="5">
+              <FormControl isInvalid={!isReasonValid}>
                 <Input
-                  borderColor={colors.green}
-                  borderRadius="full"
-                  borderWidth="1"
+                  bg="coolGray.100"
+                  borderRadius="md"
                   fontSize="sm"
-                  maxLength={140}
+                  maxLength={25}
                   minWidth={150}
-                  mt="2"
-                  multiline
-                  onChangeText={setMessage}
-                  placeholder="Reasons"
+                  onChangeText={setReason}
+                  p="4"
+                  placeholder="Reason"
                   placeholderTextColor="muted.400"
-                  style={styles.message}
-                  value={message}
+                  textAlign="center"
+                  value={reason}
                   variant="unstyled"
                 />
-              </Box>
+                <FormControl.ErrorMessage
+                  leftIcon={<WarningOutlineIcon size="xs" />}
+                >
+                  {reasonErrorMsg}
+                </FormControl.ErrorMessage>
+              </FormControl>
             </Box>
-          </Flex>
-        </ScrollView>
+          </Box>
+        </VStack>
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : "height"}
-          keyboardVerticalOffset={60}
+          keyboardVerticalOffset={100}
         >
           <Box justifyContent="flex-end" minWidth="200" width="100%">
             <Pressable
               alignItems="center"
-              bg={colors.green}
+              bg={isAmountValid ? colors.green : "muted.400"}
               borderRadius="full"
               height="50px"
               justifyContent="center"
-              onPress={() => console.log("payMe")}
+              onPress={tippingHandler}
             >
               <Text color="white" fontSize="md" fontWeight="600">
-                Log Me In
+                Proceed to Pay
               </Text>
             </Pressable>
           </Box>
@@ -140,6 +199,10 @@ export const CoinTipping: React.FC<Props_> = () => {
 };
 const styles = StyleSheet.create({
   container: { flex: 1 },
-  input: { fontSize: 40 },
-  message: { alignItems: "center" },
+  input: { fontSize: 28 },
 });
+
+/**
+ * Tipping- show coin balance
+ * disable tipping for current user
+ */

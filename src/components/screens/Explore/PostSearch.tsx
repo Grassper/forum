@@ -1,7 +1,7 @@
 import { GraphQLResult } from "@aws-amplify/api-graphql";
 import { useFocusEffect } from "@react-navigation/native";
 import { API } from "aws-amplify";
-import { Box } from "native-base";
+import { Box, Image } from "native-base";
 import React from "react";
 import {
   FlatList,
@@ -113,14 +113,24 @@ export const PostSearch: React.FC = () => {
 
   return (
     <Box bg="white">
-      <FlatList
-        data={posts}
-        keyExtractor={(item) => item.id}
-        maxToRenderPerBatch={8}
-        onEndReached={() => handlePagination()}
-        renderItem={PostCardRenderer}
-        windowSize={5}
-      />
+      {posts.length ? (
+        <FlatList
+          data={posts}
+          keyExtractor={(item) => item.id}
+          maxToRenderPerBatch={8}
+          onEndReached={() => handlePagination()}
+          renderItem={PostCardRenderer}
+          windowSize={5}
+        />
+      ) : (
+        <Image
+          alt="Alternate Text"
+          height="100%"
+          resizeMode="stretch"
+          source={require("@/root/assets/images/empty-data.jpg")}
+          width="100%"
+        />
+      )}
     </Box>
   );
 };

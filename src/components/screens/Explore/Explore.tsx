@@ -57,7 +57,7 @@ export const Explore: React.FC<Props_> = () => {
   const debouncedSearchTerm = useDebounce(searchValue, 1000);
   return (
     <Box bg={colors.white} style={styles.container}>
-      <Box safeAreaTop style={styles.container}>
+      <Box style={styles.container}>
         <Box alignItems="center" bg={colors.white} width="100%">
           <Box py="15px" width="90%">
             <SearchBar setValue={setSearchValue} value={searchValue} />

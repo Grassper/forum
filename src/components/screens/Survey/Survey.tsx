@@ -1,6 +1,7 @@
 import { GraphQLResult } from "@aws-amplify/api-graphql";
 import { useFocusEffect } from "@react-navigation/native";
 import { API } from "aws-amplify";
+import { Image } from "native-base";
 import React from "react";
 import {
   FlatList,
@@ -135,14 +136,24 @@ export const Survey: React.FC = () => {
   }
   return (
     <View style={styles.container}>
-      <FlatList
-        data={surveys}
-        keyExtractor={(item) => item.surveyQuestion.id}
-        maxToRenderPerBatch={8}
-        onEndReached={() => handlePagination()}
-        renderItem={PostCardRenderer}
-        windowSize={5}
-      />
+      {surveys.length ? (
+        <FlatList
+          data={surveys}
+          keyExtractor={(item) => item.surveyQuestion.id}
+          maxToRenderPerBatch={8}
+          onEndReached={() => handlePagination()}
+          renderItem={PostCardRenderer}
+          windowSize={5}
+        />
+      ) : (
+        <Image
+          alt="Alternate Text"
+          height="100%"
+          resizeMode="stretch"
+          source={require("@/root/assets/images/empty-data.jpg")}
+          width="100%"
+        />
+      )}
     </View>
   );
 };

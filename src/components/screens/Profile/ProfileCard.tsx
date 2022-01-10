@@ -11,6 +11,7 @@ import React, { useState } from "react";
 import { InteractionManager } from "react-native";
 import { SvgUri } from "react-native-svg";
 
+import { ChargeIcon } from "@/root/src/components/shared/Icons";
 import { Skeleton } from "@/root/src/components/shared/Skeleton";
 import { UserContext } from "@/root/src/context";
 
@@ -117,29 +118,43 @@ export const ProfileCard: React.FC<Props_> = ({ routeUserId }) => {
           borderRadius="full"
           height="80px"
           mb="10px"
-          overflow="hidden"
           width="80px"
         >
           {profile?.profileImageUrl ? (
-            <SvgUri height="100%" uri={profile.profileImageUrl} width="100%" />
+            <>
+              <SvgUri
+                height="100%"
+                uri={profile.profileImageUrl}
+                width="100%"
+              />
+              <Box
+                height="20px"
+                position="absolute"
+                right="-5"
+                top="0"
+                width="20px"
+              >
+                <Pressable
+                  onPress={() => {
+                    navigation.dispatch(
+                      StackActions.push("Tipping", {
+                        id: routeUserId,
+                        profileImageUrl: profile.profileImageUrl,
+                        username: profile.username,
+                      })
+                    );
+                  }}
+                >
+                  <ChargeIcon />
+                </Pressable>
+              </Box>
+            </>
           ) : (
             <Skeleton height="100%" width="100%" />
           )}
         </Box>
       }
-      <Box>
-        <Pressable
-          onPress={() => {
-            navigation.dispatch(
-              StackActions.push("Tipping", {
-                params: { userId: routeUserId },
-              })
-            );
-          }}
-        >
-          <Text>Tips</Text>
-        </Pressable>
-      </Box>
+
       <Box>
         {profile?.username ? (
           <Text fontFamily="heading" fontSize="22px" mb="5px">

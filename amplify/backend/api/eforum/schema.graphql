@@ -65,6 +65,8 @@ type Mutation {
   decrementTotalSurveysCommunity(id: ID!): Community @aws_cognito_user_pools
   incrementVoteCountSurveyAnswer(id: ID!): SurveyAnswer @aws_cognito_user_pools
   decrementVoteCountSurveyAnswer(id: ID!): SurveyAnswer @aws_cognito_user_pools
+  incrementCoinsUser(id: ID!, value: Int!): User @aws_iam
+  decrementCoinsUser(id: ID!, value: Int!): User @aws_iam
   createPostAndTimeline(
     type: PostType!
     content: String!
@@ -87,6 +89,14 @@ type Mutation {
   ): SurveyQuestion
     @function(name: "createSurveyAndTimeline-${env}")
     @auth(rules: [{ allow: private, provider: userPools }])
+  tippingHandler(
+    amount: Int!
+    fromUserId: ID!
+    toUserId: ID!
+    reason: String
+  ): User
+    @function(name: "tippingHandler-${env}")
+    @auth(rules: [{ allow: private, provider: userPools }])
 }
 
 type Subscription {
@@ -104,6 +114,7 @@ type User
       { allow: owner }
       # allow all authenticated users to read posts
       { allow: private, operations: [read] }
+      { allow: private, provider: iam, operations: [read, update] }
     ]
   ) {
   id: ID!
@@ -556,4 +567,16 @@ type UserSurveyMetricsRelationShip
   community: Community! @connection(fields: ["communityId"])
   surveyQuestion: SurveyQuestion! @connection(fields: ["surveyQuestionId"])
   surveyAnswer: SurveyAnswer! @connection(fields: ["surveyAnswerId"])
+}
+
+type CoinTransaction
+  @model
+  @auth(rules: [{ allow: private, provider: iam, operations: [create] }]) {
+  id: ID!
+  value: Int!
+  reason: String
+  fromUserId: ID!
+  toUserId: ID!
+  fromUser: User! @connection(fields: ["fromUserId"])
+  toUser: User! @connection(fields: ["toUserId"])
 }

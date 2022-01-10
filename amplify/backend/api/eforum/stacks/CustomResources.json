@@ -1538,6 +1538,60 @@
           ]
         }
       }
+    },
+    "QueryIncrementCoinsUser": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": { "Ref": "AppSyncApiId" },
+        "DataSourceName": "UserTable",
+        "TypeName": "Mutation",
+        "FieldName": "incrementCoinsUser",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Sub": [
+            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.incrementCoinsUser.req.vtl",
+            {
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
+            }
+          ]
+        },
+        "ResponseMappingTemplateS3Location": {
+          "Fn::Sub": [
+            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.incrementCoinsUser.res.vtl",
+            {
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
+            }
+          ]
+        }
+      }
+    },
+    "QueryDecrementCoinsUser": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": { "Ref": "AppSyncApiId" },
+        "DataSourceName": "UserTable",
+        "TypeName": "Mutation",
+        "FieldName": "decrementCoinsUser",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Sub": [
+            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.decrementCoinsUser.req.vtl",
+            {
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
+            }
+          ]
+        },
+        "ResponseMappingTemplateS3Location": {
+          "Fn::Sub": [
+            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.decrementCoinsUser.res.vtl",
+            {
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
+            }
+          ]
+        }
+      }
     }
   },
   "Conditions": {
