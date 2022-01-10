@@ -8,7 +8,7 @@
         "update" : {
             "expression" : "ADD coins :minus",
             "expressionValues" : {
-                ":minus" : { "N" : $ctx.args.value }
+                ":minus" : { "N" : "-$ctx.args.value" }
             }
         }
     }

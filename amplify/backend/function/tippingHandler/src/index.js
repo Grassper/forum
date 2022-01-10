@@ -15,24 +15,37 @@ const appsyncUrl = process.env.API_EFORUM_GRAPHQLAPIENDPOINTOUTPUT;
 const region = process.env.REGION;
 const endpoint = new urlParse(appsyncUrl).hostname.toString();
 
-exports.handler = async (event, context, callback) => {
+exports.handler = async (event, _, callback) => {
   // input
   // amount
   // fromUserID
   // toUserId
   // reason
 
+  if (!event.arguments.fromUserId) {
+    return callback("Request should contain from user ID");
+  }
+
+  if (!event.arguments.toUserId) {
+    return callback("Request should contain to user ID");
+  }
+
+  if (!event.arguments.amount) {
+    return callback("Request should contain amount");
+  }
+
+  if (event.identity.sub !== event.arguments.fromUserId) {
+    return callback("Access Denied Can't to send amount from another User id");
+  }
+
   // checking sending and receiving id
   if (event.arguments.fromUserId === event.arguments.toUserId) {
-    callback("User Can't tip amount to their own account id");
+    return callback("User Can't tip amount to their own account id");
   }
 
   // validate coin amount
-  if (
-    Math.abs(event.arguments.amount) >= 1000 ||
-    Math.abs(event.arguments.amount) <= 0
-  ) {
-    callback("Tipping amount should between 1 to 999 Ef");
+  if (event.arguments.amount >= 1000 || event.arguments.amount <= 0) {
+    return callback("Tipping amount should between 1 to 999 Ef");
   }
 
   // checking both users exist & from users has sufficient amount
@@ -43,12 +56,12 @@ exports.handler = async (event, context, callback) => {
       event.arguments.amount
     );
     if (!isBothUsersExistAndCheckAmount) {
-      callback(
+      return callback(
         "Anyone of provided users doesn't exist or from users doesn't have enough amount"
       );
     }
   } catch (err) {
-    callback(err);
+    return callback(err);
   }
 
   // increment handler - amount in from and + amount in to
@@ -59,7 +72,7 @@ exports.handler = async (event, context, callback) => {
       event.arguments.amount
     );
   } catch (err) {
-    callback(err);
+    return callback(err);
   }
 
   // create the transaction records
@@ -77,7 +90,7 @@ exports.handler = async (event, context, callback) => {
       CreateTransaction
     );
   } catch (err) {
-    callback(err);
+    return callback(err);
   }
 
   // response with updated from user info
@@ -89,7 +102,7 @@ exports.handler = async (event, context, callback) => {
 
     return response.data?.getUser;
   } catch (err) {
-    callback(err);
+    return callback(err);
   }
 };
 
@@ -102,11 +115,7 @@ const CheckBothUsersExist = async (fromUserId, toUserId, amount) => {
 
     if (response.data) {
       const { fromUser, toUser } = response.data;
-      if (
-        fromUser !== null &&
-        toUser !== null &&
-        fromUser.coins >= Math.abs(amount)
-      ) {
+      if (fromUser !== null && toUser !== null && fromUser.coins >= amount) {
         return true;
       }
       return false;
@@ -156,7 +165,7 @@ const TippingIncreDecreHandler = async (fromUserId, toUserId, amount) => {
     await makeAppSyncRequest(
       {
         id: fromUserId,
-        value: -Math.abs(amount),
+        value: amount,
       },
       DecrementCoinsUser
     );
@@ -164,7 +173,7 @@ const TippingIncreDecreHandler = async (fromUserId, toUserId, amount) => {
     await makeAppSyncRequest(
       {
         id: toUserId,
-        value: Math.abs(amount),
+        value: amount,
       },
       IncrementCoinsUser
     );
@@ -223,14 +232,3 @@ const makeAppSyncRequest = async (variables, query) => {
     throw Error(err);
   }
 };
-
-/**
- * * lambda function todo
- * and from address is same
- * test in local host
- */
-
-/**
- * ! amount validation doesn't work
- * ! transaction create with invalid amount
- */
