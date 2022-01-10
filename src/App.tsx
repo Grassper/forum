@@ -9,6 +9,7 @@ import React from "react";
 import { enableScreens } from "react-native-screens";
 
 import { RootStackNavigator } from "@/root/src/components/navigations/RootStackNavigator";
+import { CustomAppStatusBar } from "@/root/src/components/shared/StatusBar";
 import { NativeBaseTheme as Theme } from "@/root/src/config";
 import {
   AuthContext,
@@ -75,9 +76,12 @@ const App: React.FC = () => {
   }
 
   return (
-    <NativeBaseProvider theme={Theme}>
-      <RootStackNavigator />
-    </NativeBaseProvider>
+    <>
+      <CustomAppStatusBar />
+      <NativeBaseProvider theme={Theme}>
+        <RootStackNavigator />
+      </NativeBaseProvider>
+    </>
   );
 };
 
