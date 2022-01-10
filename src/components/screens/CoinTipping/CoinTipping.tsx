@@ -11,12 +11,7 @@ import {
   WarningOutlineIcon,
 } from "native-base";
 import React from "react";
-import {
-  KeyboardAvoidingView,
-  Platform,
-  StyleSheet,
-  TextInput,
-} from "react-native";
+import { KeyboardAvoidingView, Platform, StyleSheet } from "react-native";
 import { SvgUri } from "react-native-svg";
 import isLength from "validator/es/lib/isLength";
 import matches from "validator/es/lib/matches";
@@ -27,6 +22,7 @@ import {
 } from "@/root/src/components/navigations/Navigation";
 import { Skeleton } from "@/root/src/components/shared/Skeleton";
 import { colors } from "@/root/src/constants";
+import { UserContext } from "@/root/src/context";
 
 type NavigationProp_ = CompositeNavigationProp<
   StackNavigationProp<StackParamList_, "Tipping">,
@@ -41,9 +37,8 @@ interface Props_ {
 }
 
 export const CoinTipping: React.FC<Props_> = ({ route }) => {
-  const [amount, setAmount] = React.useState("0");
+  const [amount, setAmount] = React.useState("");
   const [reason, setReason] = React.useState("");
-  const inputRef: React.RefObject<TextInput> = React.createRef();
 
   const [isAmountValid, setAmountValid] = React.useState(false);
   const [amountErrorMsg, setAmountErrorMsg] = React.useState("");
@@ -51,12 +46,9 @@ export const CoinTipping: React.FC<Props_> = ({ route }) => {
   const [isReasonValid, setReasonValid] = React.useState(false);
   const [reasonErrorMsg, setReasonErrorMsg] = React.useState("");
 
-  React.useEffect(() => {
-    inputRef.current?.focus();
-  }, [inputRef]);
+  const { profileImageUrl, username, id } = route.params;
 
-  const { profileImageUrl, username } = route.params;
-
+  const currentUser = React.useContext(UserContext).user;
   React.useEffect(() => {
     const validateAmount = () => {
       if (Number(amount) < 1000 && Number(amount) !== 0) {
@@ -87,7 +79,14 @@ export const CoinTipping: React.FC<Props_> = ({ route }) => {
   }, [reason]);
 
   const tippingHandler = () => {
-    console.log("tipping handler pressed");
+    const TippingInput = {
+      fromUserId: currentUser.id,
+      toUserId: id,
+      amount: amount,
+      reason: reason,
+    };
+
+    console.log(TippingInput);
   };
 
   return (
@@ -126,7 +125,6 @@ export const CoinTipping: React.FC<Props_> = ({ route }) => {
           <Box alignItems="center" justifyContent="center" mt="5">
             <FormControl isInvalid={!isAmountValid} isRequired>
               <Input
-                ref={inputRef}
                 _focus={{
                   borderColor: "transparent",
                 }}
@@ -206,4 +204,5 @@ const styles = StyleSheet.create({
 
 /**
  * Tipping- show coin balance
+ * disable tipping for current user
  */
