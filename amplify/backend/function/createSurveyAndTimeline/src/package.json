@@ -9,6 +9,7 @@
     "axios": "^0.24.0",
     "date-fns": "^2.27.0",
     "url": "^0.11.0",
-    "validator": "^13.7.0"
+    "validator": "^13.7.0",
+    "xss-filters": "^1.2.7"
   }
 }
