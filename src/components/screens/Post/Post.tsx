@@ -103,7 +103,7 @@ export const Post: React.FC<Props_> = ({ route, navigation }) => {
         const listCommentInput: listCommentsByPostIdFetch_ = {
           postId: postData.id,
           currentUserId: currentUser.id,
-          limit: 10,
+          limit: 20,
         };
         const commentData = await listCommentsByPostIdFetch(listCommentInput);
 
@@ -201,6 +201,8 @@ export const Post: React.FC<Props_> = ({ route, navigation }) => {
       </ScrollView>
     );
   }
+
+  console.log(comments);
 
   return (
     <Box style={styles.container}>

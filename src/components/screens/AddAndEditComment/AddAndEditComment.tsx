@@ -14,7 +14,7 @@ import {
 import React from "react";
 import { Alert, StyleSheet } from "react-native";
 import isLength from "validator/es/lib/isLength";
-import matches from "validator/es/lib/matches";
+import xssFilters from "xss-filters";
 
 import {
   RootStackParamList_,
@@ -105,10 +105,7 @@ export const AddAndEditComment: React.FC<Props_> = ({ navigation, route }) => {
 
   React.useEffect(() => {
     const validateComment = () => {
-      if (
-        isLength(comment, { min: 1, max: 2200 }) &&
-        matches(comment, "^[A-Za-z][A-Za-z0-9 _|.,!]{1,2200}$", "m")
-      ) {
+      if (isLength(comment, { min: 1, max: 2200 })) {
         setCommentValid(true);
         setCommentErrorMsg("");
       } else {
@@ -118,6 +115,10 @@ export const AddAndEditComment: React.FC<Props_> = ({ navigation, route }) => {
     };
     validateComment();
   }, [comment]);
+
+  const sanitizeComment = (text: string) => {
+    setComment(xssFilters.inHTMLData(text));
+  };
 
   return (
     <Box bg="white" style={styles.container}>
@@ -132,7 +133,7 @@ export const AddAndEditComment: React.FC<Props_> = ({ navigation, route }) => {
               borderRadius="md"
               fontSize="sm"
               multiline
-              onChangeText={setComment}
+              onChangeText={sanitizeComment}
               placeholder="Type some goods!"
               placeholderTextColor="muted.400"
               value={comment}
