@@ -14,7 +14,7 @@ import React from "react";
 import { KeyboardAvoidingView, Platform, StyleSheet } from "react-native";
 import { SvgUri } from "react-native-svg";
 import isLength from "validator/es/lib/isLength";
-import matches from "validator/es/lib/matches";
+import xssFilters from "xss-filters";
 
 import {
   RootStackParamList_,
@@ -64,10 +64,7 @@ export const CoinTipping: React.FC<Props_> = ({ route }) => {
 
   React.useEffect(() => {
     const ValidateReason = () => {
-      if (
-        isLength(reason, { min: 0, max: 25 }) &&
-        matches(reason, "^[A-Za-z0-9 _|.,!]{0,25}$", "m")
-      ) {
+      if (isLength(reason, { min: 0, max: 25 })) {
         setReasonValid(true);
         setReasonErrorMsg("");
       } else {
@@ -87,6 +84,10 @@ export const CoinTipping: React.FC<Props_> = ({ route }) => {
     };
 
     console.log(TippingInput);
+  };
+
+  const sanitizeReason = (text: string) => {
+    setReason(xssFilters.inHTMLData(text));
   };
 
   return (
@@ -157,7 +158,7 @@ export const CoinTipping: React.FC<Props_> = ({ route }) => {
                   fontSize="sm"
                   maxLength={25}
                   minWidth={150}
-                  onChangeText={setReason}
+                  onChangeText={sanitizeReason}
                   p="4"
                   placeholder="Reason"
                   placeholderTextColor="muted.400"
