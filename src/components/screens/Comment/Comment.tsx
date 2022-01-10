@@ -79,7 +79,6 @@ export const Comment: React.FC<Props_> = ({ route, navigation }) => {
       if (comment.commentId) {
         const listCommentInput: listChildCommentsByParentCommentIdFetch_ = {
           parentCommentId: comment.commentId,
-          limit: 10,
         };
         const commentData = await listChildCommentsByParentCommentIdFetch(
           listCommentInput
@@ -191,7 +190,7 @@ const styles = StyleSheet.create({
  */
 interface listChildCommentsByParentCommentIdFetch_ {
   parentCommentId: string;
-  limit: number;
+  limit?: number;
   nextToken?: string;
 }
 

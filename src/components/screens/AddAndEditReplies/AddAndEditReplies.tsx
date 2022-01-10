@@ -6,7 +6,7 @@ import { Box, Button, Divider, HStack, Input, Spinner } from "native-base";
 import React from "react";
 import { Alert, StyleSheet } from "react-native";
 import isLength from "validator/es/lib/isLength";
-import matches from "validator/es/lib/matches";
+import xssFilters from "xss-filters";
 
 import {
   RootStackParamList_,
@@ -80,10 +80,7 @@ export const AddAndEditReplies: React.FC<Props_> = ({ navigation, route }) => {
 
   React.useEffect(() => {
     const validateReply = () => {
-      if (
-        isLength(reply, { min: 1, max: 2200 }) &&
-        matches(reply, "^[A-Za-z][A-Za-z0-9 _|.,!]{1,2200}$", "m")
-      ) {
+      if (isLength(reply, { min: 1, max: 2200 })) {
         setReplyValid(true);
         setReplyErrorMsg("");
       } else {
@@ -118,6 +115,10 @@ export const AddAndEditReplies: React.FC<Props_> = ({ navigation, route }) => {
     });
   }, [action, handleSubmit, navigation, loading]);
 
+  const sanitizeReply = (text: string) => {
+    setReply(xssFilters.inHTMLData(text));
+  };
+
   return (
     <Box bg="white" style={styles.container}>
       <Box>
@@ -130,7 +131,7 @@ export const AddAndEditReplies: React.FC<Props_> = ({ navigation, route }) => {
             borderRadius="md"
             fontSize="sm"
             multiline
-            onChangeText={setReply}
+            onChangeText={sanitizeReply}
             placeholder="Type some goods!"
             placeholderTextColor="muted.400"
             value={reply}

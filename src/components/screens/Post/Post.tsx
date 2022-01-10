@@ -103,7 +103,6 @@ export const Post: React.FC<Props_> = ({ route, navigation }) => {
         const listCommentInput: listCommentsByPostIdFetch_ = {
           postId: postData.id,
           currentUserId: currentUser.id,
-          limit: 20,
         };
         const commentData = await listCommentsByPostIdFetch(listCommentInput);
 
@@ -202,8 +201,6 @@ export const Post: React.FC<Props_> = ({ route, navigation }) => {
     );
   }
 
-  console.log(comments);
-
   return (
     <Box style={styles.container}>
       <FlatList
@@ -229,7 +226,7 @@ const styles = StyleSheet.create({
  */
 interface listCommentsByPostIdFetch_ {
   postId: string;
-  limit: number;
+  limit?: number;
   currentUserId: string;
   nextToken?: string;
 }
