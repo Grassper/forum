@@ -3,7 +3,7 @@ import { createMaterialTopTabNavigator } from "@react-navigation/material-top-ta
 import { CompositeNavigationProp, RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { Auth } from "aws-amplify";
-import { Button, Icon, Menu, Pressable } from "native-base";
+import { Icon, Menu, Pressable } from "native-base";
 import React from "react";
 import { Dimensions, StyleSheet, View } from "react-native";
 
@@ -47,48 +47,44 @@ export const Profile: React.FC<Props_> = ({ navigation, route }) => {
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => <BackButton color="eGreen.400" />,
-      headerRight: () =>
-        routeUserId && routeUserId !== id ? ( // checking our user id with incoming user id
-          <Button
-            _text={{ fontWeight: "600", color: "eGreen.400" }}
-            onPress={() => setReportModal(true)}
-            size="md"
-            variant="unstyled"
-          >
-            Report
-          </Button>
-        ) : (
-          <Menu
-            trigger={(triggerProps) => {
-              return (
-                <Pressable {...triggerProps}>
-                  <Icon
-                    as={<Ionicons name="ellipsis-vertical" />}
-                    color="black"
-                    mr="2"
-                    size={5}
-                  />
-                </Pressable>
-              );
-            }}
-            width="125px"
-          >
-            <Menu.Item onPress={() => navigation.navigate("EditProfile")}>
-              Edit Profile
-            </Menu.Item>
-            <Menu.Item onPress={() => navigation.navigate("Info")}>
-              Info
-            </Menu.Item>
-            <Menu.Item
-              onPress={async () => {
-                await Auth.signOut();
-                setAuthState("LOGGEDOUT");
-              }}
-            >
-              Sign out
-            </Menu.Item>
-          </Menu>
-        ),
+      headerRight: () => (
+        <Menu
+          trigger={(triggerProps) => {
+            return (
+              <Pressable {...triggerProps}>
+                <Icon
+                  as={<Ionicons name="ellipsis-vertical" />}
+                  color="black"
+                  mr="2"
+                  size={5}
+                />
+              </Pressable>
+            );
+          }}
+          width="125px"
+        >
+          {routeUserId && routeUserId !== id ? ( // checking our user id with incoming user id
+            <Menu.Item onPress={() => setReportModal(true)}>Report</Menu.Item>
+          ) : (
+            <>
+              <Menu.Item onPress={() => navigation.navigate("EditProfile")}>
+                Edit Profile
+              </Menu.Item>
+              <Menu.Item onPress={() => navigation.navigate("Info")}>
+                Info
+              </Menu.Item>
+              <Menu.Item
+                onPress={async () => {
+                  await Auth.signOut();
+                  setAuthState("LOGGEDOUT");
+                }}
+              >
+                Sign out
+              </Menu.Item>
+            </>
+          )}
+        </Menu>
+      ),
     });
   }, [id, navigation, routeUserId, setAuthState]);
 

@@ -1,10 +1,14 @@
+import { GraphQLResult } from "@aws-amplify/api-graphql";
 import { CompositeNavigationProp, RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
+import { API } from "aws-amplify";
 import {
   Box,
+  Flex,
   FormControl,
   Input,
   Pressable,
+  Spinner,
   Text,
   useContrastText,
   VStack,
@@ -36,10 +40,10 @@ interface Props_ {
   route: RouteProp_;
 }
 
-export const CoinTipping: React.FC<Props_> = ({ route }) => {
+export const CoinTipping: React.FC<Props_> = ({ route, navigation }) => {
   const [amount, setAmount] = React.useState("");
   const [reason, setReason] = React.useState("");
-
+  const [loading, setLoading] = React.useState(false);
   const [isAmountValid, setAmountValid] = React.useState(false);
   const [amountErrorMsg, setAmountErrorMsg] = React.useState("");
 
@@ -49,9 +53,12 @@ export const CoinTipping: React.FC<Props_> = ({ route }) => {
   const { profileImageUrl, username, id } = route.params;
 
   const currentUser = React.useContext(UserContext).user;
+
+  const setCurrentUser = React.useContext(UserContext).updateUser;
+
   React.useEffect(() => {
     const validateAmount = () => {
-      if (Number(amount) < 1000 && Number(amount) !== 0) {
+      if (Number(amount) < 1000 && Number(amount) > 0) {
         setAmountValid(true);
         setAmountErrorMsg("");
       } else {
@@ -75,15 +82,27 @@ export const CoinTipping: React.FC<Props_> = ({ route }) => {
     ValidateReason();
   }, [reason]);
 
-  const tippingHandler = () => {
-    const TippingInput = {
-      fromUserId: currentUser.id,
-      toUserId: id,
-      amount: amount,
-      reason: reason,
-    };
+  const onPress = async () => {
+    if (isAmountValid && isReasonValid) {
+      setLoading(true);
+      const TippingInput: tippingHandlerInput_ = {
+        fromUserId: currentUser.id,
+        toUserId: id,
+        amount: Number(amount),
+        reason: reason,
+      };
 
-    console.log(TippingInput);
+      const userInfo = await tippingHandler(TippingInput);
+      if (userInfo) {
+        setCurrentUser({ ...currentUser, coins: userInfo.coins });
+        navigation.navigate({
+          name: "Profile",
+          params: { userId: id },
+          merge: true,
+        });
+      }
+      setLoading(false);
+    }
   };
 
   const sanitizeReason = (text: string) => {
@@ -180,18 +199,32 @@ export const CoinTipping: React.FC<Props_> = ({ route }) => {
           keyboardVerticalOffset={100}
         >
           <Box justifyContent="flex-end" minWidth="200" width="100%">
-            <Pressable
-              alignItems="center"
-              bg={isAmountValid ? colors.green : "muted.400"}
-              borderRadius="full"
-              height="50px"
-              justifyContent="center"
-              onPress={tippingHandler}
-            >
-              <Text color="white" fontSize="md" fontWeight="600">
-                Proceed to Pay
-              </Text>
-            </Pressable>
+            {!loading ? (
+              <Pressable
+                alignItems="center"
+                bg={isAmountValid ? colors.green : "muted.400"}
+                borderRadius="full"
+                height="50px"
+                justifyContent="center"
+                onPress={onPress}
+              >
+                <Text color="white" fontSize="md" fontWeight="600">
+                  Proceed to Pay
+                </Text>
+              </Pressable>
+            ) : (
+              <Flex
+                alignItems="center"
+                bg={colors.green}
+                borderRadius="full"
+                fontSize="md"
+                fontWeight="600"
+                height="50px"
+                justifyContent="center"
+              >
+                <Spinner color="white" />
+              </Flex>
+            )}
           </Box>
         </KeyboardAvoidingView>
       </VStack>
@@ -205,5 +238,52 @@ const styles = StyleSheet.create({
 
 /**
  * Tipping- show coin balance
- * disable tipping for current user
+ * Todo-1: if succeed show the completed gif or something
  */
+
+interface tippingHandlerInput_ {
+  fromUserId: string;
+  toUserId: string;
+  amount: number;
+  reason: string;
+}
+
+const tippingHandler = async (input: tippingHandlerInput_) => {
+  try {
+    const response = (await API.graphql({
+      query: createTransaction,
+      variables: input,
+      authMode: "AMAZON_COGNITO_USER_POOLS",
+    })) as GraphQLResult<createTransaction_>;
+
+    if (response.data) {
+      return response.data.tippingHandler;
+    }
+  } catch (err) {
+    console.error("Error occured while tipping user", JSON.stringify(err));
+  }
+};
+
+type createTransaction_ = {
+  tippingHandler: { id: string; coins: number; username: string };
+};
+
+const createTransaction = /* GraphQL */ `
+  mutation createTransaction(
+    $fromUserId: ID!
+    $amount: Int!
+    $toUserId: ID!
+    $reason: String
+  ) {
+    tippingHandler(
+      amount: $amount
+      fromUserId: $fromUserId
+      toUserId: $toUserId
+      reason: $reason
+    ) {
+      id
+      coins
+      username
+    }
+  }
+`;

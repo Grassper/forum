@@ -127,27 +127,29 @@ export const ProfileCard: React.FC<Props_> = ({ routeUserId }) => {
                 uri={profile.profileImageUrl}
                 width="100%"
               />
-              <Box
-                height="20px"
-                position="absolute"
-                right="-5"
-                top="0"
-                width="20px"
-              >
-                <Pressable
-                  onPress={() => {
-                    navigation.dispatch(
-                      StackActions.push("Tipping", {
-                        id: routeUserId,
-                        profileImageUrl: profile.profileImageUrl,
-                        username: profile.username,
-                      })
-                    );
-                  }}
+              {routeUserId !== id && (
+                <Box
+                  height="20px"
+                  position="absolute"
+                  right="-5"
+                  top="0"
+                  width="20px"
                 >
-                  <ChargeIcon />
-                </Pressable>
-              </Box>
+                  <Pressable
+                    onPress={() => {
+                      navigation.dispatch(
+                        StackActions.push("Tipping", {
+                          id: routeUserId,
+                          profileImageUrl: profile.profileImageUrl,
+                          username: profile.username,
+                        })
+                      );
+                    }}
+                  >
+                    <ChargeIcon />
+                  </Pressable>
+                </Box>
+              )}
             </>
           ) : (
             <Skeleton height="100%" width="100%" />
