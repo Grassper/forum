@@ -15,6 +15,8 @@ import { ChargeIcon } from "@/root/src/components/shared/Icons";
 import { Skeleton } from "@/root/src/components/shared/Skeleton";
 import { UserContext } from "@/root/src/context";
 
+import { ProfileBottomSheetContext } from "./Context";
+
 interface Props_ {
   routeUserId: string;
 }
@@ -47,6 +49,8 @@ export const ProfileCard: React.FC<Props_> = ({ routeUserId }) => {
   const {
     user: { id },
   } = React.useContext(UserContext);
+  const HandleBottomSheet = React.useContext(ProfileBottomSheetContext);
+
   const [profile, setProfile] = React.useState<State_>();
 
   const populateContent = React.useCallback(() => {
@@ -127,29 +131,19 @@ export const ProfileCard: React.FC<Props_> = ({ routeUserId }) => {
                 uri={profile.profileImageUrl}
                 width="100%"
               />
-              {routeUserId !== id && (
-                <Box
-                  height="20px"
-                  position="absolute"
-                  right="-5"
-                  top="0"
-                  width="20px"
-                >
-                  <Pressable
-                    onPress={() => {
-                      navigation.dispatch(
-                        StackActions.push("Tipping", {
-                          id: routeUserId,
-                          profileImageUrl: profile.profileImageUrl,
-                          username: profile.username,
-                        })
-                      );
-                    }}
-                  >
-                    <ChargeIcon />
-                  </Pressable>
-                </Box>
-              )}
+              {/* {routeUserId === id && ( */}
+              <Box
+                height="20px"
+                position="absolute"
+                right="-5"
+                top="0"
+                width="20px"
+              >
+                <Pressable onPress={HandleBottomSheet}>
+                  <ChargeIcon />
+                </Pressable>
+              </Box>
+              {/* )} */}
             </>
           ) : (
             <Skeleton height="100%" width="100%" />

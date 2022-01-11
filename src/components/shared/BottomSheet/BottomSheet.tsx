@@ -11,101 +11,114 @@ import {
 } from "native-base";
 import React from "react";
 
+import { About } from "../../screens/Profile/About";
+
 interface Props_ {
   isOpen: boolean;
   onClose: () => void;
+  aboutContent: boolean;
 }
 
-export const BottomSheet: React.FC<Props_> = ({ isOpen, onClose }) => {
+export const BottomSheet: React.FC<Props_> = ({
+  isOpen,
+  onClose,
+  aboutContent,
+}) => {
   const navigation = useNavigation();
   return (
     <Actionsheet isOpen={isOpen} onClose={onClose}>
       <Actionsheet.Content bg="white">
-        <VStack alignItems="center" mt="5" space="4">
-          <HStack space="8" width="100%">
-            <Item
-              iconName="ios-text"
-              iconSize="20px"
-              onPress={() => {
-                navigation.navigate("Application", {
-                  screen: "ChooseSubForum",
-                  params: {
-                    postType: "Text",
-                    action: "Add",
-                    hideUpload: true,
-                  },
-                });
-                onClose();
-              }}
-              postType="Write"
-            />
-            <Item
-              iconName="ios-image"
-              iconSize="20px"
-              onPress={() => {
-                navigation.navigate("Application", {
-                  screen: "ChooseSubForum",
-                  params: { postType: "Image", action: "Add" },
-                });
-                onClose();
-              }}
-              postType="Image"
-            />
-            <Item
-              iconName="ios-videocam"
-              iconSize="20px"
-              onPress={() => {
-                navigation.navigate("Application", {
-                  screen: "ChooseSubForum",
-                  params: {
-                    postType: "Video",
-                    action: "Add",
-                  },
-                });
+        {!aboutContent ? (
+          <VStack alignItems="center" mt="5" space="4">
+            <HStack space="8" width="100%">
+              <Item
+                iconName="ios-text"
+                iconSize="20px"
+                onPress={() => {
+                  navigation.navigate("Application", {
+                    screen: "ChooseSubForum",
+                    params: {
+                      postType: "Text",
+                      action: "Add",
+                      hideUpload: true,
+                    },
+                  });
+                  onClose();
+                }}
+                postType="Write"
+              />
+              <Item
+                iconName="ios-image"
+                iconSize="20px"
+                onPress={() => {
+                  navigation.navigate("Application", {
+                    screen: "ChooseSubForum",
+                    params: { postType: "Image", action: "Add" },
+                  });
+                  onClose();
+                }}
+                postType="Image"
+              />
+              <Item
+                iconName="ios-videocam"
+                iconSize="20px"
+                onPress={() => {
+                  navigation.navigate("Application", {
+                    screen: "ChooseSubForum",
+                    params: {
+                      postType: "Video",
+                      action: "Add",
+                    },
+                  });
 
-                onClose();
-              }}
-              postType="Video"
-            />
-            <Item
-              iconName="mic"
-              iconSize="22px"
-              onPress={() => {
-                navigation.navigate("Application", {
-                  screen: "ChooseSubForum",
-                  params: { postType: "Audio", action: "Add" },
-                });
-                onClose();
-              }}
-              postType="audio"
-            />
-            <Item
-              iconName="ios-library"
-              iconSize="22px"
-              onPress={() => {
-                navigation.navigate("Application", {
-                  screen: "ChooseSubForum",
-                  params: {
-                    postType: "Poll",
-                    action: "Add",
-                    hideUpload: true,
-                  },
-                });
-                onClose();
-              }}
-              postType="Survey"
-            />
-          </HStack>
-          <Box>
-            <Pressable onPress={onClose}>
-              <Box>
-                <Text color="eGreen.400" pt="2">
-                  Cancel
-                </Text>
-              </Box>
-            </Pressable>
-          </Box>
-        </VStack>
+                  onClose();
+                }}
+                postType="Video"
+              />
+              <Item
+                iconName="mic"
+                iconSize="22px"
+                onPress={() => {
+                  navigation.navigate("Application", {
+                    screen: "ChooseSubForum",
+                    params: { postType: "Audio", action: "Add" },
+                  });
+                  onClose();
+                }}
+                postType="audio"
+              />
+              <Item
+                iconName="ios-library"
+                iconSize="22px"
+                onPress={() => {
+                  navigation.navigate("Application", {
+                    screen: "ChooseSubForum",
+                    params: {
+                      postType: "Poll",
+                      action: "Add",
+                      hideUpload: true,
+                    },
+                  });
+                  onClose();
+                }}
+                postType="Survey"
+              />
+            </HStack>
+            <Box>
+              <Pressable onPress={onClose}>
+                <Box>
+                  <Text color="eGreen.400" pt="2">
+                    Cancel
+                  </Text>
+                </Box>
+              </Pressable>
+            </Box>
+          </VStack>
+        ) : (
+          <VStack alignItems="center" height="300" mt="5" space="4">
+            <About />
+          </VStack>
+        )}
       </Actionsheet.Content>
     </Actionsheet>
   );

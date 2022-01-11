@@ -158,7 +158,11 @@ export const Home: React.FC<Props_> = ({ navigation }) => {
     <View style={styles.container}>
       {posts.length ? (
         <>
-          <BottomSheet isOpen={isOpen} onClose={HandleBottomSheet} />
+          <BottomSheet
+            aboutContent={false}
+            isOpen={isOpen}
+            onClose={HandleBottomSheet}
+          />
           <FlatList
             data={memoPost}
             keyExtractor={keyExtractor}
