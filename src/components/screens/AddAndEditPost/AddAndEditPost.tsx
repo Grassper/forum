@@ -18,7 +18,7 @@ import {
 import React from "react";
 import { Alert, StyleSheet } from "react-native";
 import isLength from "validator/es/lib/isLength";
-import matches from "validator/es/lib/matches";
+import xssFilters from "xss-filters";
 
 import {
   RootStackParamList_,
@@ -174,10 +174,7 @@ export const AddAndEditPost: React.FC<Props_> = ({ navigation, route }) => {
 
   React.useEffect(() => {
     const validateContent = () => {
-      if (
-        isLength(Content, { min: 1, max: 2200 }) &&
-        matches(Content, "^[A-Za-z][A-Za-z0-9 _|.,!]{1,2200}$", "m")
-      ) {
+      if (isLength(Content, { min: 1, max: 2200 })) {
         setContentValid(true);
         setContentErrorMsg("");
       } else {
@@ -190,10 +187,7 @@ export const AddAndEditPost: React.FC<Props_> = ({ navigation, route }) => {
 
   React.useEffect(() => {
     const validatePollQuestion = () => {
-      if (
-        isLength(PollQuestion, { min: 3, max: 140 }) &&
-        matches(PollQuestion, "^[A-Za-z][A-Za-z0-9 _|.,!?]{3,140}$", "m")
-      ) {
+      if (isLength(PollQuestion, { min: 3, max: 140 })) {
         setPollQuestionValid(true);
         setPollQuestionErrorMsg("");
       } else {
@@ -214,10 +208,8 @@ export const AddAndEditPost: React.FC<Props_> = ({ navigation, route }) => {
         return;
       }
 
-      const PollAnswersValid = PollOption.every(
-        (entry) =>
-          isLength(entry.content, { min: 2, max: 30 }) &&
-          matches(entry.content, "^[A-Za-z0-9 _|.,!]{2,30}$", "m")
+      const PollAnswersValid = PollOption.every((entry) =>
+        isLength(entry.content, { min: 2, max: 30 })
       );
 
       if (PollAnswersValid) {
@@ -261,6 +253,18 @@ export const AddAndEditPost: React.FC<Props_> = ({ navigation, route }) => {
     );
   };
 
+  const sanitizeContent = (text: string) => {
+    setContent(xssFilters.inHTMLData(text));
+  };
+
+  const sanitizePollQuestion = (text: string) => {
+    setPollQuestion(xssFilters.inHTMLData(text));
+  };
+
+  const sanitizePollAnswer = (text: string) => {
+    setOption(xssFilters.inHTMLData(text));
+  };
+
   return (
     <VStack
       bg="white"
@@ -283,7 +287,7 @@ export const AddAndEditPost: React.FC<Props_> = ({ navigation, route }) => {
               maxLength={100}
               multiline
               numberOfLines={2}
-              onChangeText={setPollQuestion}
+              onChangeText={sanitizePollQuestion}
               placeholder="Question"
               placeholderTextColor="muted.400"
               value={PollQuestion}
@@ -333,7 +337,7 @@ export const AddAndEditPost: React.FC<Props_> = ({ navigation, route }) => {
                   bg="muted.100"
                   fontSize="sm"
                   maxLength={30}
-                  onChangeText={setOption}
+                  onChangeText={sanitizePollAnswer}
                   p="4"
                   placeholder="Add Option"
                   placeholderTextColor="muted.400"
@@ -358,7 +362,7 @@ export const AddAndEditPost: React.FC<Props_> = ({ navigation, route }) => {
               maxLength={140}
               mt="2"
               multiline
-              onChangeText={setContent}
+              onChangeText={sanitizeContent}
               placeholder="Purpose of this poll"
               placeholderTextColor="muted.400"
               value={Content}
@@ -373,7 +377,7 @@ export const AddAndEditPost: React.FC<Props_> = ({ navigation, route }) => {
             borderRadius="md"
             fontSize="sm"
             multiline
-            onChangeText={setContent}
+            onChangeText={sanitizeContent}
             placeholder="Craft your post!"
             placeholderTextColor="muted.400"
             value={Content}

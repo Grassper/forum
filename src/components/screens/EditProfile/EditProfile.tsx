@@ -15,7 +15,7 @@ import React from "react";
 import { StyleSheet } from "react-native";
 import { SvgUri } from "react-native-svg";
 import isLength from "validator/es/lib/isLength";
-import matches from "validator/es/lib/matches";
+import xssFilters from "xss-filters";
 
 import {
   RootStackParamList_,
@@ -101,10 +101,7 @@ export const EditProfile: React.FC<Props_> = ({ navigation }) => {
 
   React.useEffect(() => {
     const validateAbout = () => {
-      if (
-        isLength(about, { min: 0, max: 300 }) &&
-        matches(about, "^[A-Za-z][A-Za-z0-9 _|.,!']{0,300}$", "m")
-      ) {
+      if (isLength(about, { min: 0, max: 300 })) {
         setAboutValid(true);
         setAboutErrorMsg("");
       } else {
@@ -138,6 +135,10 @@ export const EditProfile: React.FC<Props_> = ({ navigation }) => {
     });
   }, [handleSubmit, navigation, loading]);
 
+  const sanitizeAbout = (text: string) => {
+    setAbout(xssFilters.inHTMLData(text));
+  };
+
   return (
     <Box style={styles.wrapper}>
       <Box style={styles.container}>
@@ -162,7 +163,7 @@ export const EditProfile: React.FC<Props_> = ({ navigation }) => {
             mb="2"
             multiline
             numberOfLines={4}
-            onChangeText={setAbout}
+            onChangeText={sanitizeAbout}
             p="4"
             placeholder="Express yourself"
             placeholderTextColor="muted.400"

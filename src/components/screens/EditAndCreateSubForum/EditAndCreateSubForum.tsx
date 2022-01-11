@@ -20,7 +20,7 @@ import {
 import React from "react";
 import { Alert, StyleSheet } from "react-native";
 import isLength from "validator/es/lib/isLength";
-import matches from "validator/es/lib/matches";
+import xssFilters from "xss-filters";
 
 import {
   RootStackParamList_,
@@ -235,10 +235,7 @@ export const EditAndCreateSubForum: React.FC<Props_> = ({
 
   React.useEffect(() => {
     const validateForumName = () => {
-      if (
-        isLength(forumName, { min: 3, max: 20 }) &&
-        matches(forumName, "^[A-Za-z][A-Za-z0-9 _|.,!]{3,20}$", "m")
-      ) {
+      if (isLength(forumName, { min: 3, max: 20 })) {
         setForumNameValid(true);
         setForumNameErrorMsg("");
       } else {
@@ -251,10 +248,7 @@ export const EditAndCreateSubForum: React.FC<Props_> = ({
 
   React.useEffect(() => {
     const validateDescription = () => {
-      if (
-        isLength(description, { min: 25, max: 300 }) &&
-        matches(description, "^[A-Za-z][A-Za-z0-9 _|.,!]{25,300}$", "m")
-      ) {
+      if (isLength(description, { min: 25, max: 300 })) {
         setDescriptionValid(true);
         setDescriptionErrorMsg("");
       } else {
@@ -264,6 +258,14 @@ export const EditAndCreateSubForum: React.FC<Props_> = ({
     };
     validateDescription();
   }, [description]);
+
+  const sanitizeForumName = (text: string) => {
+    setForumName(xssFilters.inHTMLData(text));
+  };
+
+  const sanitizeDescription = (text: string) => {
+    setDescription(xssFilters.inHTMLData(text));
+  };
 
   return (
     <Box style={styles.container}>
@@ -378,7 +380,7 @@ export const EditAndCreateSubForum: React.FC<Props_> = ({
               bg="coolGray.100"
               borderRadius="md"
               fontSize="sm"
-              onChangeText={setForumName}
+              onChangeText={sanitizeForumName}
               p="4"
               placeholder="Mechkeys"
               placeholderTextColor="muted.400"
@@ -403,7 +405,7 @@ export const EditAndCreateSubForum: React.FC<Props_> = ({
               minHeight="125"
               multiline
               numberOfLines={4}
-              onChangeText={setDescription}
+              onChangeText={sanitizeDescription}
               p="4"
               placeholder="We talk about keyboards"
               placeholderTextColor="muted.400"

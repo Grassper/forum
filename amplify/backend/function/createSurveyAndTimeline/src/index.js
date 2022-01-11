@@ -12,8 +12,9 @@ const AWS = require("aws-sdk");
 const validator = require("validator");
 const isAfter = require("date-fns/isAfter");
 const parseISO = require("date-fns/parseISO");
-
+const xssFilters = require("xss-filters");
 const urlParse = require("url").URL;
+
 const appsyncUrl = process.env.API_EFORUM_GRAPHQLAPIENDPOINTOUTPUT;
 const region = process.env.REGION;
 const endpoint = new urlParse(appsyncUrl).hostname.toString();
@@ -28,21 +29,14 @@ const endpoint = new urlParse(appsyncUrl).hostname.toString();
 // while creating survey answers create it parallely
 
 const validateContent = async (Content, minLength, maxLength) => {
-  if (
-    validator.isLength(Content, { min: minLength, max: maxLength }) &&
-    validator.matches(
-      Content,
-      `^[A-Za-z][A-Za-z0-9 _|.,!?]{${minLength},${maxLength}}$`,
-      "m"
-    )
-  ) {
+  if (validator.isLength(Content, { min: minLength, max: maxLength })) {
     return true;
   } else {
     return false;
   }
 };
 
-exports.handler = async (event, context, callback) => {
+exports.handler = async (event, _, callback) => {
   let surveyQuestion = "";
   let surveyAnswers = [];
   let startDate = "";
@@ -63,8 +57,10 @@ exports.handler = async (event, context, callback) => {
 
   // survey questions validation
   if (event.arguments.question) {
-    if (validateContent(event.arguments.question, 10, 140)) {
-      surveyQuestion = event.arguments.question;
+    if (
+      validateContent(xssFilters.inHTMLData(event.arguments.question), 10, 140)
+    ) {
+      surveyQuestion = xssFilters.inHTMLData(event.arguments.question);
     } else {
       callback(
         `Survey question should be mininum 10 characters and
@@ -85,8 +81,8 @@ exports.handler = async (event, context, callback) => {
     event.arguments.answers.length <= 5
   ) {
     event.arguments.answers.forEach((entry) => {
-      if (validateContent(entry, 2, 30)) {
-        surveyAnswers.push(entry);
+      if (validateContent(xssFilters.inHTMLData(entry), 2, 30)) {
+        surveyAnswers.push(xssFilters.inHTMLData(entry));
       } else {
         callback(
           `Survey answers should be minimum 2 characters and maximum 30 characters and shouldn't contain
@@ -105,8 +101,14 @@ exports.handler = async (event, context, callback) => {
   // survey purpose validation
 
   if (event.arguments.surveyPurpose) {
-    if (validateContent(event.arguments.surveyPurpose, 10, 2200)) {
-      surveyPurpose = event.arguments.surveyPurpose;
+    if (
+      validateContent(
+        xssFilters.inHTMLData(event.arguments.surveyPurpose),
+        10,
+        2200
+      )
+    ) {
+      surveyPurpose = xssFilters.inHTMLData(event.arguments.surveyPurpose);
     } else {
       callback(
         `Survey surveyPurpose should be mininum 10 characters and

@@ -103,7 +103,6 @@ export const Post: React.FC<Props_> = ({ route, navigation }) => {
         const listCommentInput: listCommentsByPostIdFetch_ = {
           postId: postData.id,
           currentUserId: currentUser.id,
-          limit: 10,
         };
         const commentData = await listCommentsByPostIdFetch(listCommentInput);
 
@@ -227,7 +226,7 @@ const styles = StyleSheet.create({
  */
 interface listCommentsByPostIdFetch_ {
   postId: string;
-  limit: number;
+  limit?: number;
   currentUserId: string;
   nextToken?: string;
 }
