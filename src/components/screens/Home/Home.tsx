@@ -6,7 +6,6 @@ import {
 } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { API } from "aws-amplify";
-import { Image } from "native-base";
 import React, { useState } from "react";
 import {
   FlatList,
@@ -158,11 +157,7 @@ export const Home: React.FC<Props_> = ({ navigation }) => {
     <View style={styles.container}>
       {!posts.length ? (
         <>
-          <BottomSheet
-            aboutContent={false}
-            isOpen={isOpen}
-            onClose={HandleBottomSheet}
-          />
+          <BottomSheet isOpen={isOpen} onClose={HandleBottomSheet} />
           <FlatList
             data={memoPost}
             keyExtractor={keyExtractor}

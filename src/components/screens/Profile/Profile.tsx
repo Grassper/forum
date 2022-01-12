@@ -1,30 +1,20 @@
 import { Ionicons } from "@expo/vector-icons";
-import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { CompositeNavigationProp, RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { Auth } from "aws-amplify";
 import { Icon, Menu, Pressable } from "native-base";
 import React from "react";
-import {
-  Dimensions,
-  FlatList,
-  ScrollView,
-  StyleSheet,
-  View,
-} from "react-native";
+import { FlatList, StyleSheet, View } from "react-native";
 
 import {
   RootStackParamList_,
   StackParamList_,
 } from "@/root/src/components/navigations/Navigation";
-import { BottomSheet } from "@/root/src/components/shared/BottomSheet";
 import { BackButton } from "@/root/src/components/shared/Button";
 import { ReportUser } from "@/root/src/components/shared/Report";
 import { colors } from "@/root/src/constants";
 import { AuthContext, UserContext } from "@/root/src/context";
 
-import { About } from "./About";
-import { ProfileBottomSheetContext, TabNavigatorUserContext } from "./Context";
 import { Posts } from "./Post";
 import { ProfileCard } from "./ProfileCard";
 
@@ -40,14 +30,9 @@ interface Props_ {
   route: RouteProp_;
 }
 
-const Tab = createMaterialTopTabNavigator();
-
-const windowWidth = Dimensions.get("window").width;
-
 export const Profile: React.FC<Props_> = ({ navigation, route }) => {
   const routeUserId = route.params.userId;
   const [reportModal, setReportModal] = React.useState(false);
-  const [isOpen, setIsOpen] = React.useState(false);
 
   const {
     user: { id },
@@ -96,72 +81,27 @@ export const Profile: React.FC<Props_> = ({ navigation, route }) => {
       ),
     });
   }, [id, navigation, routeUserId, setAuthState]);
-  const HandleBottomSheet = () => {
-    setIsOpen(!isOpen);
-  };
-  // const ProviderValue = { isOpen, setIsOpen, HandleBottomSheet };
-  const GetPosts = () => (
-    <TabNavigatorUserContext.Provider value={routeUserId}>
-      {/* <Tab.Navigator
-    initialRouteName="profilePosts"
-    screenOptions={{
-      tabBarLabelStyle: {
-        fontSize: 15,
-        fontFamily: "lr",
-        textTransform: "capitalize",
-      },
-      tabBarStyle: { backgroundColor: colors.white, elevation: 0 },
-      tabBarActiveTintColor: colors.black,
-      tabBarInactiveTintColor: colors.gray,
-      tabBarIndicatorStyle: {
-        backgroundColor: colors.green,
-        width: windowWidth / 4,
-        left: windowWidth / 8,
-        height: 2,
-      },
-    }}
-  >
-    <Tab.Screen
-      component={Posts}
-      name="profilePosts"
-      options={() => ({
-        title: "Posts",
-      })}
-    />
-    <Tab.Screen
-      component={About}
-      name="profileAbout"
-      options={() => ({
-        title: "About",
-      })}
-    />
-  </Tab.Navigator> */}
-      <Posts />
-      <BottomSheet
-        aboutContent={true}
-        isOpen={isOpen}
-        onClose={HandleBottomSheet}
-      />
-    </TabNavigatorUserContext.Provider>
+
+  const GetPosts = React.useCallback(
+    () => <Posts routeUserId={routeUserId} />,
+    [routeUserId]
   );
-  const GetHeader = () => (
-    <ProfileBottomSheetContext.Provider value={HandleBottomSheet}>
-      {routeUserId && (
+  const GetHeader = React.useCallback(
+    () => <ProfileCard routeUserId={routeUserId} />,
+    [routeUserId]
+  );
+  return (
+    <View style={styles.container}>
+      {routeUserId && routeUserId !== id && (
         <ReportUser
           reportModal={reportModal}
           setReportModal={setReportModal}
           userId={routeUserId}
         />
       )}
-      <ProfileCard routeUserId={routeUserId} />
-    </ProfileBottomSheetContext.Provider>
-  );
-  return (
-    <View style={styles.container}>
+
       <FlatList
         data={[]}
-        keyExtractor={() => "dummy"}
-        ListEmptyComponent={null}
         ListFooterComponent={GetPosts}
         ListHeaderComponent={GetHeader}
         renderItem={null}

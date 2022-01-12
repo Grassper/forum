@@ -1,5 +1,4 @@
 import { GraphQLResult } from "@aws-amplify/api-graphql";
-import { useFocusEffect } from "@react-navigation/native";
 import { API } from "aws-amplify";
 import React from "react";
 import { FlatList, ListRenderItem, ScrollView } from "react-native";
@@ -10,11 +9,11 @@ import {
 } from "@/root/src/components/shared/Cards/PostCard";
 import { UserContext } from "@/root/src/context";
 
-import { TabNavigatorUserContext } from "./Context";
+interface Props_ {
+  routeUserId: string;
+}
 
-export const Posts: React.FC = () => {
-  const routeUserId = React.useContext(TabNavigatorUserContext);
-
+export const Posts: React.FC<Props_> = ({ routeUserId }) => {
   const [posts, setPosts] = React.useState<Item[]>([]);
   const [nextToken, setNextToken] = React.useState<string>("");
 
@@ -51,7 +50,7 @@ export const Posts: React.FC = () => {
     };
   }, [currentUser.id, routeUserId]);
 
-  useFocusEffect(populateContent);
+  React.useEffect(populateContent, [populateContent]);
 
   const handlePagination = React.useCallback(async () => {
     if (nextToken) {

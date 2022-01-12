@@ -1,13 +1,10 @@
 import { GraphQLResult } from "@aws-amplify/api-graphql";
-import { useFocusEffect } from "@react-navigation/native";
 import { API } from "aws-amplify";
 import { Box, HStack, Text, VStack } from "native-base";
 import React from "react";
 import { ScrollView, StyleSheet } from "react-native";
 
 import { Skeleton } from "@/root/src/components/shared/Skeleton";
-
-import { TabNavigatorUserContext } from "./Context";
 
 interface State_ {
   about: string;
@@ -23,8 +20,11 @@ interface State_ {
   };
 }
 
-export const About: React.FC = () => {
-  const routeUserId = React.useContext(TabNavigatorUserContext);
+interface Props_ {
+  routeUserId: string;
+}
+
+export const About: React.FC<Props_> = ({ routeUserId }) => {
   const [about, setAbout] = React.useState<State_>();
 
   /**
@@ -61,7 +61,7 @@ export const About: React.FC = () => {
     };
   }, [routeUserId]);
 
-  useFocusEffect(populateContent);
+  React.useEffect(populateContent, [populateContent]);
 
   return (
     <Box alignItems="center" bg="white" style={styles.wrapper}>

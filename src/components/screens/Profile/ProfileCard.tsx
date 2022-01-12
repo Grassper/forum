@@ -11,11 +11,10 @@ import React, { useState } from "react";
 import { InteractionManager } from "react-native";
 import { SvgUri } from "react-native-svg";
 
+import { AboutBottomSheet } from "@/root/src/components/shared/BottomSheet";
 import { ChargeIcon } from "@/root/src/components/shared/Icons";
 import { Skeleton } from "@/root/src/components/shared/Skeleton";
 import { UserContext } from "@/root/src/context";
-
-import { ProfileBottomSheetContext } from "./Context";
 
 interface Props_ {
   routeUserId: string;
@@ -43,13 +42,13 @@ export const ProfileCard: React.FC<Props_> = ({ routeUserId }) => {
   const [relationship, setRelationship] = useState<"FOLLOW" | "NOTFOLLOW">(
     "NOTFOLLOW"
   );
+  const [isBottomSheetOpen, setBottomSheetOpen] = React.useState(false);
 
   const navigation = useNavigation();
 
   const {
     user: { id },
   } = React.useContext(UserContext);
-  const HandleBottomSheet = React.useContext(ProfileBottomSheetContext);
 
   const [profile, setProfile] = React.useState<State_>();
 
@@ -114,8 +113,19 @@ export const ProfileCard: React.FC<Props_> = ({ routeUserId }) => {
     }
   };
 
+  const HandleBottomSheet = React.useCallback(() => {
+    setBottomSheetOpen(!isBottomSheetOpen);
+  }, [isBottomSheetOpen]);
+
   return (
     <Box alignItems="center" mt="5">
+      {routeUserId && (
+        <AboutBottomSheet
+          isOpen={isBottomSheetOpen}
+          onClose={HandleBottomSheet}
+          routeUserId={routeUserId}
+        />
+      )}
       {
         <Box
           bg={profile?.profileImageUrl ? "amber.100" : "transparent"}
@@ -131,7 +141,6 @@ export const ProfileCard: React.FC<Props_> = ({ routeUserId }) => {
                 uri={profile.profileImageUrl}
                 width="100%"
               />
-              {/* {routeUserId === id && ( */}
               <Box
                 height="20px"
                 position="absolute"
@@ -143,7 +152,6 @@ export const ProfileCard: React.FC<Props_> = ({ routeUserId }) => {
                   <ChargeIcon />
                 </Pressable>
               </Box>
-              {/* )} */}
             </>
           ) : (
             <Skeleton height="100%" width="100%" />
