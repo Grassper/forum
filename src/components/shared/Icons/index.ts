@@ -4,4 +4,5 @@ export * from "./ChargeIconOutline";
 export * from "./DislikeIcon";
 export * from "./LikeIcon";
 export * from "./LoveIcon";
+export * from "./NoResults";
 export * from "./Tipping";

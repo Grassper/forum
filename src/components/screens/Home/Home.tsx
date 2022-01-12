@@ -32,7 +32,7 @@ import {
   MessageIcon,
   ProfileIcon,
 } from "@/root/src/components/shared/HeaderIcon";
-import { AppIcon } from "@/root/src/components/shared/Icons";
+import { AppIcon, NoResults } from "@/root/src/components/shared/Icons";
 import { UserContext } from "@/root/src/context";
 
 type NavigationProp_ = CompositeNavigationProp<
@@ -156,7 +156,7 @@ export const Home: React.FC<Props_> = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      {posts.length ? (
+      {!posts.length ? (
         <>
           <BottomSheet isOpen={isOpen} onClose={HandleBottomSheet} />
           <FlatList
@@ -170,13 +170,7 @@ export const Home: React.FC<Props_> = ({ navigation }) => {
           <FloatingActionButton onPress={HandleBottomSheet} screen="Home" />
         </>
       ) : (
-        <Image
-          alt="Alternate Text"
-          height="100%"
-          resizeMode="stretch"
-          source={require("@/root/assets/images/empty-data.jpg")}
-          width="100%"
-        />
+        <NoResults />
       )}
     </View>
   );
