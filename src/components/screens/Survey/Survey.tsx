@@ -1,7 +1,6 @@
 import { GraphQLResult } from "@aws-amplify/api-graphql";
 import { useFocusEffect } from "@react-navigation/native";
 import { API } from "aws-amplify";
-import { Image } from "native-base";
 import React from "react";
 import {
   FlatList,
@@ -16,6 +15,7 @@ import {
   PostCard,
   Props_ as PostCardProps_,
 } from "@/root/src/components/shared/Cards/PostCard";
+import { SurveyFallback } from "@/root/src/components/shared/Icons";
 import { UserContext } from "@/root/src/context";
 
 export const Survey: React.FC = () => {
@@ -27,12 +27,16 @@ export const Survey: React.FC = () => {
   const [nextToken, setNextToken] = React.useState<string>("");
   const [isStateReady, setStateReady] = React.useState(false);
 
+  const [loading, setLoading] = React.useState(false);
+  const [noTimelineToShow, setNoTimelineToShow] = React.useState(false);
+
   const populateContent = React.useCallback(() => {
     const fetchCall = async () => {
       if (id) {
+        setLoading(true);
+        setNoTimelineToShow(false);
         const listSurveyInput: listSurveyTimelineByUserIdFetchInput_ = {
           id: id,
-          limit: 10,
           sortDirection: "DESC",
         };
 
@@ -40,9 +44,14 @@ export const Survey: React.FC = () => {
           listSurveyInput
         );
         if (responseData) {
-          setSurveys(responseData.items);
-          setNextToken(responseData.nextToken);
+          if (responseData.items.length === 0) {
+            setNoTimelineToShow(true);
+          } else {
+            setSurveys(responseData.items);
+            setNextToken(responseData.nextToken);
+          }
         }
+        setLoading(false);
       }
     };
     fetchCall();
@@ -121,7 +130,7 @@ export const Survey: React.FC = () => {
     }
   };
 
-  if (!isStateReady) {
+  if (!isStateReady || loading) {
     return (
       <ScrollView>
         <PostCard />
@@ -134,26 +143,21 @@ export const Survey: React.FC = () => {
       </ScrollView>
     );
   }
+
+  if (noTimelineToShow) {
+    return <SurveyFallback />;
+  }
+
   return (
     <View style={styles.container}>
-      {surveys.length ? (
-        <FlatList
-          data={surveys}
-          keyExtractor={(item) => item.surveyQuestion.id}
-          maxToRenderPerBatch={8}
-          onEndReached={() => handlePagination()}
-          renderItem={PostCardRenderer}
-          windowSize={5}
-        />
-      ) : (
-        <Image
-          alt="Alternate Text"
-          height="100%"
-          resizeMode="stretch"
-          source={require("@/root/assets/images/empty-data.jpg")}
-          width="100%"
-        />
-      )}
+      <FlatList
+        data={surveys}
+        keyExtractor={(item) => item.surveyQuestion.id}
+        maxToRenderPerBatch={8}
+        onEndReached={() => handlePagination()}
+        renderItem={PostCardRenderer}
+        windowSize={5}
+      />
     </View>
   );
 };
@@ -168,7 +172,7 @@ const styles = StyleSheet.create({
 
 interface listSurveyTimelineByUserIdFetchInput_ {
   id: string;
-  limit: number;
+  limit?: number;
   sortDirection: "ASC" | "DESC";
   nextToken?: string;
 }

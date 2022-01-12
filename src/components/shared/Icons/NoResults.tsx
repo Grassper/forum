@@ -1,4 +1,4 @@
-import { Box } from "native-base";
+import { Box, Text } from "native-base";
 import React from "react";
 import { StyleSheet } from "react-native";
 import Svg, { Circle, Ellipse, G, Path, Rect } from "react-native-svg";
@@ -11,7 +11,7 @@ export const NoResults: React.FC = (props) => {
       justifyContent="center"
       style={styles.container}
     >
-      <Box height="350px" width="350px">
+      <Box height="325px" width="325px">
         <Svg viewBox="0 0 500 500" {...props}>
           <Path
             d="M61.43 206.36S21 267.41 49.73 359.49s112.44 115.57 162.08 90 56.88-58.85 97-83 122.85-23.3 154.71-89.74-34.21-159.56-109-213.19-237.37 9.8-293.09 142.8z"
@@ -178,6 +178,7 @@ export const NoResults: React.FC = (props) => {
           </G>
         </Svg>
       </Box>
+      <Text>Oops.. results not found</Text>
     </Box>
   );
 };
