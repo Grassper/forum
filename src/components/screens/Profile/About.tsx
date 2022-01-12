@@ -65,7 +65,7 @@ export const About: React.FC = () => {
 
   return (
     <Box alignItems="center" bg="white" style={styles.wrapper}>
-      <ScrollView style={styles.container}>
+      <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
         <Box>
           {about?.about ? (
             <Text mb="8" numberOfLines={4}>
