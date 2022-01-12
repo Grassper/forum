@@ -56,18 +56,32 @@ export const CoinTipping: React.FC<Props_> = ({ route, navigation }) => {
 
   const setCurrentUser = React.useContext(UserContext).updateUser;
 
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => <Text>{currentUser.coins}</Text>,
+    });
+  }, [currentUser.coins, navigation]);
+
   React.useEffect(() => {
     const validateAmount = () => {
-      if (Number(amount) < 1000 && Number(amount) > 0) {
+      if (
+        Number(amount) < 1000 &&
+        Number(amount) > 0 &&
+        Number(amount) <= currentUser.coins
+      ) {
         setAmountValid(true);
         setAmountErrorMsg("");
       } else {
         setAmountValid(false);
-        setAmountErrorMsg("Max Coin 999 Ef");
+        if (Number(amount) > currentUser.coins) {
+          setAmountErrorMsg("Insufficient funds");
+        } else {
+          setAmountErrorMsg("Max Coin 999 Ef");
+        }
       }
     };
     validateAmount();
-  }, [amount]);
+  }, [amount, currentUser.coins]);
 
   React.useEffect(() => {
     const ValidateReason = () => {
@@ -152,6 +166,7 @@ export const CoinTipping: React.FC<Props_> = ({ route, navigation }) => {
                 borderColor="transparent"
                 color={useContrastText("light.100")}
                 keyboardType="number-pad"
+                maxLength={3}
                 minWidth="100"
                 onChangeText={setAmount}
                 p="1"
