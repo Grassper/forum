@@ -12,7 +12,7 @@ import { InteractionManager } from "react-native";
 import { SvgUri } from "react-native-svg";
 
 import { AboutBottomSheet } from "@/root/src/components/shared/BottomSheet";
-import { ChargeIcon } from "@/root/src/components/shared/Icons";
+import { ChargeIcon, InfoIcon } from "@/root/src/components/shared/Icons";
 import { Skeleton } from "@/root/src/components/shared/Skeleton";
 import { UserContext } from "@/root/src/context";
 
@@ -141,15 +141,38 @@ export const ProfileCard: React.FC<Props_> = ({ routeUserId }) => {
                 uri={profile.profileImageUrl}
                 width="100%"
               />
+              {routeUserId !== id && (
+                <Box
+                  height="20px"
+                  position="absolute"
+                  right="-5"
+                  top="0"
+                  width="20px"
+                >
+                  <Pressable
+                    onPress={() => {
+                      navigation.dispatch(
+                        StackActions.push("Tipping", {
+                          id: routeUserId,
+                          profileImageUrl: profile.profileImageUrl,
+                          username: profile.username,
+                        })
+                      );
+                    }}
+                  >
+                    <ChargeIcon />
+                  </Pressable>
+                </Box>
+              )}
               <Box
+                bottom="-8px"
                 height="20px"
+                left="35px"
                 position="absolute"
-                right="-5"
-                top="0"
                 width="20px"
               >
                 <Pressable onPress={HandleBottomSheet}>
-                  <ChargeIcon />
+                  <InfoIcon />
                 </Pressable>
               </Box>
             </>
