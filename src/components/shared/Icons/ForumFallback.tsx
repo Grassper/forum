@@ -11,7 +11,7 @@ export const ForumFallback = () => {
       justifyContent="center"
       style={styles.container}
     >
-      <Box height="325px" width="325px">
+      <Box height="325px" mt="-20" width="325px">
         <Svg viewBox="0 0 500 500">
           <Defs>
             <ClipPath id="a">

@@ -11,6 +11,7 @@ import {
   FlatList,
   InteractionManager,
   ListRenderItem,
+  ScrollView,
   StyleSheet,
 } from "react-native";
 
@@ -19,7 +20,9 @@ import {
   StackParamList_,
 } from "@/root/src/components/navigations/Navigation";
 import { BackButton } from "@/root/src/components/shared/Button";
+import { FollowCard } from "@/root/src/components/shared/Cards";
 import { UserCard } from "@/root/src/components/shared/Cards/UserCard";
+import { NoResults } from "@/root/src/components/shared/Icons";
 import { SearchBar } from "@/root/src/components/shared/SearchBar";
 import { UserContext } from "@/root/src/context";
 import { useDebounce } from "@/root/src/hooks";
@@ -45,20 +48,32 @@ export const NewChat: React.FC<Props_> = ({ navigation }) => {
   const [nextToken, setNextToken] = React.useState<string>("");
   const debouncedSearchTerm = useDebounce(searchValue, 1000);
   const currentUser = React.useContext(UserContext).user;
-
+  const [searching, setSearching] = React.useState(false);
+  const [isStateReady, setStateReady] = React.useState(false);
+  const [resultsNotFound, setResultsNotFound] = React.useState(false);
   const populateContent = React.useCallback(() => {
     const fetchCall = async () => {
       if (debouncedSearchTerm) {
+        setSearching(true);
+        setResultsNotFound(false);
         const searchUsersInput: searchUsersFetchInput_ = {
-          limit: 10,
           username: debouncedSearchTerm,
         };
 
         const responseData = await searchUsersFetch(searchUsersInput);
         if (responseData) {
-          setProfiles(responseData.items);
-          setNextToken(responseData.nextToken);
+          if (responseData.items.length === 0) {
+            setResultsNotFound(true);
+          } else {
+            setProfiles(responseData.items);
+            setNextToken(responseData.nextToken);
+          }
         }
+        setSearching(false);
+      } else {
+        setProfiles([]);
+        setResultsNotFound(false);
+        setNextToken("");
       }
     };
     fetchCall();
@@ -68,6 +83,7 @@ export const NewChat: React.FC<Props_> = ({ navigation }) => {
     React.useCallback(() => {
       const task = InteractionManager.runAfterInteractions(() => {
         populateContent();
+        setStateReady(true);
       });
       return () => task.cancel();
     }, [populateContent])
@@ -122,6 +138,45 @@ export const NewChat: React.FC<Props_> = ({ navigation }) => {
     });
   }, [navigation]);
 
+  if (!isStateReady || searching) {
+    return (
+      <Box alignItems="center" bg="white" style={styles.container}>
+        <Box alignItems="center" py="15px" width="90%">
+          <SearchBar setValue={setSearchValue} value={searchValue} />
+        </Box>
+        <Box my="4" width="100%">
+          <ScrollView>
+            <FollowCard />
+            <FollowCard />
+            <FollowCard />
+            <FollowCard />
+            <FollowCard />
+            <FollowCard />
+            <FollowCard />
+            <FollowCard />
+            <FollowCard />
+            <FollowCard />
+            <FollowCard />
+            <FollowCard />
+            <FollowCard />
+            <FollowCard />
+          </ScrollView>
+        </Box>
+      </Box>
+    );
+  }
+
+  if (resultsNotFound) {
+    return (
+      <Box alignItems="center" bg="white" style={styles.container}>
+        <Box alignItems="center" py="15px" width="90%">
+          <SearchBar setValue={setSearchValue} value={searchValue} />
+        </Box>
+        <NoResults />
+      </Box>
+    );
+  }
+
   return (
     <Box alignItems="center" bg="white" style={styles.container}>
       <Box alignItems="center" py="15px" width="90%">
@@ -149,7 +204,7 @@ const styles = StyleSheet.create({
 
 /**api calls */
 interface searchUsersFetchInput_ {
-  limit: number;
+  limit?: number;
   nextToken?: string;
   username: string;
 }
