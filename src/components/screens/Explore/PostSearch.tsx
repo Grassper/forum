@@ -1,19 +1,21 @@
 import { GraphQLResult } from "@aws-amplify/api-graphql";
 import { useFocusEffect } from "@react-navigation/native";
 import { API } from "aws-amplify";
-import { Box, Image } from "native-base";
+import { Box } from "native-base";
 import React from "react";
 import {
   FlatList,
   InteractionManager,
   ListRenderItem,
   ScrollView,
+  StyleSheet,
 } from "react-native";
 
 import {
   PostCard,
   Props_ as PostCardProps_,
 } from "@/root/src/components/shared/Cards/PostCard";
+import { NoResults } from "@/root/src/components/shared/Icons";
 import { UserContext } from "@/root/src/context";
 
 import { TabNavigatorExploreContext } from "./context";
@@ -26,22 +28,31 @@ export const PostSearch: React.FC = () => {
   const [isStateReady, setStateReady] = React.useState(false);
   const currentUser = React.useContext(UserContext).user;
 
+  const [searching, setSearching] = React.useState(false);
+  const [resultsNotFound, setResultsNotFound] = React.useState(false);
   const populateContent = React.useCallback(() => {
     const fetchCall = async () => {
       if (searchValue) {
+        setSearching(true);
+        setResultsNotFound(false);
         const searchPostInput: searchPostsFetchInput_ = {
-          limit: 10,
           currentUserId: currentUser.id,
           searchcontent: searchValue,
         };
 
         const responseData = await searchPostsFetch(searchPostInput);
         if (responseData) {
-          setPosts(responseData.items);
-          setNextToken(responseData.nextToken);
+          if (responseData.items.length === 0) {
+            setResultsNotFound(true);
+          } else {
+            setPosts(responseData.items);
+            setNextToken(responseData.nextToken);
+          }
         }
+        setSearching(false);
       } else {
         setPosts([]);
+        setResultsNotFound(false);
         setNextToken("");
       }
     };
@@ -97,7 +108,7 @@ export const PostSearch: React.FC = () => {
     );
   };
 
-  if (!isStateReady) {
+  if (!isStateReady || searching) {
     return (
       <ScrollView>
         <PostCard />
@@ -111,36 +122,34 @@ export const PostSearch: React.FC = () => {
     );
   }
 
+  if (resultsNotFound) {
+    return <NoResults />;
+  }
+
   return (
-    <Box bg="white">
-      {posts.length ? (
-        <FlatList
-          data={posts}
-          keyExtractor={(item) => item.id}
-          maxToRenderPerBatch={8}
-          onEndReached={() => handlePagination()}
-          renderItem={PostCardRenderer}
-          windowSize={5}
-        />
-      ) : (
-        <Image
-          alt="Alternate Text"
-          height="100%"
-          resizeMode="stretch"
-          source={require("@/root/assets/images/empty-data.jpg")}
-          width="100%"
-        />
-      )}
+    <Box bg="white" style={styles.container}>
+      <FlatList
+        data={posts}
+        keyExtractor={(item) => item.id}
+        maxToRenderPerBatch={8}
+        onEndReached={() => handlePagination()}
+        renderItem={PostCardRenderer}
+        windowSize={5}
+      />
     </Box>
   );
 };
+
+const styles = StyleSheet.create({
+  container: { flex: 1 },
+});
 
 /**
  * api calls
  */
 interface searchPostsFetchInput_ {
   searchcontent: string;
-  limit: number;
+  limit?: number;
   currentUserId: string;
   nextToken?: string;
 }

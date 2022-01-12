@@ -5,7 +5,7 @@ import {
   useNavigation,
 } from "@react-navigation/native";
 import { API } from "aws-amplify";
-import { Box, Image } from "native-base";
+import { Box } from "native-base";
 import React from "react";
 import {
   FlatList,
@@ -15,6 +15,7 @@ import {
   StyleSheet,
 } from "react-native";
 
+import { NoResults } from "@/root/src/components/shared/Icons";
 import { CommunityTile } from "@/root/src/components/shared/Tile";
 import { colors } from "@/root/src/constants";
 
@@ -25,24 +26,32 @@ export const CommunitySearch: React.FC = () => {
   const [community, setCommunity] = React.useState<Item[]>([]);
   const [nextToken, setNextToken] = React.useState<string>("");
   const [isStateReady, setStateReady] = React.useState(false);
-
+  const [searching, setSearching] = React.useState(false);
+  const [resultsNotFound, setResultsNotFound] = React.useState(false);
   const navigation = useNavigation();
 
   const populateContent = React.useCallback(() => {
     const fetchCall = async () => {
       if (searchValue) {
+        setSearching(true);
+        setResultsNotFound(false);
         const searchUsersInput: searchCommunityFetchInput_ = {
-          limit: 10,
           searchcommunityvalue: searchValue,
         };
 
         const responseData = await searchCommunityFetch(searchUsersInput);
         if (responseData) {
-          setCommunity(responseData.items);
-          setNextToken(responseData.nextToken);
+          if (responseData.items.length === 0) {
+            setResultsNotFound(true);
+          } else {
+            setCommunity(responseData.items);
+            setNextToken(responseData.nextToken);
+          }
         }
+        setSearching(false);
       } else {
         setCommunity([]);
+        setResultsNotFound(false);
         setNextToken("");
       }
     };
@@ -97,7 +106,7 @@ export const CommunitySearch: React.FC = () => {
     );
   };
 
-  if (!isStateReady) {
+  if (!isStateReady || searching) {
     return (
       <ScrollView>
         <CommunityTile hideDivider />
@@ -113,26 +122,20 @@ export const CommunitySearch: React.FC = () => {
     );
   }
 
+  if (resultsNotFound) {
+    return <NoResults />;
+  }
+
   return (
     <Box bg={colors.white} pt="4" style={styles.container}>
-      {community.length ? (
-        <FlatList
-          data={community}
-          keyExtractor={(item) => item.id}
-          maxToRenderPerBatch={8}
-          onEndReached={() => handlePagination()}
-          renderItem={CommunityCardRenderer}
-          windowSize={5}
-        />
-      ) : (
-        <Image
-          alt="Alternate Text"
-          height="100%"
-          resizeMode="stretch"
-          source={require("@/root/assets/images/empty-data.jpg")}
-          width="100%"
-        />
-      )}
+      <FlatList
+        data={community}
+        keyExtractor={(item) => item.id}
+        maxToRenderPerBatch={8}
+        onEndReached={() => handlePagination()}
+        renderItem={CommunityCardRenderer}
+        windowSize={5}
+      />
     </Box>
   );
 };
@@ -143,7 +146,7 @@ const styles = StyleSheet.create({
 
 /**api calls */
 interface searchCommunityFetchInput_ {
-  limit: number;
+  limit?: number;
   nextToken?: string;
   searchcommunityvalue: string;
 }

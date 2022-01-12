@@ -5,7 +5,7 @@ import {
   useNavigation,
 } from "@react-navigation/native";
 import { API } from "aws-amplify";
-import { Box, Image } from "native-base";
+import { Box } from "native-base";
 import React from "react";
 import {
   FlatList,
@@ -16,6 +16,7 @@ import {
 } from "react-native";
 
 import { FollowCard } from "@/root/src/components/shared/Cards";
+import { NoResults } from "@/root/src/components/shared/Icons";
 import { colors } from "@/root/src/constants";
 
 import { TabNavigatorExploreContext } from "./context";
@@ -26,22 +27,32 @@ export const ProfileSearch: React.FC = () => {
   const [profiles, setProfiles] = React.useState<Item[]>([]);
   const [nextToken, setNextToken] = React.useState<string>("");
   const [isStateReady, setStateReady] = React.useState(false);
+  const [searching, setSearching] = React.useState(false);
+
+  const [resultsNotFound, setResultsNotFound] = React.useState(false);
 
   const populateContent = React.useCallback(() => {
     const fetchCall = async () => {
       if (searchValue) {
+        setSearching(true);
+        setResultsNotFound(false);
         const searchUsersInput: searchUsersFetchInput_ = {
-          limit: 10,
           username: searchValue,
         };
 
         const responseData = await searchUsersFetch(searchUsersInput);
         if (responseData) {
-          setProfiles(responseData.items);
-          setNextToken(responseData.nextToken);
+          if (responseData.items.length === 0) {
+            setResultsNotFound(true);
+          } else {
+            setProfiles(responseData.items);
+            setNextToken(responseData.nextToken);
+          }
         }
+        setSearching(false);
       } else {
         setProfiles([]);
+        setResultsNotFound(false);
         setNextToken("");
       }
     };
@@ -92,7 +103,7 @@ export const ProfileSearch: React.FC = () => {
     );
   };
 
-  if (!isStateReady) {
+  if (!isStateReady || searching) {
     return (
       <ScrollView>
         <FollowCard />
@@ -113,26 +124,20 @@ export const ProfileSearch: React.FC = () => {
     );
   }
 
+  if (resultsNotFound) {
+    return <NoResults />;
+  }
+
   return (
     <Box bg={colors.white} pt="4" style={styles.container}>
-      {profiles.length ? (
-        <FlatList
-          data={profiles}
-          keyExtractor={(item) => item.id}
-          maxToRenderPerBatch={8}
-          onEndReached={() => handlePagination()}
-          renderItem={ProfileCardRenderer}
-          windowSize={5}
-        />
-      ) : (
-        <Image
-          alt="Alternate Text"
-          height="100%"
-          resizeMode="stretch"
-          source={require("@/root/assets/images/empty-data.jpg")}
-          width="100%"
-        />
-      )}
+      <FlatList
+        data={profiles}
+        keyExtractor={(item) => item.id}
+        maxToRenderPerBatch={8}
+        onEndReached={() => handlePagination()}
+        renderItem={ProfileCardRenderer}
+        windowSize={5}
+      />
     </Box>
   );
 };
@@ -143,7 +148,7 @@ const styles = StyleSheet.create({
 });
 /**api calls */
 interface searchUsersFetchInput_ {
-  limit: number;
+  limit?: number;
   nextToken?: string;
   username: string;
 }
