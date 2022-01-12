@@ -21,6 +21,7 @@ import {
   RootStackParamList_,
   StackParamList_,
 } from "@/root/src/components/navigations/Navigation";
+import { ForumFallback } from "@/root/src/components/shared/Icons";
 import { CommunityTile } from "@/root/src/components/shared/Tile";
 import { UserContext } from "@/root/src/context";
 
@@ -43,11 +44,14 @@ export const JoinedSubForum: React.FC<Props_> = ({ navigation }) => {
   const [nextToken, setNextToken] = React.useState<string>("");
   const [isStateReady, setStateReady] = React.useState(false);
 
+  const [loading, setLoading] = React.useState(false);
+  const [noForumToShow, setNoForumToShow] = React.useState(false);
+
   const handlePagination = async () => {
     if (nextToken) {
       const listCommunityInput: listCommunityByUserIdFetchInput_ = {
         id: currentUser.id,
-        limit: 10,
+
         sortDirection: "DESC",
         nextToken,
       };
@@ -63,6 +67,8 @@ export const JoinedSubForum: React.FC<Props_> = ({ navigation }) => {
 
   const populateContent = React.useCallback(() => {
     const fetchCall = async () => {
+      setLoading(true);
+      setNoForumToShow(false);
       const listCommunityInput: listCommunityByUserIdFetchInput_ = {
         id: currentUser.id,
         limit: 10,
@@ -71,9 +77,14 @@ export const JoinedSubForum: React.FC<Props_> = ({ navigation }) => {
 
       const responseData = await listCommunityByUserIdFetch(listCommunityInput);
       if (responseData) {
-        setCommunities(responseData.items);
-        setNextToken(responseData.nextToken);
+        if (responseData.items.length === 0) {
+          setNoForumToShow(true);
+        } else {
+          setCommunities(responseData.items);
+          setNextToken(responseData.nextToken);
+        }
       }
+      setLoading(false);
     };
     fetchCall();
   }, [currentUser]);
@@ -125,7 +136,7 @@ export const JoinedSubForum: React.FC<Props_> = ({ navigation }) => {
     );
   };
 
-  if (!isStateReady) {
+  if (!isStateReady || loading) {
     return (
       <ScrollView>
         <CommunityTile hideDivider />
@@ -142,6 +153,10 @@ export const JoinedSubForum: React.FC<Props_> = ({ navigation }) => {
         <CommunityTile hideDivider />
       </ScrollView>
     );
+  }
+
+  if (noForumToShow) {
+    return <ForumFallback />;
   }
 
   return (
@@ -174,7 +189,7 @@ const styles = StyleSheet.create({
 
 interface listCommunityByUserIdFetchInput_ {
   id: string;
-  limit: number;
+  limit?: number;
   sortDirection: "ASC" | "DESC";
   nextToken?: string;
 }

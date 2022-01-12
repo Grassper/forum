@@ -163,7 +163,13 @@ export const Home: React.FC<Props_> = ({ navigation }) => {
   }
 
   if (noTimelineToShow) {
-    return <Feed />;
+    return (
+      <View style={styles.container}>
+        <BottomSheet isOpen={isOpen} onClose={HandleBottomSheet} />
+        <Feed />
+        <FloatingActionButton onPress={HandleBottomSheet} screen="Home" />
+      </View>
+    );
   }
 
   return (
