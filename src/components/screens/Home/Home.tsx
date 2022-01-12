@@ -31,7 +31,7 @@ import {
   MessageIcon,
   ProfileIcon,
 } from "@/root/src/components/shared/HeaderIcon";
-import { AppIcon, NoResults } from "@/root/src/components/shared/Icons";
+import { AppIcon, Feed } from "@/root/src/components/shared/Icons";
 import { UserContext } from "@/root/src/context";
 
 type NavigationProp_ = CompositeNavigationProp<
@@ -57,22 +57,31 @@ export const Home: React.FC<Props_> = ({ navigation }) => {
   const [nextToken, setNextToken] = React.useState<string>("");
   const [isStateReady, setStateReady] = React.useState(false);
 
+  const [loading, setLoading] = React.useState(false);
+  const [noTimelineToShow, setNoTimelineToShow] = React.useState(false);
+
   const memoPost = React.useMemo(() => posts, [posts]);
 
   const populateContent = React.useCallback(() => {
     const fetchCall = async () => {
       if (id) {
+        setLoading(true);
+        setNoTimelineToShow(false);
         const listPostInput: listTimelineByUserIdFetchInput_ = {
           id: id,
-          limit: 10,
           sortDirection: "DESC",
         };
 
         const responseData = await listTimelineByUserIdFetch(listPostInput);
         if (responseData) {
-          setPosts(responseData.items);
-          setNextToken(responseData.nextToken);
+          if (responseData.items.length === 0) {
+            setNoTimelineToShow(true);
+          } else {
+            setPosts(responseData.items);
+            setNextToken(responseData.nextToken);
+          }
         }
+        setLoading(false);
       }
     };
     fetchCall();
@@ -141,7 +150,7 @@ export const Home: React.FC<Props_> = ({ navigation }) => {
     );
   };
   const keyExtractor = React.useCallback((item) => item.post.id, []);
-  if (!isStateReady) {
+  if (!isStateReady || loading) {
     return (
       <ScrollView>
         <PostCard />
@@ -153,24 +162,22 @@ export const Home: React.FC<Props_> = ({ navigation }) => {
     );
   }
 
+  if (noTimelineToShow) {
+    return <Feed />;
+  }
+
   return (
     <View style={styles.container}>
-      {!posts.length ? (
-        <>
-          <BottomSheet isOpen={isOpen} onClose={HandleBottomSheet} />
-          <FlatList
-            data={memoPost}
-            keyExtractor={keyExtractor}
-            maxToRenderPerBatch={8}
-            onEndReached={handlePagination}
-            renderItem={PostCardRenderer}
-            windowSize={5}
-          />
-          <FloatingActionButton onPress={HandleBottomSheet} screen="Home" />
-        </>
-      ) : (
-        <NoResults />
-      )}
+      <BottomSheet isOpen={isOpen} onClose={HandleBottomSheet} />
+      <FlatList
+        data={memoPost}
+        keyExtractor={keyExtractor}
+        maxToRenderPerBatch={8}
+        onEndReached={handlePagination}
+        renderItem={PostCardRenderer}
+        windowSize={5}
+      />
+      <FloatingActionButton onPress={HandleBottomSheet} screen="Home" />
     </View>
   );
 };
@@ -184,7 +191,7 @@ const styles = StyleSheet.create({
  */
 interface listTimelineByUserIdFetchInput_ {
   id: string;
-  limit: number;
+  limit?: number;
   sortDirection: "ASC" | "DESC";
   nextToken?: string;
 }
