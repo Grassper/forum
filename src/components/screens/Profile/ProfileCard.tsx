@@ -118,7 +118,7 @@ export const ProfileCard: React.FC<Props_> = ({ routeUserId }) => {
   }, [isBottomSheetOpen]);
 
   return (
-    <Box alignItems="center" mt="5">
+    <Box alignItems="center" bg="white" pt="5">
       {routeUserId && (
         <AboutBottomSheet
           isOpen={isBottomSheetOpen}

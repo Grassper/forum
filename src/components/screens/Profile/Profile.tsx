@@ -12,7 +12,6 @@ import {
 } from "@/root/src/components/navigations/Navigation";
 import { BackButton } from "@/root/src/components/shared/Button";
 import { ReportUser } from "@/root/src/components/shared/Report";
-import { colors } from "@/root/src/constants";
 import { AuthContext, UserContext } from "@/root/src/context";
 
 import { Posts } from "./Post";
@@ -105,11 +104,12 @@ export const Profile: React.FC<Props_> = ({ navigation, route }) => {
         ListFooterComponent={GetPosts}
         ListHeaderComponent={GetHeader}
         renderItem={null}
+        showsVerticalScrollIndicator={false}
       />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: { backgroundColor: colors.white, flex: 1 },
+  container: { flex: 1 },
 });
