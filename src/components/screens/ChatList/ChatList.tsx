@@ -22,6 +22,7 @@ import {
 import { BackButton } from "@/root/src/components/shared/Button";
 import { UserCard } from "@/root/src/components/shared/Cards/UserCard";
 import { FloatingActionButton } from "@/root/src/components/shared/FabButton";
+import { MessageFallback } from "@/root/src/components/shared/Icons";
 import { CommunityTile } from "@/root/src/components/shared/Tile";
 import { UserContext } from "@/root/src/context";
 
@@ -40,19 +41,29 @@ export const ChatList: React.FC<Props_> = ({ navigation }) => {
   const [isStateReady, setStateReady] = React.useState(false);
   const currentUser = React.useContext(UserContext).user;
 
+  const [loading, setLoading] = React.useState(false);
+
+  const [noChatRooms, setNoChatRooms] = React.useState(false);
+
   const populateContent = React.useCallback(() => {
     const fetchCall = async () => {
       if (currentUser.id) {
+        setLoading(true);
+        setNoChatRooms(false);
         const ListChatRoomInput: ListChatRoomFetchInput_ = {
           id: currentUser.id,
-          limit: 10,
         };
 
         const responseData = await ListChatRoom(ListChatRoomInput);
         if (responseData) {
-          setChatRooms(responseData.items);
-          setNextToken(responseData.nextToken);
+          if (responseData.items.length === 0) {
+            setNoChatRooms(true);
+          } else {
+            setChatRooms(responseData.items);
+            setNextToken(responseData.nextToken);
+          }
         }
+        setLoading(false);
       }
     };
     fetchCall();
@@ -114,7 +125,7 @@ export const ChatList: React.FC<Props_> = ({ navigation }) => {
 
   const keyExtractor = React.useCallback((item) => item.chatRoom.id, []);
 
-  if (!isStateReady) {
+  if (!isStateReady || loading) {
     return (
       <ScrollView>
         <CommunityTile hideDivider />
@@ -136,6 +147,18 @@ export const ChatList: React.FC<Props_> = ({ navigation }) => {
         <CommunityTile hideDivider />
         <CommunityTile hideDivider />
       </ScrollView>
+    );
+  }
+
+  if (noChatRooms) {
+    return (
+      <>
+        <MessageFallback />
+        <FloatingActionButton
+          onPress={() => navigation.push("NewChat")}
+          screen="ChatList"
+        />
+      </>
     );
   }
 
@@ -172,7 +195,7 @@ const styles = StyleSheet.create({
 interface ListChatRoomFetchInput_ {
   id: string;
   nextToken?: string;
-  limit: number;
+  limit?: number;
 }
 
 const ListChatRoom = async (input: ListChatRoomFetchInput_) => {
