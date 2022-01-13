@@ -74,9 +74,15 @@ export const Comment: React.FC<Props_> = ({ route, navigation }) => {
   const [nextToken, setNextToken] = React.useState<string>("");
   const [isStateReady, setStateReady] = React.useState(false);
 
+  const [loading, setLoading] = React.useState(false);
+  const [noCommentsToShow, setNoCommentsToShow] = React.useState(false);
+
   const populateContent = React.useCallback(() => {
     const fetchCall = async () => {
       if (comment.commentId) {
+        if (childComments.length === 0 && !noCommentsToShow) {
+          setLoading(true);
+        }
         const listCommentInput: listChildCommentsByParentCommentIdFetch_ = {
           parentCommentId: comment.commentId,
         };
@@ -85,13 +91,21 @@ export const Comment: React.FC<Props_> = ({ route, navigation }) => {
         );
 
         if (commentData) {
-          setChildComments(commentData.items);
-          setNextToken(commentData.nextToken);
+          if (commentData.items.length === 0) {
+            setNoCommentsToShow(true);
+          } else {
+            setNoCommentsToShow(false);
+            setChildComments(commentData.items);
+            setNextToken(commentData.nextToken);
+          }
+        }
+        if (loading) {
+          setLoading(false);
         }
       }
     };
     fetchCall();
-  }, [comment.commentId]);
+  }, [childComments.length, comment.commentId, loading, noCommentsToShow]);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -146,7 +160,7 @@ export const Comment: React.FC<Props_> = ({ route, navigation }) => {
     );
   };
 
-  if (!isStateReady) {
+  if (!isStateReady || loading) {
     return (
       <ScrollView>
         <CommentCard {...comment} hideCommentUserActions hideReplyButton />

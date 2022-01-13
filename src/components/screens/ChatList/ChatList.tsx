@@ -48,8 +48,9 @@ export const ChatList: React.FC<Props_> = ({ navigation }) => {
   const populateContent = React.useCallback(() => {
     const fetchCall = async () => {
       if (currentUser.id) {
-        setLoading(true);
-        setNoChatRooms(false);
+        if (chatRooms.length === 0 && !noChatRooms) {
+          setLoading(true);
+        }
         const ListChatRoomInput: ListChatRoomFetchInput_ = {
           id: currentUser.id,
         };
@@ -59,15 +60,18 @@ export const ChatList: React.FC<Props_> = ({ navigation }) => {
           if (responseData.items.length === 0) {
             setNoChatRooms(true);
           } else {
+            setNoChatRooms(false);
             setChatRooms(responseData.items);
             setNextToken(responseData.nextToken);
           }
         }
-        setLoading(false);
+        if (loading) {
+          setLoading(false);
+        }
       }
     };
     fetchCall();
-  }, [currentUser.id]);
+  }, [chatRooms.length, currentUser.id, loading, noChatRooms]);
 
   const handlePagination = async () => {
     if (nextToken && currentUser.id) {

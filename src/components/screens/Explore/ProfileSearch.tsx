@@ -34,8 +34,9 @@ export const ProfileSearch: React.FC = () => {
   const populateContent = React.useCallback(() => {
     const fetchCall = async () => {
       if (searchValue) {
-        setSearching(true);
-        setResultsNotFound(false);
+        if (profiles.length === 0 && !resultsNotFound) {
+          setSearching(true);
+        }
         const searchUsersInput: searchUsersFetchInput_ = {
           username: searchValue,
         };
@@ -45,11 +46,14 @@ export const ProfileSearch: React.FC = () => {
           if (responseData.items.length === 0) {
             setResultsNotFound(true);
           } else {
+            setResultsNotFound(false);
             setProfiles(responseData.items);
             setNextToken(responseData.nextToken);
           }
         }
-        setSearching(false);
+        if (searching) {
+          setSearching(false);
+        }
       } else {
         setProfiles([]);
         setResultsNotFound(false);
@@ -57,7 +61,7 @@ export const ProfileSearch: React.FC = () => {
       }
     };
     fetchCall();
-  }, [searchValue]);
+  }, [profiles.length, resultsNotFound, searchValue, searching]);
 
   useFocusEffect(
     React.useCallback(() => {

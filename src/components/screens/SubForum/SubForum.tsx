@@ -46,7 +46,7 @@ interface Props_ {
 export const SubForum: React.FC<Props_> = ({ navigation, route }) => {
   const { subForumId } = route.params;
 
-  const [subForum, getSubForum] = React.useState<Community>();
+  const [subForum, setSubForum] = React.useState<Community>();
   const [reportModal, setReportModal] = React.useState(false);
 
   const [posts, setPosts] = React.useState<Item[]>([]);
@@ -60,8 +60,10 @@ export const SubForum: React.FC<Props_> = ({ navigation, route }) => {
 
   const populateContent = React.useCallback(() => {
     const fetchCall = async () => {
-      setLoading(true);
-      setNoPostToShow(false);
+      if (posts.length === 0 && !noPostToShow) {
+        setLoading(true);
+      }
+
       const listPostInput: listPostByCommunityIdFetchInput_ = {
         id: subForumId,
         currentUserId: currentUser.id,
@@ -77,21 +79,24 @@ export const SubForum: React.FC<Props_> = ({ navigation, route }) => {
       const listPostData = await listPostByCommunityIdFetch(listPostInput);
 
       if (getCommunityData) {
-        getSubForum(getCommunityData);
+        setSubForum(getCommunityData);
       }
 
       if (listPostData) {
         if (listPostData.items.length === 0) {
           setNoPostToShow(true);
         } else {
+          setNoPostToShow(false);
           setPosts(listPostData.items);
           setNextToken(listPostData.nextToken);
         }
       }
-      setLoading(false);
+      if (loading) {
+        setLoading(false);
+      }
     };
     fetchCall();
-  }, [currentUser.id, subForumId]);
+  }, [currentUser.id, loading, noPostToShow, posts.length, subForumId]);
 
   useFocusEffect(
     React.useCallback(() => {

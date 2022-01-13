@@ -54,8 +54,9 @@ export const NewChat: React.FC<Props_> = ({ navigation }) => {
   const populateContent = React.useCallback(() => {
     const fetchCall = async () => {
       if (debouncedSearchTerm) {
-        setSearching(true);
-        setResultsNotFound(false);
+        if (profiles.length === 0 && !resultsNotFound) {
+          setSearching(true);
+        }
         const searchUsersInput: searchUsersFetchInput_ = {
           username: debouncedSearchTerm,
         };
@@ -65,11 +66,14 @@ export const NewChat: React.FC<Props_> = ({ navigation }) => {
           if (responseData.items.length === 0) {
             setResultsNotFound(true);
           } else {
+            setResultsNotFound(false);
             setProfiles(responseData.items);
             setNextToken(responseData.nextToken);
           }
         }
-        setSearching(false);
+        if (searching) {
+          setSearching(false);
+        }
       } else {
         setProfiles([]);
         setResultsNotFound(false);
@@ -77,7 +81,7 @@ export const NewChat: React.FC<Props_> = ({ navigation }) => {
       }
     };
     fetchCall();
-  }, [debouncedSearchTerm]);
+  }, [debouncedSearchTerm, profiles.length, resultsNotFound, searching]);
 
   useFocusEffect(
     React.useCallback(() => {

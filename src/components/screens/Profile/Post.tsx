@@ -23,38 +23,33 @@ export const Posts: React.FC<Props_> = ({ routeUserId }) => {
   const currentUser = React.useContext(UserContext).user;
 
   const populateContent = React.useCallback(() => {
-    let isActive = true;
-
     const fetchCall = async () => {
-      setLoading(true);
-      setNoPostToShow(false);
+      if (posts.length === 0 && !noPostToShow) {
+        setLoading(true);
+      }
+
       const listPostInput: listPostByUserIdFetchInput_ = {
         id: routeUserId,
         currentUserId: currentUser.id,
-        limit: 10,
         sortDirection: "DESC",
       };
 
       const responseData = await listPostByUserIdFetch(listPostInput);
-      if (responseData && isActive) {
+      if (responseData) {
         if (responseData.items.length === 0) {
           setNoPostToShow(true);
         } else {
+          setNoPostToShow(false);
           setPosts(responseData.items);
           setNextToken(responseData.nextToken);
         }
       }
-      if (isActive) {
+      if (loading) {
         setLoading(false);
       }
     };
     fetchCall();
-
-    return () => {
-      isActive = false;
-      setPosts([]);
-    };
-  }, [currentUser.id, routeUserId]);
+  }, [currentUser.id, loading, noPostToShow, posts.length, routeUserId]);
 
   React.useEffect(populateContent, [populateContent]);
 
@@ -137,7 +132,7 @@ export const Posts: React.FC<Props_> = ({ routeUserId }) => {
  */
 interface listPostByUserIdFetchInput_ {
   id: string;
-  limit: number;
+  limit?: number;
   sortDirection: "ASC" | "DESC";
   currentUserId: string;
   nextToken?: string;
