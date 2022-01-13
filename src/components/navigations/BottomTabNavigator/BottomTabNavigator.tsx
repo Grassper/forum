@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import React from "react";
 
 import { BottomTabParamList_ } from "@/root/src/components/navigations/Navigation";
-import { Explore } from "@/root/src/components/screens/Explore";
+import { ExploreAll } from "@/root/src/components/screens/Explore";
 import { Home } from "@/root/src/components/screens/Home";
 import { JoinedSubForum } from "@/root/src/components/screens/JoinedSubForum";
 import { Survey } from "@/root/src/components/screens/Survey";
@@ -36,8 +36,8 @@ export const BottomTabNavigator = () => {
         }}
       />
       <Tab.Screen
-        component={Explore}
-        name="Explore"
+        component={ExploreAll}
+        name="ExploreAll"
         options={{
           title: "",
           headerShown: false,

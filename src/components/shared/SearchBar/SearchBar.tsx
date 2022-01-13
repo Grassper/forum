@@ -5,14 +5,16 @@ import React from "react";
 interface Props_ {
   value: string;
   setValue: (value: string) => void;
+  editable?: boolean;
 }
 
-export const SearchBar: React.FC<Props_> = ({ value, setValue }) => {
+export const SearchBar: React.FC<Props_> = ({ value, setValue, editable }) => {
   return (
     <>
       <Input
         autoCapitalize="none"
         borderRadius="md"
+        editable={editable}
         fontSize="sm"
         InputLeftElement={
           <Icon

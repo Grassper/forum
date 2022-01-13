@@ -24,7 +24,7 @@ interface UserPostMetricItem {
 
 export type BottomTabParamList_ = {
   Home: undefined;
-  Explore: undefined;
+  ExploreAll: undefined;
   Survey: undefined;
   JoinedSubForum: undefined;
 };
@@ -39,7 +39,7 @@ export type AuthStackParamList_ = {
 
 export type StackParamList_ = {
   BottomTabNav: NavigatorScreenParams<BottomTabParamList_>;
-
+  Explore: undefined;
   // * User
   Profile: { userId: string };
   Tipping: { id: string; profileImageUrl: string; username: string };

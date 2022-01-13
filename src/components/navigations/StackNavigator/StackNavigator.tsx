@@ -23,6 +23,7 @@ import { CoinTipping } from "@/root/src/components/screens/CoinTipping";
 import { Comment } from "@/root/src/components/screens/Comment";
 import { EditAndCreateSubForum } from "@/root/src/components/screens/EditAndCreateSubForum";
 import { EditProfile } from "@/root/src/components/screens/EditProfile";
+import { Explore } from "@/root/src/components/screens/Explore";
 import { Follow } from "@/root/src/components/screens/Follow";
 import { Info } from "@/root/src/components/screens/Info";
 import { NewChat } from "@/root/src/components/screens/NewChat";
@@ -174,6 +175,13 @@ export const StackNavigator = () => {
       <Stack.Screen
         component={NewChat}
         name="NewChat"
+        options={{
+          title: "Search Your Friends",
+        }}
+      />
+      <Stack.Screen
+        component={Explore}
+        name="Explore"
         options={{
           title: "Search Your Friends",
         }}
