@@ -110,7 +110,7 @@ export const EditAndCreateSubForum: React.FC<Props_> = ({
       /** checking current screen for action add or edit action */
       if (action === "Add") {
         const newForumInput: handleForumCreationInput_ = {
-          name: forumName,
+          name: forumName.toLowerCase(),
           description,
           bannerImageS3Key,
           profileImageS3Key,
