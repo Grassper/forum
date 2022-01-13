@@ -1,6 +1,6 @@
 import { Box, Text } from "native-base";
 import React, { useState } from "react";
-
+import Autolink from "react-native-autolink";
 interface PropTypes {
   text: string;
   targetLines: number;
@@ -27,7 +27,7 @@ export const TextLessMoreView: React.FC<PropTypes> = (props) => {
         numberOfLines={textShown ? undefined : props.targetLines || 1}
         onTextLayout={onTextLayout}
       >
-        {props.text || ""}
+        <Autolink text={props.text || ""} />
       </Text>
       {lengthMore ? (
         <Text color="green.700" onPress={toggleNumberOfLines}>
