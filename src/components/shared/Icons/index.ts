@@ -9,5 +9,6 @@ export * from "./LikeIcon";
 export * from "./LoveIcon";
 export * from "./MessageFallback";
 export * from "./NoResults";
+export * from "./PostFallback";
 export * from "./SurveyFallback";
 export * from "./Tipping";

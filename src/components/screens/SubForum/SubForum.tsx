@@ -27,6 +27,7 @@ import {
   PostCard,
   Props_ as PostCardProps_,
 } from "@/root/src/components/shared/Cards/PostCard";
+import { PostFallback } from "@/root/src/components/shared/Icons";
 import { ReportCommunity } from "@/root/src/components/shared/Report";
 import { UserContext } from "@/root/src/context";
 
@@ -54,8 +55,13 @@ export const SubForum: React.FC<Props_> = ({ navigation, route }) => {
   const [isStateReady, setStateReady] = React.useState(false);
   const currentUser = React.useContext(UserContext).user;
 
+  const [loading, setLoading] = React.useState(false);
+  const [noPostToShow, setNoPostToShow] = React.useState(false);
+
   const populateContent = React.useCallback(() => {
     const fetchCall = async () => {
+      setLoading(true);
+      setNoPostToShow(false);
       const listPostInput: listPostByCommunityIdFetchInput_ = {
         id: subForumId,
         currentUserId: currentUser.id,
@@ -75,9 +81,14 @@ export const SubForum: React.FC<Props_> = ({ navigation, route }) => {
       }
 
       if (listPostData) {
-        setPosts(listPostData.items);
-        setNextToken(listPostData.nextToken);
+        if (listPostData.items.length === 0) {
+          setNoPostToShow(true);
+        } else {
+          setPosts(listPostData.items);
+          setNextToken(listPostData.nextToken);
+        }
       }
+      setLoading(false);
     };
     fetchCall();
   }, [currentUser.id, subForumId]);
@@ -150,7 +161,7 @@ export const SubForum: React.FC<Props_> = ({ navigation, route }) => {
     );
   };
 
-  if (!isStateReady) {
+  if (!isStateReady || loading) {
     return (
       <ScrollView>
         <SubForumCard />
@@ -164,7 +175,32 @@ export const SubForum: React.FC<Props_> = ({ navigation, route }) => {
       </ScrollView>
     );
   }
-
+  if (noPostToShow) {
+    return (
+      <View style={styles.container}>
+        {subForum && (
+          <ReportCommunity
+            communityId={subForum.id}
+            reportModal={reportModal}
+            setReportModal={setReportModal}
+          />
+        )}
+        <SubForumCard
+          _version={subForum?._version}
+          coverImageS3Key={subForum?.bannerImageS3Key}
+          creatorId={subForum?.creatorId}
+          description={subForum?.description}
+          id={subForum?.id}
+          members={subForum?.members}
+          name={subForum?.name}
+          profileImageS3Key={subForum?.profileImageS3Key}
+          totalMembers={subForum?.totalMembers}
+          totalPosts={subForum?.totalPosts}
+        />
+        <PostFallback />
+      </View>
+    );
+  }
   return (
     <View style={styles.container}>
       {subForum && (

@@ -7,6 +7,7 @@ import {
   PostCard,
   Props_ as PostCardProps_,
 } from "@/root/src/components/shared/Cards/PostCard";
+import { PostFallback } from "@/root/src/components/shared/Icons";
 import { UserContext } from "@/root/src/context";
 
 interface Props_ {
@@ -18,7 +19,7 @@ export const Posts: React.FC<Props_> = ({ routeUserId }) => {
   const [nextToken, setNextToken] = React.useState<string>("");
 
   const [loading, setLoading] = React.useState(false);
-
+  const [noPostToShow, setNoPostToShow] = React.useState(false);
   const currentUser = React.useContext(UserContext).user;
 
   const populateContent = React.useCallback(() => {
@@ -26,6 +27,7 @@ export const Posts: React.FC<Props_> = ({ routeUserId }) => {
 
     const fetchCall = async () => {
       setLoading(true);
+      setNoPostToShow(false);
       const listPostInput: listPostByUserIdFetchInput_ = {
         id: routeUserId,
         currentUserId: currentUser.id,
@@ -35,8 +37,12 @@ export const Posts: React.FC<Props_> = ({ routeUserId }) => {
 
       const responseData = await listPostByUserIdFetch(listPostInput);
       if (responseData && isActive) {
-        setPosts(responseData.items);
-        setNextToken(responseData.nextToken);
+        if (responseData.items.length === 0) {
+          setNoPostToShow(true);
+        } else {
+          setPosts(responseData.items);
+          setNextToken(responseData.nextToken);
+        }
       }
       if (isActive) {
         setLoading(false);
@@ -106,6 +112,10 @@ export const Posts: React.FC<Props_> = ({ routeUserId }) => {
         <PostCard />
       </ScrollView>
     );
+  }
+
+  if (noPostToShow) {
+    return <PostFallback />;
   }
 
   return (
