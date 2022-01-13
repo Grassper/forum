@@ -226,7 +226,7 @@ export const SubForumCard: React.FC<Props_> = ({
               <Skeleton height="20px" mt="2" width="150px" />
             )}
             <Box bg="blueGray.500" style={styles.separatorDot} />
-            {totalPosts ? (
+            {totalPosts !== undefined ? (
               <Text color="blueGray.500" fontSize="sm">
                 {totalPosts} Posts
               </Text>

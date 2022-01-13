@@ -6,7 +6,7 @@ import {
 } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { API } from "aws-amplify";
-import { Button, Image } from "native-base";
+import { Button } from "native-base";
 import React from "react";
 import {
   FlatList,
@@ -59,7 +59,6 @@ export const SubForum: React.FC<Props_> = ({ navigation, route }) => {
       const listPostInput: listPostByCommunityIdFetchInput_ = {
         id: subForumId,
         currentUserId: currentUser.id,
-        limit: 10,
         sortDirection: "DESC",
       };
 
@@ -116,18 +115,8 @@ export const SubForum: React.FC<Props_> = ({ navigation, route }) => {
     navigation.setOptions({
       headerLeft: () => <BackButton color="eGreen.400" />,
       headerRight: () =>
-        subForum?.creatorId && currentUser.id === subForum.creatorId ? (
-          <Button
-            _text={{ fontWeight: "600", color: "eGreen.400" }}
-            onPress={() => {
-              navigation.navigate("SubForumMod");
-            }}
-            size="md"
-            variant="unstyled"
-          >
-            Manage
-          </Button>
-        ) : (
+        subForum?.creatorId &&
+        currentUser.id !== subForum.creatorId && (
           <Button
             _text={{ fontWeight: "600", color: "eGreen.400" }}
             onPress={() => setReportModal(true)}
@@ -139,17 +128,6 @@ export const SubForum: React.FC<Props_> = ({ navigation, route }) => {
         ),
     });
   }, [currentUser.id, navigation, reportModal, subForum]);
-
-  // const getItemLayout = React.useCallback(
-  //   (data: Item[] | null | undefined, index: number) => {
-  //     return {
-  //       length: 500,
-  //       offset: 500 * index,
-  //       index,
-  //     };
-  //   },
-  //   []
-  // );
 
   const PostCardRenderer: ListRenderItem<Item> = ({ item }) => {
     return (
@@ -189,47 +167,35 @@ export const SubForum: React.FC<Props_> = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
-      {posts.length ? (
-        <>
-          {subForum && (
-            <ReportCommunity
-              communityId={subForum.id}
-              reportModal={reportModal}
-              setReportModal={setReportModal}
-            />
-          )}
-          <FlatList
-            data={posts}
-            keyExtractor={(item) => item.id}
-            ListHeaderComponent={() => (
-              <SubForumCard
-                _version={subForum?._version}
-                coverImageS3Key={subForum?.bannerImageS3Key}
-                creatorId={subForum?.creatorId}
-                description={subForum?.description}
-                id={subForum?.id}
-                members={subForum?.members}
-                name={subForum?.name}
-                profileImageS3Key={subForum?.profileImageS3Key}
-                totalMembers={subForum?.totalMembers}
-                totalPosts={subForum?.totalPosts}
-              />
-            )}
-            maxToRenderPerBatch={8}
-            onEndReached={() => handlePagination()}
-            renderItem={PostCardRenderer}
-            windowSize={5}
-          />
-        </>
-      ) : (
-        <Image
-          alt="Alternate Text"
-          height="100%"
-          resizeMode="stretch"
-          source={require("@/root/assets/images/empty-data.jpg")}
-          width="100%"
+      {subForum && (
+        <ReportCommunity
+          communityId={subForum.id}
+          reportModal={reportModal}
+          setReportModal={setReportModal}
         />
       )}
+      <FlatList
+        data={posts}
+        keyExtractor={(item) => item.id}
+        ListHeaderComponent={() => (
+          <SubForumCard
+            _version={subForum?._version}
+            coverImageS3Key={subForum?.bannerImageS3Key}
+            creatorId={subForum?.creatorId}
+            description={subForum?.description}
+            id={subForum?.id}
+            members={subForum?.members}
+            name={subForum?.name}
+            profileImageS3Key={subForum?.profileImageS3Key}
+            totalMembers={subForum?.totalMembers}
+            totalPosts={subForum?.totalPosts}
+          />
+        )}
+        maxToRenderPerBatch={8}
+        onEndReached={() => handlePagination()}
+        renderItem={PostCardRenderer}
+        windowSize={5}
+      />
     </View>
   );
 };
@@ -266,7 +232,7 @@ const getCommunityFetch = async (input: getCommunityFetch_) => {
 interface listPostByCommunityIdFetchInput_ {
   id: string;
   currentUserId: string;
-  limit: number;
+  limit?: number;
   sortDirection: "ASC" | "DESC";
   nextToken?: string;
 }
