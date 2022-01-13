@@ -96,7 +96,7 @@ export const AddAndEditComment: React.FC<Props_> = ({ navigation, route }) => {
               "Update"
             )
           ) : (
-            <Spinner color="indigo.500" />
+            <Spinner color="white" />
           )}
         </Button>
       ),
@@ -125,6 +125,7 @@ export const AddAndEditComment: React.FC<Props_> = ({ navigation, route }) => {
       <ScrollView>
         <Box>
           <PostCard {...post} hidePostNavigation hidePostUserActions postPage />
+          <Box py="2" />
           <Divider />
         </Box>
         <Box bg="white" mt="2" py="4">

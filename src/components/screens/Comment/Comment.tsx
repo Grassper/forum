@@ -53,7 +53,7 @@ const CommentHeader: React.FC<CommentHeader_> = (comment) => {
     <Box>
       <CommentCard {...comment} hideCommentUserActions hideReplyButton />
 
-      <Box alignItems="center" bg="white" mt="2" pt="4">
+      <Box alignItems="center" bg="white" mt="2" py="4">
         <HStack alignItems="flex-end" width="90%">
           <Text color="eGreen.400" fontWeight="500">
             Replies

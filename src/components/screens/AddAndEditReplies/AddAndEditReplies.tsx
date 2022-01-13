@@ -108,7 +108,7 @@ export const AddAndEditReplies: React.FC<Props_> = ({ navigation, route }) => {
               "Update"
             )
           ) : (
-            <Spinner color="indigo.500" />
+            <Spinner color="white" />
           )}
         </Button>
       ),

@@ -1,6 +1,7 @@
 export * from "./AppIcon";
 export * from "./ChargeIcon";
 export * from "./ChargeIconOutline";
+export * from "./CommentFallback";
 export * from "./DislikeIcon";
 export * from "./Feed";
 export * from "./ForumFallback";

@@ -23,6 +23,7 @@ import {
 import { BackButton } from "@/root/src/components/shared/Button";
 import { CommentCard } from "@/root/src/components/shared/Cards/CommentCard";
 import { PostCard } from "@/root/src/components/shared/Cards/PostCard";
+import { CommentFallback } from "@/root/src/components/shared/Icons";
 import { UserContext } from "@/root/src/context";
 
 type NavigationProp_ = CompositeNavigationProp<
@@ -78,7 +79,7 @@ const PostHeader: React.FC<PostHeader_> = (post) => {
         userPostMetric={post.userPostMetric}
       />
 
-      <Box alignItems="center" bg="white" mt="2" pt="4">
+      <Box alignItems="center" bg="white" mt="2" py="4">
         <HStack alignItems="flex-end" width="90%">
           <Text color="eGreen.400" fontWeight="500">
             Comments
@@ -97,9 +98,16 @@ export const Post: React.FC<Props_> = ({ route, navigation }) => {
   const [isStateReady, setStateReady] = React.useState(false);
   const currentUser = React.useContext(UserContext).user;
 
+  const [loading, setLoading] = React.useState(false);
+
+  const [noCommentsToShow, setNoCommentsToShow] = React.useState(false);
+
   const populateContent = React.useCallback(() => {
     const fetchCall = async () => {
       if (postData.id) {
+        setLoading(true);
+        setNoCommentsToShow(false);
+
         const listCommentInput: listCommentsByPostIdFetch_ = {
           postId: postData.id,
           currentUserId: currentUser.id,
@@ -107,9 +115,14 @@ export const Post: React.FC<Props_> = ({ route, navigation }) => {
         const commentData = await listCommentsByPostIdFetch(listCommentInput);
 
         if (commentData) {
-          setComments(commentData.items);
-          setNextToken(commentData.nextToken);
+          if (commentData.items.length === 0) {
+            setNoCommentsToShow(true);
+          } else {
+            setComments(commentData.items);
+            setNextToken(commentData.nextToken);
+          }
         }
+        setLoading(false);
       }
     };
 
@@ -176,7 +189,7 @@ export const Post: React.FC<Props_> = ({ route, navigation }) => {
     [postData]
   );
 
-  if (!isStateReady) {
+  if (!isStateReady || loading) {
     return (
       <ScrollView>
         <PostCard hidePostNavigation postPage {...postData} />
@@ -198,6 +211,15 @@ export const Post: React.FC<Props_> = ({ route, navigation }) => {
           </Flex>
         </Box>
       </ScrollView>
+    );
+  }
+
+  if (noCommentsToShow) {
+    return (
+      <>
+        <ListHeaderComponent />
+        <CommentFallback />
+      </>
     );
   }
 
