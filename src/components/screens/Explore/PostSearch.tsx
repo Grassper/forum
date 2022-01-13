@@ -33,8 +33,10 @@ export const PostSearch: React.FC = () => {
   const populateContent = React.useCallback(() => {
     const fetchCall = async () => {
       if (searchValue) {
-        setSearching(true);
-        setResultsNotFound(false);
+        if (posts.length === 0 && !resultsNotFound) {
+          setSearching(true);
+        }
+
         const searchPostInput: searchPostsFetchInput_ = {
           currentUserId: currentUser.id,
           searchcontent: searchValue,
@@ -45,11 +47,14 @@ export const PostSearch: React.FC = () => {
           if (responseData.items.length === 0) {
             setResultsNotFound(true);
           } else {
+            setResultsNotFound(false);
             setPosts(responseData.items);
             setNextToken(responseData.nextToken);
           }
         }
-        setSearching(false);
+        if (searching) {
+          setSearching(false);
+        }
       } else {
         setPosts([]);
         setResultsNotFound(false);
@@ -57,7 +62,7 @@ export const PostSearch: React.FC = () => {
       }
     };
     fetchCall();
-  }, [currentUser.id, searchValue]);
+  }, [currentUser.id, posts.length, resultsNotFound, searchValue, searching]);
 
   useFocusEffect(
     React.useCallback(() => {

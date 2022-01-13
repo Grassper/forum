@@ -105,8 +105,9 @@ export const Post: React.FC<Props_> = ({ route, navigation }) => {
   const populateContent = React.useCallback(() => {
     const fetchCall = async () => {
       if (postData.id) {
-        setLoading(true);
-        setNoCommentsToShow(false);
+        if (comments.length === 0 && !noCommentsToShow) {
+          setLoading(true);
+        }
 
         const listCommentInput: listCommentsByPostIdFetch_ = {
           postId: postData.id,
@@ -118,16 +119,19 @@ export const Post: React.FC<Props_> = ({ route, navigation }) => {
           if (commentData.items.length === 0) {
             setNoCommentsToShow(true);
           } else {
+            setNoCommentsToShow(false);
             setComments(commentData.items);
             setNextToken(commentData.nextToken);
           }
         }
-        setLoading(false);
+        if (loading) {
+          setLoading(false);
+        }
       }
     };
 
     fetchCall();
-  }, [currentUser.id, postData.id]);
+  }, [comments.length, currentUser.id, loading, noCommentsToShow, postData.id]);
 
   useFocusEffect(
     React.useCallback(() => {

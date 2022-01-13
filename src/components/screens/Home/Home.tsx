@@ -65,8 +65,9 @@ export const Home: React.FC<Props_> = ({ navigation }) => {
   const populateContent = React.useCallback(() => {
     const fetchCall = async () => {
       if (id) {
-        setLoading(true);
-        setNoTimelineToShow(false);
+        if (posts.length === 0 && !noTimelineToShow) {
+          setLoading(true);
+        }
         const listPostInput: listTimelineByUserIdFetchInput_ = {
           id: id,
           sortDirection: "DESC",
@@ -77,15 +78,19 @@ export const Home: React.FC<Props_> = ({ navigation }) => {
           if (responseData.items.length === 0) {
             setNoTimelineToShow(true);
           } else {
+            setNoTimelineToShow(false);
             setPosts(responseData.items);
             setNextToken(responseData.nextToken);
           }
         }
-        setLoading(false);
+
+        if (loading) {
+          setLoading(false);
+        }
       }
     };
     fetchCall();
-  }, [id]);
+  }, [id, loading, noTimelineToShow, posts.length]);
 
   useFocusEffect(
     React.useCallback(() => {

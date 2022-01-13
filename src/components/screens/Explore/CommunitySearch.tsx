@@ -33,8 +33,10 @@ export const CommunitySearch: React.FC = () => {
   const populateContent = React.useCallback(() => {
     const fetchCall = async () => {
       if (searchValue) {
-        setSearching(true);
-        setResultsNotFound(false);
+        if (community.length === 0 && !resultsNotFound) {
+          setSearching(true);
+        }
+
         const searchUsersInput: searchCommunityFetchInput_ = {
           searchcommunityvalue: searchValue,
         };
@@ -44,11 +46,14 @@ export const CommunitySearch: React.FC = () => {
           if (responseData.items.length === 0) {
             setResultsNotFound(true);
           } else {
+            setResultsNotFound(false);
             setCommunity(responseData.items);
             setNextToken(responseData.nextToken);
           }
         }
-        setSearching(false);
+        if (searching) {
+          setSearching(false);
+        }
       } else {
         setCommunity([]);
         setResultsNotFound(false);
@@ -56,7 +61,7 @@ export const CommunitySearch: React.FC = () => {
       }
     };
     fetchCall();
-  }, [searchValue]);
+  }, [community.length, resultsNotFound, searchValue, searching]);
 
   useFocusEffect(
     React.useCallback(() => {

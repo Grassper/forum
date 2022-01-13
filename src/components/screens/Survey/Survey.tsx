@@ -33,8 +33,10 @@ export const Survey: React.FC = () => {
   const populateContent = React.useCallback(() => {
     const fetchCall = async () => {
       if (id) {
-        setLoading(true);
-        setNoTimelineToShow(false);
+        if (surveys.length === 0 && !noTimelineToShow) {
+          setLoading(true);
+        }
+
         const listSurveyInput: listSurveyTimelineByUserIdFetchInput_ = {
           id: id,
           sortDirection: "DESC",
@@ -47,15 +49,18 @@ export const Survey: React.FC = () => {
           if (responseData.items.length === 0) {
             setNoTimelineToShow(true);
           } else {
+            setNoTimelineToShow(false);
             setSurveys(responseData.items);
             setNextToken(responseData.nextToken);
           }
         }
-        setLoading(false);
+        if (loading) {
+          setLoading(false);
+        }
       }
     };
     fetchCall();
-  }, [id]);
+  }, [id, loading, noTimelineToShow, surveys.length]);
 
   useFocusEffect(
     React.useCallback(() => {

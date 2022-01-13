@@ -64,8 +64,9 @@ export const ChooseSubForum: React.FC<Props_> = ({ navigation, route }) => {
 
   const populateContent = React.useCallback(() => {
     const fetchCall = async () => {
-      setLoading(true);
-      setNoForumToShow(false);
+      if (communities.length === 0 && !noForumToShow) {
+        setLoading(true);
+      }
       const listCommunityInput: listCommunityByUserIdFetchInput_ = {
         id: currentUser.id,
         limit: 10,
@@ -77,15 +78,18 @@ export const ChooseSubForum: React.FC<Props_> = ({ navigation, route }) => {
         if (responseData.items.length === 0) {
           setNoForumToShow(true);
         } else {
+          setNoForumToShow(false);
           setCommunities(responseData.items);
           setNextToken(responseData.nextToken);
         }
       }
-      setLoading(false);
+      if (loading) {
+        setLoading(false);
+      }
     };
 
     fetchCall();
-  }, [currentUser]);
+  }, [communities.length, currentUser.id, loading, noForumToShow]);
 
   useFocusEffect(
     React.useCallback(() => {
