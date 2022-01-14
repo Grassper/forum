@@ -21,7 +21,7 @@ import { PostSearch } from "./PostSearch";
 import { ProfileSearch } from "./ProfileSearch";
 
 type NavigationProp_ = CompositeNavigationProp<
-  BottomTabNavigationProp<BottomTabParamList_, "Explore">,
+  BottomTabNavigationProp<StackParamList_, "Explore">,
   CompositeNavigationProp<
     StackNavigationProp<StackParamList_, "BottomTabNav">,
     StackNavigationProp<RootStackParamList_, "Application">
