@@ -7,14 +7,18 @@ import {
   FlatList,
   InteractionManager,
   ListRenderItem,
+  ScrollView,
   StyleSheet,
 } from "react-native";
 
+import {
+  PostCard,
+  Props_ as PostCardProps_,
+} from "@/root/src/components/shared/Cards/PostCard";
+import { NoResults } from "@/root/src/components/shared/Icons";
 import { SearchBar } from "@/root/src/components/shared/SearchBar";
 import { colors } from "@/root/src/constants";
 import { UserContext } from "@/root/src/context";
-
-import { PostCard } from "../../shared/Cards";
 
 interface Props_ {}
 
@@ -97,6 +101,22 @@ export const ExploreAll: React.FC<Props_> = () => {
       />
     );
   };
+  if (!isStateReady) {
+    return (
+      <ScrollView>
+        <PostCard />
+        <PostCard />
+        <PostCard />
+        <PostCard />
+        <PostCard />
+        <PostCard />
+        <PostCard />
+      </ScrollView>
+    );
+  }
+  if (resultsNotFound) {
+    return <NoResults />;
+  }
   return (
     <Box bg={colors.white} style={styles.container}>
       <Box style={styles.container}>
@@ -169,7 +189,7 @@ export interface showPosts_ {
 
 export interface ListPosts {
   items: Item[];
-  nextToken: null;
+  nextToken: string;
 }
 
 export interface Item {
