@@ -9,9 +9,12 @@ interface Props_ {
 }
 
 export const SearchBar: React.FC<Props_> = ({ value, setValue, editable }) => {
+  const inputRef = React.useRef(null);
+
   return (
     <>
       <Input
+        ref={inputRef}
         autoCapitalize="none"
         borderRadius="md"
         editable={editable}

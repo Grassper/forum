@@ -1,5 +1,9 @@
 import { GraphQLResult } from "@aws-amplify/api-graphql";
-import { useFocusEffect } from "@react-navigation/native";
+import {
+  StackActions,
+  useFocusEffect,
+  useNavigation,
+} from "@react-navigation/native";
 import { API } from "aws-amplify";
 import { Box, Pressable } from "native-base";
 import React from "react";
@@ -26,6 +30,7 @@ export const ExploreAll: React.FC<Props_> = () => {
   const [isStateReady, setStateReady] = React.useState(false);
   const currentUser = React.useContext(UserContext).user;
   const [resultsNotFound, setResultsNotFound] = React.useState(false);
+  const navigation = useNavigation();
 
   const [posts, setPosts] = React.useState<Item[]>([]);
   const [nextToken, setNextToken] = React.useState<string>("");
@@ -64,7 +69,6 @@ export const ExploreAll: React.FC<Props_> = () => {
       return () => task.cancel();
     }, [populateContent])
   );
-  console.log("Posts", posts);
   const handlePagination = async () => {
     if (nextToken && searchValue) {
       const listPostInput: exploreAllFetchInput_ = {
@@ -122,7 +126,15 @@ export const ExploreAll: React.FC<Props_> = () => {
       <Box style={styles.container}>
         <Box alignItems="center" bg={colors.white} width="100%">
           <Box py="15px" width="90%">
-            <Pressable onPress={() => console.log("clicked")}>
+            <Pressable
+              onPress={() => {
+                navigation.dispatch(
+                  StackActions.push("Application", {
+                    screen: "Explore",
+                  })
+                );
+              }}
+            >
               <SearchBar
                 editable={false}
                 setValue={setSearchValue}

@@ -7,7 +7,6 @@ import React, { useState } from "react";
 import { Dimensions, StyleSheet } from "react-native";
 
 import {
-  BottomTabParamList_,
   RootStackParamList_,
   StackParamList_,
 } from "@/root/src/components/navigations/Navigation";
