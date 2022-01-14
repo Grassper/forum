@@ -2,7 +2,7 @@ import { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { CompositeNavigationProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { Box } from "native-base";
+import { Box, HStack } from "native-base";
 import React, { useState } from "react";
 import { Dimensions, StyleSheet } from "react-native";
 
@@ -10,6 +10,7 @@ import {
   RootStackParamList_,
   StackParamList_,
 } from "@/root/src/components/navigations/Navigation";
+import { BackButton } from "@/root/src/components/shared/Button";
 import { SearchBar } from "@/root/src/components/shared/SearchBar";
 import { colors } from "@/root/src/constants";
 import { useDebounce } from "@/root/src/hooks";
@@ -58,9 +59,10 @@ export const Explore: React.FC<Props_> = () => {
     <Box bg={colors.white} style={styles.container}>
       <Box style={styles.container}>
         <Box alignItems="center" bg={colors.white} width="100%">
-          <Box py="15px" width="90%">
+          <HStack alignItems="center" py="15px" width="95%">
+            <BackButton color="eGreen.400" />
             <SearchBar setValue={setSearchValue} value={searchValue} />
-          </Box>
+          </HStack>
         </Box>
         <TabNavigatorExploreContext.Provider value={debouncedSearchTerm}>
           <Tab.Navigator

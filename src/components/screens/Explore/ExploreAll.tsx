@@ -1,11 +1,12 @@
 import { GraphQLResult } from "@aws-amplify/api-graphql";
+import { Ionicons } from "@expo/vector-icons";
 import {
   StackActions,
   useFocusEffect,
   useNavigation,
 } from "@react-navigation/native";
 import { API } from "aws-amplify";
-import { Box, Pressable } from "native-base";
+import { Box, HStack, Icon, Pressable, Text } from "native-base";
 import React from "react";
 import {
   FlatList,
@@ -19,8 +20,7 @@ import {
   PostCard,
   Props_ as PostCardProps_,
 } from "@/root/src/components/shared/Cards/PostCard";
-import { NoResults } from "@/root/src/components/shared/Icons";
-import { SearchBar } from "@/root/src/components/shared/SearchBar";
+import { Feed } from "@/root/src/components/shared/Icons";
 import { colors } from "@/root/src/constants";
 import { UserContext } from "@/root/src/context";
 
@@ -29,14 +29,19 @@ interface Props_ {}
 export const ExploreAll: React.FC<Props_> = () => {
   const [isStateReady, setStateReady] = React.useState(false);
   const currentUser = React.useContext(UserContext).user;
-  const [resultsNotFound, setResultsNotFound] = React.useState(false);
+
   const navigation = useNavigation();
 
   const [posts, setPosts] = React.useState<Item[]>([]);
   const [nextToken, setNextToken] = React.useState<string>("");
-  const [searchValue, setSearchValue] = React.useState("");
+
+  const [loading, setLoading] = React.useState(false);
+  const [noTimelineToShow, setNoTimelineToShow] = React.useState(false);
   const populateContent = React.useCallback(() => {
     const fetchCall = async () => {
+      if (posts.length === 0 && !noTimelineToShow) {
+        setLoading(true);
+      }
       const exploreAllPostInput: exploreAllFetchInput_ = {
         currentUserId: currentUser.id,
       };
@@ -44,21 +49,19 @@ export const ExploreAll: React.FC<Props_> = () => {
       const responseData = await exploreAllFetch(exploreAllPostInput);
       if (responseData) {
         if (responseData.items.length === 0) {
-          setResultsNotFound(true);
+          setNoTimelineToShow(true);
         } else {
-          setResultsNotFound(false);
+          setNoTimelineToShow(false);
           setPosts(responseData.items);
           setNextToken(responseData.nextToken);
         }
       }
-      //  } else {
-      //    setPosts([]);
-      //    setResultsNotFound(false);
-      //    setNextToken("");
-      //  }
+      if (loading) {
+        setLoading(false);
+      }
     };
     fetchCall();
-  }, [currentUser.id]);
+  }, [currentUser.id, loading, noTimelineToShow, posts.length]);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -70,7 +73,7 @@ export const ExploreAll: React.FC<Props_> = () => {
     }, [populateContent])
   );
   const handlePagination = async () => {
-    if (nextToken && searchValue) {
+    if (nextToken) {
       const listPostInput: exploreAllFetchInput_ = {
         currentUserId: currentUser.id,
         limit: 10,
@@ -105,7 +108,7 @@ export const ExploreAll: React.FC<Props_> = () => {
       />
     );
   };
-  if (!isStateReady) {
+  if (!isStateReady || loading) {
     return (
       <ScrollView>
         <PostCard />
@@ -118,8 +121,13 @@ export const ExploreAll: React.FC<Props_> = () => {
       </ScrollView>
     );
   }
-  if (resultsNotFound) {
-    return <NoResults />;
+
+  if (noTimelineToShow) {
+    return (
+      <Box style={styles.container}>
+        <Feed />
+      </Box>
+    );
   }
   return (
     <Box bg={colors.white} style={styles.container}>
@@ -135,11 +143,17 @@ export const ExploreAll: React.FC<Props_> = () => {
                 );
               }}
             >
-              <SearchBar
-                editable={false}
-                setValue={setSearchValue}
-                value={searchValue}
-              />
+              <HStack alignItems="center" bg="muted.100" py="3">
+                <Icon
+                  as={<Ionicons name="search-outline" />}
+                  color="muted.400"
+                  ml="3"
+                  size={18}
+                />
+                <Text color="muted.400" ml="3">
+                  search
+                </Text>
+              </HStack>
             </Pressable>
           </Box>
         </Box>

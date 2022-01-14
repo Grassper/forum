@@ -166,7 +166,6 @@ export const StackNavigator = () => {
       />
       <Stack.Screen
         component={CoinTipping}
-        initialParams={{ userId: id }}
         name="Tipping"
         options={() => ({
           title: "",
@@ -183,7 +182,8 @@ export const StackNavigator = () => {
         component={Explore}
         name="Explore"
         options={{
-          title: "Search Your Friends",
+          title: "Explore",
+          headerShown: false,
         }}
       />
       <Stack.Screen
