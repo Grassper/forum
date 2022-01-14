@@ -3,7 +3,12 @@ import { useFocusEffect } from "@react-navigation/native";
 import { API } from "aws-amplify";
 import { Box, Pressable } from "native-base";
 import React from "react";
-import { InteractionManager, ListRenderItem, StyleSheet } from "react-native";
+import {
+  FlatList,
+  InteractionManager,
+  ListRenderItem,
+  StyleSheet,
+} from "react-native";
 
 import { SearchBar } from "@/root/src/components/shared/SearchBar";
 import { colors } from "@/root/src/constants";
@@ -106,6 +111,14 @@ export const ExploreAll: React.FC<Props_> = () => {
             </Pressable>
           </Box>
         </Box>
+        <FlatList
+          data={posts}
+          keyExtractor={(item) => item.id}
+          maxToRenderPerBatch={8}
+          onEndReached={() => handlePagination()}
+          renderItem={PostCardRenderer}
+          windowSize={5}
+        />
       </Box>
     </Box>
   );
