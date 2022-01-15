@@ -6,9 +6,15 @@ interface Props_ {
   value: string;
   setValue: (value: string) => void;
   editable?: boolean;
+  hideIcon?: boolean;
 }
 
-export const SearchBar: React.FC<Props_> = ({ value, setValue, editable }) => {
+export const SearchBar: React.FC<Props_> = ({
+  value,
+  setValue,
+  editable,
+  hideIcon,
+}) => {
   const inputRef = React.useRef(null);
 
   return (
@@ -20,12 +26,16 @@ export const SearchBar: React.FC<Props_> = ({ value, setValue, editable }) => {
         editable={editable}
         fontSize="sm"
         InputLeftElement={
-          <Icon
-            as={<Ionicons name="search-outline" />}
-            color="muted.400"
-            ml="3"
-            size={18}
-          />
+          !hideIcon ? (
+            <Icon
+              as={<Ionicons name="search-outline" />}
+              color="muted.400"
+              ml="3"
+              size={18}
+            />
+          ) : (
+            <></>
+          )
         }
         InputRightElement={
           value !== "" ? (

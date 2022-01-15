@@ -61,7 +61,7 @@ export const Explore: React.FC<Props_> = () => {
         <Box alignItems="center" bg={colors.white} width="100%">
           <HStack alignItems="center" py="15px" width="95%">
             <BackButton color="eGreen.400" />
-            <SearchBar setValue={setSearchValue} value={searchValue} />
+            <SearchBar hideIcon setValue={setSearchValue} value={searchValue} />
           </HStack>
         </Box>
         <TabNavigatorExploreContext.Provider value={debouncedSearchTerm}>
