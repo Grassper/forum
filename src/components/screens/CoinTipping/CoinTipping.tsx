@@ -1,4 +1,5 @@
 import { GraphQLResult } from "@aws-amplify/api-graphql";
+import { FontAwesome5 } from "@expo/vector-icons";
 import { CompositeNavigationProp, RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { API } from "aws-amplify";
@@ -6,6 +7,8 @@ import {
   Box,
   Flex,
   FormControl,
+  HStack,
+  Icon,
   Input,
   Pressable,
   Spinner,
@@ -58,7 +61,20 @@ export const CoinTipping: React.FC<Props_> = ({ route, navigation }) => {
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
-      headerRight: () => <Text>{currentUser.coins}</Text>,
+      headerRight: () => (
+        <HStack alignItems="center" justifyContent="center">
+          <Icon
+            as={<FontAwesome5 name="coins" />}
+            color="amber.400"
+            ml="3"
+            size={15}
+          />
+
+          <Text ml="2" mr="2">
+            {currentUser.coins} Ef
+          </Text>
+        </HStack>
+      ),
     });
   }, [currentUser.coins, navigation]);
 
