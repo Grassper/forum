@@ -30,6 +30,13 @@
           "deploymentBucketName": "amplify-eforum-dev-151817-deployment",
           "s3Key": "amplify-builds/tippingHandler-755951692b2b58626a78-build.zip"
         }
+      },
+      "notifications": {
+        "Pinpoint": {
+          "Name": "eforum-dev",
+          "Id": "97e555145c634e2ca84f01f90b6cce75",
+          "Region": "us-east-1"
+        }
       }
     }
   }
