@@ -110,10 +110,5 @@
       "channels": ["FCM"]
     }
   },
-  "analytics": {
-    "eforum": {
-      "service": "Pinpoint",
-      "providerPlugin": "awscloudformation"
-    }
-  }
+  "analytics": {}
 }

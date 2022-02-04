@@ -39,5 +39,34 @@
         }
       }
     }
+  },
+  "test": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-eforum-test-221817-authRole",
+      "UnauthRoleArn": "arn:aws:iam::969426747124:role/amplify-eforum-test-221817-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::969426747124:role/amplify-eforum-test-221817-authRole",
+      "Region": "us-east-2",
+      "DeploymentBucketName": "amplify-eforum-test-221817-deployment",
+      "UnauthRoleName": "amplify-eforum-test-221817-unauthRole",
+      "StackName": "amplify-eforum-test-221817",
+      "StackId": "arn:aws:cloudformation:us-east-2:969426747124:stack/amplify-eforum-test-221817/43465410-85da-11ec-921e-0a3d884492ee",
+      "AmplifyAppId": "d2onibrqn832c4"
+    },
+    "categories": {
+      "function": {
+        "tippingHandler": {
+          "deploymentBucketName": "amplify-eforum-test-221817-deployment",
+          "s3Key": "amplify-builds/tippingHandler-755951692b2b58626a78-build.zip"
+        },
+        "createPostAndTimeline": {
+          "deploymentBucketName": "amplify-eforum-test-221817-deployment",
+          "s3Key": "amplify-builds/createPostAndTimeline-6a394a3533303451756d-build.zip"
+        },
+        "createSurveyAndTimeline": {
+          "deploymentBucketName": "amplify-eforum-test-221817-deployment",
+          "s3Key": "amplify-builds/createSurveyAndTimeline-426b6e5745646f6f2b57-build.zip"
+        }
+      }
+    }
   }
 }
