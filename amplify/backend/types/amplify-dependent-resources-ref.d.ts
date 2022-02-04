@@ -43,4 +43,11 @@ export type AmplifyDependentResourcesAttributes = {
       Region: "string";
     };
   };
+  analytics: {
+    eforum: {
+      Region: "string";
+      Id: "string";
+      appName: "string";
+    };
+  };
 };
