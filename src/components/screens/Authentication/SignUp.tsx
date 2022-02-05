@@ -58,110 +58,111 @@ export const SignUp: React.FC<Props_> = ({ navigation }) => {
   };
   return (
     <Box alignItems="center" bg="white" height="100%">
-      <VStack
-        height="100%"
-        justifyContent="space-between"
-        safeAreaY
-        width="90%"
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={20}
       >
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <Box alignItems="flex-start" pt="2">
-            <Pressable onPress={() => navigation.navigate("SignIn")}>
-              <Icon
-                as={<Ionicons name="ios-arrow-back" />}
-                color="eGreen.400"
-                mr="3"
-                size={"24px"}
-              />
-            </Pressable>
-          </Box>
-          <Text
-            color={colors.black}
-            fontFamily="heading"
-            fontSize="3xl"
-            fontWeight="bold"
-            pb="3"
-            pt="5"
-          >
-            Sign up
-          </Text>
-          <Text color={colors.gray} pb="8" pt="2">
-            By continuing you agree to our{" "}
-            <Text color={colors.green} fontWeight="500">
-              User Agreement{" "}
-            </Text>
-            and{" "}
-            <Text color={colors.green} fontWeight="500">
-              Privacy Policy
-            </Text>
-          </Text>
-          <Input
-            _focus={{
-              borderColor: colors.green,
-            }}
-            autoCapitalize="none"
-            borderColor="coolGray.200"
-            borderRadius="full"
-            mb="5"
-            onChangeText={setEmailId}
-            p="4"
-            placeholder="E-mail"
-            placeholderTextColor="coolGray.400"
-            value={emailId}
-            width="100%"
-          />
-          <Input
-            _focus={{
-              borderColor: colors.green,
-            }}
-            autoCapitalize="none"
-            borderColor="coolGray.200"
-            borderRadius="full"
-            mb="5"
-            onChangeText={setUserName}
-            p="4"
-            placeholder="Username"
-            placeholderTextColor="coolGray.400"
-            value={userName}
-            width="100%"
-          />
-          <Input
-            _focus={{
-              borderColor: colors.green,
-            }}
-            autoCapitalize="none"
-            autoCompleteType="password"
-            borderColor="coolGray.200"
-            borderRadius="full"
-            InputRightElement={
-              <Icon
-                as={
-                  <MaterialIcons
-                    name={hidePass ? "visibility-off" : "visibility"}
-                  />
-                }
-                color="muted.400"
-                mr="3"
-                onPress={() => setHidePass(!hidePass)}
-                size={18}
-              />
-            }
-            mb="5"
-            onChangeText={setPassword}
-            p="4"
-            placeholder="Password"
-            placeholderTextColor="coolGray.400"
-            secureTextEntry={hidePass ? true : false}
-            type="password"
-            value={password}
-            width="100%"
-          />
-        </ScrollView>
-        <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
-          keyboardVerticalOffset={20}
+        <VStack
+          height="100%"
+          justifyContent="space-between"
+          safeAreaY
+          width="90%"
         >
-          <Box justifyContent="flex-end" width="100%">
+          <ScrollView bounces={false} showsVerticalScrollIndicator={false}>
+            <Box alignItems="flex-start" pt="2">
+              <Pressable onPress={() => navigation.navigate("SignIn")}>
+                <Icon
+                  as={<Ionicons name="ios-arrow-back" />}
+                  color="eGreen.400"
+                  mr="3"
+                  size={"24px"}
+                />
+              </Pressable>
+            </Box>
+            <Text
+              color={colors.black}
+              fontFamily="heading"
+              fontSize="3xl"
+              fontWeight="bold"
+              pb="3"
+              pt="5"
+            >
+              Sign up
+            </Text>
+            <Text color={colors.gray} pb="8" pt="2">
+              By continuing you agree to our{" "}
+              <Text color={colors.green} fontWeight="500">
+                User Agreement{" "}
+              </Text>
+              and{" "}
+              <Text color={colors.green} fontWeight="500">
+                Privacy Policy
+              </Text>
+            </Text>
+            <Input
+              _focus={{
+                borderColor: colors.green,
+              }}
+              autoCapitalize="none"
+              borderColor="coolGray.200"
+              borderRadius="full"
+              mb="5"
+              onChangeText={setEmailId}
+              p="4"
+              placeholder="E-mail"
+              placeholderTextColor="coolGray.400"
+              value={emailId}
+              width="100%"
+            />
+            <Input
+              _focus={{
+                borderColor: colors.green,
+              }}
+              autoCapitalize="none"
+              borderColor="coolGray.200"
+              borderRadius="full"
+              mb="5"
+              onChangeText={setUserName}
+              p="4"
+              placeholder="Username"
+              placeholderTextColor="coolGray.400"
+              value={userName}
+              width="100%"
+            />
+            <Input
+              _focus={{
+                borderColor: colors.green,
+              }}
+              autoCapitalize="none"
+              autoCompleteType="password"
+              borderColor="coolGray.200"
+              borderRadius="full"
+              InputRightElement={
+                <Icon
+                  as={
+                    <MaterialIcons
+                      name={hidePass ? "visibility-off" : "visibility"}
+                    />
+                  }
+                  color="muted.400"
+                  mr="3"
+                  onPress={() => setHidePass(!hidePass)}
+                  size={18}
+                />
+              }
+              mb="5"
+              onChangeText={setPassword}
+              p="4"
+              placeholder="Password"
+              placeholderTextColor="coolGray.400"
+              secureTextEntry={hidePass ? true : false}
+              type="password"
+              value={password}
+              width="100%"
+            />
+          </ScrollView>
+
+          <Box justifyContent="flex-end">
             {!loading ? (
               <Pressable
                 alignItems="center"
@@ -189,8 +190,8 @@ export const SignUp: React.FC<Props_> = ({ navigation }) => {
               </Flex>
             )}
           </Box>
-        </KeyboardAvoidingView>
-      </VStack>
+        </VStack>
+      </KeyboardAvoidingView>
     </Box>
   );
 };

@@ -43,6 +43,7 @@ export const ChooseSubForum: React.FC<Props_> = ({ navigation, route }) => {
   const [communities, setCommunities] = React.useState<Item[]>([]);
   const [nextToken, setNextToken] = React.useState<string>("");
   const [isStateReady, setStateReady] = React.useState(false);
+
   const [loading, setLoading] = React.useState(false);
   const [noForumToShow, setNoForumToShow] = React.useState(false);
   const handlePagination = async () => {
@@ -69,7 +70,6 @@ export const ChooseSubForum: React.FC<Props_> = ({ navigation, route }) => {
       }
       const listCommunityInput: listCommunityByUserIdFetchInput_ = {
         id: currentUser.id,
-        limit: 10,
         sortDirection: "DESC",
       };
 
@@ -243,6 +243,7 @@ const listCommunityByUserId = /* GraphQL */ `
         limit: $limit
         sortDirection: $sortDirection
         nextToken: $nextToken
+        filter: { isDeleted: { attributeExists: false } }
       ) {
         items {
           community {

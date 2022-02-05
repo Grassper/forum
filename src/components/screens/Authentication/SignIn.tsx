@@ -55,110 +55,110 @@ export const SignIn: React.FC<Props_> = ({ navigation }) => {
   };
   return (
     <Box alignItems="center" bg="white" height="100%">
-      <VStack
-        height="100%"
-        justifyContent="space-between"
-        safeAreaY
-        width="90%"
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={20}
       >
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <Box alignItems="flex-end" pt="2">
-            <Pressable
-              onPress={() => {
-                navigation.push("SignUp");
-              }}
-            >
-              <Text color="eGreen.400" fontWeight="600">
-                Register
-              </Text>
-            </Pressable>
-          </Box>
-          <Text
-            color={colors.black}
-            fontFamily="heading"
-            fontSize="3xl"
-            fontWeight="bold"
-            pb="3"
-            pt="5"
-          >
-            Sign in
-          </Text>
-          <Text color={colors.gray} pb="8" pt="2">
-            By continuing you agree to our{" "}
-            <Text color={colors.green} fontWeight="500">
-              User Agreement{" "}
-            </Text>
-            and{" "}
-            <Text color={colors.green} fontWeight="500">
-              Privacy Policy
-            </Text>
-          </Text>
-
-          <Input
-            _focus={{
-              borderColor: colors.green,
-            }}
-            autoCapitalize="none"
-            borderColor="coolGray.200"
-            borderRadius="full"
-            color={useContrastText("light.100")}
-            mb="5"
-            onChangeText={setUserName}
-            p="4"
-            placeholder="Username"
-            placeholderTextColor="coolGray.400"
-            value={userName}
-            width="100%"
-          />
-          <Input
-            _focus={{
-              borderColor: colors.green,
-            }}
-            autoCapitalize="none"
-            autoCompleteType="password"
-            borderColor="coolGray.200"
-            borderRadius="full"
-            color={useContrastText("light.100")}
-            InputRightElement={
-              <Icon
-                as={
-                  <MaterialIcons
-                    name={hidePass ? "visibility-off" : "visibility"}
-                  />
-                }
-                color="muted.400"
-                mr="3"
-                onPress={() => setHidePass(!hidePass)}
-                size={18}
-              />
-            }
-            mb="5"
-            onChangeText={setPassword}
-            p="4"
-            placeholder="Password"
-            placeholderTextColor="coolGray.400"
-            secureTextEntry={hidePass ? true : false}
-            type="password"
-            value={password}
-            width="100%"
-          />
-          <Box px="3">
-            <Pressable
-              onPress={() => {
-                navigation.navigate("AccountRecovery");
-              }}
-            >
-              <Text color="eGreen.400" fontSize="xs">
-                Forgot Password?
-              </Text>
-            </Pressable>
-          </Box>
-        </ScrollView>
-        <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
-          keyboardVerticalOffset={20}
+        <VStack
+          height="100%"
+          justifyContent="space-between"
+          safeAreaY
+          width="90%"
         >
-          <Box justifyContent="flex-end" width="100%">
+          <ScrollView bounces={false} showsVerticalScrollIndicator={false}>
+            <Box alignItems="flex-end" pt="2">
+              <Pressable
+                onPress={() => {
+                  navigation.push("SignUp");
+                }}
+              >
+                <Text color="eGreen.400" fontWeight="600">
+                  Register
+                </Text>
+              </Pressable>
+            </Box>
+            <Text
+              color={colors.black}
+              fontFamily="heading"
+              fontSize="3xl"
+              fontWeight="bold"
+              pb="3"
+              pt="5"
+            >
+              Sign in
+            </Text>
+            <Text color={colors.gray} pb="8" pt="2">
+              By continuing you agree to our{" "}
+              <Text color={colors.green} fontWeight="500">
+                User Agreement{" "}
+              </Text>
+              and{" "}
+              <Text color={colors.green} fontWeight="500">
+                Privacy Policy
+              </Text>
+            </Text>
+
+            <Input
+              _focus={{
+                borderColor: colors.green,
+              }}
+              autoCapitalize="none"
+              borderColor="coolGray.200"
+              borderRadius="full"
+              color={useContrastText("light.100")}
+              mb="5"
+              onChangeText={setUserName}
+              p="4"
+              placeholder="Username"
+              placeholderTextColor="coolGray.400"
+              value={userName}
+              width="100%"
+            />
+            <Input
+              _focus={{
+                borderColor: colors.green,
+              }}
+              autoCapitalize="none"
+              autoCompleteType="password"
+              borderColor="coolGray.200"
+              borderRadius="full"
+              color={useContrastText("light.100")}
+              InputRightElement={
+                <Icon
+                  as={
+                    <MaterialIcons
+                      name={hidePass ? "visibility-off" : "visibility"}
+                    />
+                  }
+                  color="muted.400"
+                  mr="3"
+                  onPress={() => setHidePass(!hidePass)}
+                  size={18}
+                />
+              }
+              mb="5"
+              onChangeText={setPassword}
+              p="4"
+              placeholder="Password"
+              placeholderTextColor="coolGray.400"
+              secureTextEntry={hidePass ? true : false}
+              type="password"
+              value={password}
+              width="100%"
+            />
+            <Box px="3">
+              <Pressable
+                onPress={() => {
+                  navigation.navigate("AccountRecovery");
+                }}
+              >
+                <Text color="eGreen.400" fontSize="xs">
+                  Forgot Password?
+                </Text>
+              </Pressable>
+            </Box>
+          </ScrollView>
+          <Box justifyContent="flex-end">
             {!loading ? (
               <Pressable
                 alignItems="center"
@@ -186,8 +186,8 @@ export const SignIn: React.FC<Props_> = ({ navigation }) => {
               </Flex>
             )}
           </Box>
-        </KeyboardAvoidingView>
-      </VStack>
+        </VStack>
+      </KeyboardAvoidingView>
     </Box>
   );
 };

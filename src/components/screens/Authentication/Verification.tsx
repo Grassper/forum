@@ -53,25 +53,6 @@ export const Verification: React.FC<Props_> = ({ navigation, route }) => {
     pin5: "",
     pin6: "",
   });
-  React.useEffect(() => {
-    if (verificationPins.pin1 !== "") {
-      pinRef2.current?.focus();
-    } else {
-      pinRef1.current?.focus();
-    }
-    if (verificationPins.pin2 !== "") {
-      pinRef3.current?.focus();
-    }
-    if (verificationPins.pin3 !== "") {
-      pinRef4.current?.focus();
-    }
-    if (verificationPins.pin4 !== "") {
-      pinRef5.current?.focus();
-    }
-    if (verificationPins.pin5 !== "") {
-      pinRef6.current?.focus();
-    }
-  }, [pinRef1, pinRef2, pinRef3, pinRef4, pinRef5, pinRef6, verificationPins]);
 
   const confirmSignUp = async () => {
     if (
@@ -113,149 +94,149 @@ export const Verification: React.FC<Props_> = ({ navigation, route }) => {
   };
 
   return (
-    <Box alignItems="center" bg="white" height="100%">
-      <VStack
-        height="100%"
-        justifyContent="space-between"
-        safeAreaY
-        width="90%"
-      >
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <Box alignItems="flex-end" pt="2">
-            <Pressable onPress={() => navigation.navigate("SignIn")}>
-              <Text color="eGreen.400" fontWeight="600">
-                Back
-              </Text>
-            </Pressable>
-          </Box>
-          <Text
-            color={colors.black}
-            fontFamily="heading"
-            fontSize="2xl"
-            fontWeight="medium"
-            py="2"
-          >
-            Verification Code
-          </Text>
-          <Box py="3">
-            <Text>We've sent a 6-digit verification code to </Text>
-            <Text color="eGreen.400">{email}</Text>
-          </Box>
-
-          <Box>
-            <HStack justifyContent="space-between" py="4">
-              <Input
-                ref={pinRef1}
-                _focus={{
-                  borderColor: colors.green,
-                }}
-                keyboardType="numeric"
-                maxLength={1}
-                onChangeText={(value) => {
-                  setVerificationPins((prevState) => ({
-                    ...prevState,
-                    pin1: value,
-                  }));
-                }}
-                style={styles.textInput}
-                value={verificationPins.pin1}
-              />
-              <Input
-                ref={pinRef2}
-                _focus={{
-                  borderColor: colors.green,
-                }}
-                keyboardType="numeric"
-                maxLength={1}
-                onChangeText={(value) => {
-                  setVerificationPins((prevState) => ({
-                    ...prevState,
-                    pin2: value,
-                  }));
-                }}
-                style={styles.textInput}
-                value={verificationPins.pin2}
-              />
-              <Input
-                ref={pinRef3}
-                _focus={{
-                  borderColor: colors.green,
-                }}
-                keyboardType="numeric"
-                maxLength={1}
-                onChangeText={(value) => {
-                  setVerificationPins((prevState) => ({
-                    ...prevState,
-                    pin3: value,
-                  }));
-                }}
-                style={styles.textInput}
-                value={verificationPins.pin3}
-              />
-              <Input
-                ref={pinRef4}
-                _focus={{
-                  borderColor: colors.green,
-                }}
-                keyboardType="numeric"
-                maxLength={1}
-                onChangeText={(value) => {
-                  setVerificationPins((prevState) => ({
-                    ...prevState,
-                    pin4: value,
-                  }));
-                }}
-                style={styles.textInput}
-                value={verificationPins.pin4}
-              />
-              <Input
-                ref={pinRef5}
-                _focus={{
-                  borderColor: colors.green,
-                }}
-                keyboardType="numeric"
-                maxLength={1}
-                onChangeText={(value) => {
-                  setVerificationPins((prevState) => ({
-                    ...prevState,
-                    pin5: value,
-                  }));
-                }}
-                style={styles.textInput}
-                value={verificationPins.pin5}
-              />
-              <Input
-                ref={pinRef6}
-                _focus={{
-                  borderColor: colors.green,
-                }}
-                keyboardType="numeric"
-                maxLength={1}
-                onChangeText={(value) => {
-                  setVerificationPins((prevState) => ({
-                    ...prevState,
-                    pin6: value,
-                  }));
-                }}
-                style={styles.textInput}
-                value={verificationPins.pin6}
-              />
-            </HStack>
-            <HStack alignItems="center" justifyContent="center">
-              <Text fontSize="xs">Didn't Receive code?</Text>
-              <Pressable onPress={resendConfirmationCode}>
-                <Text color="eGreen.400" fontSize="xs" ml="1">
-                  Resend
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={20}
+    >
+      <Box alignItems="center" bg="white" width="100%">
+        <VStack
+          height="100%"
+          justifyContent="space-between"
+          safeAreaY
+          width="90%"
+        >
+          <ScrollView bounces={false} showsVerticalScrollIndicator={false}>
+            <Box alignItems="flex-end" pt="2">
+              <Pressable onPress={() => navigation.navigate("SignIn")}>
+                <Text color="eGreen.400" fontWeight="600">
+                  Back
                 </Text>
               </Pressable>
-            </HStack>
-          </Box>
-        </ScrollView>
-        <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
-          keyboardVerticalOffset={20}
-        >
-          <Box justifyContent="flex-end" width="100%">
+            </Box>
+            <Text
+              color={colors.black}
+              fontFamily="heading"
+              fontSize="2xl"
+              fontWeight="medium"
+              py="2"
+            >
+              Verification Code
+            </Text>
+            <Box py="3">
+              <Text>We've sent a 6-digit verification code to </Text>
+              <Text color="eGreen.400">{email}</Text>
+            </Box>
+
+            <Box>
+              <HStack justifyContent="space-between" py="4">
+                <Input
+                  ref={pinRef1}
+                  _focus={{
+                    borderColor: colors.green,
+                  }}
+                  keyboardType="numeric"
+                  maxLength={1}
+                  onChangeText={(value) => {
+                    setVerificationPins((prevState) => ({
+                      ...prevState,
+                      pin1: value,
+                    }));
+                  }}
+                  style={styles.textInput}
+                  value={verificationPins.pin1}
+                />
+                <Input
+                  ref={pinRef2}
+                  _focus={{
+                    borderColor: colors.green,
+                  }}
+                  keyboardType="numeric"
+                  maxLength={1}
+                  onChangeText={(value) => {
+                    setVerificationPins((prevState) => ({
+                      ...prevState,
+                      pin2: value,
+                    }));
+                  }}
+                  style={styles.textInput}
+                  value={verificationPins.pin2}
+                />
+                <Input
+                  ref={pinRef3}
+                  _focus={{
+                    borderColor: colors.green,
+                  }}
+                  keyboardType="numeric"
+                  maxLength={1}
+                  onChangeText={(value) => {
+                    setVerificationPins((prevState) => ({
+                      ...prevState,
+                      pin3: value,
+                    }));
+                  }}
+                  style={styles.textInput}
+                  value={verificationPins.pin3}
+                />
+                <Input
+                  ref={pinRef4}
+                  _focus={{
+                    borderColor: colors.green,
+                  }}
+                  keyboardType="numeric"
+                  maxLength={1}
+                  onChangeText={(value) => {
+                    setVerificationPins((prevState) => ({
+                      ...prevState,
+                      pin4: value,
+                    }));
+                  }}
+                  style={styles.textInput}
+                  value={verificationPins.pin4}
+                />
+                <Input
+                  ref={pinRef5}
+                  _focus={{
+                    borderColor: colors.green,
+                  }}
+                  keyboardType="numeric"
+                  maxLength={1}
+                  onChangeText={(value) => {
+                    setVerificationPins((prevState) => ({
+                      ...prevState,
+                      pin5: value,
+                    }));
+                  }}
+                  style={styles.textInput}
+                  value={verificationPins.pin5}
+                />
+                <Input
+                  ref={pinRef6}
+                  _focus={{
+                    borderColor: colors.green,
+                  }}
+                  keyboardType="numeric"
+                  maxLength={1}
+                  onChangeText={(value) => {
+                    setVerificationPins((prevState) => ({
+                      ...prevState,
+                      pin6: value,
+                    }));
+                  }}
+                  style={styles.textInput}
+                  value={verificationPins.pin6}
+                />
+              </HStack>
+              <HStack alignItems="center" justifyContent="center">
+                <Text fontSize="xs">Didn't Receive code?</Text>
+                <Pressable onPress={resendConfirmationCode}>
+                  <Text color="eGreen.400" fontSize="xs" ml="1">
+                    Resend
+                  </Text>
+                </Pressable>
+              </HStack>
+            </Box>
+          </ScrollView>
+          <Box justifyContent="flex-end">
             {!loading ? (
               <Pressable
                 alignItems="center"
@@ -283,9 +264,9 @@ export const Verification: React.FC<Props_> = ({ navigation, route }) => {
               </Flex>
             )}
           </Box>
-        </KeyboardAvoidingView>
-      </VStack>
-    </Box>
+        </VStack>
+      </Box>
+    </KeyboardAvoidingView>
   );
 };
 

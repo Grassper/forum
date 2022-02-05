@@ -123,18 +123,18 @@ export const About: React.FC<Props_> = ({ routeUserId }) => {
           ) : (
             <StatsItem />
           )}
-          {about?.userMetrics && about.userMetrics.commentDownvotes >= 0 ? (
-            <StatsItem
-              name="Comment Downs"
-              value={about.userMetrics.commentDownvotes}
-            />
-          ) : (
-            <StatsItem />
-          )}
           {about?.userMetrics && about.userMetrics.activeDays >= 0 ? (
             <StatsItem
               name="Active Days"
               value={about.userMetrics.activeDays}
+            />
+          ) : (
+            <StatsItem />
+          )}
+          {about?.userMetrics && about.userMetrics.profileViews >= 0 ? (
+            <StatsItem
+              name="Profile Views"
+              value={about.userMetrics.profileViews}
             />
           ) : (
             <StatsItem />

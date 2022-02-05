@@ -20,7 +20,6 @@ import {
   PostCard,
   Props_ as PostCardProps_,
 } from "@/root/src/components/shared/Cards/PostCard";
-import { Feed } from "@/root/src/components/shared/Icons";
 import { colors } from "@/root/src/constants";
 import { UserContext } from "@/root/src/context";
 
@@ -150,7 +149,31 @@ export const ExploreAll: React.FC<Props_> = () => {
   if (noTimelineToShow) {
     return (
       <Box style={styles.container}>
-        <Feed />
+        <Box alignItems="center" bg={colors.white} width="100%">
+          <Box py="15px" width="90%">
+            <Pressable
+              onPress={() => {
+                navigation.dispatch(
+                  StackActions.push("Application", {
+                    screen: "Explore",
+                  })
+                );
+              }}
+            >
+              <HStack alignItems="center" bg="muted.100" py="3">
+                <Icon
+                  as={<Ionicons name="search-outline" />}
+                  color="muted.400"
+                  ml="3"
+                  size={18}
+                />
+                <Text color="muted.400" ml="3">
+                  search
+                </Text>
+              </HStack>
+            </Pressable>
+          </Box>
+        </Box>
       </Box>
     );
   }
