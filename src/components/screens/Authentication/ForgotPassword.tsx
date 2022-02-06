@@ -288,7 +288,6 @@ export const ForgotPassword: React.FC<Props_> = ({ navigation, route }) => {
                 autoCompleteType="password"
                 borderColor="coolGray.200"
                 borderRadius="full"
-                color={useContrastText("light.100")}
                 InputRightElement={
                   <Icon
                     as={
