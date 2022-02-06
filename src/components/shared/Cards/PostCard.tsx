@@ -486,10 +486,14 @@ const Poll: React.FC<PollProps_> = (props) => {
       <HStack justifyContent="space-between">
         <HStack alignItems="center">
           <Text fontSize="xs">{totalVotes} votes</Text>
-          <Box bg="blueGray.500" style={styles.separatorDot} />
-          <Text fontSize="xs">
-            {formatDistanceToNowStrict(new Date(props.timeStamp))} left
-          </Text>
+          {!isPollDateCompleted && (
+            <>
+              <Box bg="blueGray.500" style={styles.separatorDot} />
+              <Text fontSize="xs">
+                {formatDistanceToNowStrict(new Date(props.timeStamp))} left
+              </Text>
+            </>
+          )}
         </HStack>
         {voted && !isPollDateCompleted && (
           <Pressable onPress={() => votingHandler("REMOVE", votedPollId)}>
